@@ -19,6 +19,7 @@ import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const beast = useBeast(sdk);
+  const [isGlowing, setIsGlowing] = useState(false);
 
   const {
     setup: { client },
@@ -39,6 +40,11 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   };
   const showDeathAnimation = () => {
     setCurrentImage(dead);
+  };
+
+  const triggerGlow = () => {
+    setIsGlowing(true);
+    setTimeout(() => setIsGlowing(false), 4000);
   };
 
   useEffect(() => {
@@ -67,7 +73,9 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
               <div className="space-y-6">
                 {/* Centered Tamagotchi Image */}
                 <div className="scenario flex justify-center items-column">
-                  <h2 className="level">Lvl <span>{beast.level}</span></h2>
+                  <h2 className="level">
+                    Lvl <span>{beast.level}</span>
+                  </h2>
                   <div className="stats">
                     <div className="item">
                       <div>
@@ -98,7 +106,9 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       <p className="info">Experience</p>
                     </div>
                   </div>
-                  <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
+                  <div className={`tamagotchi-image-container ${isGlowing ? "glow" : ""}`}>
+                    <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
+                  </div>
                 </div>
                 <div className="d-flex justify-content-center">
                   <div className="status">
@@ -140,7 +150,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.feed(account as Account);
                       }
-                      if (beast.is_alive) showAnimation(eat);
+                      if (beast.is_alive) {
+                        triggerGlow();
+                        showAnimation(eat);
+                      } 
                     }}
                     disabled={!beast.is_alive}
                     className="flex items-center button"
@@ -152,7 +165,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.sleep(account as Account);
                       }
-                      if (beast.is_alive) showAnimationWithoutTimer(sleep);
+                      if (beast.is_alive){
+                        triggerGlow();
+                        showAnimationWithoutTimer(sleep);
+                      } 
                     }}
                     disabled={!beast.is_alive}
                     className="flex items-center button"
@@ -164,7 +180,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.play(account as Account);
                       }
-                      if (beast.is_alive) showAnimation(play);
+                      if (beast.is_alive) {
+                        triggerGlow();
+                        showAnimation(play);
+                      }
                     }}
                     disabled={!beast.is_alive}
                     className="flex items-center button"
@@ -176,7 +195,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.clean(account as Account);
                       }
-                      if (beast.is_alive) showAnimation(shower);
+                      if (beast.is_alive) {
+                        triggerGlow();
+                        showAnimation(shower);
+                      }
                     }}
                     disabled={!beast.is_alive}
                     className="flex items-center  button"
@@ -188,7 +210,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.awake(account as Account);
                       }
-                      if (beast.is_alive) setCurrentImage(happy);
+                      if (beast.is_alive) {
+                        triggerGlow();
+                        showAnimation(happy);
+                      }
                     }}
                     disabled={!beast.is_alive}
                     className="flex items-center button"
@@ -200,6 +225,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                       if (account) {
                         await client.actions.revive(account as Account);
                       }
+                      triggerGlow();
                       setCurrentImage(happy);
                     }}
                     disabled={beast.is_alive}
@@ -215,7 +241,6 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
         }</>
       </div>
     </>
-
   );
 }
 
