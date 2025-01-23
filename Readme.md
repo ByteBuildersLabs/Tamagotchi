@@ -12,22 +12,7 @@ Welcome to the ByteBeast Tamagotchi Game! 🎮 This interactive web-based game b
 - **Evolution** 🦋: Raise your BabyBeast to maturity and discover its unique traits and abilities.
 - **Mini-Games** 🎯: Engage in fun mini-games to boost your BabyBeast’s happiness and energy levels.
 
-## 💻 Installation
-To get started, clone this repository:
-```bash
-$ git clone https://github.com/ByteBuildersLabs/BabyBeasts.git
-$ npm install
-```
-
-## 🚀 Running the Game
-To launch the game locally, use the following command:
-```bash
-$ npm start
-```
-This will run the application on `http://localhost:3000` 🌐.
-
 ## 🎮 How to Play
-### 🐾 Getting Started
 **Spawn Your Beast** 🐣:
 When you start the game, you need to spawn your beast. This initializes your pet with default stats.
 Command: `spawn()`
@@ -62,9 +47,7 @@ Remember to regularly check and manage your beast's stats to keep it happy and h
 
 ## 📷 Proof of Example:
 
-https://github.com/user-attachments/assets/d6da9276-fb22-4b96-a367-f6299f9a28e2
 
-https://github.com/user-attachments/assets/6181d159-76c5-4e5a-9f5d-82f03417d47b
 
 Raise your BabyBeast, unlock its potential, and dive into the magical world of Etheria! 🌌
 
@@ -73,4 +56,3 @@ Raise your BabyBeast, unlock its potential, and dive into the magical world of E
 - Mintelo once it is at level 5 (compatibility for our next games)
 - 5 different Beasts with all their animations.
 - Professor Oak: Who has the lore of the game and all the knowledge of the beasts
-
