@@ -47,6 +47,20 @@ Remember to regularly check and manage your beast's stats to keep it happy and h
 
 ## 📷 Proof of Example:
 
+<div align="center">
+  <img src="client/src/assets/img/page1.png" style="max-width: 80%; height: auto;" alt="Example Page 1" />
+  <br />
+  <p><strong>Home</strong></p>
+  
+  <img src="client/src/assets/img/page2.png" style="max-width: 80%; height: auto;" alt="Example Page 2" />
+  <br />
+  <p><strong>Choose your BabyBeast 2</strong></p>
+  
+  <img src="client/src/assets/img/page3.png" style="max-width: 80%; height: auto;" alt="Example Page 3" />
+  <br />
+  <p><strong>Tamagotchi</strong></p>
+</div>
+
 
 
 Raise your BabyBeast, unlock its potential, and dive into the magical world of Etheria! 🌌
@@ -56,3 +70,40 @@ Raise your BabyBeast, unlock its potential, and dive into the magical world of E
 - Mintelo once it is at level 5 (compatibility for our next games)
 - 5 different Beasts with all their animations.
 - Professor Oak: Who has the lore of the game and all the knowledge of the beasts
+
+## Maintainers
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="client/src/assets/img/rol.jpg" width="100px;" alt="Maintainer: Rolando"/>
+      <br />
+      <a href="https://t.me/roloxworld">Rolando</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/Luis.png" width="100px;" alt="Maintainer: Luis"/>
+      <br />
+      <a href="https://t.me/devjimenezz22">Luis</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/marco.jpeg" width="100px;" alt="Maintainer: Marco"/>
+      <br />
+      <a href="https://t.me/coxmar23">Marco</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/juan.jpeg" width="100px;" alt="Maintainer: Juan"/>
+      <br />
+      <a href="https://t.me/juandixcode">Juan</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/daniel.jpeg" width="100px;" alt="Maintainer: Daniel"/>
+      <br />
+      <a href="https://t.me/danielcdz">Daniel</a>
+      <br />
+    </td>
+  </tr>
+</table>
