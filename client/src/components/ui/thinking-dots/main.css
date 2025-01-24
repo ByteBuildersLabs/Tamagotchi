@@ -1,0 +1,31 @@
+.thinking-dots {
+  display: flex;
+  gap: 4px;
+  padding: 12px;
+}
+
+.thinking-dots span {
+  width: 8px;
+  height: 8px;
+  background-color: #e4a101;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out;
+  opacity: 1;
+}
+
+.thinking-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.thinking-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  }
+  40% { 
+    transform: scale(1.0);
+  }
+}
