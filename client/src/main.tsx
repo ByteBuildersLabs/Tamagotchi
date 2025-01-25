@@ -59,7 +59,7 @@ async function main() {
             <Header sdk={sdk} />
               <Routes>
                 <Route path='/' element={<Cover />}/>
-                <Route path='/play' element={<Tamagotchi sdk={sdk} />} />
+                <Route path='/play/:beastId' element={<Tamagotchi sdk={sdk} />} />
               </Routes>
             </Router>
           </StarknetConfig>

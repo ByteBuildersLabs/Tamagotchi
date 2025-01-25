@@ -13,11 +13,16 @@ import initials from "../../data/initials.tsx";
 import Hints from "../Hints/index.tsx";
 import dead from '../../assets/img/dead.gif';
 import './main.css';
+import { useParams } from "react-router-dom";
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
-  const beast = useBeast(sdk);
+  const { beasts } = useBeast(sdk);
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
+
+  const { beastId }:any = useParams();
+
+  const beast = beasts.find((beast: any) => beast.beast_id === beastId);
 
   const {
     setup: { client },

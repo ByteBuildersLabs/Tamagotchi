@@ -7,9 +7,7 @@ import initials from "../../data/initials.tsx";
 import './main.css';
 
 function Bag({ sdk }: { sdk: SDK<Schema> }) {
-  // Trigger
-
-  const beast = useBeast(sdk);
+  const { beasts } = useBeast(sdk);
 
   return (
     <>
@@ -20,41 +18,43 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
           </p>
           <div>
             {
-              beast &&
-              <Link to={`/play`} className="beast" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>
-                <div className="beast-pic d-flex align-items-end">
-                  <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
-                  <h4 className="d-flex">
-                    <span>{beast.level}</span> Lvl
-                  </h4>
-                </div>
-                <div className="data">
-                  <div className="item">
-                    <div>
-                      <Swords />
-                      <span>{Math.round(beast.attack)}</span>
+              beasts &&
+              beasts.map((beast: any) => (               
+                <Link to={`/play/${beast.beast_id}`} id={beast.beast_id} className="beast" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>
+                  <div className="beast-pic d-flex align-items-end">
+                    <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
+                    <h4 className="d-flex">
+                      <span>{beast.level}</span> Lvl
+                    </h4>
+                  </div>
+                  <div className="data">
+                    <div className="item">
+                      <div>
+                        <Swords />
+                        <span>{Math.round(beast.attack)}</span>
+                      </div>
+                    </div>
+                    <div className="item">
+                      <div>
+                        <ShieldPlus />
+                        <span>{Math.round(beast.defense)}</span>
+                      </div>
+                    </div>
+                    <div className="item">
+                      <div>
+                        <CircleGauge />
+                        <span>{Math.round(beast.speed)}</span>
+                      </div>
+                    </div>
+                    <div className="item">
+                      <div>
+                        <TestTubeDiagonal />
+                        <span>{(beast.experience)}</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="item">
-                    <div>
-                      <ShieldPlus />
-                      <span>{Math.round(beast.defense)}</span>
-                    </div>
-                  </div>
-                  <div className="item">
-                    <div>
-                      <CircleGauge />
-                      <span>{Math.round(beast.speed)}</span>
-                    </div>
-                  </div>
-                  <div className="item">
-                    <div>
-                      <TestTubeDiagonal />
-                      <span>{(beast.experience)}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              ))
             }
           </div>
         </div>

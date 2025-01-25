@@ -3,6 +3,7 @@ import type { SchemaType } from "@dojoengine/sdk";
 // Type definition for `babybeasts::models::Beast` struct
 export interface Beast {
 	fieldOrder: string[];
+	beast_id: number;
 	player: string;
 	specie: number;
 	is_alive: boolean;
@@ -46,26 +47,37 @@ export interface BeastValue {
 	next_level_experience: number;
 }
 
+export interface BeastId {
+	fieldOrder: string[];
+	id: number;
+	beast_id: number;
+}
+
+export interface BeastIdValue {
+	fieldOrder: string[];
+	beast_id: number;
+}
+
 export interface Schema extends SchemaType {
 	babybeasts: {
 		Beast: Beast,
 		BeastValue: BeastValue,
-		ERC__Balance: ERC__Balance,
-		ERC__Token: ERC__Token,
-		ERC__Transfer: ERC__Transfer,
+		BeastId: BeastId,
+		BeastIdValue: BeastIdValue,
 	},
 }
 
 export enum Models {
-    Beast = "babybeasts-Beast",
+	Beast = "babybeasts-Beast",
 }
 
 export const schema: Schema = {
 	babybeasts: {
 		Beast: {
-			fieldOrder: ['player', 'is_alive', 'is_awake', 'hunger', 'max_hunger', 'energy', 'max_energy', 'happiness', 'max_happiness', 'hygiene', 'max_hygiene', 'attack', 'defense', 'speed', 'level', 'experience', 'next_level_experience'],
+			fieldOrder: ['beast_id', 'player', 'specie', 'is_alive', 'is_awake', 'hunger', 'max_hunger', 'energy', 'max_energy', 'happiness', 'max_happiness', 'hygiene', 'max_hygiene', 'attack', 'defense', 'speed', 'level', 'experience', 'next_level_experience'],
+			beast_id: 0,
 			player: "",
-			specie: 1,
+			specie: 0,
 			is_alive: false,
 			is_awake: false,
 			hunger: 0,
@@ -84,9 +96,9 @@ export const schema: Schema = {
 			next_level_experience: 0,
 		},
 		BeastValue: {
-			fieldOrder: ['is_alive', 'is_awake', 'hunger', 'max_hunger', 'energy', 'max_energy', 'happiness', 'max_happiness', 'hygiene', 'max_hygiene', 'attack', 'defense', 'speed', 'level', 'experience', 'next_level_experience'],
+			fieldOrder: ['player', 'specie', 'is_alive', 'is_awake', 'hunger', 'max_hunger', 'energy', 'max_energy', 'happiness', 'max_happiness', 'hygiene', 'max_hygiene', 'attack', 'defense', 'speed', 'level', 'experience', 'next_level_experience'],
 			player: "",
-			specie: 1,
+			specie: 0,
 			is_alive: false,
 			is_awake: false,
 			hunger: 0,
@@ -104,70 +116,40 @@ export const schema: Schema = {
 			experience: 0,
 			next_level_experience: 0,
 		},
-		ERC__Balance: {
-			fieldOrder: ['balance', 'type', 'tokenmetadata'],
-			balance: '',
-			type: 'ERC20',
-			tokenMetadata: {
-				fieldOrder: ['name', 'symbol', 'tokenId', 'decimals', 'contractAddress'],
-				name: '',
-				symbol: '',
-				tokenId: '',
-				decimals: '',
-				contractAddress: '',
-			},
+		BeastId: {
+			fieldOrder: ['id', 'beast_id'],
+			id: 0,
+			beast_id: 0,
 		},
-		ERC__Token: {
-			fieldOrder: ['name', 'symbol', 'tokenId', 'decimals', 'contractAddress'],
-			name: '',
-			symbol: '',
-			tokenId: '',
-			decimals: '',
-			contractAddress: '',
+		BeastIdValue: {
+			fieldOrder: ['beast_id'],
+			beast_id: 0,
 		},
-		ERC__Transfer: {
-			fieldOrder: ['from', 'to', 'amount', 'type', 'executed', 'tokenMetadata'],
-			from: '',
-			to: '',
-			amount: '',
-			type: 'ERC20',
-			executedAt: '',
-			tokenMetadata: {
-				fieldOrder: ['name', 'symbol', 'tokenId', 'decimals', 'contractAddress'],
-				name: '',
-				symbol: '',
-				tokenId: '',
-				decimals: '',
-				contractAddress: '',
-			},
-			transactionHash: '',
-		},
-
 	},
 };
 // Type definition for ERC__Balance struct
 export type ERC__Type = 'ERC20' | 'ERC721';
 export interface ERC__Balance {
-    fieldOrder: string[];
-    balance: string;
-    type: string;
-    tokenMetadata: ERC__Token;
+	fieldOrder: string[];
+	balance: string;
+	type: string;
+	tokenMetadata: ERC__Token;
 }
 export interface ERC__Token {
-    fieldOrder: string[];
-    name: string;
-    symbol: string;
-    tokenId: string;
-    decimals: string;
-    contractAddress: string;
+	fieldOrder: string[];
+	name: string;
+	symbol: string;
+	tokenId: string;
+	decimals: string;
+	contractAddress: string;
 }
 export interface ERC__Transfer {
-    fieldOrder: string[];
-    from: string;
-    to: string;
-    amount: string;
-    type: string;
-    executedAt: string;
-    tokenMetadata: ERC__Token;
-    transactionHash: string;
+	fieldOrder: string[];
+	from: string;
+	to: string;
+	amount: string;
+	type: string;
+	executedAt: string;
+	tokenMetadata: ERC__Token;
+	transactionHash: string;
 }

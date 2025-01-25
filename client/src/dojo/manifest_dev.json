@@ -1252,8 +1252,8 @@
   },
   "contracts": [
     {
-      "address": "0x64a20c916bae2736e2d12f323b2e002e48497554642aa388cbd08a8686e5b99",
-      "class_hash": "0x3b4cf8dadaad3d4c0c58524ce44265a50e9fcf8b7901e78d33e8694b353a69d",
+      "address": "0x24de86673b3ac8c1637850dd1fb85b96c4085fbbb1b39ba90eddbf264e0f074",
+      "class_hash": "0x601e8c3cb084cb6ad05fded96d33ce03d042c823f71f9ef0501924ea968bd05",
       "abi": [
         {
           "type": "impl",
@@ -1511,9 +1511,15 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x65f17584324ef98cec11e85e0f4d5031218cd49b0f3055881947e5206657d43",
+      "class_hash": "0x7b419d38c2121cf6fb2b772b4eb5754467c541057f72d0e286110d5d36f8dba",
       "tag": "babybeasts-Beast",
       "selector": "0x732389d6015adc6fe9f89178baa6ca00bedabbf5112ada86e346b35dc00f52d"
+    },
+    {
+      "members": [],
+      "class_hash": "0xed416bde6f2dfd01513089e64fa6693eb7f76fb4c84de6461cdd3327e25988",
+      "tag": "babybeasts-BeastId",
+      "selector": "0x107b9996c02aef6ab343408dc272e179f78c37d60ded77835e9e2c82411e62c"
     }
   ],
   "events": []
