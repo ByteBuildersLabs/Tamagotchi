@@ -5,7 +5,7 @@ import music from "../../assets/img/music.png";
 import './main.css';
 
 function Music() {
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [play, { stop, sound }] = useSound(backgroundMusic, {
     loop: true,
     volume: isMuted ? 0 : 0.3,

@@ -13,7 +13,8 @@ import Cover from "./components/Cover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
 import Header from "./components/Header/index.tsx";
 import "./index.css";
-
+import { useState } from "react";
+import MiniGamesModal from "./components/MiniGamesModal/index.tsx";
 function provider() {
   return new RpcProvider({
     nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
@@ -60,6 +61,7 @@ async function main() {
               <Routes>
                 <Route path='/' element={<Cover />}/>
                 <Route path='/play' element={<Tamagotchi sdk={sdk} />} />
+                <Route path='/mini-games' element={<MiniGamesModal />} />
               </Routes>
             </Router>
           </StarknetConfig>
