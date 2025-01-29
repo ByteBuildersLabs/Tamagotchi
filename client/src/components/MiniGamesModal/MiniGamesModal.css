@@ -38,7 +38,6 @@
     }
 }
 
-/* Agregar animación de brillo */
 @keyframes borderGlow {
     0% {
         box-shadow: 0 0 10px #FFB703,

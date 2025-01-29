@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import dragon from '/src/assets/img/logo.jpeg';
 import './MiniGamesModal.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
-// import required modules
 import { Navigation } from 'swiper/modules';
 
 export interface Game {
@@ -74,22 +72,18 @@ const MiniGamesModal: React.FC = () => {
         navigation: true,
         grabCursor: true,
         breakpoints: {
-            // cuando el ancho de la ventana es >= 320px
             320: {
                 slidesPerView: 1,
                 spaceBetween: 20
             },
-            // cuando el ancho de la ventana es >= 480px
             480: {
                 slidesPerView: 2,
                 spaceBetween: 20
             },
-            // cuando el ancho de la ventana es >= 768px
             768: {
                 slidesPerView: 3,
                 spaceBetween: 25
             },
-            // cuando el ancho de la ventana es >= 1024px
             1024: {
                 slidesPerView: 4,
                 spaceBetween: 30
