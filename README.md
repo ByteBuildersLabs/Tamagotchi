@@ -1,6 +1,7 @@
 
 # BabyBeast Tamagotchi Game
-![babybeastlogo](https://github.com/user-attachments/assets/42d05877-1650-4e14-a6c7-c36a35219d82)
+![HORIZONTAL 1](https://github.com/user-attachments/assets/23cf4504-95b4-492a-ab0d-1e98ffd79154)
+
 
 
 ## 🌟 Overview
