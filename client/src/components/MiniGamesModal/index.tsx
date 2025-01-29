@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dragon from '/src/assets/img/logo.jpeg';
 import './MiniGamesModal.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+// import required modules
+import { Navigation } from 'swiper/modules';
 
 export interface Game {
     id: string;
@@ -17,7 +23,7 @@ export const games: Game[] = [
         title: 'Memory Challenge',
         image: '/src/assets/img/scenario-light.jpeg',
         isActive: true,
-        route: '/games/dragon-eggs'
+        route: '/'
     },
     {
         id: 'dark-forest',
@@ -39,18 +45,56 @@ export const games: Game[] = [
         image: '/path/to/magic-portal-image.jpg',
         isActive: false,
         route: '/games/magic-portal'
+    },
+    {
+         id: 'magic-portal2',
+        title: 'Magic Portal',
+        image: '/path/to/magic-portal-image.jpg',
+        isActive: false,
+       route: '/games/magic-portal'
     }
 ];
 
 const MiniGamesModal: React.FC = () => {
     const navigate = useNavigate();
-    const [isClosing, setIsClosing] = useState(false);
+    const isSliderMode = games.length > 4;
 
-    const handleClose = () => {
-        setTimeout(() => {
-            navigate('/');
-            setIsClosing(true);
-        }, 300);
+    const onClose = () => {
+        navigate('/');
+    };
+
+    const onGameClick = (route: string) => {
+        navigate(route);
+    };
+
+    const swiperConfig = {
+        modules: [Navigation],
+        spaceBetween: 30,
+        slidesPerView: 4,
+        navigation: true,
+        grabCursor: true,
+        breakpoints: {
+            // cuando el ancho de la ventana es >= 320px
+            320: {
+                slidesPerView: 1,
+                spaceBetween: 20
+            },
+            // cuando el ancho de la ventana es >= 480px
+            480: {
+                slidesPerView: 2,
+                spaceBetween: 20
+            },
+            // cuando el ancho de la ventana es >= 768px
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 25
+            },
+            // cuando el ancho de la ventana es >= 1024px
+            1024: {
+                slidesPerView: 4,
+                spaceBetween: 30
+            }
+        }
     };
 
     useEffect(() => {
@@ -61,28 +105,33 @@ const MiniGamesModal: React.FC = () => {
     }, []);
 
     return (
-        <div className={`modal-overlay ${isClosing ? 'closing' : ''}`}>
-            <div className={`modal-container ${isClosing ? 'closing' : ''}`}>
+        <div className="modal-overlay">
+            <div className="modal-container">
                 <div className="modal-header">
                     <h2 className="modal-title">Choose Your Adventure</h2>
-                    <button onClick={handleClose} className="modal-close-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6">
+                    <button onClick={onClose} className="modal-close-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
 
-                <div className="games-grid">
-                   {
-                    games.map((game) => (
-                        <GameCard
-                            title={game.title}
-                            image={game.image}
-                            isActive={game.isActive}
-                            onClick={() => navigate(game.route)}
-                        />
-                    ))
-                   }
+                <div className="games-container">
+                    {isSliderMode ? (
+                        <Swiper {...swiperConfig} className="games-slider">
+                            {games.map((game) => (
+                                <SwiperSlide key={game.id}>
+                                    <GameCard {...game} onClick={() => onGameClick(game.route)} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    ) : (
+                        <div className="games-grid">
+                            {games.map((game) => (
+                                <GameCard key={game.id} {...game} onClick={() => onGameClick(game.route)} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
