@@ -31,6 +31,21 @@ a:visited {
   color: #fff;
 }
 
+.input {
+  height: 60px;
+  text-align: center;
+  background-color: #370001;
+  border: 2px solid #e4a101;
+  border-radius: 10px;
+  color: #fff;
+  width: 100%;
+  font-size: 20px;
+}
+
+.input::placeholder {
+  color: #fff;
+}
+
 .button {
   background-color: #370001;
   border: 2px solid #e4a101;
