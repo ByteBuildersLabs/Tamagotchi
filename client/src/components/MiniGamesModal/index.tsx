@@ -53,16 +53,21 @@ export const games: Game[] = [
     }
 ];
 
-const MiniGamesModal: React.FC = () => {
+interface MiniGamesModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onAction: () => void;
+}
+
+const MiniGamesModal: React.FC<MiniGamesModalProps> = ({ isOpen, onClose, onAction }) => {
+
     const navigate = useNavigate();
     const isSliderMode = games.length > 4;
 
-    const onClose = () => {
-        navigate('/');
-    };
-
     const onGameClick = (route: string) => {
-        navigate(route);
+        onClose();
+        onAction();
+        !isOpen && navigate(route); //modify when we have the routes and the games
     };
 
     const swiperConfig = {
@@ -99,10 +104,11 @@ const MiniGamesModal: React.FC = () => {
     }, []);
 
     return (
+        isOpen && (
         <div className="modal-overlay">
             <div className="modal-container">
                 <div className="modal-header">
-                    <h2 className="modal-title">Choose Your Adventure</h2>
+                    <h2 className="modal-title">Choose a Minigame</h2>
                     <button onClick={onClose} className="modal-close-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -129,6 +135,7 @@ const MiniGamesModal: React.FC = () => {
                 </div>
             </div>
         </div>
+        )
     );
 };
 
