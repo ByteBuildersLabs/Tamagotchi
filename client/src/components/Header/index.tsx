@@ -28,7 +28,7 @@ function Header({ sdk }: { sdk: SDK<Schema> }) {
         <div className="collapse navbar-collapse menu" id="menu">
           <Bag sdk={sdk} />
           { account && <Link className="connect-btn" to="/" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>Spawn new Beast</Link> }
-          <ControllerConnectButton />
+          { account && <ControllerConnectButton /> }
         </div>
       </nav>
     </>
