@@ -1,0 +1,56 @@
+body {
+  color: #fff;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 20px 0
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+}
+
+.card {
+  height: 100px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-image: url('src/assets/img/logo.jpeg');
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: 2c0001;
+  color: #e4a101;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.restart-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #e4a101;
+  color: #2c0001;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.restart-button:hover {
+  background-color: #2c0001;
+  color: #e4a101;
+}
