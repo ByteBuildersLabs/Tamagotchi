@@ -79,15 +79,13 @@
 
 .slides {
   display: flex;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease-in-out;
 }
 
 .slide {
   min-width: 100%;
   flex-shrink: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  padding: 0 1rem;
 }
 
 .slide.active {

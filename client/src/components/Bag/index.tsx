@@ -2,20 +2,52 @@ import { useState } from 'react';
 import { SDK } from "@dojoengine/sdk";
 import { Link } from 'react-router-dom';
 import { Schema } from "../../dojo/bindings.ts";
-import { useBeast } from "../../hooks/useBeasts.tsx";
 import { Swords, ShieldPlus, TestTubeDiagonal, CircleGauge } from 'lucide-react';
 import initials from "../../data/initials.tsx";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import './main.css';
 
-function Bag({ sdk }: { sdk: SDK<Schema> }) {
-  const beast = useBeast(sdk);
-  const [currentSlide, setCurrentSlide] = useState(0);
+// Datos quemados de ejemplo
+const MOCK_BEASTS = [
+  {
+    id: 1,
+    specie: 1,
+    level: 5,
+    attack: 12.4,
+    defense: 8.7,
+    speed: 15.2,
+    experience: 234,
+  },
+  {
+    id: 2,
+    specie: 2,
+    level: 3,
+    attack: 9.8,
+    defense: 11.3,
+    speed: 12.6,
+    experience: 150,
+  },
+  {
+    id: 3,
+    specie: 3,
+    level: 7,
+    attack: 18.1,
+    defense: 14.9,
+    speed: 19.4,
+    experience: 450,
+  },
+];
 
-  const slides = [
-    {
-      type: 'beast',
-      content: beast && (
+function Bag({ sdk }: { sdk: SDK<Schema> }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Simulamos 3 bestias + el slide de spawn
+  const totalSlides = MOCK_BEASTS.length + 1;
+
+  const getSlideContent = (index: number) => {
+    if (index < MOCK_BEASTS.length) {
+      const beast = MOCK_BEASTS[index];
+      return (
         <Link to={`/play`} className="beast" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>
           <div className="beast-pic d-flex align-items-end">
             <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
@@ -45,24 +77,23 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
             <div className="item">
               <div>
                 <TestTubeDiagonal />
-                <span>{(beast.experience)}</span>
+                <span>{beast.experience}</span>
               </div>
             </div>
           </div>
         </Link>
-      )
-    },
-    {
-      type: 'spawn',
-      content: (
-        <div className="spawn-slide">
-          <h2>Sheep Lemus</h2>
-          <p>The sheep is a social animal that thrives in flocks.</p>
-          <ControllerConnectButton />
-        </div>
-      )
+      );
     }
-  ];
+    
+    // Último slide (spawn)
+    return (
+      <div className="spawn-slide">
+        <h2>Sheep Lemus</h2>
+        <p>The sheep is a social animal that thrives in flocks.</p>
+        <ControllerConnectButton />
+      </div>
+    );
+  };
 
   return (
     <div className="bag">
@@ -72,13 +103,13 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
         </p>
         
         <div className="carousel">
-          <div className="slides">
-            {slides.map((slide, index) => (
+          <div className="slides" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            {[...Array(totalSlides)].map((_, index) => (
               <div 
                 key={index}
-                className={`slide ${currentSlide === index ? 'active' : ''}`}
+                className="slide"
               >
-                {slide.content}
+                {getSlideContent(index)}
               </div>
             ))}
           </div>
@@ -93,7 +124,7 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
             </button>
             
             <div className="indicators">
-              {slides.map((_, index) => (
+              {[...Array(totalSlides)].map((_, index) => (
                 <div
                   key={index}
                   className={`indicator ${currentSlide === index ? 'active' : ''}`}
@@ -104,8 +135,8 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
             
             <button
               className="control next"
-              onClick={() => setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1))}
-              disabled={currentSlide === slides.length - 1}
+              onClick={() => setCurrentSlide(prev => Math.min(prev + 1, totalSlides - 1))}
+              disabled={currentSlide === totalSlides - 1}
             >
               ›
             </button>
