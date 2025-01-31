@@ -1,11 +1,10 @@
 import { SDK } from "@dojoengine/sdk";
-import { Link } from 'react-router-dom';
 import { Schema } from "../../dojo/bindings.ts";
 import { useBeast } from "../../hooks/useBeasts.tsx";
 import { Swords, ShieldPlus, TestTubeDiagonal, CircleGauge } from 'lucide-react';
 import initials from "../../data/initials.tsx";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
-import Carousel from './Carousel'; // Asegúrate de tener este componente
+import Carousel from '../../components/Carousel/Carousel.tsx';
 import './main.css';
 
 interface BeastData {
@@ -22,7 +21,7 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
   const beastsData: BeastData[] = [
     {
       title: 'Baby Beast',
-      image: initials[currentBeast?.specie - 1]?.idlePicture || '',
+      image: initials[(currentBeast?.specie ?? 1) - 1]?.idlePicture || '',
       description: 'The sheep is a social animal that thrives in flocks.',
       beast: currentBeast
     },
