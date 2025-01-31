@@ -1,0 +1,92 @@
+.beast-carousel {
+    position: relative;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 20px;
+  }
+  
+  .carousel-inner {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .carousel-item {
+    min-width: 100%;
+    transition: transform 0.5s ease-in-out;
+    display: none;
+  }
+  
+  .carousel-item.active {
+    display: block;
+  }
+  
+  .beast-content {
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+  }
+  
+  .beast-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+  
+  .beast-image-container {
+    max-width: 400px;
+    margin: 0 auto 2rem;
+  }
+  
+  .beast-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(137, 26, 40, 0.5);
+  }
+  
+  .beast-description {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+  
+  .spawn-button {
+    background: #891A28;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .spawn-button:hover {
+    background: #6a1320;
+    transform: scale(1.05);
+  }
+  
+  .carousel-dots {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #666;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .dot.active {
+    background: #891A28;
+  }

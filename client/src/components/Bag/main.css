@@ -70,3 +70,82 @@
   border-radius: 10px;
   height: fit-content;
 }
+
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.control {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.control:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.indicators {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.spawn-slide {
+  text-align: center;
+  padding: 2rem;
+}
+
+.spawn-slide h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.spawn-slide p {
+  color: #888;
+  margin-bottom: 2rem;
+}
