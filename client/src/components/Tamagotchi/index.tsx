@@ -12,7 +12,6 @@ import { toast } from "react-hot-toast";
 import initials from "../../data/initials.tsx";
 import Hints from "../Hints/index.tsx";
 import dead from '../../assets/img/dead.gif';
-import './main.css';
 import useSound from 'use-sound';
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
@@ -20,6 +19,7 @@ import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import MiniGamesModal from "../MiniGamesModal/index.tsx";
+import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const beast = useBeast(sdk);
