@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h2 {
   font-size: 30px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 a,
@@ -139,12 +139,12 @@ p, span {
   font-size: 18px;
   margin: 0;
   padding-right: 5px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 .title span {
   font-size: 18px;
-  color: #e4a101;
+  color: #ECECDA;
 }
 
 .connect-btn,
