@@ -4,10 +4,10 @@ import { Schema } from "../../dojo/bindings.ts";
 import { useBeast } from "../../hooks/useBeasts.tsx";
 import { Swords, ShieldPlus, TestTubeDiagonal, CircleGauge, } from 'lucide-react';
 import initials from "../../data/initials.tsx";
+import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import './main.css';
 
 function Bag({ sdk }: { sdk: SDK<Schema> }) {
-  // Trigger
 
   const beast = useBeast(sdk);
 
@@ -57,6 +57,7 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
               </Link>
             }
           </div>
+          <ControllerConnectButton />
         </div>
       </div>
     </>

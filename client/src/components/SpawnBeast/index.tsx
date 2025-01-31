@@ -3,6 +3,7 @@ import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import initials, { Initial } from "../../data/initials";
 import './main.css';
 import Hints from "../Hints/index.tsx";
+import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 
 function SpawnBeast() {
   const { spawn } = useSystemCalls();
@@ -37,6 +38,7 @@ function SpawnBeast() {
           </div>
         )
       })}
+      <ControllerConnectButton />
       <Hints />
     </div>
   );

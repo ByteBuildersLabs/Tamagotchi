@@ -1,5 +1,11 @@
-/* globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face {
+  font-family: 'Kallisto';
+  src: url('./assets/fonts/Kallisto-Medium.otf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .body {
   margin: 0;
@@ -13,10 +19,13 @@
   background-position: center;
   background-size: cover;
   position: relative;
-  font-family: 'Marcellus SC', serif;
   display: flex;
   align-items: center;
   transition: all 0.25s;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Kallisto';
 }
 
 h2 {
@@ -29,6 +38,11 @@ a:active,
 a:visited {
   text-decoration: none;
   color: #fff;
+  font-family: "Montserrat", serif;
+}
+
+p, span {
+  font-family: "Montserrat", serif;
 }
 
 .input {
@@ -39,11 +53,13 @@ a:visited {
   border-radius: 10px;
   color: #fff;
   width: 100%;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: 'Kallisto';
 }
 
 .input::placeholder {
   color: #fff;
+  font-family: 'Kallisto';
 }
 
 .button {
@@ -58,6 +74,7 @@ a:visited {
   height: 60px;
   font-size: 18px;
   border-radius: 10px;
+  font-family: 'Kallisto';
 }
 
 .button:hover {
@@ -118,7 +135,6 @@ a:visited {
 
 .title {
   text-align: left;
-  font-family: "Marcellus SC", serif;
   font-weight: 800;
   font-size: 18px;
   margin: 0;
@@ -135,7 +151,7 @@ a:visited {
 .connect-btn:active,
 .connect-btn:visited,
 .connect-btn:focus {
-  font-family: "Marcellus SC", serif;
+  font-family: 'Kallisto';
   padding: 5px 10px;
   color: var(--white);
   transition: all 0.25s;

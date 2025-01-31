@@ -20,10 +20,7 @@ const ControllerConnectButton = () => {
         ) : (
           <button
             key={connector.id}
-            onClick={() => {
-              connect({ connector });
-              (document.querySelector('.navbar-toggler') as HTMLElement)?.click();
-            }}
+            onClick={() => { connect({ connector }) }}
             className="connect-btn"
           >
             Connect
