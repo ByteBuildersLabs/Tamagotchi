@@ -13,7 +13,7 @@
   width: 100vw;
   height: 100dvh;
   background-color: #000;
-  background-image: url('./assets/img/background.png');
+  background-image: linear-gradient(rgba(137, 26, 40, 0.5), rgba(137, 26, 40, 0.5)), url('./assets/img/background.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
