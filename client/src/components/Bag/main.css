@@ -1,9 +1,12 @@
 .bag {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-content: space-between;
-  width: 100%;
+  flex-direction: column;
+  height: 80%;
+  overflow: hidden;
+  width: calc(100% - 30px);
+  background-color: transparent;
+  position: absolute;
+  bottom: 20px;
 }
 
 .bag .eggs {

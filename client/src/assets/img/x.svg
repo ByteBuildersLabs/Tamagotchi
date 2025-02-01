@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="61" height="61" viewBox="0 0 61 61">
+  <defs>
+    <filter id="Elipse_522" x="0" y="0" width="61" height="61" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Grupo_740" data-name="Grupo 740" transform="translate(-4.016 -679.016)">
+    <g transform="matrix(1, 0, 0, 1, 4.02, 679.02)" filter="url(#Elipse_522)">
+      <circle id="Elipse_522-2" data-name="Elipse 522" cx="15.5" cy="15.5" r="15.5" transform="translate(15 15)" fill="#fff"/>
+    </g>
+    <path id="Unión_5" data-name="Unión 5" d="M10.106,11.648,5.983,7.524,1.86,11.648A1.09,1.09,0,0,1,.319,10.106L4.442,5.983.319,1.86A1.089,1.089,0,1,1,1.86.32L5.983,4.443,10.106.32A1.09,1.09,0,0,1,11.647,1.86L7.524,5.983l4.123,4.123a1.09,1.09,0,0,1-1.541,1.541Z" transform="translate(28.525 703.525)" fill="#1c1c1c"/>
+  </g>
+</svg>

@@ -1,6 +1,7 @@
 
 # BabyBeast Tamagotchi Game
-![babybeastlogo](https://github.com/user-attachments/assets/42d05877-1650-4e14-a6c7-c36a35219d82)
+![HORIZONTAL 1](https://github.com/user-attachments/assets/23cf4504-95b4-492a-ab0d-1e98ffd79154)
+
 
 
 ## 🌟 Overview
@@ -12,22 +13,7 @@ Welcome to the ByteBeast Tamagotchi Game! 🎮 This interactive web-based game b
 - **Evolution** 🦋: Raise your BabyBeast to maturity and discover its unique traits and abilities.
 - **Mini-Games** 🎯: Engage in fun mini-games to boost your BabyBeast’s happiness and energy levels.
 
-## 💻 Installation
-To get started, clone this repository:
-```bash
-$ git clone https://github.com/ByteBuildersLabs/BabyBeasts.git
-$ npm install
-```
-
-## 🚀 Running the Game
-To launch the game locally, use the following command:
-```bash
-$ npm start
-```
-This will run the application on `http://localhost:3000` 🌐.
-
 ## 🎮 How to Play
-### 🐾 Getting Started
 **Spawn Your Beast** 🐣:
 When you start the game, you need to spawn your beast. This initializes your pet with default stats.
 Command: `spawn()`
@@ -62,9 +48,21 @@ Remember to regularly check and manage your beast's stats to keep it happy and h
 
 ## 📷 Proof of Example:
 
-https://github.com/user-attachments/assets/d6da9276-fb22-4b96-a367-f6299f9a28e2
+<div align="center">
+  <img src="client/src/assets/img/page1.png" style="max-width: 80%; height: auto;" alt="Example Page 1" />
+  <br />
+  <p><strong>Home</strong></p>
+  
+  <img src="client/src/assets/img/page2.png" style="max-width: 80%; height: auto;" alt="Example Page 2" />
+  <br />
+  <p><strong>Choose your BabyBeast 2</strong></p>
+  
+  <img src="client/src/assets/img/page3.png" style="max-width: 80%; height: auto;" alt="Example Page 3" />
+  <br />
+  <p><strong>Tamagotchi</strong></p>
+</div>
 
-https://github.com/user-attachments/assets/6181d159-76c5-4e5a-9f5d-82f03417d47b
+
 
 Raise your BabyBeast, unlock its potential, and dive into the magical world of Etheria! 🌌
 
@@ -74,3 +72,39 @@ Raise your BabyBeast, unlock its potential, and dive into the magical world of E
 - 5 different Beasts with all their animations.
 - Professor Oak: Who has the lore of the game and all the knowledge of the beasts
 
+## Maintainers
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="client/src/assets/img/rol.jpg" width="100px;" alt="Maintainer: Rolando"/>
+      <br />
+      <a href="https://t.me/roloxworld">Rolando</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/Luis.png" width="100px;" alt="Maintainer: Luis"/>
+      <br />
+      <a href="https://t.me/devjimenezz22">Luis</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/marco.jpeg" width="100px;" alt="Maintainer: Marco"/>
+      <br />
+      <a href="https://t.me/coxmar23">Marco</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/juan.jpeg" width="100px;" alt="Maintainer: Juan"/>
+      <br />
+      <a href="https://t.me/juandixcode">Juan</a>
+      <br />
+    </td>
+    <td align="center">
+      <img src="client/src/assets/img/daniel.jpeg" width="100px;" alt="Maintainer: Daniel"/>
+      <br />
+      <a href="https://t.me/danielcdz">Daniel</a>
+      <br />
+    </td>
+  </tr>
+</table>

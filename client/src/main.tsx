@@ -12,6 +12,8 @@ import cartridgeConnector from "./config/cartridgeConnector.tsx";
 import Cover from "./components/Cover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
 import Header from "./components/Header/index.tsx";
+import Bag from "./components/Bag/index.tsx";
+import Chat from "./components/Chat/index.tsx";
 import "./index.css";
 
 function provider() {
@@ -46,7 +48,6 @@ async function main() {
     ReactDOM.render(
       <StrictMode>
         <DojoContextProvider
-        // burnerManager={await setupBurnerManager(dojoConfig)}
         >
           <StarknetConfig
             autoConnect
@@ -56,10 +57,12 @@ async function main() {
             provider={provider}
           >
             <Router>
-            <Header sdk={sdk} />
+            <Header />
               <Routes>
                 <Route path='/' element={<Cover />}/>
+                <Route path='/bag' element={<Bag sdk={sdk} />} />
                 <Route path='/play' element={<Tamagotchi sdk={sdk} />} />
+                <Route path='/chat' element={<Chat />} />
               </Routes>
             </Router>
           </StarknetConfig>

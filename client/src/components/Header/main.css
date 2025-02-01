@@ -11,9 +11,8 @@
 }
 
 .navbar h2 {
-  font-family: "Marcellus SC", serif;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 19px;
   margin: 0 0 0 10px;
 }
 
@@ -28,9 +27,17 @@
 }
 
 .navbar .logo img {
-  width: 60px;
+  width: 40px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.side-menu img {
+  margin-left: 15px;
+}
+
+.navbar-toggler {
+  padding: 0;
 }
 .navbar-toggler:focus,
 .navbar-toggler:active {
@@ -39,7 +46,7 @@
 }
 
 .navbar .sheep {
-  width: 65px;
+  width: 40px;
   object-fit: cover;
   border-radius: 50%;
   transform: scaleX(-1);
