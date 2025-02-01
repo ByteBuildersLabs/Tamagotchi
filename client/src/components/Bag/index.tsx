@@ -3,14 +3,15 @@ import { SDK } from "@dojoengine/sdk";
 import { Link } from 'react-router-dom';
 import { Schema } from "../../dojo/bindings.ts";
 import initials from "../../data/initials.tsx";
-import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import './main.css';
 
-// Datos quemados de ejemplo
+// Datos quemados actualizados con nombres y descripciones
 const MOCK_BEASTS = [
   {
     id: 1,
     specie: 1,
+    name: "Sheep Lemus",
+    description: "The sheep is a social animal that thrives in flocks.",
     level: 5,
     attack: 12.4,
     defense: 8.7,
@@ -20,6 +21,8 @@ const MOCK_BEASTS = [
   {
     id: 2,
     specie: 2,
+    name: "Fire Drake",
+    description: "A fiery companion with scales that glow in the dark.",
     level: 3,
     attack: 9.8,
     defense: 11.3,
@@ -29,6 +32,8 @@ const MOCK_BEASTS = [
   {
     id: 3,
     specie: 3,
+    name: "Ice Phoenix",
+    description: "Majestic frozen bird that commands winter winds.",
     level: 7,
     attack: 18.1,
     defense: 14.9,
@@ -39,28 +44,23 @@ const MOCK_BEASTS = [
 
 function Bag({ sdk }: { sdk: SDK<Schema> }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  
-  // Simulamos 3 bestias + el slide de spawn
-  const totalSlides = MOCK_BEASTS.length + 1;
+  const totalSlides = MOCK_BEASTS.length;
 
   const getSlideContent = (index: number) => {
-    if (index < MOCK_BEASTS.length) {
-      const beast = MOCK_BEASTS[index];
-      return (
+    const beast = MOCK_BEASTS[index];
+    
+    return (
+      <div className="beast-slide">
         <Link to={`/play`} className="beast" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>
+          <div className="beast-header">
+            <h2>{beast.name}</h2>
+            <p className="beast-description">{beast.description}</p>
+          </div>
+          
           <div className="beast-pic d-flex align-items-end">
             <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
           </div>
         </Link>
-      );
-    }
-    
-    // Último slide (spawn)
-    return (
-      <div className="spawn-slide">
-        <h2>Sheep Lemus</h2>
-        <p>The sheep is a social animal that thrives in flocks.</p>
-        <ControllerConnectButton />
       </div>
     );
   };
@@ -68,13 +68,10 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
   return (
     <div className="bag">
       <div className="eggs">
-        <p className="title mb-4">
-          Here will appear your <span>BabyBeasts</span>
-        </p>
         
         <div className="carousel">
           <div className="slides" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-            {[...Array(totalSlides)].map((_, index) => (
+            {MOCK_BEASTS.map((_, index) => (
               <div 
                 key={index}
                 className="slide"
@@ -94,7 +91,7 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
             </button>
             
             <div className="indicators">
-              {[...Array(totalSlides)].map((_, index) => (
+              {MOCK_BEASTS.map((_, index) => (
                 <div
                   key={index}
                   className={`indicator ${currentSlide === index ? 'active' : ''}`}
