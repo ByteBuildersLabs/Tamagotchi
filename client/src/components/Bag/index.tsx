@@ -46,21 +46,34 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = MOCK_BEASTS.length;
 
+  const handleSpawn = (beastId: number) => {
+    console.log(`Spawning beast with ID: ${beastId}`);
+    //Add logic to manage spawn
+  };
+
   const getSlideContent = (index: number) => {
     const beast = MOCK_BEASTS[index];
     
     return (
       <div className="beast-slide">
-        <Link to={`/play`} className="beast" onClick={() => (document.querySelector('.navbar-toggler') as HTMLElement)?.click()}>
+        <div className="beast">
           <div className="beast-header">
             <h2>{beast.name}</h2>
-            <p className="beast-description">{beast.description}</p>
           </div>
           
           <div className="beast-pic d-flex align-items-end">
             <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
           </div>
-        </Link>
+          <div className="beast-description-container">
+            <p className="beast-description ">{beast.description}</p>
+          </div>
+
+          <div className="spawn-button-container">
+          <button className="spawn-button" onClick={() => handleSpawn(beast.id)}>
+            SPAWN
+          </button>
+        </div>
+        </div>
       </div>
     );
   };

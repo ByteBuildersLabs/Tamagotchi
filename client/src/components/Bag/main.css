@@ -18,7 +18,7 @@
   padding: 15px 10px;
   display: flex;
   flex-direction: column;
-  height: 65vh;
+  height: 80vh;
 }
 
 .beast-header {
@@ -27,19 +27,63 @@
 }
 
 .beast-header h2 {
-  color: #fff;
+  color: #ECECDA;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .beast-description {
-  color: #888;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: #ECECDA;
   font-size: 0.85rem;
   max-width: 400px;
   margin: 0 auto;
   line-height: 1.4;
 }
+
+.beast-description-container {
+  max-width: 40%; /* Limita el ancho del contenedor de la descripción */
+  margin: 0 auto; /* Centra el contenedor */
+  padding: 10px 0; /* Añade espacio arriba y abajo */
+  text-align: center;
+}
+
+/* Contenedor del botón Spawn */
+.spawn-button-container {
+  margin-top: 20px; /* Espacio entre la descripción y el botón */
+  text-align: center; /* Centra el botón horizontalmente */
+}
+
+.spawn-button {
+  background: linear-gradient(to right, #85002A, #D1093D); /* Gradiente lineal */
+  color: #ECECDA; /* Color de la letra */
+  border: none; /* Sin borde */
+  padding: 5px 45px; /* Espaciado interno */
+  border-radius: 25px; /* Bordes redondeados */
+  font-size: 1rem; /* Tamaño de fuente */
+  font-family: 'Kallisto', sans-serif; /* Fuente Kallisto */
+  cursor: pointer; /* Cursor tipo puntero */
+  transition: background 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+  font-weight: bold; /* Texto en negrita (opcional) */
+}
+
+/*
+.spawn-button:hover {
+  background: linear-gradient(to right, #95033A, #E11A4D); 
+  transform: translateY(-2px); 
+}
+
+.spawn-button:active {
+  background: linear-gradient(to right, #B00833, #6E0022); 
+  transform: translateY(0);
+}
+
+*/
+
 
 .beast-pic {
   position: relative;
@@ -54,32 +98,6 @@
   height: 100%;
   margin: 0 auto;
   object-fit: contain;
-}
-
-.beast-level {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  background: rgba(55, 0, 1, 0.8);
-  padding: 5px 15px;
-  border-radius: 15px;
-  color: #e4a101;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.beast-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.8rem;
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem auto 0;
-  padding: 10px;
-  background-color: rgba(55, 0, 1, 0.3);
-  border-radius: 10px;
 }
 
 .stat-item {
@@ -128,7 +146,7 @@
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  bottom: 20px; /* Ajusta esta posición según sea necesario */
+  bottom: 15px; /* Ajusta esta posición según sea necesario */
   left: 0;
   right: 0;
   padding: 0 20px;
