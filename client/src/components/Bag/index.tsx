@@ -9,8 +9,8 @@ const MOCK_BEASTS = [
   {
     id: 1,
     specie: 1,
-    name: "Sheep Lemus",
-    description: "The sheep is a social animal that thrives in flocks.",
+    name: "Dark Wolf",
+    description: "A shadowy predator that prowls the night, striking fear into their eyes.",
     level: 5,
     attack: 12.4,
     defense: 8.7,
@@ -20,8 +20,8 @@ const MOCK_BEASTS = [
   {
     id: 2,
     specie: 2,
-    name: "Fire Drake",
-    description: "A fiery companion with scales that glow in the dark.",
+    name: "Magic Cat",
+    description: "A mystical feline imbued with arcane energy, capable of vanishing into thin air and casting illusions.",
     level: 3,
     attack: 9.8,
     defense: 11.3,
@@ -31,8 +31,8 @@ const MOCK_BEASTS = [
   {
     id: 3,
     specie: 3,
-    name: "Ice Phoenix",
-    description: "Majestic frozen bird that commands winter winds.",
+    name: "Crystal Eagle",
+    description: "A majestic eagle with wings of pure crystal, harnessing the power of frozen storms to dominate the skies.",
     level: 7,
     attack: 18.1,
     defense: 14.9,
