@@ -10,6 +10,7 @@ trait IActions<T> {
     fn play(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
+    fn submit_score(ref self: T, player_id: ContractAddress, tamagotchi_id: ContractAddress, score: u32, streak: u32);
 }
 
 #[dojo::contract]
@@ -220,6 +221,40 @@ pub mod actions {
 
                 world.write_model(@beast);
             }
+        }
+
+        fn submit_score(ref self: ContractState, player_id: ContractAddress, tamagotchi_id: ContractAddress, score: u32) {
+            let mut world = self.world(@"babybeasts");
+            let caller = get_caller_address();
+
+            // Validate input
+            assert(score >= 0, "Score must be non-negative");
+            let mut beast: Beast = world.read_model(tamagotchi_id);
+            assert(beast.player == player_id, "Tamagotchi is not linked to the player");
+            assert(beast.is_alive == true, "Tamagotchi must be alive to submit a score");
+
+            // Implement reward logic
+            if score >= 100 {
+                beast.happiness += 10;
+                beast.energy += 5;
+            }
+
+            if score >= 200 {
+                beast.level += 1;
+                beast.attack += 2;
+                beast.defense += 2;
+            }
+
+            // Additional rewards for streaks
+            if streak >= 5 {
+                beast.speed += 1;
+            }
+
+            if streak >= 10 {
+                beast.agility += 2;
+            }
+
+            world.write_model(@beast);
         }
     }
 }
