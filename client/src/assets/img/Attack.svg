@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Elipse_518" data-name="Elipse 518" cx="15" cy="15" r="15" transform="translate(29 758)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Enmascarar_grupo_1" data-name="Enmascarar grupo 1" transform="translate(-29 -758)" clip-path="url(#clip-path)">
+    <path id="reshot-icon-sword-weapon-2YREVN7C8J" d="M6.3,21.32,9.98,17.642l.814.815a.876.876,0,1,0,1.238-1.238l-.678-.679,7.707-5.14a.876.876,0,0,0,.39-.729V4.936a.876.876,0,0,0-.876-.876H12.848a.876.876,0,0,0-.729.39l-5.14,7.707L6.3,11.48a.878.878,0,1,0-1.238,1.245l.815.815L2.2,17.218a.876.876,0,0,0,0,1.238l2.866,2.866a.876.876,0,0,0,1.237,0ZM13.317,5.812h4.389V10.2l-7.613,5.074L8.241,13.424Zm-6.2,8.962L8.743,16.4,5.682,19.469,4.055,17.835Z" transform="translate(33.18 760.181)" fill="#71e4ff"/>
+  </g>
+</svg>

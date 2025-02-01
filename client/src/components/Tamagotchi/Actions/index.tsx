@@ -6,6 +6,7 @@ import Clean from '../../../assets/img/clean.png';
 import Play from '../../../assets/img/play.png';
 import WakeUp from '../../../assets/img/wakeup.png';
 import initials from '../../../data/initials';
+import './main.css';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture';
 
@@ -26,7 +27,6 @@ const Actions = ({ handleAction, isLoading, beast, account, client }: { handleAc
           key={label}
           onClick={() => handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey])}
           disabled={isLoading || (isRevive ? beast.is_alive : !beast.is_alive)}
-          className="flex items-center button"
         >
           {img && <img src={img} />} {label}
         </Button>

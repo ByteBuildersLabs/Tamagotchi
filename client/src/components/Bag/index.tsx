@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { SDK } from "@dojoengine/sdk";
 import { Schema } from "../../dojo/bindings.ts";
 import initials from "../../data/initials.tsx";
@@ -147,6 +147,15 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
       </div>
     );
   };
+
+  useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) {
+      bodyElement.classList.remove('day');
+      bodyElement.classList.remove('night');
+      bodyElement.style.backgroundSize = 'cover';
+    }
+  }, []);
 
   return (
     <div className="bag">

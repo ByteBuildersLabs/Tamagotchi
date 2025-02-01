@@ -16,10 +16,6 @@
   margin: 0 0 0 10px;
 }
 
-.navbar h2 span {
-  color: #ECECDA;
-}
-
 .navbar .logo {
   display: flex;
   align-items: center;

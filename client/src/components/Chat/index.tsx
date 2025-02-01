@@ -31,6 +31,15 @@ function Chat() {
     restoreFocus();
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) {
+      bodyElement.classList.remove('day');
+      bodyElement.classList.remove('night');
+      bodyElement.style.backgroundSize = 'cover';
+    }
+  }, []);
+
   const sendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
     setError(null);
