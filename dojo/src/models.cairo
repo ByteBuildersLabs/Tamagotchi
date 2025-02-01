@@ -22,4 +22,5 @@ pub struct Beast {
     pub level: u32,
     pub experience: u32,
     pub next_level_experience: u32,
+    pub tamagotchi_id: u32,
 }
