@@ -1,50 +1,16 @@
 .tamaguchi {
-  padding-top: 40px;
   overflow-y: auto; 
   background-color: transparent;
   margin: auto;
-}
-
-/* Container for the tamagotchi */
-.tamagotchi-image-container {
-  border: 2px solid #370001; 
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
-  height: 34vh;
-  transition: border-color 0.3s ease;
-  border-radius: 10px 10px 0 0;
-}
-
-/* Border activated with glow animation */
-.tamagotchi-image-container.glow {
-  border-color: #e4a101;
-  animation: border-glow-movement 2s linear infinite;
-}
-
-/* light animation around the scenario */
-@keyframes border-glow-movement {
-  0% {
-    box-shadow: inset 0 0 10px 2px #e4a101;
-  }
-  25% {
-    box-shadow: inset 10px 0 20px #e4a101;
-  }
-  50% {
-    box-shadow: inset 0 10px 20px #e4a101;
-  }
-  75% {
-    box-shadow: inset -10px 0 20px #e4a101;
-  }
-  100% {
-    box-shadow: inset 0 0 10px 2px #e4a101;
-  }
+  width: 100%;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  height: 153px;
+  width: 100%;
 }
 
 .actions svg {
@@ -53,20 +19,18 @@
 }
 
 .actions button {
-  width: 30%;
-  height: 50px;
+  width: 48%;
+  height: 45px;
   font-size: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   padding: 0;
 }
 
 .scenario {
-  background-image: url('../../assets/img/scenario-light.jpeg');
-  background-repeat: no-repeat;
-  background-position: center;
+  height: 30vh;
   background-size: cover;
   position: relative;
-  border-radius: 10px 10px 0 0;
+  margin-bottom: 10px;
 }
 
 .level {
@@ -131,17 +95,15 @@
 
 .status {
   width: 100%;
-  background-color: rgba(55, 0, 1, 0.5);
-  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 20px;
   margin-bottom: 20px;
-  border-radius: 0 0 10px 10px;
+  border-radius: 20px
 }
 
 .stats {
-  width: 60%;
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 100%;
+  height: 153px;
   background-color: rgba(55, 0, 1, 0.5);
   padding: 7px 10px;
   border-radius: 0 0 0 10px;
