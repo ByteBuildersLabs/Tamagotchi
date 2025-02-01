@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { SDK } from "@dojoengine/sdk";
-import { Link } from 'react-router-dom';
 import { Schema } from "../../dojo/bindings.ts";
 import initials from "../../data/initials.tsx";
 import './main.css';
