@@ -45,7 +45,7 @@
 }
 
 .beast-description-container {
-  max-width: 40%; /* Limita el ancho del contenedor de la descripción */
+  max-width: 60%; /* Limita el ancho del contenedor de la descripción */
   margin: 0 auto; /* Centra el contenedor */
   padding: 10px 0; /* Añade espacio arriba y abajo */
   text-align: center;
