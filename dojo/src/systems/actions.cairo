@@ -11,14 +11,14 @@ trait IActions<T> {
     fn play(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
-    fn submit_score(ref self: T, player_id: ContractAddress, tamagotchi_id: ContractAddress, score: u32);
+    fn submit_score(ref self: T, score: u32);
 }
 
 #[dojo::contract]
 pub mod actions {
     use super::{IActions};
     use starknet::{ContractAddress, get_caller_address};
-    use babybeasts::models::{Beast};
+    use babybeasts::models::{Beast, Score};
 
     use dojo::model::{ModelStorage, ModelValueStorage};
     use dojo::event::EventStorage;
@@ -224,47 +224,44 @@ pub mod actions {
             }
         }
 
-        fn submit_score(ref self: ContractState, player_id: ContractAddress, tamagotchi_id: ContractAddress, score: u32) {
+        fn submit_score(ref self: ContractState, score: u32) {
             let mut world = self.world(@"babybeasts");
-            let _ = get_caller_address();  
-
-            assert(score >= 0, "Score must be non-negative");
+            let tamagotchi_id = get_caller_address();  
+        
             let mut beast: Beast = world.read_model(tamagotchi_id);
-            assert(beast.player == player_id, "Tamagotchi is not linked to the player");
-            assert(beast.is_alive == true, "Tamagotchi must be alive to submit a score");
-
+            assert(beast.player == tamagotchi_id, 'Tamagotchi');
+            assert(beast.is_alive == true, 'Tamagotchi is alive');
+        
+            // Guardar el puntaje en el modelo Score
+            let new_score = Score {
+                player_id: tamagotchi_id,
+                tamagotchi_id,
+                score,
+            };
+            world.write_model(@new_score);
+        
+            // Actualizar estadísticas del Beast basado en el puntaje
             if score >= 100 {
-                beast.happiness += 15;
-                beast.energy += 10;
-                beast.experience += 20;
+                beast.happiness += 10;
+                beast.energy += 5;
             }
-
+        
             if score >= 200 {
-                beast.level += 2;
-                beast.attack += 5;
-                beast.defense += 5;
-                beast.happiness += 20;
+                beast.level += 1;
+                beast.attack += 2;
+                beast.defense += 2;
             }
-
-            if score >= 500 {
-                beast.speed += 3;
-                beast.agility += 5;
-                beast.energy += 15;
-                beast.happiness += 30;
-                beast.level += 3;
-            }
-
-
-            // Just as an idea, for u to implement it in the future for rewarding streaks. @maintainers
-            // if streak >= 5 {
+        
+            // Aquí podrías recuperar historial de puntuaciones si quieres implementar streaks
+            // let streak_count = world.query_scores(tamagotchi_id, last_n_days);
+            // if streak_count >= 5 {
             //     beast.speed += 1;
             // }
-
-            // if streak >= 10 {
+            // if streak_count >= 10 {
             //     beast.agility += 2;
             // }
-
+        
             world.write_model(@beast);
-        }
+        }        
     }
 }
