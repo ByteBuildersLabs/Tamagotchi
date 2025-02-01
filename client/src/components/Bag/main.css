@@ -13,7 +13,7 @@
   width: 100%;
 }
 
-/* Nuevos estilos para el carrusel mejorado */
+/*Carousel styles */
 .beast-slide {
   padding: 15px 10px;
   display: flex;
@@ -45,30 +45,30 @@
 }
 
 .beast-description-container {
-  max-width: 60%; /* Limita el ancho del contenedor de la descripción */
-  margin: 0 auto; /* Centra el contenedor */
-  padding: 10px 0; /* Añade espacio arriba y abajo */
+  max-width: 60%; 
+  margin: 0 auto; 
+  padding: 10px 0; 
   text-align: center;
 }
 
-/* Contenedor del botón Spawn */
+
 .spawn-button-container {
-  margin-top: 20px; /* Espacio entre la descripción y el botón */
-  text-align: center; /* Centra el botón horizontalmente */
+  margin-top: 20px; 
+  text-align: center; 
 }
 
 .spawn-button {
-  background: linear-gradient(to right, #85002A, #D1093D); /* Gradiente lineal */
-  color: #ECECDA; /* Color de la letra */
-  border: none; /* Sin borde */
-  padding: 5px 45px; /* Espaciado interno */
-  border-radius: 25px; /* Bordes redondeados */
-  font-size: 1rem; /* Tamaño de fuente */
-  font-family: 'Kallisto', sans-serif; /* Fuente Kallisto */
-  cursor: pointer; /* Cursor tipo puntero */
-  transition: background 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-  font-weight: bold; /* Texto en negrita (opcional) */
+  background: linear-gradient(to right, #85002A, #D1093D); 
+  color: #ECECDA; 
+  border: none; 
+  padding: 5px 45px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-family: 'Kallisto', sans-serif; 
+  cursor: pointer; 
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold; 
 }
 
 .spawn-button:hover {
@@ -117,7 +117,6 @@
   color: #e4a101;
 }
 
-/* Estilos existentes del carrusel ajustados */
 .carousel {
   position: relative;
   width: 100%;
@@ -129,12 +128,14 @@
   display: flex;
   transition: transform 0.3s ease-in-out;
   height: 100%;
+  touch-action: pan-y;
 }
 
 .slide {
   min-width: 100%;
   flex-shrink: 0;
   padding: 0 1rem;
+  user-select: none;
 }
 
 .carousel-controls {
@@ -142,11 +143,11 @@
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  bottom: 15px; /* Ajusta esta posición según sea necesario */
+  bottom: 15px; 
   left: 0;
   right: 0;
   padding: 0 20px;
-  z-index: 10; /* Asegura que los controles estén por encima de otros elementos */
+  z-index: 10; 
 }
 
 .control {
@@ -157,7 +158,7 @@
   cursor: pointer;
   padding: 0;
   transition: opacity 0.2s ease;
-  z-index: 11; /* Asegura que los botones estén por encima de los indicadores */
+  z-index: 11; 
 }
 
 .control:disabled {
@@ -171,8 +172,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -10px; /* Ajusta esta posición según sea necesario */
-  z-index: 10; /* Asegura que los indicadores estén por encima de otros elementos */
+  bottom: -10px;
+  z-index: 10; 
 }
 
 .indicator {
