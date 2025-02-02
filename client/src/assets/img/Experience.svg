@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Elipse_521" data-name="Elipse 521" cx="15" cy="15" r="15" transform="translate(29 851)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Enmascarar_grupo_3" data-name="Enmascarar grupo 3" transform="translate(-29 -851)" clip-path="url(#clip-path)">
+    <path id="reshot-icon-crown-queen-LV3TWAGKFS" d="M16.857,4.159a.723.723,0,0,0-.77.1L12.316,7.4,9.884,4.365a.749.749,0,0,0-1.13,0L6.322,7.4,2.55,4.258a.723.723,0,0,0-1.186.555V14.938a2.17,2.17,0,0,0,2.17,2.17H15.1a2.17,2.17,0,0,0,2.17-2.17V4.814A.723.723,0,0,0,16.857,4.159Zm-1.03,10.78a.723.723,0,0,1-.723.723H3.533a.723.723,0,0,1-.723-.723v-.723H15.827Zm0-2.17H2.81V6.358L5.963,8.985a.723.723,0,0,0,1.028-.1L9.319,5.971l2.328,2.91a.723.723,0,0,0,1.028.1l3.152-2.627Z" transform="translate(34.681 855.401)" fill="#fff362"/>
+  </g>
+</svg>

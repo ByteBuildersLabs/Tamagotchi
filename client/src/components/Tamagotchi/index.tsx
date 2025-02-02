@@ -49,10 +49,8 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
       const isDayTime = hour > 6 && hour < 18;
       const bodyElement = document.querySelector('.body') as HTMLElement;
       if (bodyElement) {
-        bodyElement.style.backgroundImage = isDayTime
-          ? "url('src/assets/img/daybackground.png')"
-          : "url('src/assets/img/nightbackground.png')";
-          bodyElement.style.backgroundSize = 'inherit'
+        bodyElement.classList.add(`${isDayTime ? 'day' : 'night'}`);
+        bodyElement.style.backgroundSize = 'inherit';
       }
     };
     updateBackground();
@@ -135,18 +133,19 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
     <>
       <div className="tamaguchi">
         <>{beast &&
-          <Card>
+          <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
             <Status beast={beast} />
-            <div className="scenario flex justify-center items-column">
-              <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
+            <div>
+              <div className="scenario flex justify-center items-column">
+                <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
+              </div>
+              <img src={toggle} onClick={() => setShowStats(prev => !prev)} width={40} />
+              {showStats
+                ? <Stats beast={beast} />
+                : <Actions handleAction={handleAction} isLoading={isLoading} beast={beast} account={account} client={client} />
+              }
+              <Hints />
             </div>
-            <img src={toggle} onClick={() => setShowStats(prev => !prev)} width={40} />
-
-            {showStats
-              ? <Stats beast={beast} />
-              : <Actions handleAction={handleAction} isLoading={isLoading} beast={beast} account={account} client={client} />
-            }
-            <Hints />
           </Card>
         }</>
       </div>
