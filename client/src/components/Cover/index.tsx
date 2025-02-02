@@ -1,3 +1,5 @@
+
+import { useEffect } from "react";
 import { useAccount } from "@starknet-react/core";
 import fight from '../../assets/img/banner.jpeg';
 import SpawnBeast from "../SpawnBeast/index.tsx";
@@ -7,9 +9,17 @@ import Footer from "../Footer/index.tsx";
 function Cover() {
   const { account } = useAccount();
 
-  const handleMiniGames = () => {
+  const handleConnect = () => {
     (document.querySelector('.navbar-toggler') as HTMLElement)?.click();
   }
+  useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) {
+      bodyElement.classList.remove('day');
+      bodyElement.classList.remove('night');
+      bodyElement.style.backgroundSize = 'cover';
+    }
+  }, []);
 
   return (
     <>
@@ -22,9 +32,10 @@ function Cover() {
               </div>
               <DeveloperCode />
             </div>
-            <button className="connect-btn" onClick={handleMiniGames}>
+            <button className="connect-btn" onClick={handleConnect}>
               Connect and start Play
             </button>
+
             <Footer />
         </>
       }

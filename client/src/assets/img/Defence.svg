@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Elipse_519" data-name="Elipse 519" cx="15" cy="15" r="15" transform="translate(29 789)" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Enmascarar_grupo_2" data-name="Enmascarar grupo 2" transform="translate(-29 -789)" clip-path="url(#clip-path)">
+    <path id="reshot-icon-shield-defense-3EX4BNKLRZ" d="M19.341,4.055c-3.238,0-6.605-2.487-6.638-2.512a.9.9,0,0,0-1.076,0c-.033.025-3.4,2.512-6.638,2.512a.9.9,0,0,0-.9.9c0,.538.09,13.213,7.759,16.091a.905.905,0,0,0,.628,0c7.671-2.878,7.761-15.553,7.761-16.091A.9.9,0,0,0,19.341,4.055Zm-7.177,15.18C6.962,16.973,6.069,8.516,5.917,5.8a15.222,15.222,0,0,0,6.248-2.446A15.222,15.222,0,0,0,18.413,5.8C18.265,8.516,17.368,16.973,12.165,19.235Zm-3.588-8.9a3.588,3.588,0,1,0,3.588-3.588,3.588,3.588,0,0,0-3.588,3.588Zm5.382,0A1.794,1.794,0,1,1,12.165,8.54,1.794,1.794,0,0,1,13.959,10.334Z" transform="translate(31.835 793.07)" fill="#ef6bfd"/>
+  </g>
+</svg>

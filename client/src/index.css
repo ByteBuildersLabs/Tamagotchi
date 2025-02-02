@@ -7,13 +7,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Kallisto';
+  src: url('./assets/fonts/Kallisto-Bold.otf');
+  font-weight: bold;
+  font-style: bold;
+}
+
 .body {
   margin: 0;
   padding: 80px 15px 30px;
   width: 100vw;
   height: 100dvh;
   background-color: #000;
-  background-image: url('./assets/img/background.png');
+  background-image: linear-gradient(rgba(137, 26, 40, 0.5), rgba(137, 26, 40, 0.5)), url('./assets/img/background.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -24,13 +31,21 @@
   transition: all 0.25s;
 }
 
+.body.day {
+  background-image: url('./assets/img/daybackground.png');
+}
+
+.body.night {
+  background-image: url('./assets/img/nightbackground.png');
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Kallisto';
 }
 
 h2 {
   font-size: 30px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 a,
@@ -130,7 +145,8 @@ p, span {
 
 .info {
   font-size: 12px;
-  color: #c8c8c8;
+  color: #fff;
+  font-weight: bold;
 }
 
 .title {
@@ -139,12 +155,12 @@ p, span {
   font-size: 18px;
   margin: 0;
   padding-right: 5px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 .title span {
   font-size: 18px;
-  color: #e4a101;
+  color: #ECECDA;
 }
 
 .connect-btn,
