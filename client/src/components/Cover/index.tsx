@@ -12,7 +12,6 @@ function Cover() {
   const handleConnect = () => {
     (document.querySelector('.navbar-toggler') as HTMLElement)?.click();
   }
-
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) {
@@ -36,6 +35,7 @@ function Cover() {
             <button className="connect-btn" onClick={handleConnect}>
               Connect and start Play
             </button>
+
             <Footer />
 
         </>
