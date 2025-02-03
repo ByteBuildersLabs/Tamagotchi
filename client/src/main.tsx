@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
-import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import * as ReactDOM from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { init, createDojoStore } from "@dojoengine/sdk";
 import { Schema, schema } from "./dojo/bindings.ts";
 import { dojoConfig } from "./dojo/dojoConfig.ts";
@@ -56,10 +56,10 @@ async function main() {
             provider={provider}
           >
             <Router>
-            <Header sdk={sdk} />
+              <Header sdk={sdk} />
               <Routes>
-                <Route path='/' element={<Cover />}/>
-                <Route path='/play' element={<Tamagotchi sdk={sdk} />} />
+                <Route path="/" element={<Cover />} />
+                <Route path="/play" element={<Tamagotchi sdk={sdk} />} />
               </Routes>
             </Router>
           </StarknetConfig>
