@@ -33,3 +33,12 @@ pub struct BeastId {
     pub id: u32,
     pub beast_id: u32,
 }
+
+#[derive(Drop, Serde, Debug)]
+#[dojo::model]
+pub struct Score {
+    #[key]
+    pub player_id: ContractAddress,
+    pub tamagotchi_id: ContractAddress,
+    pub score: u32,
+}

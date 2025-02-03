@@ -11,6 +11,7 @@ trait IActions<T> {
     fn play(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
+    fn submit_score(ref self: T, score: u32);
     fn record_score(ref self: T, player_id: ContractAddress, tamagotchi_id: u32, score: u32, golden_notes: u32);
 }
 
@@ -18,6 +19,7 @@ trait IActions<T> {
 pub mod actions {
     use super::{IActions};
     use starknet::{ContractAddress, get_caller_address};
+    use babybeasts::models::{Beast, Score};
     use babybeasts::models::{Beast};
     use babybeasts::models::{BeastId};
 
@@ -234,6 +236,46 @@ pub mod actions {
                 world.write_model(@beast);
             }
         }
+
+        fn submit_score(ref self: ContractState, score: u32) {
+            let mut world = self.world(@"babybeasts");
+            let tamagotchi_id = get_caller_address();  
+        
+            let mut beast: Beast = world.read_model(tamagotchi_id);
+            assert(beast.player == tamagotchi_id, 'Tamagotchi');
+            assert(beast.is_alive == true, 'Tamagotchi is alive');
+        
+            // Guardar el puntaje en el modelo Score
+            let new_score = Score {
+                player_id: tamagotchi_id,
+                tamagotchi_id,
+                score,
+            };
+            world.write_model(@new_score);
+        
+            // Actualizar estadísticas del Beast basado en el puntaje
+            if score >= 100 {
+                beast.happiness += 10;
+                beast.energy += 5;
+            }
+        
+            if score >= 200 {
+                beast.level += 1;
+                beast.attack += 2;
+                beast.defense += 2;
+            }
+        
+            // Aquí podrías recuperar historial de puntuaciones si quieres implementar streaks
+            // let streak_count = world.query_scores(tamagotchi_id, last_n_days);
+            // if streak_count >= 5 {
+            //     beast.speed += 1;
+            // }
+            // if streak_count >= 10 {
+            //     beast.agility += 2;
+            // }
+        
+            world.write_model(@beast);
+        }        
 
         fn record_score(ref self: ContractState, player_id: ContractAddress, tamagotchi_id: u32, score: u32, golden_notes: u32) {
             let mut world = self.world(@"babybeasts");
