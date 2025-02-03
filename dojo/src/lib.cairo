@@ -1,3 +1,5 @@
+mod constants;
+
 mod systems {
     mod actions;
 }
@@ -13,4 +15,6 @@ mod tests {
 
 mod models {
     mod beast;
+    mod beast_stats;
+    mod beast_status;
 }
