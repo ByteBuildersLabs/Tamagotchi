@@ -1,5 +1,3 @@
-use babybeasts::models::Beast;
-
 #[starknet::interface]
 trait IActions<T> {
     fn spawn(ref self: T, specie: u32);
@@ -14,21 +12,37 @@ trait IActions<T> {
 
 #[dojo::contract]
 pub mod actions {
-    use super::{IActions};
+    // Starknet imports
     use starknet::{ContractAddress, get_caller_address};
-    use babybeasts::models::{Beast};
+    
+    // Local imports
+    use super::{IActions};
+    use babybeasts::models::beast::{Beast};
 
+    // Dojo Imports
     use dojo::model::{ModelStorage, ModelValueStorage};
     use dojo::event::EventStorage;
+
+
+    // Storage
+    #[storage]
+    struct Storage {
+        beast_counter: u32
+    }
+
+    // Constructor
+    fn dojo_init( ref self: ContractState) {
+        self.beast_counter.write(1);
+    }
 
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
         fn spawn(ref self: ContractState, specie: u32) {
             let mut world = self.world(@"babybeasts");
             let player = get_caller_address();
-
-            let initial_stats = Beast {
+            let mut initial_stats = Beast {
                 player: player,
+                beast_id: 0,
                 specie: specie,
                 is_alive: true,
                 is_awake: true,
@@ -47,7 +61,9 @@ pub mod actions {
                 experience: 0,
                 next_level_experience: 60,
             };
-
+            let current_beast_id = self.beast_counter.read();
+            initial_stats.beast_id = current_beast_id;
+            self.beast_counter.write(current_beast_id+1);
             world.write_model(@initial_stats);
         }
 

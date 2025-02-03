@@ -12,24 +12,24 @@
 
 .navbar h2 {
   font-weight: 800;
-  font-size: 20px;
+  font-size: 18px;
   margin: 0 0 0 10px;
-}
-
-.navbar h2 span {
-  color: #e4a101;
 }
 
 .navbar .logo {
   display: flex;
   align-items: center;
-  padding: 0 15px;
+  padding-left: 15px;
 }
 
 .navbar .logo img {
   width: 40px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.side-menu {
+  padding-right: 20px;
 }
 
 .side-menu img {
@@ -50,17 +50,6 @@
   object-fit: cover;
   border-radius: 50%;
   transform: scaleX(-1);
-}
-
-.navbar .connect-btn {
-  margin: 0 0 10px;
-  height: 60px;
-  font-size: 20px;
-  text-align: center;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .menu {

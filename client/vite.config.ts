@@ -21,7 +21,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-BqZKd97Z.jpeg"],
+      includeAssets: ["https://github.com/ByteBuildersLabs/BabyBeastsv2/blob/master/client/src/assets/img/logo.svg"],
       manifest: {
         name: "BabyBeasts",
         short_name: "BabyBeasts",
@@ -32,9 +32,9 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-BqZKd97Z.jpeg",
+            src: "https://github.com/ByteBuildersLabs/BabyBeastsv2/blob/master/client/src/assets/img/logo.svg",
             sizes: "180x180",
-            type: "image/jpeg",
+            type: "image/svg",
           },
         ],
         start_url: "/",
