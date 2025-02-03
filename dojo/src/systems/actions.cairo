@@ -1,4 +1,5 @@
 use babybeasts::models::Beast;
+use starknet::ContractAddress;
 
 #[starknet::interface]
 trait IActions<T> {
@@ -10,6 +11,7 @@ trait IActions<T> {
     fn play(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
+    fn record_score(ref self: T, player_id: ContractAddress, tamagotchi_id: u32, score: u32, golden_notes: u32);
 }
 
 #[dojo::contract]
@@ -47,6 +49,7 @@ pub mod actions {
                 level: 1,
                 experience: 0,
                 next_level_experience: 60,
+                tamagotchi_id: 0,
             };
 
             let mut id: BeastId = world.read_model(1);
@@ -226,6 +229,31 @@ pub mod actions {
                     beast.speed = 0;
                 } else {
                     beast.speed = beast.speed - 1;
+                }
+
+                world.write_model(@beast);
+            }
+        }
+
+        fn record_score(ref self: ContractState, player_id: ContractAddress, tamagotchi_id: u32, score: u32, golden_notes: u32) {
+            let mut world = self.world(@"babybeasts");
+            let mut beast: Beast = world.read_model(player_id);
+
+            assert(beast.tamagotchi_id == tamagotchi_id, 'ID do not match');
+            assert(score >= 0, 'Score must be positive');
+            assert(golden_notes >= 0, 'Golden notes must be positive');
+
+            if beast.is_alive == true {
+                if beast.happiness + score > beast.max_happiness {
+                    beast.happiness = beast.max_happiness;
+                } else {
+                    beast.happiness = beast.happiness + score;
+                }
+
+                if beast.happiness + (5 * golden_notes) > beast.max_happiness {
+                    beast.happiness = beast.max_happiness;
+                } else {
+                    beast.happiness = beast.happiness + (5 * golden_notes);
                 }
 
                 world.write_model(@beast);
