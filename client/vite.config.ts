@@ -3,10 +3,19 @@ import { defineConfig } from "vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
-// import fs from "fs";
+//import fs from "fs";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Windows
+  // server: {
+  //   https: {
+  //     key: fs.readFileSync("localhost-key.pem"), // Path to private key file
+  //     cert: fs.readFileSync("localhost.pem"), // Path to certificate file
+  //   },
+  // },
+
+  // MAC
   // server: {
   //   https: {
   //     key: fs.readFileSync("mkcert+1-key.pem"), // Path to private key file
@@ -43,7 +52,9 @@ export default defineConfig({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // Set to 5 MiB
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot,jpeg,jpg}"],
+        globPatterns: [
+          "**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot,jpeg,jpg}",
+        ],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
