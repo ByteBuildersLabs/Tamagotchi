@@ -11,4 +11,6 @@ mod tests {
     mod test_random;
 }
 
-mod models;
+mod models {
+    mod beast;
+}

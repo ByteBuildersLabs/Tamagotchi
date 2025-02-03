@@ -7,7 +7,8 @@ export interface Message {
 
 const MessageComponent = memo(({ message }: { message: Message }) => (
   <div className={`message ${message.user === "System" ? "error-message" : ""}`}>
-    <span className="user">{message.user}:</span> {message.text}
+    <span className="user">{message.user}</span> 
+    <p>{message.text}</p>
   </div>
 ));
 
