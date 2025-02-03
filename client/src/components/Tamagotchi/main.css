@@ -21,3 +21,8 @@
   right: 30%;
   margin: auto;
 }
+
+.beast-interaction img {
+  width: 35px;
+  margin: 0 12px 10px 0;
+}

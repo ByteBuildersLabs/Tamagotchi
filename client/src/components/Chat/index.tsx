@@ -3,6 +3,7 @@ import axios from "axios";
 import './main.css';
 import MessageComponent, { Message } from "../ui/message";
 import ThinkingDots from '../ui/thinking-dots';
+import message from '../../assets/img/message.svg';
 
 interface ApiError {
   message: string;
@@ -31,20 +32,11 @@ function Chat() {
     restoreFocus();
   }, [messages, isLoading]);
 
-  useEffect(() => {
-    const bodyElement = document.querySelector('.body') as HTMLElement;
-    if (bodyElement) {
-      bodyElement.classList.remove('day');
-      bodyElement.classList.remove('night');
-      bodyElement.style.backgroundSize = 'cover';
-    }
-  }, []);
-
   const sendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
     setError(null);
     setIsLoading(true);
-    const newMessage = { user: "You", text: input };
+    const newMessage = { user: "Me", text: input };
     setMessages([...messages, newMessage]);
     setInput("");
 
@@ -87,11 +79,10 @@ function Chat() {
           <div ref={messagesEndRef} />
         </div>
         <div className="chat-input">
-          {error && <div className="error-tooltip">{error.message}</div>}
           <input
             ref={inputRef}
             type="text"
-            placeholder="Here you can ask to the master"
+            placeholder="Ask something to the master"
             value={input}
             disabled={isLoading}
             onChange={(e) => setInput(e.target.value)}
@@ -109,9 +100,10 @@ function Chat() {
             disabled={isLoading}
             className={`button ${isLoading ? 'loading' : ''}`}
           >
-            {isLoading ? 'Sending...' : 'Send'}
+            <img src={message} />
           </button>
         </div>
+        {error && <div className="error-tooltip">{error.message}</div>}
       </div>
     </>
   );

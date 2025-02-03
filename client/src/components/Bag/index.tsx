@@ -1,58 +1,18 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { SDK } from "@dojoengine/sdk";
-import { Schema } from "../../dojo/bindings.ts";
+import { Beast, Schema } from "../../dojo/bindings.ts";
+import { useBeast } from '../../hooks/useBeasts.tsx';
+import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import initials from "../../data/initials.tsx";
 import './main.css';
 
-// Mock data representing available beasts in the carousel
-const MOCK_BEASTS = [
-  {
-    id: 1,
-    specie: 1,
-    name: "Dark Wolf",
-    description: "A shadowy predator that prowls the night, striking fear into their eyes.",
-    level: 5,
-    attack: 12.4,
-    defense: 8.7,
-    speed: 15.2,
-    experience: 234,
-  },
-  {
-    id: 2,
-    specie: 2,
-    name: "Magic Cat",
-    description: "A mystical feline imbued with arcane energy, capable of casting illusions.",
-    level: 3,
-    attack: 9.8,
-    defense: 11.3,
-    speed: 12.6,
-    experience: 150,
-  },
-  {
-    id: 3,
-    specie: 3,
-    name: "Crystal Eagle",
-    description: "A majestic eagle with wings of crystal with the power to dominate the skies.",
-    level: 7,
-    attack: 18.1,
-    defense: 14.9,
-    speed: 19.4,
-    experience: 450,
-  },
-];
-
 function Bag({ sdk }: { sdk: SDK<Schema> }) {
-  // State to track the current slide index in the carousel
+  const { beasts } = useBeast(sdk);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = MOCK_BEASTS.length;
-
-  // Refs to store touch start and end positions for swipe detection
-  const touchStartX = useRef<number | null>(null); 
+  const totalSlides = beasts.length;
+  const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
-
-  const handleSpawn = (beastId: number) => {
-    console.log(`Spawning beast with ID: ${beastId}`);
-  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -64,93 +24,87 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
 
   const handleTouchEnd = () => {
     if (touchStartX.current !== null && touchEndX.current !== null) {
-      const deltaX = touchEndX.current - touchStartX.current; // Calculate horizontal swipe distance
+      const deltaX = touchEndX.current - touchStartX.current;
 
       if (deltaX > 50) {
-        // Swipe right: move to the previous slide
         setCurrentSlide((prev) => Math.max(prev - 1, 0));
       } else if (deltaX < -50) {
-        // Swipe left: move to the next slide
         setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
       }
     }
 
-    // Reset touch positions after swipe
     touchStartX.current = null;
     touchEndX.current = null;
   };
 
-  const getSlideContent = (index: number) => {
-    const beast = MOCK_BEASTS[index];
-    
-    return (
+  const getSlideContent = (beast: typeof beasts[0]) => (
+    <>
       <div className="beast-slide">
         <div className="beast">
-          {/* Beast Name */}
           <div className="beast-header">
             <h2>{beast.name}</h2>
           </div>
-          
-          {/* Beast Image */}
           <div className="beast-pic d-flex align-items-end">
             <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
           </div>
-
-          {/* Beast Description */}
-          <div className="beast-description-container">
-            <p className="beast-description">{beast.description}</p>
+          <div className="initial-info">
+            <h4>
+              {initials[beast.specie - 1].name} Lvl {beast.level}
+            </h4>
+            <p>
+              Your are close to evolve {initials[beast.specie - 1].name}, keep playing to reach the next level
+            </p>
           </div>
-
-          {/* Spawn Button */}
-          <div className="spawn-button-container">
-            <button className="spawn-button" onClick={() => handleSpawn(beast.id)}>
-              SPAWN
-            </button>
-          </div>
+          <Link to={`/play/${beast.beast_id}`} className="button">
+            PLAY
+          </Link>
         </div>
       </div>
-    );
-  };
+    </>
+
+  );
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) {
-      bodyElement.classList.remove('day');
-      bodyElement.classList.remove('night');
+      bodyElement.classList.remove('day', 'night');
       bodyElement.style.backgroundSize = 'cover';
+      bodyElement.style.padding = '80px 15px 30px';
     }
   }, []);
 
   return (
     <div className="bag">
-      <div className="eggs">
-        <div className="carousel">
-          {/* Slides container with swipe handling */}
-          <div
-            className="slides"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {MOCK_BEASTS.map((_, index) => (
-              <div key={index} className="slide">
-                {getSlideContent(index)}
-              </div>
-            ))}
-          </div>
-          
-          {/* Carousel indicators for manual slide selection */}
-          <div className="carousel-controls">
-            <div className="indicators">
-              {MOCK_BEASTS.map((_, index) => (
-                <div
-                  key={index}
-                  className={`indicator ${currentSlide === index ? 'active' : ''}`}
-                  onClick={() => setCurrentSlide(index)}
-                />
-              ))}
+      <div className='d-flex justify-content-between align-items-center'>
+        <p className={'title'}>
+          Collect them all!
+          <span className='d-block'>There are many species</span>
+        </p>
+        <ControllerConnectButton />
+      </div>
+      <div className="carousel">
+        <div
+          className="slides"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {beasts.map((beast: Beast, index: number) => (
+            <div key={index} className="slide">
+              {getSlideContent(beast)}
             </div>
+          ))}
+        </div>
+        <div className="carousel-controls">
+          <div className="indicators">
+            {beasts.map((_: any, index: number) => (
+              <div
+                key={index}
+                className={`indicator ${currentSlide === index ? 'active' : ''}`}
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
           </div>
         </div>
       </div>
