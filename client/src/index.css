@@ -1,58 +1,134 @@
-/* globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face {
+  font-family: 'Kallisto';
+  src: url('./assets/fonts/Kallisto-Medium.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kallisto';
+  src: url('./assets/fonts/Kallisto-Bold.otf');
+  font-weight: bold;
+  font-style: bold;
+}
 
 .body {
   margin: 0;
-  padding: 110px 15px 30px;
+  padding: 80px 15px 30px;
   width: 100vw;
   height: 100dvh;
   background-color: #000;
-  background-image: url('./assets/img/background.png');
+  background-image: linear-gradient(rgba(137, 26, 40, 0.5), rgba(137, 26, 40, 0.5)), url('./assets/img/background.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
   position: relative;
-  font-family: 'Marcellus SC', serif;
   display: flex;
   align-items: center;
   transition: all 0.25s;
 }
 
+.body.day {
+  background-image: url('./assets/img/daybackground.png');
+}
+
+.body.night {
+  background-image: url('./assets/img/nightbackground.png');
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Kallisto';
+}
+
 h2 {
   font-size: 30px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 a,
 a:active,
 a:visited {
   text-decoration: none;
-  color: #fff;
+  color: #ECECDA;
+  font-family: "Montserrat", serif;
+}
+
+p, span {
+  font-family: "Montserrat", serif;
+}
+
+.input {
+  font-family: 'Kallisto';
+  border-radius: 30px;
+  padding-right: 10px;
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  background: linear-gradient(to right, #85002A, #D1093D);
+  color: #ECECDA;
+  border: 0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
+}
+
+.input::placeholder {
+  color: #ECECDA;
+  font-family: 'Kallisto';
 }
 
 .button {
-  background-color: #370001;
-  border: 2px solid #e4a101;
-  color: #fff;
-  padding: 10px 15px;
-  transition: all 0.25s;
-  cursor: pointer;
-  margin: 0;
-  width: 100%;
-  height: 60px;
+  background: linear-gradient(to right, #85002A, #D1093D); 
+  color: #ECECDA; 
+  border: none;
+  border-radius: 25px;
   font-size: 18px;
-  border-radius: 10px;
+  font-family: 'Kallisto', sans-serif; 
+  text-transform: uppercase;
+  cursor: pointer; 
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  width: 100%;
 }
 
 .button:hover {
-  background-color: #e4a101;
+  background: linear-gradient(to right, #95033A, #E11A4D); 
+  transform: translateY(-2px); 
+}
+
+.button:active {
+  background: linear-gradient(to right, #B00833, #6E0022); 
+  transform: translateY(0);
 }
 
 .button:disabled {
   background-color: #370001;
   border: 2px solid #370001;
   color: #b7b7b7;
+}
+
+.button img {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.disconnect-button {
+  width: 35%;
+  padding: 12px 10px;
+  margin: 0;
+  background-color: #370001;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-weight: bold;
 }
 
 .hint {
@@ -78,17 +154,7 @@ a:visited {
   height: 300px;
   border: 2px solid #e4a101;
   object-fit: cover;
-  border-radius: 10px;
-}
-
-.cover .connect-btn {
-  width: 100%;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-  font-size: 20px;
+  border-radius: 25px;
 }
 
 .footer img {
@@ -98,49 +164,68 @@ a:visited {
 
 .info {
   font-size: 12px;
-  color: #c8c8c8;
+  color: #ECECDA;
+  font-weight: bold;
+  text-align: center;
 }
 
 .title {
   text-align: left;
-  font-family: "Marcellus SC", serif;
   font-weight: 800;
   font-size: 18px;
   margin: 0;
   padding-right: 5px;
-  color: #fff;
+  color: #ECECDA;
 }
 
 .title span {
   font-size: 18px;
-  color: #e4a101;
+  color: #ECECDA;
+}
+
+.cover .connect-btn{
+  height: 60px;
+  text-align: center;
+  background-color: #370001;
+  border: 2px solid #e4a101;
+  border-radius: 10px;
+  color: #ECECDA;
+  width: 100%;
+  font-size: 18px;
+  font-family: 'Kallisto';
 }
 
 .connect-btn,
 .connect-btn:active,
 .connect-btn:visited,
 .connect-btn:focus {
-  font-family: "Marcellus SC", serif;
-  padding: 5px 10px;
-  color: var(--white);
+  border: 0;
+  font-family: 'Kallisto';
+  font-size: 12px;
+  background-color: rgba(55, 0, 1, 0.5);
+  color: #ECECDA;
+  border-radius: 10px;
+  text-align: center;
   transition: all 0.25s;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-center;
-  font-size: 20px;
-  border: 2px solid #e4a101;
-  background-color: #370001;
-  color: #fff;
-  transition: all 0.5s;
-  border-radius: 10px;
+  padding: 15px 10px;
+  margin: 0 auto auto;
+  font-weight: bold;
 }
 
 .connect-btn:hover {
-  background-color: #e4a101;
+  background-color: #610103;
 }
 
 .connect-btn img {
   width: 30px;
   margin-left: 10px;
+}
+
+#_rht_toaster div div {
+  background-color: rgba(55, 0, 1, 0.5) !important;
+  color: #ECECDA;
+  border-radius: 3px !important;
+  font-weight: bold !important;
+  border-radius: 5px;
 }
