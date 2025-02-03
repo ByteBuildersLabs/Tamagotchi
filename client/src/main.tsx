@@ -10,13 +10,13 @@ import { StarknetConfig, starkscan } from "@starknet-react/core";
 import { RpcProvider } from "starknet";
 import cartridgeConnector from "./config/cartridgeConnector.tsx";
 
-// Componentes
-// Nota: Se usa NewCover como portada sin header
+// Import components to use in the routes
 import NewCover from "./components/NewCover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
 import Bag from "./components/Bag/index.tsx";
 import Chat from "./components/Chat/index.tsx";
-// Importamos el layout que incluye el header
+
+// Import the layout component
 import AppLayout from "./components/Layouts/AppLayout.tsx";
 
 import "./index.css";
@@ -62,10 +62,10 @@ async function main() {
           >
             <Router>
               <Routes>
-                {/* Ruta de portada: no incluye header */}
+                {/* Cover route without header*/}
                 <Route path="/" element={<NewCover />} />
                 
-                {/* Rutas internas que usan el layout con header */}
+                {/* Internal routes using layout for header */}
                 <Route element={<AppLayout />}>
                   <Route path="/bag" element={<Bag sdk={sdk} />} />
                   <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
