@@ -26,7 +26,7 @@ const Actions = ({ handleAction, isLoading, beast, account, client }: { handleAc
         <Button
           key={label}
           onClick={() => handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey])}
-          disabled={isLoading || (isRevive ? beast.is_alive : !beast.is_alive)}
+          disabled={true || isLoading || (isRevive ? beast.is_alive : !beast.is_alive)}
         >
           {img && <img src={img} />} {label}
         </Button>

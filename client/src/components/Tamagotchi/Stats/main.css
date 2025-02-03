@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  color: #fff;
+  color: #ECECDA;
 }
 
 .stats .item {

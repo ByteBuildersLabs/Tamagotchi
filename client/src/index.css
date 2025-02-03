@@ -52,7 +52,7 @@ a,
 a:active,
 a:visited {
   text-decoration: none;
-  color: #fff;
+  color: #ECECDA;
   font-family: "Montserrat", serif;
 }
 
@@ -61,45 +61,74 @@ p, span {
 }
 
 .input {
-  height: 60px;
-  text-align: center;
-  background-color: #370001;
-  border: 2px solid #e4a101;
-  border-radius: 10px;
-  color: #fff;
-  width: 100%;
-  font-size: 18px;
   font-family: 'Kallisto';
+  border-radius: 30px;
+  padding-right: 10px;
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  background: linear-gradient(to right, #85002A, #D1093D);
+  color: #ECECDA;
+  border: 0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
 }
 
 .input::placeholder {
-  color: #fff;
+  color: #ECECDA;
   font-family: 'Kallisto';
 }
 
 .button {
-  background-color: #370001;
-  border: 2px solid #e4a101;
-  color: #fff;
-  padding: 10px 15px;
-  transition: all 0.25s;
-  cursor: pointer;
-  margin: 0;
-  width: 100%;
-  height: 60px;
+  background: linear-gradient(to right, #85002A, #D1093D); 
+  color: #ECECDA; 
+  border: none;
+  border-radius: 25px;
   font-size: 18px;
-  border-radius: 10px;
-  font-family: 'Kallisto';
+  font-family: 'Kallisto', sans-serif; 
+  text-transform: uppercase;
+  cursor: pointer; 
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  width: 100%;
 }
 
 .button:hover {
-  background-color: #e4a101;
+  background: linear-gradient(to right, #95033A, #E11A4D); 
+  transform: translateY(-2px); 
+}
+
+.button:active {
+  background: linear-gradient(to right, #B00833, #6E0022); 
+  transform: translateY(0);
 }
 
 .button:disabled {
   background-color: #370001;
   border: 2px solid #370001;
   color: #b7b7b7;
+}
+
+.button img {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.disconnect-button {
+  width: 35%;
+  padding: 12px 10px;
+  margin: 0;
+  background-color: #370001;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-weight: bold;
 }
 
 .hint {
@@ -125,17 +154,7 @@ p, span {
   height: 300px;
   border: 2px solid #e4a101;
   object-fit: cover;
-  border-radius: 10px;
-}
-
-.cover .connect-btn {
-  width: 100%;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60px;
-  font-size: 20px;
+  border-radius: 25px;
 }
 
 .footer img {
@@ -145,8 +164,9 @@ p, span {
 
 .info {
   font-size: 12px;
-  color: #fff;
+  color: #ECECDA;
   font-weight: bold;
+  text-align: center;
 }
 
 .title {
@@ -163,31 +183,49 @@ p, span {
   color: #ECECDA;
 }
 
+.cover .connect-btn{
+  height: 60px;
+  text-align: center;
+  background-color: #370001;
+  border: 2px solid #e4a101;
+  border-radius: 10px;
+  color: #ECECDA;
+  width: 100%;
+  font-size: 18px;
+  font-family: 'Kallisto';
+}
+
 .connect-btn,
 .connect-btn:active,
 .connect-btn:visited,
 .connect-btn:focus {
+  border: 0;
   font-family: 'Kallisto';
-  padding: 5px 10px;
-  color: var(--white);
+  font-size: 12px;
+  background-color: rgba(55, 0, 1, 0.5);
+  color: #ECECDA;
+  border-radius: 10px;
+  text-align: center;
   transition: all 0.25s;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-center;
-  font-size: 20px;
-  border: 2px solid #e4a101;
-  background-color: #370001;
-  color: #fff;
-  transition: all 0.5s;
-  border-radius: 10px;
+  padding: 15px 10px;
+  margin: 0 auto auto;
+  font-weight: bold;
 }
 
 .connect-btn:hover {
-  background-color: #e4a101;
+  background-color: #610103;
 }
 
 .connect-btn img {
   width: 30px;
   margin-left: 10px;
+}
+
+#_rht_toaster div div {
+  background-color: rgba(55, 0, 1, 0.5) !important;
+  color: #ECECDA;
+  border-radius: 3px !important;
+  font-weight: bold !important;
+  border-radius: 5px;
 }
