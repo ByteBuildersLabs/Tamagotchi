@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { SDK } from "@dojoengine/sdk";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-// import { addAddressPadding } from "starknet";
+import { addAddressPadding } from "starknet";
 import { Models, Schema } from "../dojo/bindings.ts";
 import { useAccount } from "@starknet-react/core";
 import useModel from "../dojo/useModel.tsx";
-import { useDojoStore } from "../main";
+import { useDojoStore } from "../main.tsx";
 
 export const useBeast = (sdk: SDK<Schema>) => {
   const { account } = useAccount();
@@ -18,6 +18,8 @@ export const useBeast = (sdk: SDK<Schema>) => {
 
   const beastData = useModel(entityId ?? "", Models.Beast);
   const [beast, setBeast] = useState(beastData);
+
+  const [beasts, setBeasts] = useState<any>([]);
 
   useEffect(() => {
     setBeast(beastData);
@@ -34,9 +36,9 @@ export const useBeast = (sdk: SDK<Schema>) => {
             Beast: {
               $: {
                 where: {
-                  // player: {
-                  //   $is: addAddressPadding(account.address),
-                  // },
+                  player: {
+                    $is: addAddressPadding(account.address),
+                  },
                 },
               },
             },
@@ -74,9 +76,9 @@ export const useBeast = (sdk: SDK<Schema>) => {
               Beast: {
                 $: {
                   where: {
-                    // player: {
-                    //   $eq: addAddressPadding(account.address),
-                    // },
+                    player: {
+                      $eq: addAddressPadding(account.address),
+                    },
                   },
                 },
               },
@@ -88,7 +90,8 @@ export const useBeast = (sdk: SDK<Schema>) => {
               return;
             }
             if (resp.data) {
-              console.log("resp.data:", resp.data);
+              const beastsData = resp.data.map((entity) => entity.models.babybeasts.Beast);
+              setBeasts(beastsData);
               state.setEntities(resp.data);
             }
           }
@@ -101,5 +104,8 @@ export const useBeast = (sdk: SDK<Schema>) => {
     fetchEntities();
   }, [sdk, account]);
 
-  return beast;
+  return {
+    beast,
+    beasts,
+  };
 };
