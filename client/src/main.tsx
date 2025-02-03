@@ -64,7 +64,6 @@ async function main() {
                 <Route path='/bag' element={<Bag sdk={sdk} />} />
                 <Route path='/play' element={<Tamagotchi sdk={sdk} />} />
                 <Route path='/chat' element={<Chat />} />
-                <Route path='/memoryChallenge' element={<MemoryChallenge />} />
               </Routes>
             </Router>
           </StarknetConfig>
