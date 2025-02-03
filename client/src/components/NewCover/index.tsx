@@ -1,9 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useAccount } from "@starknet-react/core";
+import SpawnBeast from "../SpawnBeast/index.tsx";
+import { DeveloperCode } from "../DeveloperCode/index.tsx";
 import './styles.css';
 
 const VennDiagram = () => {
+    const { account } = useAccount();
   const [currentCircle, setCurrentCircle] = useState('play');
+  const [showDeveloperCode, setShowDeveloperCode] = useState(false);
   
+  useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    bodyElement?.classList.remove('day', 'night');
+    bodyElement.style.backgroundSize = 'cover';
+  }, []);
+
   useEffect(() => {
     const sequence = ['play', 'raise', 'evolve'];
     let currentIndex = 0;
@@ -15,6 +26,10 @@ const VennDiagram = () => {
     
     return () => clearInterval(interval);
   }, []);
+
+  if (account) {
+    return <SpawnBeast />;
+  }
 
   return (
     <div className="venn-container">
@@ -96,7 +111,9 @@ const VennDiagram = () => {
         </svg>
       </div>
 
-      <button className="connect-button">CONNECT</button>
+      <button className="connect-button" onClick={() => setShowDeveloperCode(true)}>CONNECT</button>
+
+      {showDeveloperCode && <DeveloperCode/>} 
     </div>
   );
 };
