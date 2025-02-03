@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
-import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import * as ReactDOM from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { init, createDojoStore } from "@dojoengine/sdk";
 import { Schema, schema } from "./dojo/bindings.ts";
 import { dojoConfig } from "./dojo/dojoConfig.ts";
@@ -9,11 +9,16 @@ import { sepolia } from "@starknet-react/chains";
 import { StarknetConfig, starkscan } from "@starknet-react/core";
 import { RpcProvider } from "starknet";
 import cartridgeConnector from "./config/cartridgeConnector.tsx";
-import Cover from "./components/Cover/index.tsx";
+
+// Import components to use in the routes
+import NewCover from "./components/NewCover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
-import Header from "./components/Header/index.tsx";
 import Bag from "./components/Bag/index.tsx";
 import Chat from "./components/Chat/index.tsx";
+
+// Import the layout component
+import AppLayout from "./components/Layouts/AppLayout.tsx";
+
 import "./index.css";
 
 function provider() {
@@ -47,8 +52,7 @@ async function main() {
   if (rootElement) {
     ReactDOM.render(
       <StrictMode>
-        <DojoContextProvider
-        >
+        <DojoContextProvider>
           <StarknetConfig
             autoConnect
             chains={[sepolia]}
@@ -57,12 +61,16 @@ async function main() {
             provider={provider}
           >
             <Router>
-            <Header />
               <Routes>
-                <Route path='/' element={<Cover />}/>
-                <Route path='/bag' element={<Bag sdk={sdk} />} />
-                <Route path='/play/:beastId' element={<Tamagotchi sdk={sdk} />} />
-                <Route path='/chat' element={<Chat />} />
+                {/* Cover route without header*/}
+                <Route path="/" element={<NewCover />} />
+                
+                {/* Internal routes using layout for header */}
+                <Route element={<AppLayout />}>
+                  <Route path="/bag" element={<Bag sdk={sdk} />} />
+                  <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
+                  <Route path="/chat" element={<Chat />} />
+                </Route>
               </Routes>
             </Router>
           </StarknetConfig>
@@ -74,5 +82,5 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("Helloo Failed to initialize the application:", error);
+  console.error("Hello: Falló la inicialización de la aplicación:", error);
 });

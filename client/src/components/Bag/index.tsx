@@ -38,27 +38,30 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
   };
 
   const getSlideContent = (beast: typeof beasts[0]) => (
-    <div className="beast-slide">
-      <div className="beast">
-        <div className="beast-header">
-          <h2>{beast.name}</h2>
+    <>
+      <div className="beast-slide">
+        <div className="beast">
+          <div className="beast-header">
+            <h2>{beast.name}</h2>
+          </div>
+          <div className="beast-pic d-flex align-items-end">
+            <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
+          </div>
+          <div className="initial-info">
+            <h4>
+              {initials[beast.specie - 1].name} Lvl {beast.level}
+            </h4>
+            <p>
+              Your are close to evolve {initials[beast.specie - 1].name}, keep playing to reach the next level
+            </p>
+          </div>
+          <Link to={`/play/${beast.beast_id}`} className="button">
+            PLAY
+          </Link>
         </div>
-        <div className="beast-pic d-flex align-items-end">
-          <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
-        </div>
-        <div className="initial-info">
-          <h4>
-            {initials[beast.specie - 1].name} Lvl {beast.level}
-          </h4>
-          <p>
-            Your are close to evolve {initials[beast.specie - 1].name}, keep playing to reach the next level
-          </p>
-        </div>
-        <Link to={`/play/${beast.beast_id}`} className="button">
-          PLAY
-        </Link>
       </div>
-    </div>
+    </>
+
   );
 
   useEffect(() => {
@@ -66,12 +69,13 @@ function Bag({ sdk }: { sdk: SDK<Schema> }) {
     if (bodyElement) {
       bodyElement.classList.remove('day', 'night');
       bodyElement.style.backgroundSize = 'cover';
+      bodyElement.style.padding = '80px 15px 30px';
     }
   }, []);
 
   return (
     <div className="bag">
-      <div className='d-flex'>
+      <div className='d-flex justify-content-between align-items-center'>
         <p className={'title'}>
           Collect them all!
           <span className='d-block'>There are many species</span>

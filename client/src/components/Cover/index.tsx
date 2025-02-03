@@ -15,6 +15,7 @@ function Cover() {
       bodyElement.classList.remove('day');
       bodyElement.classList.remove('night');
       bodyElement.style.backgroundSize = 'cover';
+      bodyElement.style.padding = '80px 15px 30px';
     }
   }, []);
 

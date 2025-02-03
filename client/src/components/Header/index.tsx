@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Music from '../Music';
 import sheep from '../../assets/img/sheep.svg';
-import message from '../../assets/img/message.svg';
 import monster from '../../assets/img/logo.svg';
 import './main.css';
 
@@ -16,9 +15,6 @@ function Header() {
         </Link>
         <div className="side-menu">
           <Music />
-          <Link to={'/chat'}>
-            <img src={message} className='sheep' alt="Sheep" />
-          </Link>
           <Link to={'/bag'}>
             <img src={sheep} className='sheep' alt="Sheep" />
           </Link>

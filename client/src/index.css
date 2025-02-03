@@ -61,15 +61,19 @@ p, span {
 }
 
 .input {
-  height: 60px;
-  text-align: center;
-  background-color: #370001;
-  border: 2px solid #e4a101;
-  border-radius: 10px;
-  color: #ECECDA;
-  width: 100%;
-  font-size: 18px;
   font-family: 'Kallisto';
+  border-radius: 30px;
+  padding-right: 10px;
+  margin: 0;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  background: linear-gradient(to right, #85002A, #D1093D);
+  color: #ECECDA;
+  border: 0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
 }
 
 .input::placeholder {
@@ -89,8 +93,8 @@ p, span {
   transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   font-weight: bold;
-  display: block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   padding: 12px 0;
   width: 100%;
 }
@@ -109,6 +113,22 @@ p, span {
   background-color: #370001;
   border: 2px solid #370001;
   color: #b7b7b7;
+}
+
+.button img {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.disconnect-button {
+  width: 35%;
+  padding: 12px 10px;
+  margin: 0;
+  background-color: #370001;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-weight: bold;
 }
 
 .hint {

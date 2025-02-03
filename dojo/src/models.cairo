@@ -28,6 +28,26 @@ pub struct Beast {
 
 #[derive(Drop, Serde, Debug)]
 #[dojo::model]
+struct TamagotchiStats {
+    #[key]
+    tamagotchi_id: u64,
+    intelligence: u8,
+    games_played: u32,
+    consecutive_wins: u8,
+}
+
+#[derive(Drop, Serde, Debug)]
+#[dojo::model]
+struct GameResult {
+    #[key]
+    player_id: ContractAddress,
+    #[key]
+    game_id: u64,
+    score: u16,
+    success: bool,
+    completion_time: u64,
+}
+
 pub struct BeastId {
     #[key]
     pub id: u32,
