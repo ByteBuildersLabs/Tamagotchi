@@ -268,4 +268,12 @@ pub mod actions {
         };
         world.write_model(@initial_id);
     }
+    fn create_initial_id(ref self: ContractState) {
+        let mut world = self.world(@"babybeasts");
+        let initial_id = BeastId {
+            id: 1,
+            beast_id: 1,
+        };
+        world.write_model(@initial_id);
+    }
 }
