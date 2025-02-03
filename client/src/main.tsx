@@ -19,6 +19,8 @@ import Chat from "./components/Chat/index.tsx";
 // Import the layout component
 import AppLayout from "./components/Layouts/AppLayout.tsx";
 
+import "./index.css";
+
 function provider() {
   return new RpcProvider({
     nodeUrl: "https://api.cartridge.gg/x/starknet/sepolia",
