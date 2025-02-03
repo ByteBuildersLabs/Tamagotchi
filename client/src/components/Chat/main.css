@@ -2,7 +2,7 @@
 .chat {
   display: flex;
   flex-direction: column;
-  height: 65%;
+  height: 80%;
   overflow: hidden;
   width: calc(100% - 30px);
   background-color: transparent;
@@ -13,7 +13,27 @@
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  color: #fff;
+  color: #ECECDA;
+  scroll-behavior: smooth;
+  padding-right: 10px;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(55, 0, 1, 0.3);
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #e4a101;
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #ECECDA;
 }
 
 .message {
@@ -37,16 +57,85 @@
 }
 
 .chat-input input {
+  font-family: 'Kallisto';
   width: 100%;
   height: 55px;
-  padding: 10px;
+  padding: 15px;
   font-size: 18px;
   margin-bottom: 12px;
-  background-color: transparent;
-  color: #fff;
-  border: 0;
+  background-color: rgba(55, 0, 1, 0.5);
+  color: #ECECDA;
+  border: 2px solid #e4a101;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
+}
+
+.chat-input input:focus {
+  outline: none;
+  border-color: #ECECDA;
+  box-shadow: 0 0 15px rgba(228, 161, 1, 0.3);
+  background-color: rgba(55, 0, 1, 0.7);
 }
 
 .chat-input input::placeholder {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.25s ease;
+}
+
+.chat-input input:focus::placeholder {
+  opacity: 0.5;
+}
+
+.button.loading {
+  position: relative;
+  background-color: rgba(55, 0, 1, 0.7);
+  cursor: not-allowed;
+}
+
+.button.loading:hover {
+  background-color: rgba(55, 0, 1, 0.7);
+}
+
+.spinner {
+  display: none;
+}
+
+.thinking-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 12px;
+  background: rgba(55, 0, 1, 0.7);
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+.thinking-dots span {
+  width: 6px;
+  height: 6px;
+  background: #e4a101;
+  border-radius: 50%;
+  animation: thinking 1.4s infinite;
+  opacity: 0.3;
+}
+
+.thinking-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinking-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes thinking {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }

@@ -5,7 +5,6 @@ import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
 //import fs from "fs";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   // Windows
   // server: {
@@ -31,7 +30,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-BqZKd97Z.jpeg"],
+      includeAssets: ["/assets/logo-DCgLxktZ.svg"],
       manifest: {
         name: "BabyBeasts",
         short_name: "BabyBeasts",
@@ -42,9 +41,9 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-BqZKd97Z.jpeg",
+            src: "/assets/logo-DCgLxktZ.svg",
             sizes: "180x180",
-            type: "image/jpeg",
+            type: "image/svg",
           },
         ],
         start_url: "/",

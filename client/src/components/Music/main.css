@@ -1,11 +1,11 @@
 .sound-button {
   background-color: transparent;
   border: 0;
-  margin-right: 10px;
+  padding: 0;
 }
 
 .sound-button img {
-  width: 20px;
+  width: 40px;
   transition: all 0.25s;
 }
 
