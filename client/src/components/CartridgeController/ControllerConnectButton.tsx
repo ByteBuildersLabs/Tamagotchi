@@ -13,7 +13,6 @@ const ControllerConnectButton = () => {
         status === "connected" ? (
           <Link to="/" key={connector.id} className="connect-btn" onClick={() => {
             disconnect();
-            (document.querySelector('.navbar-toggler') as HTMLElement)?.click();
             }}>
             Disconnect ...{address?.slice(-6)}
           </Link>
@@ -21,8 +20,7 @@ const ControllerConnectButton = () => {
           <button
             key={connector.id}
             onClick={() => {
-              connect({ connector });
-              (document.querySelector('.navbar-toggler') as HTMLElement)?.click();
+              connect({ connector })
             }}
             className="connect-btn"
           >

@@ -11,7 +11,7 @@ const Card = React.forwardRef<
       borderWidth: "3px",
       borderColor: "transparent",
       backgroundColor: "transparent",
-      color: "#fff",
+      color: "#ECECDA",
     }}
     {...props}
   />
