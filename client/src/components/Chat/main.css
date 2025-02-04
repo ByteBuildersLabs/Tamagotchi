@@ -165,3 +165,81 @@
   margin: 10px 0;
   color: #ECECDA;
 }
+
+/* Responsive Breakpoints */
+@media screen and (min-width: 768px) {
+  .chat-messages {
+    padding-bottom: 15px;
+  }
+
+  .message p {
+    font-size: 18px;
+    padding: 12px 20px;
+    max-width: 85%;
+  }
+
+  .chat-input {
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 90%;
+    height: 60px;
+  }
+
+  .chat-input input {
+    height: 55px;
+    font-size: 18px;
+  }
+
+  .chat .button {
+    width: 45px;
+  }
+
+  .thinking-dots {
+    padding: 22px 18px;
+    height: 28px;
+    gap: 6px;
+  }
+
+  .thinking-dots span {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .chat {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .message p {
+    font-size: 20px;
+    padding: 15px 25px;
+    max-width: 75%;
+  }
+
+  .chat-input {
+    max-width: 80%;
+    height: 70px;
+  }
+
+  .chat-input input {
+    height: 65px;
+    font-size: 20px;
+  }
+
+  .chat .button {
+    width: 50px;
+  }
+
+  .thinking-dots {
+    padding: 25px 20px;
+    height: 32px;
+    gap: 8px;
+  }
+
+  .thinking-dots span {
+    width: 10px;
+    height: 10px;
+  }
+}
