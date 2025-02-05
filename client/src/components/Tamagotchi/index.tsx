@@ -23,9 +23,10 @@ import sleepSound from "../../assets/sounds/bbsleeps.mp3";
 import playSound from "../../assets/sounds/bbjump.mp3";
 import reviveSound from "../../assets/sounds/bbrevive.mp3";
 import monster from "../../assets/img/logo.svg";
-import Joyride, { Placement } from "react-joyride";
+import Joyride from "react-joyride";
 import "./main.css";
 import { Button } from "../ui/button.tsx";
+import { steps } from "./constants/TutorialSteps.tsx";
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const { beasts } = useBeast(sdk);
@@ -41,84 +42,6 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   //Joyride
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
-  const steps = [
-    {
-      title: "Welcome to your Tamagotchi!",
-      content: <h2>Here you can take care of your Baby Beast.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Energy",
-    },
-    {
-      title: "Energy",
-      content: (
-        <h2>Represents the Tamagotchi's energy; it recovers by sleeping</h2>
-      ),
-      placement: "center" as Placement,
-      target: "#step-Energy",
-    },
-    {
-      title: "Hunger",
-      content: <h2>Measures the hunger level; decreases by eating</h2>,
-      placement: "center" as Placement,
-      target: "#step-Hunger",
-    },
-    {
-      title: "Happiness",
-      content: (
-        <h2>
-          Indicates how happy it is; increases by playing and getting attention
-        </h2>
-      ),
-      placement: "center" as Placement,
-      target: "#step-Happiness",
-    },
-    {
-      title: "Hygiene",
-      content: (
-        <h2>
-          Reflects cleanliness; decreases over time and is restored by bathing
-        </h2>
-      ),
-      placement: "center" as Placement,
-      target: "#step-Hygiene",
-    },
-    {
-      title: "Feed",
-      content: <h2>Give food to your Tamagotchi to satisfy its hunger.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Feed",
-    },
-    {
-      title: "Sleep",
-      content: <h2>Put your Tamagotchi to sleep to recover energy.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Sleep",
-    },
-    {
-      title: "Clean",
-      content: <h2>Use this to keep your Tamagotchi clean and happy.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Clean",
-    },
-    {
-      title: "Play",
-      content: <h2>Play with your Tamagotchi to increase its happiness.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Play",
-    },
-    {
-      title: "Wake Up",
-      content: <h2>Wake up your Tamagotchi to get it active again.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Wake-up",
-    },
-    {
-      title: "Revive",
-      content: <h2>If your Tamagotchi is down, you can revive it here.</h2>,
-      placement: "center" as Placement,
-      target: "#step-Revive",
-    },
-  ];
 
   // Add sound hooks
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
@@ -221,6 +144,24 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
     actionFn();
   };
 
+  const joyRideCallback = (data: any) => {
+    const { action, index, status, type } = data;
+    if (action === "next" && index < steps.length - 1) {
+      setStepIndex(index + 1);
+    } else if (action === "prev" && index > 0) {
+      setStepIndex(index - 1);
+    } else if (
+      status === "finished" ||
+      status === "skipped" ||
+      (action === "next" && index === steps.length - 1)
+    ) {
+      setRun(false);
+      setStepIndex(0);
+    } else if (type === "tour:end") {
+      setRun(false);
+    }
+  };
+
   return (
     <>
       <Joyride
@@ -231,23 +172,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
         showSkipButton={true}
         showProgress={true}
         hideCloseButton={true}
-        callback={(data) => {
-          const { action, index, status, type } = data;
-          if (action === "next" && index < steps.length - 1) {
-            setStepIndex(index + 1);
-          } else if (action === "prev" && index > 0) {
-            setStepIndex(index - 1);
-          } else if (
-            status === "finished" ||
-            status === "skipped" ||
-            (action === "next" && index === steps.length - 1)
-          ) {
-            setRun(false);
-            setStepIndex(0);
-          } else if (type === "tour:end") {
-            setRun(false);
-          }
-        }}
+        callback={joyRideCallback}
         styles={{
           options: {
             backgroundColor: "#370001",
