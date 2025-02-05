@@ -12,7 +12,7 @@ import initials from '../../../data/initials.tsx';
 
 const initialFoodItems = [
   { name: 'Apple', img: Apple, count: 5 },
-  { name: 'Meat', img: Meat, count: 3 },
+  { name: 'Coockie', img: Meat, count: 3 },
   { name: 'Fish', img: Fish, count: 2 },
 ];
 
