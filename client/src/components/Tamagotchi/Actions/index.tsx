@@ -19,14 +19,27 @@ const actionButtons: { label: string, img: string | null, action: string, pictur
   { label: "Revive", img: null, action: "revive", pictureKey: "idlePicture", isRevive: true }
 ];
 
-const Actions = ({ handleAction, isLoading, beast, account, client }: { handleAction: any, isLoading: any, beast: any, account: any, client: any }) => {
+const Actions = ({ handleAction, isLoading, beast, account, client, setCurrentView }: { 
+  handleAction: any, 
+  isLoading: any, 
+  beast: any, 
+  account: any, 
+  client: any,
+  setCurrentView: (view: string) => void 
+}) => {
   return (
     <div className="actions mb-0">
       {actionButtons.map(({ label, img, action, pictureKey, isRevive }) => (
         <Button
           key={label}
-          onClick={() => handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey])}
-          disabled={true || isLoading || (isRevive ? beast.is_alive : !beast.is_alive)}
+          onClick={() => {
+            if (action === 'feed') {
+              setCurrentView('food'); // Change view to food
+            } else {
+              handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey]);
+            }
+          }}
+          disabled={isLoading || (isRevive ? beast.is_alive : !beast.is_alive)}
         >
           {img && <img src={img} />} {label}
         </Button>

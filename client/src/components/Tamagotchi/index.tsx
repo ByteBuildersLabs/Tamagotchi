@@ -142,8 +142,12 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                     beast={beast}
                     account={account}
                     client={client}
+                    setCurrentView={setCurrentView}
                   />
-                : <></>
+                : 
+                currentView === 'food' ? 
+                  <Stats beast={beast} /> // 🔥 Temporalmente usamos Stats para representar la vista de comida
+                :<></>
               }
               <div className="beast-interaction">
                 <img src={monster} onClick={() => ( setCurrentView(currentView !== 'actions' ? 'actions' : 'stats') )} />
