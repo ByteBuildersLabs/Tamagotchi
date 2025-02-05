@@ -22,6 +22,7 @@
     "@starknet-react/chains": "^3.1.0",
     "@starknet-react/core": "^3.5.0",
     "@types/node": "^22.10.7",
+    "@types/react-slick": "^0.23.13",
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
