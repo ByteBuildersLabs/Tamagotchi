@@ -14,6 +14,7 @@ import Stats from "./Stats/index.tsx";
 import Actions from "./Actions/index.tsx";
 import Status from "./Status/index.tsx";
 import Talk from "./Talk/index.tsx";
+import Food from "./Food/index.tsx";
 // import Whispers from "./Whispers/index.tsx";
 import useSound from 'use-sound';
 import feedSound from '../../assets/sounds/bbeating.mp3';
@@ -146,7 +147,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                   />
                 : 
                 currentView === 'food' ? 
-                  <Stats beast={beast} /> // 🔥 Temporalmente usamos Stats para representar la vista de comida
+                  <Food /> // 🔥 Temporalmente usamos Stats para representar la vista de comida
                 :<></>
               }
               <div className="beast-interaction">
