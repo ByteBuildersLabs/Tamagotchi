@@ -1,0 +1,20 @@
+.whispers {
+  height: 100px;
+  margin: 0 0 10px;
+  overflow-y: scroll;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.whispers .messages {
+  padding: 5px 15px;
+  text-align: center;
+  margin: 0;
+  color: #ECECDA;
+  font-size: 14px;
+}
+
+.whispers .message p {
+  font-size: 14px;
+  font-weight: bold;
+  background: unset;
+}

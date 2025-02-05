@@ -50,10 +50,14 @@
   text-align: left;
 }
 
+.message span {
+  display: none !important;
+}
+
 .message p {
   font-family: "Kallisto";
   border-radius: 15px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
   padding: 10px 15px;
   background: linear-gradient(to right, #85002A, #a9143c);

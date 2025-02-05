@@ -15,7 +15,7 @@ import Actions from "./Actions/index.tsx";
 import Status from "./Status/index.tsx";
 import Talk from "./Talk/index.tsx";
 import Food from "./Food/index.tsx";
-// import Whispers from "./Whispers/index.tsx";
+import Whispers from "./Whispers/index.tsx";
 import useSound from 'use-sound';
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
@@ -129,7 +129,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
               <div className="scenario flex justify-center items-column">
                 <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
               </div>
-              {/* <Whispers beast={beast} /> */}
+              <Whispers beast={beast}  />
               {
                 currentView === 'stats' ? 
                   <Stats 

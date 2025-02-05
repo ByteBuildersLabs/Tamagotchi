@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import './main.css';
+import { useState, useRef, useEffect } from "react";
 import MessageComponent, { Message } from "../ui/message";
 import ThinkingDots from '../ui/thinking-dots';
 import message from '../../assets/img/message.svg';
+import './main.css';
 
 interface ApiError {
   message: string;
