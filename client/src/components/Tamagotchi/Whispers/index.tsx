@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Beast } from "../../../dojo/bindings";
 import MessageComponent, { Message } from "../../ui/message";
 import axios from "axios";
-import './main.css';
+import "./main.css";
 
 interface ApiError {
   message: string;
@@ -18,16 +18,21 @@ const Whispers = ({ beast }: { beast: Beast }) => {
     const range = {
       LOW: 30,
       MEDIUM: 50,
-      HIGH: 80
+      HIGH: 80,
     };
-  
+
     return Object.entries(beast)
       .map(([stat, value]) => ({
         stat,
         value,
-        priority: value < range.LOW ? 3 : 
-                  value < range.MEDIUM ? 2 : 
-                  value > range.HIGH ? 1 : 0
+        priority:
+          value < range.LOW
+            ? 3
+            : value < range.MEDIUM
+            ? 2
+            : value > range.HIGH
+            ? 1
+            : 0,
       }))
       .sort((a, b) => b.priority - a.priority)[0];
   };
@@ -41,10 +46,10 @@ const Whispers = ({ beast }: { beast: Beast }) => {
             Hygiene: ${beast.hygiene}/100
             
             Responds as a friendly and playful virtual pet, in 2 lines max.,
-            focusing on your most urgent need: ${criticalStat.stat} (${criticalStat.value}/100);`
+            focusing on your most urgent need: ${criticalStat.stat} (${criticalStat.value}/100);`;
   };
 
-  const createWhisper = async (prompt:any) => {
+  const createWhisper = async (prompt: any) => {
     if (isLoading) return;
     setError(null);
     setIsLoading(true);
@@ -65,25 +70,28 @@ const Whispers = ({ beast }: { beast: Beast }) => {
       console.error("Error sending message:", error);
       setError({
         message: "Oops! Couldn't get a response. Please try again in a moment.",
-        status: 500
+        status: 500,
       });
-      setWhispers((prevMessages) => [...prevMessages, {
-        user: "System",
-        text: "Failed to get response. Please try again."
-      }]);
+      setWhispers((prevMessages) => [
+        ...prevMessages,
+        {
+          user: "System",
+          text: "Failed to get response. Please try again.",
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-      const prompt = generatePrompt(beast);
-      createWhisper(prompt);
+    const prompt = generatePrompt(beast);
+    createWhisper(prompt);
   }, []);
 
   return (
     <div className="whispers">
-      <p className='messages'>
+      <p className="messages">
         {whispers.map((message, index) => (
           <MessageComponent key={index} message={message} />
         ))}
@@ -91,6 +99,6 @@ const Whispers = ({ beast }: { beast: Beast }) => {
       {error && <p>{error.message}</p>}
     </div>
   );
-}
+};
 
 export default Whispers;
