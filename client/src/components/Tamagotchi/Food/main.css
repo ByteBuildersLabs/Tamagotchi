@@ -25,7 +25,7 @@
 .food-label {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espacio entre la imagen y el texto */
+    gap: 10px; 
     flex: 1;
 }
 

@@ -147,7 +147,13 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                   />
                 : 
                 currentView === 'food' ? 
-                  <Food /> // 🔥 Temporalmente usamos Stats para representar la vista de comida
+                  <Food 
+                    handleAction={handleAction}
+                    beast={beast}
+                    account={account}
+                    client={client}
+                    showAnimation={showAnimation}
+                  />
                 :<></>
               }
               <div className="beast-interaction">
