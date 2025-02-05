@@ -30,9 +30,12 @@ const Food = () => {
           <div className="food-slide" key={name}>
             <div className="food-label">
               <img src={img} alt={name} />
-              <span className="food-name">{name}</span>
+              <div className="food-text">
+                <span className="food-name">{name}</span>
+                <span className="food-value">Remaining: {count}</span>
+                <button className="feed-button">Feed</button>
+              </div>
             </div>
-            <div className="food-value">{count}</div>
           </div>
         ))}
       </Slider>

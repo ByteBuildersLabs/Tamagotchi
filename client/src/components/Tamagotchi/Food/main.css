@@ -10,50 +10,77 @@
     color: #ECECDA;
     position: relative;
     overflow: hidden;
-  }
-  
-  .food-slide {
+}
+
+.food-slide {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
     font-weight: bold;
-    text-transform: uppercase;
     width: 100%;
-  }
-  
-  .food-label img {
-    width: 30px;
-    height: 30px;
-    margin: auto;
-  }
+    margin: 0px 0px 0px 70px;
+}
 
-  .food-name {
+.food-label {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre la imagen y el texto */
+    flex: 1;
+}
+
+.food-label img {
+    width: 80px;
+    height: 80px;
+}
+
+.food-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.food-name {
     font-size: 14px;
     font-weight: bold;
-    text-transform: uppercase;
-    display: block;
-    text-align: center;
-  }
-  
-  .food-value {
-    width: 52%;
-    display: flex;
-    justify-content: flex-end;
+    /*display: block;*/
+    /*text-align: center;*/
+}
+
+.food-value {
+    font-size: 12px;
+    color: #BFBFBF;
+}
+
+.feed-button {
+    padding: 6px 10px;
     font-size: 14px;
-  }
-  
-  .slick-dots {
+    font-weight: bold;
+    color: #ECECDA;
+    background-color: #950124;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: center;
+    margin: 5px;
+    
+}
+
+.feed-button:hover {
+    background-color: #950124;
+}
+
+.slick-dots {
     bottom: -35px;
-  }
-  
-  .slick-dots li button:before {
+}
+
+.slick-dots li button:before {
     color: #ECECDA !important;
-  }
-  
-  .slick-slide {
+}
+
+.slick-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
+}
