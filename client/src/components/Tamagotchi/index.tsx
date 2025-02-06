@@ -13,7 +13,6 @@ import dead from "../../assets/img/dead.gif";
 import Stats from "./Stats/index.tsx";
 import Actions from "./Actions/index.tsx";
 import Status from "./Status/index.tsx";
-import Talk from "./Talk/index.tsx";
 import Food from "./Food/index.tsx";
 import Whispers from "./Whispers/index.tsx";
 import useSound from "use-sound";
@@ -23,25 +22,18 @@ import sleepSound from "../../assets/sounds/bbsleeps.mp3";
 import playSound from "../../assets/sounds/bbjump.mp3";
 import reviveSound from "../../assets/sounds/bbrevive.mp3";
 import monster from "../../assets/img/logo.svg";
-import Joyride from "react-joyride";
 import "./main.css";
-import { Button } from "../ui/button.tsx";
-import { steps } from "./constants/TutorialSteps.tsx";
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const { beasts } = useBeast(sdk);
   const { beastId } = useParams();
   const beast = beasts.find(
-    (beast: Beast) => String(beast.beast_id) === beastId,
+    (beast: Beast) => String(beast.beast_id) === beastId
   );
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
   const [currentView, setCurrentView] = useState("actions");
-
-  //Joyride
-  const [run, setRun] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
 
   // Add sound hooks
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
@@ -49,8 +41,6 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-
-  const [isModalOpen, setModalOpen] = useState(false);
 
   const {
     setup: { client },
@@ -74,7 +64,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
 
   // Animations
   const [currentImage, setCurrentImage] = useState(
-    beast ? initials[beast.specie - 1].idlePicture : "",
+    beast ? initials[beast.specie - 1].idlePicture : ""
   );
   const [firstTime, isFirstTime] = useState(true);
 
@@ -115,7 +105,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const handleAction = async (
     actionName: string,
     actionFn: () => Promise<{ transaction_hash: string } | undefined>,
-    animation: string,
+    animation: string
   ) => {
     setIsLoading(true);
     showAnimation(animation);
@@ -144,90 +134,29 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
     actionFn();
   };
 
-  const joyRideCallback = (data: any) => {
-    const { action, index, status, type } = data;
-    if (action === "next" && index < steps.length - 1) {
-      setStepIndex(index + 1);
-    } else if (action === "prev" && index > 0) {
-      setStepIndex(index - 1);
-    } else if (
-      status === "finished" ||
-      status === "skipped" ||
-      (action === "next" && index === steps.length - 1)
-    ) {
-      setRun(false);
-      setStepIndex(0);
-    } else if (type === "tour:end") {
-      setRun(false);
-    }
-  };
-
   return (
     <>
-      <Joyride
-        run={run}
-        steps={steps}
-        stepIndex={stepIndex}
-        continuous={true}
-        showSkipButton={true}
-        showProgress={true}
-        hideCloseButton={true}
-        callback={joyRideCallback}
-        styles={{
-          options: {
-            backgroundColor: "#370001",
-            overlayColor: "rgba(79, 26, 0, 0.4)",
-            primaryColor: "#000",
-            textColor: "white",
-            width: 500,
-            zIndex: 1000,
-          },
-        }}
-      />
-
       <div className="tamaguchi">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "end",
-            width: "100%",
-            marginBottom: "1rem",
-          }}
-        >
-          <Button
-            className="btn-dark"
-            type="button"
-            onClick={() => setRun(true)}
-          >
-            Tutorial
-          </Button>
-        </div>
-
         <>
           {beast && (
             <Card
               style={{
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "space-between",
                 height: "100%",
               }}
             >
-              <div className="status-tamagotchi">
-                <Status beast={beast} />
-              </div>
-
+              <Status beast={beast} />
               <div>
-                <div
-                  className="scenario flex justify-center items-column"
-                  style={{ height: "90%" }}
-                >
+                <div className="scenario flex justify-center items-column">
                   <img
                     src={currentImage}
                     alt="Tamagotchi"
                     className="w-40 h-40"
                   />
                 </div>
-                <Whispers beast={beast} />
+                <Whispers beast={beast} expanded={currentView === "chat"} />
                 {currentView === "stats" ? (
                   <Stats beast={beast} />
                 ) : currentView === "actions" ? (
@@ -239,6 +168,8 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                     client={client}
                     setCurrentView={setCurrentView}
                   />
+                ) : currentView === "chat" ? (
+                  <></>
                 ) : currentView === "food" ? (
                   <Food
                     handleAction={handleAction}
@@ -255,22 +186,16 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                     src={monster}
                     onClick={() =>
                       setCurrentView(
-                        currentView !== "actions" ? "actions" : "stats",
+                        currentView !== "actions" ? "actions" : "stats"
                       )
                     }
                   />
-                  <img src={message} onClick={() => setModalOpen(true)} />
+                  <img src={message} onClick={() => setCurrentView("chat")} />
                 </div>
               </div>
             </Card>
           )}
         </>
-        <Talk
-          isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
-          pic={currentImage}
-          name={initials[beast?.specie - 1]?.name}
-        />
       </div>
     </>
   );

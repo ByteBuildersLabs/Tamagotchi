@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import { Beast } from "../../../dojo/bindings";
-import MessageComponent, { Message } from "../../ui/message";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { Beast } from "../../../dojo/bindings";
+import message from "../../../assets/img/message.svg";
+import MessageComponent, { Message } from "../../ui/message";
+import initials from "../../../data/initials";
 import "./main.css";
 
 interface ApiError {
@@ -9,10 +11,112 @@ interface ApiError {
   status?: number;
 }
 
-const Whispers = ({ beast }: { beast: Beast }) => {
+const Whispers = ({ beast, expanded }: { beast: Beast; expanded: boolean }) => {
+  // Whispers
   const [whispers, setWhispers] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
+  const [input, setInput] = useState("");
+  // Chat
+  const [messages, setMessages] = useState<Message[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const MAX_MESSAGE_LENGTH = 500;
+
+  const restoreFocus = () => {
+    inputRef.current?.focus();
+  };
+
+  const sendMessage = async () => {
+    if (input.trim() === "" || isLoading) return;
+    setError(null);
+    setIsLoading(true);
+    const newMessage = { user: "Me", text: input };
+    setMessages([...messages, newMessage]);
+    setInput("");
+
+    try {
+      const response = await axios.post(import.meta.env.VITE_ELIZA_URL || "", {
+        text: input,
+      });
+
+      if (response.data && response.data.length > 0) {
+        const { user, text } = response.data[0];
+        const botMessage = { user, text };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+        setWhispers([botMessage]);
+      } else {
+        throw new Error("Received empty response from server");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setError({
+        message: "Oops! Couldn't get a response. Please try again in a moment.",
+        status: 500,
+      });
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          user: "System",
+          text: "Failed to get response. Please try again.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+      restoreFocus();
+    }
+  };
+
+  const chat = (beast: Beast) => {
+    return (
+      <div className="whispers-chat">
+        <div className="messages">
+          {messages.map((message, index) => (
+            <MessageComponent key={index} message={message} />
+          ))}
+        </div>
+        <div className="chat-input">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder={`Talk to ${initials[beast.specie - 1].name}`}
+            value={input}
+            disabled={isLoading}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+            maxLength={MAX_MESSAGE_LENGTH}
+          />
+          <button
+            type="button"
+            onClick={sendMessage}
+            disabled={isLoading}
+            className={`button ${isLoading ? "loading" : ""}`}
+          >
+            <img src={message} />
+          </button>
+        </div>
+        {error && <div className="error-tooltip">{error.message}</div>}
+        {error && <p>{error.message}</p>}
+      </div>
+    );
+  };
+
+  const uniMessage = () => {
+    return (
+      <div className="whispers">
+        <div className="messages">
+          {whispers.map((message, index) => (
+            <MessageComponent key={index} message={message} />
+          ))}
+        </div>
+        {error && <p>{error.message}</p>}
+      </div>
+    );
+  };
 
   const analyzeStats = (beast: Beast) => {
     const range = {
@@ -62,7 +166,8 @@ const Whispers = ({ beast }: { beast: Beast }) => {
       if (response.data && response.data.length > 0) {
         const { user, text } = response.data[0];
         const botWhisper = { user, text };
-        setWhispers((prevMessages) => [...prevMessages, botWhisper]);
+        setWhispers(() => [botWhisper]);
+        setMessages((prevMessages) => [...prevMessages, botWhisper]);
       } else {
         throw new Error("Received empty response from server");
       }
@@ -87,18 +192,15 @@ const Whispers = ({ beast }: { beast: Beast }) => {
   useEffect(() => {
     const prompt = generatePrompt(beast);
     createWhisper(prompt);
+    const intervalId = setInterval(() => {
+      const prompt = generatePrompt(beast);
+      createWhisper(prompt);
+    }, 180000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
-  return (
-    <div className="whispers">
-      <p className="messages">
-        {whispers.map((message, index) => (
-          <MessageComponent key={index} message={message} />
-        ))}
-      </p>
-      {error && <p>{error.message}</p>}
-    </div>
-  );
+  return expanded ? chat(beast) : uniMessage();
 };
 
 export default Whispers;

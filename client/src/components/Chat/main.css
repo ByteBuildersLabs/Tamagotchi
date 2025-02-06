@@ -50,10 +50,6 @@
   text-align: left;
 }
 
-.message span {
-  display: none !important;
-}
-
 .message p {
   font-family: "Kallisto";
   border-radius: 15px;
