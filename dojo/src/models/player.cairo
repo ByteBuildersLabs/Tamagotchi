@@ -16,7 +16,6 @@ pub struct Player {
 mod tests {
     use super::Player;
     use starknet::{ContractAddress, contract_address_const};
-    use core::traits::Into;
 
     #[test]
     #[available_gas(1000000)]
