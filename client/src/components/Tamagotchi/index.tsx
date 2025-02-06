@@ -23,13 +23,19 @@ import playSound from "../../assets/sounds/bbjump.mp3";
 import reviveSound from "../../assets/sounds/bbrevive.mp3";
 import monster from "../../assets/img/logo.svg";
 import "./main.css";
+import Joyride, { CallBackProps, STATUS } from "react-joyride";
+import { steps } from "./constants/TutorialSteps.tsx";
 
 function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const { beasts } = useBeast(sdk);
   const { beastId } = useParams();
   const beast = beasts.find(
-    (beast: Beast) => String(beast.beast_id) === beastId,
+    (beast: Beast) => String(beast.beast_id) === beastId
   );
+
+  // Joyride
+  const [run, setRun] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +70,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
 
   // Animations
   const [currentImage, setCurrentImage] = useState(
-    beast ? initials[beast.specie - 1].idlePicture : "",
+    beast ? initials[beast.specie - 1].idlePicture : ""
   );
   const [firstTime, isFirstTime] = useState(true);
 
@@ -105,7 +111,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const handleAction = async (
     actionName: string,
     actionFn: () => Promise<{ transaction_hash: string } | undefined>,
-    animation: string,
+    animation: string
   ) => {
     setIsLoading(true);
     showAnimation(animation);
@@ -134,9 +140,58 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
     actionFn();
   };
 
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { action, index, status, type } = data;
+
+    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+      setRun(false);
+      setStepIndex(0);
+    } else if (action === "next" && index < steps.length - 1) {
+      setStepIndex(index + 1);
+    } else if (action === "prev" && index > 0) {
+      setStepIndex(index - 1);
+    } else if (type === "tour:end") {
+      setRun(false);
+      setStepIndex(0);
+    }
+  };
+
   return (
     <>
+      <Joyride
+        run={run}
+        steps={steps}
+        stepIndex={stepIndex}
+        continuous={true}
+        showSkipButton={true}
+        showProgress={true}
+        hideCloseButton={true}
+        callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            backgroundColor: "#370001",
+            overlayColor: "rgba(79, 26, 0, 0.4)",
+            primaryColor: "#000",
+            textColor: "white",
+            width: 500,
+            zIndex: 1000,
+          },
+        }}
+      />
+
       <div className="tamaguchi">
+        <div
+          style={{ display: "flex", justifyContent: "end", marginBottom: 4 }}
+        >
+          <button
+            className="btn-dark"
+            type="button"
+            onClick={() => setRun(true)}
+          >
+            Start Tutorial
+          </button>
+        </div>
+
         <>
           {beast && (
             <Card
@@ -144,7 +199,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: "100%",
+                height: "90%",
               }}
             >
               <Status beast={beast} />
@@ -186,7 +241,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                     src={monster}
                     onClick={() =>
                       setCurrentView(
-                        currentView !== "actions" ? "actions" : "stats",
+                        currentView !== "actions" ? "actions" : "stats"
                       )
                     }
                   />
