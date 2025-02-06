@@ -29,10 +29,10 @@ const Whispers = ({ beast }: { beast: Beast }) => {
           value < range.LOW
             ? 3
             : value < range.MEDIUM
-            ? 2
-            : value > range.HIGH
-            ? 1
-            : 0,
+              ? 2
+              : value > range.HIGH
+                ? 1
+                : 0,
       }))
       .sort((a, b) => b.priority - a.priority)[0];
   };

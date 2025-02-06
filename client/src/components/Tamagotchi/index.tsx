@@ -32,7 +32,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const { beasts } = useBeast(sdk);
   const { beastId } = useParams();
   const beast = beasts.find(
-    (beast: Beast) => String(beast.beast_id) === beastId
+    (beast: Beast) => String(beast.beast_id) === beastId,
   );
 
   const loadingTime = 6000;
@@ -74,7 +74,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
 
   // Animations
   const [currentImage, setCurrentImage] = useState(
-    beast ? initials[beast.specie - 1].idlePicture : ""
+    beast ? initials[beast.specie - 1].idlePicture : "",
   );
   const [firstTime, isFirstTime] = useState(true);
 
@@ -115,7 +115,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
   const handleAction = async (
     actionName: string,
     actionFn: () => Promise<{ transaction_hash: string } | undefined>,
-    animation: string
+    animation: string,
   ) => {
     setIsLoading(true);
     showAnimation(animation);
@@ -255,7 +255,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<Schema> }) {
                     src={monster}
                     onClick={() =>
                       setCurrentView(
-                        currentView !== "actions" ? "actions" : "stats"
+                        currentView !== "actions" ? "actions" : "stats",
                       )
                     }
                   />

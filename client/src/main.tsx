@@ -45,7 +45,7 @@ async function main() {
         revision: "1",
       },
     },
-    schema
+    schema,
   );
 
   const rootElement = document.getElementById("root");
@@ -79,7 +79,7 @@ async function main() {
           </StarknetConfig>
         </DojoContextProvider>
       </StrictMode>,
-      rootElement
+      rootElement,
     );
   }
 }

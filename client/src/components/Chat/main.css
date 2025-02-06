@@ -9,7 +9,7 @@
 .chat-messages {
   height: 100%;
   overflow-y: scroll;
-  color: #ECECDA;
+  color: #ececda;
   scroll-behavior: smooth;
   padding-bottom: 10px;
   padding-right: 0;
@@ -29,7 +29,7 @@
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
-  background: #ECECDA;
+  background: #ececda;
 }
 
 .message {
@@ -60,7 +60,7 @@
   font-size: 14px;
   font-weight: normal;
   padding: 10px 15px;
-  background: linear-gradient(to right, #85002A, #a9143c);
+  background: linear-gradient(to right, #85002a, #a9143c);
 }
 
 .user {
@@ -72,12 +72,12 @@
   display: flex;
   align-items: center;
   padding: 0 15px;
-  background: linear-gradient(to right, #85002A, #D1093D);
+  background: linear-gradient(to right, #85002a, #d1093d);
   border-radius: 30px;
 }
 
 .chat-input input {
-  font-family: 'Kallisto';
+  font-family: "Kallisto";
   border-radius: 30px;
   padding-right: 10px;
   margin: 0;
@@ -85,7 +85,7 @@
   height: 50px;
   font-size: 16px;
   background-color: transparent;
-  color: #ECECDA;
+  color: #ececda;
   border: 0;
   border-radius: 10px;
   transition: all 0.25s ease;
@@ -97,7 +97,7 @@
 }
 
 .chat-input input::placeholder {
-  color: #ECECDA;
+  color: #ececda;
   transition: all 0.25s ease;
 }
 
@@ -140,7 +140,7 @@
 .thinking-dots span {
   width: 6px;
   height: 6px;
-  background: #D1093D;
+  background: #d1093d;
   border-radius: 50%;
   animation: thinking 1.4s infinite;
   opacity: 0.3;
@@ -155,7 +155,8 @@
 }
 
 @keyframes thinking {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
@@ -167,5 +168,5 @@
 
 .error-tooltip {
   margin: 10px 0;
-  color: #ECECDA;
+  color: #ececda;
 }
