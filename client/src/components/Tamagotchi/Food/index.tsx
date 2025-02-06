@@ -38,8 +38,8 @@ const Food = ({
       prevFoodItems.map((item) =>
         item.name === foodName && item.count > 0
           ? { ...item, count: item.count - 1 }
-          : item
-      )
+          : item,
+      ),
     );
 
     // Get correct animation
