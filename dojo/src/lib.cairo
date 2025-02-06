@@ -23,4 +23,5 @@ mod utils {
 #[cfg(test)]
 mod tests {
     mod test_random;
+    mod test_actions;
 }

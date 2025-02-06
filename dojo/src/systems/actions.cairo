@@ -2,6 +2,7 @@
 #[starknet::interface]
 trait IActions<T> {
     // Player methods
+    fn get_counter(ref self: T) -> u32;
     fn spawn_player(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u32);
     fn add_initial_food(ref self: T);
@@ -60,6 +61,12 @@ pub mod actions {
     // Implementation of the interface methods
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
+
+        fn get_counter(ref self: ContractState) -> u32 {
+            let counter: u32 = self.beast_counter.read();
+            counter
+        }
+
         fn spawn_player(ref self: ContractState) {
             let mut world = self.world(@"babybeasts");
             let caller = get_caller_address();
