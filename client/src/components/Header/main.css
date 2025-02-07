@@ -29,11 +29,16 @@
 }
 
 .side-menu {
-  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-right: 15px;
 }
 
 .side-menu img {
-  margin-left: 15px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .navbar-toggler {
@@ -47,6 +52,13 @@
 
 .navbar .sheep {
   width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  transform: scaleX(-1);
+}
+
+.navbar .search {
+  width: 50px;
   object-fit: cover;
   border-radius: 50%;
   transform: scaleX(-1);
