@@ -34,7 +34,7 @@ impl StoreImpl of StoreTrait {
 
     // --------- Getters ---------
     #[inline(always)]
-    fn read_player(self: Store) -> Beast {
+    fn read_player(self: Store) -> Player {
         let player_address = get_caller_address();
         self.world.read_model(player_address)
     }
@@ -46,33 +46,33 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn read_food(self: Store, food_id: u32) -> Food {
+    fn read_food(self: Store, food_id: u8) -> Food {
         let player_address = get_caller_address();
         self.world.read_model((player_address, food_id))
     }
 
     // --------- Setters ---------
     #[inline(always)]
-    fn write_player(mut self: Store, mut player: Player) {
-        self.world.write_model(@player)
+    fn write_player(mut self: Store, mut player: @Player) {
+        self.world.write_model(player)
     }
 
-    fn write_beast(mut self: Store, mut beast: Beast) {
-        self.world.write_model(@beast)
+    fn write_beast(mut self: Store, mut beast: @Beast) {
+        self.world.write_model(beast)
     }
 
-    fn write_food(mut self: Store, mut food: Food) {
-        self.world.write_model(@food)
+    fn write_food(mut self: Store, food: @Food) {
+        self.world.write_model(food)
     }
     
     // --------- New entities ---------
     #[inline(always)]
-    fn new_player(mut self: Store, beast_id: u32) {
+    fn new_player(mut self: Store) {
         let caller = get_caller_address();
 
         let new_player = Player {
             address: caller, 
-            current_beast_id: beast_id
+            current_beast_id: 0
         };
 
         self.world.write_model(@new_player)
