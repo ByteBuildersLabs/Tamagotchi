@@ -1,7 +1,7 @@
 {
   "BeastsDex": [
     {
-      "Name": "BabyBird",
+      "Name": "BabyEagle",
       "BeastsType": "Crystal",
       "EffectiveAgainst": ["Draconic", "Shadow"],
       "WeakAgainst": ["Magic", "Light"],
@@ -12,10 +12,8 @@
         "Possesses keen observation skills"
       ],
       "Bio": [
-        "BabyBird is a majestic young eagle, member of BabyBeasts, known for their love of heights and keen observation skills.",
-        "Born with the spirit of freedom and grace, BabyBird is always ready to soar to new heights and share the wonders of the sky."
-      ],
-      "Image": "../../assets/beasts/BabyEagle-idle.gif"
+        "Born with the spirit of freedom and grace, BabyEagle is always ready to soar to new heights and share the wonders of the sky."
+      ]
     },
     {
       "Name": "BabyFox",
@@ -29,10 +27,8 @@
         "Curious and adventurous"
       ],
       "Bio": [
-        "BabyFox is a clever and independent fox cub, member of BabyBeasts, known for their quick wit and curiosity about everything around them.",
         "Born with an adventurous spirit and sharp mind, BabyFox is always ready to explore and discover new things."
-      ],
-      "Image": "../../assets/beasts/BabyFox-Run.gif"
+      ]
     },
     {
       "Name": "BabyWolf",
@@ -46,10 +42,8 @@
         "Protective and playful"
       ],
       "Bio": [
-        "BabyWolf is a social and loyal wolf cub, member of BabyBeasts, who values their pack above all else and enjoys group activities.",
         "Born with a protective and playful spirit, BabyWolf is always ready for new adventures and to defend their own."
-      ],
-      "Image": "../../assets/beasts/BabyWolf-idle.gif"
+      ]
     }
   ]
 }
