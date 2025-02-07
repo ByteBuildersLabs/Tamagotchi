@@ -21,12 +21,13 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
   } = useDojo();
 
   const settings = {
-    dots: true,
+    dots: beasts.length > 1,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
+    swipe: beasts.length > 1,
     customPaging: function() {
       return (
         <div className="indicator"></div>
@@ -73,6 +74,24 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
     }
   }, []);
 
+  // if no beasts are available, show an empty state
+  if (beasts.length === 0) {
+    return (
+      <div className="bag">
+        <div className='d-flex justify-content-between align-items-center'>
+          <p className={'title'}>
+            Collect them all!
+            <span className='d-block'>There are many species</span>
+          </p>
+          <ControllerConnectButton />
+        </div>
+        <div className="empty-state">
+          <p>No beasts available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bag">
       <div className='d-flex justify-content-between align-items-center'>
@@ -83,13 +102,19 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
         <ControllerConnectButton />
       </div>
       <div className="carousel">
-        <Slider {...settings}>
-          {beasts.map((beast: Beast, index: number) => (
-            <div key={index}>
-              {getSlideContent(beast)}
-            </div>
-          ))}
-        </Slider>
+        {beasts.length === 1 ? (
+          // if only one beast, show it directly without the slider
+          getSlideContent(beasts[0])
+        ) : (
+          // if more than one beast, show them in a slider
+          <Slider {...settings}>
+            {beasts.map((beast: Beast, index: number) => (
+              <div key={index}>
+                {getSlideContent(beast)}
+              </div>
+            ))}
+          </Slider>
+        )}
       </div>
     </div>
   );
