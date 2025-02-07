@@ -13,8 +13,6 @@ pub struct Beast {
     #[key]
     pub beast_id: u32,
     pub specie: u32,
-    pub status: BeastStatus,
-    pub stats: BeastStats,
     pub evolved: bool,
     pub vaulted: bool
 }

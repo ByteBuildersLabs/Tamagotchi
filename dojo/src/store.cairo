@@ -51,6 +51,16 @@ impl StoreImpl of StoreTrait {
         self.world.read_model((player_address, food_id))
     }
 
+    #[inline(always)]
+    fn read_beast_stats(self: Store, beast_id: u32) -> BeastStats {
+        self.world.read_model(beast_id)
+    }
+
+    #[inline(always)]
+    fn read_beast_status(self: Store, beast_id: u32) -> BeastStatus {
+        self.world.read_model(beast_id)
+    }
+
     // --------- Setters ---------
     #[inline(always)]
     fn write_player(mut self: Store, mut player: @Player) {
@@ -118,10 +128,8 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn new_beast(mut self: Store, beast_id: u32, specie: u32) {
-        let player = get_caller_address();
-
-        let mut initial_beast_stats = BeastStats {
+    fn new_beast_stats(mut self: Store, beast_id: u32) {
+        let mut beast_stats = BeastStats {
             beast_id: beast_id,
             attack: 5,
             defense: 5,
@@ -131,7 +139,12 @@ impl StoreImpl of StoreTrait {
             next_level_experience: 60,
         };
 
-        let mut initial_beast_status = BeastStatus {
+        self.world.write_model(@beast_stats);
+    }
+
+    #[inline(always)]
+    fn new_beast_status(mut self: Store, beast_id: u32) {
+        let mut beast_stats = BeastStatus {
             beast_id: beast_id,
             is_alive: true,
             is_awake: true,
@@ -141,12 +154,17 @@ impl StoreImpl of StoreTrait {
             hygiene: 100,
         };
 
+        self.world.write_model(@beast_stats);
+    }
+
+    #[inline(always)]
+    fn new_beast(mut self: Store, beast_id: u32, specie: u32) {
+        let player = get_caller_address();
+
         let mut new_beast = Beast {
             player: player,
             beast_id: beast_id,
             specie: specie,
-            status: initial_beast_status,
-            stats: initial_beast_stats,
             evolved: false,
             vaulted: false
         };

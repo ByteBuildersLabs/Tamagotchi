@@ -2,13 +2,12 @@
 #[starknet::interface]
 trait IActions<T> {
     // Player methods
-    fn get_counter(ref self: T) -> u32;
     fn spawn_player(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u32);
     fn add_initial_food(ref self: T);
     // Beast Methods
     fn spawn(ref self: T, specie: u32);
-    fn decrease_stats(ref self: T);
+    fn decrease_status(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
     fn awake(ref self: T);
@@ -64,12 +63,6 @@ pub mod actions {
     // Implementation of the interface methods
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
-
-        fn get_counter(ref self: ContractState) -> u32 {
-            let counter: u32 = self.beast_counter.read();
-            counter
-        }
-
         fn spawn_player(ref self: ContractState) {
             let mut world = self.world(@"babybeasts");
             let store = StoreTrait::new(world);
@@ -109,7 +102,7 @@ pub mod actions {
             self.beast_counter.write(current_beast_id+1);
         }
 
-        fn decrease_stats(ref self: ContractState) {
+        fn decrease_status(ref self: ContractState) {
             let mut world = self.world(@"babybeasts");
             let store = StoreTrait::new(world);
             
@@ -118,33 +111,35 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == true {
-                if beast.status.happiness == 0 || beast.status.hygiene == 0 {
-                    beast.status.energy = beast.status.energy - 2;
+            let mut beast_status = store.read_beast_status(beast_id);
+
+            if beast_status.is_alive == true {
+                if beast_status.happiness == 0 || beast_status.hygiene == 0 {
+                    beast_status.energy = beast_status.energy - 2;
                 } else {
-                    beast.status.energy = beast.status.energy - 1;
+                    beast_status.energy = beast_status.energy - 1;
                 }
-                if beast.status.energy < 0 {
-                    beast.status.energy = 0;
-                }
-
-                beast.status.hunger = beast.status.hunger - 2;
-                if beast.status.hunger < 0 {
-                    beast.status.hunger = 0;
+                if beast_status.energy < 0 {
+                    beast_status.energy = 0;
                 }
 
-                beast.status.happiness = beast.status.happiness - 1;
-                if beast.status.happiness < 0 {
-                    beast.status.happiness = 0;
+                beast_status.hunger = beast_status.hunger - 2;
+                if beast_status.hunger < 0 {
+                    beast_status.hunger = 0;
                 }
 
-                beast.status.hygiene = beast.status.hygiene - 1;
-                if beast.status.hygiene < 0 {
-                    beast.status.hygiene = 0;
+                beast_status.happiness = beast_status.happiness - 1;
+                if beast_status.happiness < 0 {
+                    beast_status.happiness = 0;
                 }
 
-                if beast.status.energy == 0 || beast.status.hunger == 0 {
-                    beast.status.is_alive = false;
+                beast_status.hygiene = beast_status.hygiene - 1;
+                if beast_status.hygiene < 0 {
+                    beast_status.hygiene = 0;
+                }
+
+                if beast_status.energy == 0 || beast_status.hunger == 0 {
+                    beast_status.is_alive = false;
                 }
                 store.write_beast(@beast);
             }
@@ -161,16 +156,18 @@ pub mod actions {
 
             let mut food: Food = store.read_food(food_id);
 
-            if beast.status.is_alive == true {
+            let mut beast_status = store.read_beast_status(beast_id);
+
+            if beast_status.is_alive == true {
                 if food.amount > 0 {
                     food.amount - 1;
-                    beast.status.hunger = beast.status.hunger + 30;
-                    if beast.status.hunger > constants::MAX_HUNGER {
-                        beast.status.hunger = constants::MAX_HUNGER;
+                    beast_status.hunger = beast_status.hunger + 30;
+                    if beast_status.hunger > constants::MAX_HUNGER {
+                        beast_status.hunger = constants::MAX_HUNGER;
                     }
-                    beast.status.energy = beast.status.energy + 10;
-                    if beast.status.energy > constants::MAX_ENERGY {
-                        beast.status.energy = constants::MAX_ENERGY;
+                    beast_status.energy = beast_status.energy + 10;
+                    if beast_status.energy > constants::MAX_ENERGY {
+                        beast_status.energy = constants::MAX_ENERGY;
                     }
                     store.write_food(@food);
                     store.write_beast(@beast);
@@ -187,16 +184,18 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == true {
-                beast.status.energy = beast.status.energy + 40;
-                if beast.status.energy > constants::MAX_ENERGY {
-                    beast.status.energy = constants::MAX_ENERGY;
+            let mut beast_status = store.read_beast_status(beast_id);
+
+            if beast_status.is_alive == true {
+                beast_status.energy = beast_status.energy + 40;
+                if beast_status.energy > constants::MAX_ENERGY {
+                    beast_status.energy = constants::MAX_ENERGY;
                 }
-                beast.status.happiness = beast.status.happiness + 10;
-                if beast.status.happiness > constants::MAX_HAPPINESS {
-                    beast.status.happiness = constants::MAX_HAPPINESS;
+                beast_status.happiness = beast_status.happiness + 10;
+                if beast_status.happiness > constants::MAX_HAPPINESS {
+                    beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast.status.is_awake = false;
+                beast_status.is_awake = false;
                 store.write_beast(@beast);
             }
         }
@@ -210,8 +209,10 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == true {
-                beast.status.is_awake = true;
+            let mut beast_status = store.read_beast_status(beast_id);
+
+            if beast_status.is_alive == true {
+                beast_status.is_awake = true;
                 store.write_beast(@beast);
             }
         }
@@ -225,24 +226,28 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == true {
-                beast.status.happiness = beast.status.happiness + 30;
-                if beast.status.happiness > constants::MAX_HAPPINESS {
-                    beast.status.happiness = constants::MAX_HAPPINESS;
-                }
-                beast.status.energy = beast.status.energy - 20;
-                beast.status.hunger = beast.status.hunger - 10;
+            let mut beast_status = store.read_beast_status(beast_id);
 
-                beast.stats.experience = beast.stats.experience + 10;
-                if beast.stats.experience >= beast.stats.next_level_experience {
-                    beast.stats.level = beast.stats.level + 1;
+            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            if beast_status.is_alive == true {
+                beast_status.happiness = beast_status.happiness + 30;
+                if beast_status.happiness > constants::MAX_HAPPINESS {
+                    beast_status.happiness = constants::MAX_HAPPINESS;
+                }
+                beast_status.energy = beast_status.energy - 20;
+                beast_status.hunger = beast_status.hunger - 10;
+
+                beast_stats.experience = beast_stats.experience + 10;
+                if beast_stats.experience >= beast_stats.next_level_experience {
+                    beast_stats.level = beast_stats.level + 1;
                     // Evolution level reached
-                    if beast.stats.level >= constants::MAX_BABY_LEVEL {
+                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
                         beast.evolved = true;
                         beast.vaulted = true;
                     }
-                    beast.stats.experience = 0;
-                    beast.stats.next_level_experience = beast.stats.next_level_experience + 20;
+                    beast_stats.experience = 0;
+                    beast_stats.next_level_experience = beast_stats.next_level_experience + 20;
                 }
                 store.write_beast(@beast);
             }
@@ -257,28 +262,32 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == true {
-                beast.status.hygiene = beast.status.hygiene + 40;
-                if beast.status.hygiene > constants::MAX_HYGIENE{
-                    beast.status.hygiene = constants::MAX_HYGIENE;
+            let mut beast_status = store.read_beast_status(beast_id);
+
+            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            if beast_status.is_alive == true {
+                beast_status.hygiene = beast_status.hygiene + 40;
+                if beast_status.hygiene > constants::MAX_HYGIENE{
+                    beast_status.hygiene = constants::MAX_HYGIENE;
                 }
-                beast.status.happiness = beast.status.happiness + 10;
-                if beast.status.happiness > constants::MAX_HAPPINESS {
-                    beast.status.happiness = constants::MAX_HAPPINESS;
+                beast_status.happiness = beast_status.happiness + 10;
+                if beast_status.happiness > constants::MAX_HAPPINESS {
+                    beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast.stats.experience = beast.stats.experience + 10;
-                if beast.stats.experience >= beast.stats.next_level_experience {
-                    beast.stats.level = beast.stats.level + 1;
+                beast_stats.experience = beast_stats.experience + 10;
+                if beast_stats.experience >= beast_stats.next_level_experience {
+                    beast_stats.level = beast_stats.level + 1;
                     // Evolution level reached
-                    if beast.stats.level >= constants::MAX_BABY_LEVEL {
+                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
                         beast.evolved = true;
                         beast.vaulted = true;
                     }
-                    beast.stats.experience = 0;
-                    beast.stats.next_level_experience = beast.stats.next_level_experience + 20;
-                    beast.stats.attack = beast.stats.attack + 1;
-                    beast.stats.defense = beast.stats.defense + 1;
-                    beast.stats.speed = beast.stats.speed + 1;
+                    beast_stats.experience = 0;
+                    beast_stats.next_level_experience = beast_stats.next_level_experience + 20;
+                    beast_stats.attack = beast_stats.attack + 1;
+                    beast_stats.defense = beast_stats.defense + 1;
+                    beast_stats.speed = beast_stats.speed + 1;
                 }
                 store.write_beast(@beast);
             }
@@ -293,30 +302,34 @@ pub mod actions {
 
             let mut beast: Beast = store.read_beast(beast_id);
 
-            if beast.status.is_alive == false {
-                beast.status.is_alive = true;
-                beast.status.hunger = 100;
-                beast.status.energy = 100;
-                beast.status.happiness = 100;
-                beast.status.hygiene = 100;
-                beast.stats.experience = 0;
+            let mut beast_status = store.read_beast_status(beast_id);
 
-                if beast.stats.attack < 0 {
-                    beast.stats.attack = 0;
+            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            if beast_status.is_alive == false {
+                beast_status.is_alive = true;
+                beast_status.hunger = 100;
+                beast_status.energy = 100;
+                beast_status.happiness = 100;
+                beast_status.hygiene = 100;
+                beast_stats.experience = 0;
+
+                if beast_stats.attack < 0 {
+                    beast_stats.attack = 0;
                 } else {
-                    beast.stats.attack = beast.stats.attack - 1;
+                    beast_stats.attack = beast_stats.attack - 1;
                 }
 
-                if beast.stats.defense < 0 {
-                    beast.stats.defense = 0;
+                if beast_stats.defense < 0 {
+                    beast_stats.defense = 0;
                 } else {
-                    beast.stats.defense = beast.stats.defense - 1;
+                    beast_stats.defense = beast_stats.defense - 1;
                 }
 
-                if beast.stats.speed < 0 {
-                    beast.stats.speed = 0;
+                if beast_stats.speed < 0 {
+                    beast_stats.speed = 0;
                 } else {
-                    beast.stats.speed = beast.stats.speed - 1;
+                    beast_stats.speed = beast_stats.speed - 1;
                 }
 
                 world.write_model(@beast);
