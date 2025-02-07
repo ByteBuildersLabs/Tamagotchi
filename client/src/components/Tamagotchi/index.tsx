@@ -3,7 +3,7 @@ import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useAccount } from "@starknet-react/core";
 import { SDK } from "@dojoengine/sdk";
-import { Beast, SchemaType } from "../../dojo/bindings";
+import { Beast, BeastStats, BeastStatus, SchemaType } from "../../dojo/bindings";
 import { Card } from '../../components/ui/card';
 import { useDojo } from "../../dojo/useDojo.tsx";
 import { useBeast } from "../../hooks/useBeasts.tsx";
@@ -28,23 +28,23 @@ import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const { beasts } = useBeast(sdk);
+  const { beastsStatus } = useBeastStatus(sdk);
+  const { beastsStats } = useBeastsStats(sdk);
   const { player } = usePlayer(sdk);
   
   const beast = beasts.find((beast: Beast) => beast.beast_id === player?.current_beast_id);
-  const { beastStatus } = useBeastStatus(sdk, 1);
-  const { beastStats } = useBeastsStats(sdk, 1);
+  const status = beastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === player?.current_beast_id);
+  const stats = beastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === player?.current_beast_id);
 
-  const { beastsStatus } = useBeastStatus(sdk);
-  const { beastsStats } = useBeastsStats(sdk);
-
-  console.log('beastsStatus', beastsStatus);
-  console.log('beastsStats', beastsStats);
+  console.log('player', player);
+  console.log('beast', beast);
+  console.log('status', status);
+  console.log('stats', stats);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
   const [currentView, setCurrentView] = useState('actions');
-
-  // Add sound hooks
+ 
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
   const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
@@ -94,19 +94,19 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (beastStatus?.is_alive && account) {
-        await client.actions.decreaseStats(account as Account);
+      if (status?.is_alive && account) {
+        await client.actions.decreaseStatus(account as Account);
       }
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [beastStatus?.is_alive]);
+  }, [status?.is_alive]);
 
   useEffect(() => {
-    if (beastStatus?.is_alive == false) {
+    if (status?.is_alive == false) {
       showDeathAnimation();
     }
-  }, [beastStatus?.is_alive]);
+  }, [status?.is_alive]);
 
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
@@ -133,7 +133,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
         <>{beast &&
           <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
             <Status 
-              beastStatus={beastStatus}
+              beastStatus={status}
             />
             <div>
               <div className="scenario flex justify-center items-column">
@@ -142,12 +142,12 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
               <Whispers 
                 beast={beast}
                 expanded={currentView === 'chat'}
-                beastStatus={beastStatus}
+                beastStatus={status}
               />
               {
                 currentView === 'stats' ? 
                   <Stats 
-                    beastStats={beastStats}
+                    beastStats={stats}
                   /> 
                 : 
                 currentView === 'actions' ? 
@@ -155,7 +155,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                     handleAction={handleAction}
                     isLoading={isLoading}
                     beast={beast}
-                    beastStatus={beastStatus}
+                    beastStatus={status}
                     account={account}
                     client={client}
                     setCurrentView={setCurrentView}

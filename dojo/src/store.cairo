@@ -71,9 +71,18 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(beast)
     }
 
+    fn write_beast_status(mut self: Store, mut beast_status: @BeastStatus) {
+        self.world.write_model(beast_status)
+    }
+
+    fn write_beast_stats(mut self: Store, mut beast_stats: @BeastStats) {
+        self.world.write_model(beast_stats)
+    }
+
     fn write_food(mut self: Store, food: @Food) {
         self.world.write_model(food)
     }
+
     
     // --------- New entities ---------
     #[inline(always)]

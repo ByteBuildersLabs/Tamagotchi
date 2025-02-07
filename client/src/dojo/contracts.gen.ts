@@ -69,13 +69,13 @@ export function client(provider: DojoProvider) {
 		}
 	};
 
-	const actions_decreaseStats = async (snAccount: Account | AccountInterface) => {
+	const actions_decreaseStatus = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
 				snAccount,
 				{
 					contractName: "actions",
-					entrypoint: "decrease_stats",
+					entrypoint: "decrease_status",
 					calldata: [],
 				},
 				"babybeasts",
@@ -220,7 +220,7 @@ export function client(provider: DojoProvider) {
 			setCurrentBeast: actions_setCurrentBeast,
 			addInitialFood: actions_addInitialFood,
 			spawn: actions_spawn,
-			decreaseStats: actions_decreaseStats,
+			decreaseStatus: actions_decreaseStatus,
 			feed: actions_feed,
 			sleep: actions_sleep,
 			awake: actions_awake,

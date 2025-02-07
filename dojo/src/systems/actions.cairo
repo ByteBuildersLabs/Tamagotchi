@@ -144,6 +144,7 @@ pub mod actions {
                     beast_status.is_alive = false;
                 }
                 store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
             }
         }
 
@@ -173,6 +174,7 @@ pub mod actions {
                     }
                     store.write_food(@food);
                     store.write_beast(@beast);
+                    store.write_beast_status(@beast_status);
                 }
             }
         }
@@ -199,6 +201,7 @@ pub mod actions {
                 }
                 beast_status.is_awake = false;
                 store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
             }
         }
 
@@ -216,6 +219,7 @@ pub mod actions {
             if beast_status.is_alive == true {
                 beast_status.is_awake = true;
                 store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
             }
         }
 
@@ -252,6 +256,8 @@ pub mod actions {
                     beast_stats.next_level_experience = beast_stats.next_level_experience + 20;
                 }
                 store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
+                store.write_beast_stats(@beast_stats);
             }
         }
 
@@ -292,6 +298,8 @@ pub mod actions {
                     beast_stats.speed = beast_stats.speed + 1;
                 }
                 store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
+                store.write_beast_stats(@beast_stats);
             }
         }
 
@@ -334,7 +342,9 @@ pub mod actions {
                     beast_stats.speed = beast_stats.speed - 1;
                 }
 
-                world.write_model(@beast);
+                store.write_beast(@beast);
+                store.write_beast_status(@beast_status);
+                store.write_beast_stats(@beast_stats);
             }
         }
 

@@ -44,7 +44,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
   } = useDojo();
 
   const { player } = usePlayer(sdk);
-  console.log('player', player);
 
   const spawnPlayer = async () => {
     if (!account) return

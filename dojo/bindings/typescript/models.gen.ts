@@ -10,6 +10,15 @@ type RemoveFieldOrder<T> = T extends object
       'fieldOrder'
     >
   : T;
+// Type definition for `babybeasts::models::beast::BeastValue` struct
+export interface BeastValue {
+	fieldOrder: string[];
+	specie: BigNumberish;
+	evolved: boolean;
+	vaulted: boolean;
+}
+export type InputBeastValue = RemoveFieldOrder<BeastValue>;
+
 // Type definition for `babybeasts::models::beast::Beast` struct
 export interface Beast {
 	fieldOrder: string[];
@@ -20,15 +29,6 @@ export interface Beast {
 	vaulted: boolean;
 }
 export type InputBeast = RemoveFieldOrder<Beast>;
-
-// Type definition for `babybeasts::models::beast::BeastValue` struct
-export interface BeastValue {
-	fieldOrder: string[];
-	specie: BigNumberish;
-	evolved: boolean;
-	vaulted: boolean;
-}
-export type InputBeastValue = RemoveFieldOrder<BeastValue>;
 
 // Type definition for `babybeasts::models::beast_stats::BeastStatsValue` struct
 export interface BeastStatsValue {
@@ -115,8 +115,8 @@ export type InputPlayer = RemoveFieldOrder<Player>;
 
 export interface SchemaType extends ISchemaType {
 	babybeasts: {
-		Beast: Beast,
 		BeastValue: BeastValue,
+		Beast: Beast,
 		BeastStatsValue: BeastStatsValue,
 		BeastStats: BeastStats,
 		BeastStatus: BeastStatus,
@@ -129,16 +129,16 @@ export interface SchemaType extends ISchemaType {
 }
 export const schema: SchemaType = {
 	babybeasts: {
-		Beast: {
-			fieldOrder: ['player', 'beast_id', 'specie', 'evolved', 'vaulted'],
-			player: "",
-			beast_id: 0,
+		BeastValue: {
+			fieldOrder: ['specie', 'evolved', 'vaulted'],
 			specie: 0,
 			evolved: false,
 			vaulted: false,
 		},
-		BeastValue: {
-			fieldOrder: ['specie', 'evolved', 'vaulted'],
+		Beast: {
+			fieldOrder: ['player', 'beast_id', 'specie', 'evolved', 'vaulted'],
+			player: "",
+			beast_id: 0,
 			specie: 0,
 			evolved: false,
 			vaulted: false,
