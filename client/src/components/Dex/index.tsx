@@ -2,7 +2,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import beastsData from '../../data/dex/BeastsDex.json';
-import './DexCarousel.css';
+import './main.css';
 
 function DexCarousel() {
   const settings = {
