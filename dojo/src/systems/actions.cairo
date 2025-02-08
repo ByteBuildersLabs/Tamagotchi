@@ -163,7 +163,7 @@ pub mod actions {
 
             if beast_status.is_alive == true {
                 if food.amount > 0 {
-                    food.amount - 1;
+                    food.amount = food.amount - 1;
                     beast_status.hunger = beast_status.hunger + 30;
                     if beast_status.hunger > constants::MAX_HUNGER {
                         beast_status.hunger = constants::MAX_HUNGER;
