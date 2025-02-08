@@ -133,6 +133,7 @@
   .beast-type-badge {
     background: rgba(236, 236, 218, 0.1);
     padding: 0.5rem 1rem;
+    margin: 0 120px;
     border-radius: 20px;
     color: #ECECDA;
     font-size: 0.9rem;
