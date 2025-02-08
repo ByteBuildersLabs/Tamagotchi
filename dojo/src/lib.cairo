@@ -25,4 +25,5 @@ mod utils {
 mod tests {
     mod test_random;
     mod test_actions;
+    mod test_player;
 }
