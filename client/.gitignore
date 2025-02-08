@@ -30,4 +30,6 @@ dist-ssr
 # Service Worker
 sw.js
 
+vite.config.ts
+
 .env

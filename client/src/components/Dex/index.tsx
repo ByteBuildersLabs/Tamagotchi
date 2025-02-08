@@ -46,6 +46,13 @@ function DexCarousel() {
         }
       }
       setBeastImages(loadedImages);
+
+      const bodyElement = document.querySelector('.body') as HTMLElement;
+      if (bodyElement) {
+        bodyElement.classList.remove('day', 'night');
+        bodyElement.style.backgroundSize = 'cover';
+        bodyElement.style.padding = '80px 15px 30px';
+      }
     };
 
     loadBeastImages();
