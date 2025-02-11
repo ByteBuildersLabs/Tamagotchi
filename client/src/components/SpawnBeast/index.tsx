@@ -8,14 +8,11 @@ import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
 import { useDojo } from "../../dojo/useDojo.tsx";
-import { SchemaType } from "../../dojo/bindings.ts";
-import { SDK } from "@dojoengine/sdk";
 import { Account } from "starknet";
-import { usePlayer } from "../../hooks/usePlayers.tsx";
 import './main.css';
 
-function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
-  const { userAccount } = useGlobalContext();
+function SpawnBeast() {
+  const { userAccount, userPlayer } = useGlobalContext();
   const { spawn } = useSystemCalls();
 
   useEffect(() => {
@@ -42,8 +39,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
   const {
     setup: { client }
   } = useDojo();
-
-  const { player } = usePlayer(sdk);
 
   const spawnPlayer = async () => {
     if (!userAccount) return
@@ -72,14 +67,14 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
               Hatch your own Babybeasts and take care of it! Collect them all!
             </p>
           </div>
-          { userAccount && !player && 
+          { userAccount && !userPlayer && 
             <button
               className="button"
               onClick={async () => {
                 await spawnPlayer();
               }}>Create player
             </button>}
-          { userAccount && player && 
+          { userAccount && userPlayer && 
             <button
               className="button"
               onClick={async () => {

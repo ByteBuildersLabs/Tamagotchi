@@ -24,7 +24,7 @@ function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
   }, []);
 
   if (userAccount) {
-    return <SpawnBeast sdk={sdk} />;
+    return <SpawnBeast />;
   }
 
   return (
@@ -106,7 +106,7 @@ function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
         </svg>
       </div>
       <div className='mt-4 px-3 w-100'>
-        { !showDeveloperCode && <button className="button mb-4" onClick={() => setShowDeveloperCode(true)}>CONNECT</button> }
+        { !showDeveloperCode && <button className="button" onClick={() => setShowDeveloperCode(true)}>CONNECT</button> }
         {showDeveloperCode && <DeveloperCode />}
       </div>
     </div>

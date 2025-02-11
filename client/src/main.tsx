@@ -62,7 +62,7 @@ async function main() {
             explorer={starkscan}
             provider={provider}
           >
-            <GlobalProvider>
+            <GlobalProvider sdk={sdk}>
               <Router>
                 <Routes>
                   {/* Cover route without header*/}
