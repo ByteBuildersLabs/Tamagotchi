@@ -6,6 +6,7 @@
       "EffectiveAgainst": ["Draconic", "Shadow"],
       "WeakAgainst": ["Magic", "Light"],
       "BeastsEvolutions": ["YoungEagle", "MajesticEagle"],
+      "FavoriteFood": ["Fish", "Cherry", "Corn"],
       "BeastsCharacteristics": [
         "Graceful and free-spirited",
         "Loves soaring through the skies",
@@ -21,6 +22,7 @@
       "EffectiveAgainst": ["Crystal", "Light"],
       "WeakAgainst": ["Shadow", "Draconic"],
       "BeastsEvolutions": ["Foxling", "ShadowFox"],
+      "FavoriteFood": ["Chicken", "Apple", "Cheese"],
       "BeastsCharacteristics": [
         "Clever and witty",
         "Enjoys solving puzzles",
@@ -36,6 +38,7 @@
       "EffectiveAgainst": ["Magic", "Light"],
       "WeakAgainst": ["Crystal", "Draconic"],
       "BeastsEvolutions": ["WolfPup", "AlphaWolf"],
+      "FavoriteFood": ["Beef", "Blueberry", "Potato"],
       "BeastsCharacteristics": [
         "Energetic and social",
         "Strong pack instincts",
