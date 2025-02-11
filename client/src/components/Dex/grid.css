@@ -1,0 +1,114 @@
+/* pokedexGrid.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+/* Contenedor principal del grid */
+.pokedex-grid-container {
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #000; /* O el color de fondo que uses en tu app */
+}
+
+/* Título principal */
+.pokedex-grid-container h1 {
+  color: #ECECDA;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para cada fila */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Cada columna: se muestran 3 columnas en escritorio */
+.col {
+  flex: 1 0 30%;
+  max-width: 30%;
+  padding: 10px;
+}
+
+/* Tarjeta de cada beast */
+.card.beast-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 12px;
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card.beast-card:hover {
+  transform: scale(1.05);
+}
+
+/* Imagen de la tarjeta */
+.card-img-top.beast-card-img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(236, 236, 218, 0.05);
+  margin-bottom: 10px;
+}
+
+/* Placeholder para imagen en caso de error */
+.beast-card-img-placeholder {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(236, 236, 218, 0.05);
+  color: #ECECDA;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+  text-align: center;
+  padding: 10px;
+}
+
+/* Título del beast */
+.card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  color: #ECECDA;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Tipo de beast (badge) */
+.card-text {
+  font-size: 1rem;
+  color: #ECECDA;
+  background: rgba(236, 236, 218, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  display: inline-block;
+}
+
+/* Adaptación para tablet y móvil */
+@media (max-width: 768px) {
+  .col {
+    flex: 1 0 45%;
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .col {
+    flex: 1 0 90%;
+    max-width: 90%;
+  }
+}
