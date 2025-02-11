@@ -1,4 +1,3 @@
-// PokedexGrid.tsx
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
 import DexCarousel from '../Dex/index.tsx';
@@ -7,7 +6,6 @@ import './main.css';
 interface Beast {
   Name: string;
   BeastsType: string;
-  // otros campos si los necesitas
 }
 
 interface BeastWithIndex {
@@ -19,7 +17,6 @@ const PokedexGrid: React.FC = () => {
   const [beastImages, setBeastImages] = useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  // Cargar imágenes de cada beast
   useEffect(() => {
     const loadImages = async () => {
       const loadedImages: Record<string, string> = {};
@@ -39,64 +36,68 @@ const PokedexGrid: React.FC = () => {
     loadImages();
   }, []);
 
-  // Asignamos índice a cada beast para mantener el orden original
   const beastsWithIndex: BeastWithIndex[] = beastsData.BeastsDex.map((beast, index) => ({
     beast,
     index,
   }));
 
-  // Distribuimos los beasts en 3 filas (round-robin)
-  const rows: BeastWithIndex[][] = [[], [], []];
-  beastsWithIndex.forEach((item, idx) => {
-    rows[idx % 3].push(item);
-  });
+  // Crear filas de 3 elementos
+  const createRows = (items: BeastWithIndex[]): BeastWithIndex[][] => {
+    const result: BeastWithIndex[][] = [];
+    for (let i = 0; i < items.length; i += 3) {
+      result.push(items.slice(i, i + 3));
+    }
+    return result;
+  };
 
-  // Maneja el clic en una tarjeta del grid
+  const rows = createRows(beastsWithIndex);
+
   const handleCardClick = (index: number) => {
     setSelectedIndex(index);
   };
 
-  // Función para el botón "Volver" en DexCarousel
   const handleCloseDetail = () => {
     setSelectedIndex(null);
   };
 
   return (
-    <div className="container pokedex-grid-container">
+    <div className="grid-container">
       {selectedIndex === null ? (
         <>
-          {/* Título propio del grid */}
           <h1 className="grid-title">BeastsDex</h1>
-          {rows.map((row, rowIndex) => (
-            <div className="row mb-4" key={rowIndex}>
-              {row.map(({ beast, index }) => (
-                <div className="col" key={index}>
-                  <div
-                    className="card beast-card"
+          <div className="beast-grid">
+            {rows.map((row, rowIndex) => (
+              <div className="grid-row" key={rowIndex}>
+                {row.map(({ beast, index }) => (
+                  <div 
+                    className="beast-card-wrapper" 
+                    key={index}
                     onClick={() => handleCardClick(index)}
-                    style={{ cursor: 'pointer' }}
                   >
-                    {beastImages[beast.Name] ? (
-                      <img
-                        src={beastImages[beast.Name]}
-                        className="card-img-top beast-card-img"
-                        alt={beast.Name}
-                      />
-                    ) : (
-                      <div className="beast-card-img-placeholder">No Image</div>
-                    )}
-                    <div className="card-body">
-                      <h5 className="card-title">{beast.Name}</h5>
-                      <p className="card-text">{beast.BeastsType}</p>
+                    <div className="beast-card">
+                      {beastImages[beast.Name] ? (
+                        <div className="beast-image-container">
+                          <img
+                            src={beastImages[beast.Name]}
+                            className="beast-image"
+                            alt={beast.Name}
+                          />
+                        </div>
+                      ) : (
+                        <div className="beast-image-placeholder">No Image</div>
+                      )}
+                      <div className="beast-info">
+                        <h2 className="beast-name">{beast.Name}</h2>
+                        <span className="beast-type">{beast.BeastsType}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
+          </div>
         </>
       ) : (
-        // Vista de detalle: DexCarousel se encarga de mostrar su propio título
         <DexCarousel initialSlide={selectedIndex} onClose={handleCloseDetail} />
       )}
     </div>

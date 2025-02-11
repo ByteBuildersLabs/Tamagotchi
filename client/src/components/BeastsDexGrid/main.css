@@ -1,113 +1,149 @@
 /* pokedexGrid.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
-/* Contenedor principal del grid */
-.pokedex-grid-container {
-  padding: 20px;
-  min-height: 100vh;
+.grid-container {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-/* Título principal */
-.pokedex-grid-container h1 {
+.grid-title {
   color: #ECECDA;
   font-family: 'Montserrat', sans-serif;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
-/* Estilos para cada fila */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* Cada columna: se muestran 3 columnas en escritorio */
-.col {
-  flex: 1 0 30%;
-  max-width: 30%;
-  padding: 10px;
-}
-
-/* Tarjeta de cada beast */
-.card.beast-card {
-  background: rgba(0, 0, 0, 0.2);
-  border: none;
-  border-radius: 12px;
-  padding: 15px 10px;
+.beast-grid {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 12px;
+}
+
+.grid-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.beast-card-wrapper {
+  flex: 1;
+  min-width: 0; /* Permite que las cards se contraigan */
+}
+
+.beast-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.card.beast-card:hover {
-  transform: scale(1.05);
+.beast-card:hover {
+  transform: scale(1.02);
 }
 
-/* Imagen de la tarjeta */
-.card-img-top.beast-card-img {
+.beast-image-container {
   width: 100%;
-  height: 150px;
-  object-fit: contain;
-  border-radius: 8px;
+  aspect-ratio: 1;
   background: rgba(236, 236, 218, 0.05);
-  margin-bottom: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
-/* Placeholder para imagen en caso de error */
-.beast-card-img-placeholder {
+.beast-image {
   width: 100%;
-  height: 150px;
+  height: 100%;
+  object-fit: contain;
+}
+
+.beast-image-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(236, 236, 218, 0.05);
   color: #ECECDA;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
 
-/* Cuerpo de la tarjeta */
-.card-body {
+.beast-info {
   text-align: center;
-  padding: 10px;
 }
 
-/* Título del beast */
-.card-title {
+.beast-name {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.2rem;
+  font-size: 10px;
   color: #ECECDA;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0 0 4px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Tipo de beast (badge) */
-.card-text {
-  font-size: 1rem;
+.beast-type {
+  font-size: 0.75rem;
   color: #ECECDA;
   background: rgba(236, 236, 218, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  padding: 4px 8px;
+  border-radius: 12px;
   font-family: 'Montserrat', sans-serif;
   display: inline-block;
 }
 
-/* Adaptación para tablet y móvil */
-@media (max-width: 768px) {
-  .col {
-    flex: 1 0 45%;
-    max-width: 45%;
+/* Ajustes específicos para pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .grid-container {
+    padding: 8px;
+  }
+  
+  .grid-row {
+    gap: 4px;
+  }
+  
+  .beast-card {
+    padding: 6px;
+  }
+  
+  .beast-name {
+    font-size: 0.75rem;
+  }
+  
+  .beast-type {
+    font-size: 0.65rem;
+    padding: 3px 6px;
   }
 }
 
-@media (max-width: 480px) {
-  .col {
-    flex: 1 0 90%;
-    max-width: 90%;
+/* Ajustes para tablets y escritorio */
+@media (min-width: 768px) {
+  .grid-container {
+    padding: 24px;
+  }
+  
+  .grid-row {
+    gap: 16px;
+  }
+  
+  .beast-card {
+    padding: 16px;
+  }
+  
+  .beast-name {
+    font-size: 1.125rem;
+  }
+  
+  .beast-type {
+    font-size: 0.875rem;
+    padding: 6px 12px;
   }
 }
