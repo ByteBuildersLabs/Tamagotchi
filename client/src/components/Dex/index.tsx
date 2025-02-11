@@ -150,6 +150,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
               <div className="beast-info-carrousel">
                 {renderTypeSection('Effective Against', beast.EffectiveAgainst)}
                 {renderTypeSection('Weak Against', beast.WeakAgainst)}
+                {renderTypeSection('Favorite Food', beast.FavoriteFood)}
                 <div className="evolution-section-carrousel">
                   <h3>Evolution Line</h3>
                   <div className="evolution-chain-carrousel">
