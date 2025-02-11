@@ -56,7 +56,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
     arrows: false,
     swipe: beastsData.BeastsDex.length > 1,
     customPaging: function () {
-      return <div className="indicator"></div>;
+      return <div className="indicator-carrousel"></div>;
     }
   };
 
@@ -65,11 +65,11 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
   };
 
   const renderTypeSection = (title: string, types: string[]) => (
-    <div className="type-section">
+    <div className="type-section-carrousel">
       <h3>{title}</h3>
-      <div className="type-tags">
+      <div className="type-tags-carrousel">
         {types.map((type, index) => (
-          <span key={index} className="type-tag">
+          <span key={index} className="type-tag-carrousel">
             {type}
           </span>
         ))}
@@ -80,11 +80,11 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
   return (
     <>
       <Header />
-      <div className="dex-container">
+      <div className="dex-container-carrousel">
         {/* Botón "Volver": se renderiza si se provee la prop onClose */}
         {onClose && (
           <button 
-            className="back-button" 
+            className="back-button-carrousel" 
             onClick={onClose}
           >
             Volver
@@ -93,41 +93,41 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
 
         <Slider {...settings}>
           {beastsData.BeastsDex.map((beast, index) => (
-            <div key={index} className="beast-card">
-              <div className="beast-header">
-                <h2 className="beast-name">{beast.Name}</h2>
+            <div key={index} className="beast-card-carrousel">
+              <div className="beast-header-carrousel">
+                <h2 className="beast-name-carrousel">{beast.Name}</h2>
               </div>
-              <div className="beast-type-badge">{beast.BeastsType}</div>
-              <div className="beast-image-container">
+              <div className="beast-type-badge-carrousel">{beast.BeastsType}</div>
+              <div className="beast-image-container-carrousel">
                 {beastImages[beast.Name] && (
                   <img
                     src={beastImages[beast.Name]}
                     alt={beast.Name}
-                    className="beast-image"
+                    className="beast-image-carrousel"
                     onError={() => handleImageError(beast.Name)}
                   />
                 )}
               </div>
-              <div className="beast-info">
+              <div className="beast-info-carrousel">
                 {renderTypeSection('Effective Against', beast.EffectiveAgainst)}
                 {renderTypeSection('Weak Against', beast.WeakAgainst)}
-                <div className="evolution-section">
+                <div className="evolution-section-carrousel">
                   <h3>Evolution Line</h3>
-                  <div className="evolution-chain">
+                  <div className="evolution-chain-carrousel">
                     {beast.BeastsEvolutions.map((evolution, idx) => (
-                      <div key={idx} className="evolution-step">
+                      <div key={idx} className="evolution-step-carrousel">
                         {evolution}
                         {idx < beast.BeastsEvolutions.length - 1 && (
-                          <span className="evolution-arrow">→</span>
+                          <span className="evolution-arrow-carrousel">→</span>
                         )}
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bio-section">
+                <div className="bio-section-carrousel">
                   <h3>Bio</h3>
                   {beast.Bio.map((paragraph, idx) => (
-                    <p key={idx} className="bio-paragraph">
+                    <p key={idx} className="bio-paragraph-carrousel">
                       {paragraph}
                     </p>
                   ))}

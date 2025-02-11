@@ -1,83 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
-.dex-container {
+.dex-container-carrousel {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     width: 100%;
     overflow-y: scroll;
     padding: 20px 0;
-  }
+}
 
-  /* Carousel styles */
-  .beast-card {
+/* Carousel styles */
+.beast-card-carrousel {
     padding: 15px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: auto;
-  }
+}
 
-  .beast-card h2 {
+.beast-card-carrousel h2 {
     color: #ECECDA;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  .beast-image-container {
+.beast-image-container-carrousel {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 1rem 0;
-  }
+}
 
-  .beast-image {
+.beast-image-carrousel {
     width: auto;
     height: 200px;
     object-fit: contain;
     display: block;
     margin: 0 auto;
-  }
+}
 
-  .beast-type {
+.beast-type-carrousel {
     color: #ECECDA;
     font-size: 1rem;
     background-color: rgba(255, 255, 255, 0.05);
     padding: 8px;
     border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  .carousel {
+.carousel-carrousel {
     position: relative;
     width: 100%;
     overflow-x: hidden;
     margin-bottom: 20px;
-  }
+}
 
-  .slides {
+.slides-carrousel {
     display: flex;
     transition: transform 0.3s ease-in-out;
     touch-action: pan-y;
-  }
+}
 
-  .slide {
+.slide-carrousel {
     min-width: 100%;
     user-select: none;
-  }
+}
 
-  .carousel-controls {
+.carousel-controls-carrousel {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 20px;
     z-index: 10; 
-  }
+}
 
-  .control {
+.control-carrousel {
     background: none;
     border: none;
     color: #ECECDA;
@@ -86,18 +86,18 @@
     padding: 0;
     transition: opacity 0.2s ease;
     z-index: 11; 
-  }
+}
 
-  .control:disabled {
+.control-carrousel:disabled {
     opacity: 0.3;
     cursor: not-allowed;
-  }
+}
 
-  .indicators {
+.indicators-carrousel {
     display: flex;
-  }
+}
 
-  .indicator {
+.indicator-carrousel {
     width: 10px;
     height: 10px;
     margin: 7px;
@@ -105,32 +105,32 @@
     background-color: rgba(220, 200, 120, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
-  }
+}
 
-  .indicator.active {
+.indicator-carrousel.active-carrousel {
     background-color: #ECECDA;
     transform: scale(1.3);
-  }
+}
 
-  /* Nuevos estilos para la información adicional */
-  .beast-header {
+/* Nuevos estilos para la información adicional */
+.beast-header-carrousel {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     margin-bottom: 0.5rem;
-  }
+}
 
-  .beast-name {
+.beast-name-carrousel {
     color: #ECECDA;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  .beast-type-badge {
+.beast-type-badge-carrousel {
     background: rgba(236, 236, 218, 0.1);
     padding: 0.5rem 1rem;
     margin: 0 120px;
@@ -140,9 +140,9 @@
     font-weight: 600;
     backdrop-filter: blur(5px);
     display: inline-block;
-  }
+}
 
-.beast-info {
+.beast-info-carrousel {
   width: 100%;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.2);
@@ -150,24 +150,24 @@
   margin-top: 1rem;
 }
 
-.type-section {
+.type-section-carrousel {
   margin-bottom: 1.5rem;
 }
 
-.type-section h3 {
+.type-section-carrousel h3 {
   color: #ECECDA;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
-.type-tags {
+.type-tags-carrousel {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.type-tag {
+.type-tag-carrousel {
   background: rgba(236, 236, 218, 0.15);
   padding: 0.4rem 0.8rem;
   border-radius: 15px;
@@ -176,18 +176,18 @@
   backdrop-filter: blur(5px);
 }
 
-.evolution-section {
+.evolution-section-carrousel {
   margin-bottom: 1.5rem;
 }
 
-.evolution-section h3 {
+.evolution-section-carrousel h3 {
   color: #ECECDA;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
-.evolution-chain {
+.evolution-chain-carrousel {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,31 +198,31 @@
   border-radius: 8px;
 }
 
-.evolution-step {
+.evolution-step-carrousel {
   display: flex;
   align-items: center;
   color: #ECECDA;
   font-size: 0.9rem;
 }
 
-.evolution-arrow {
+.evolution-arrow-carrousel {
   color: #ECECDA;
   margin: 0 0.5rem;
   opacity: 0.7;
 }
 
-.bio-section {
+.bio-section-carrousel {
   margin-top: 1.5rem;
 }
 
-.bio-section h3 {
+.bio-section-carrousel h3 {
   color: #ECECDA;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
-.bio-paragraph {
+.bio-paragraph-carrousel {
   color: #ECECDA;
   font-size: 0.9rem;
   line-height: 1.5;
@@ -231,7 +231,7 @@
 }
 
 /* Estilos para el botón "Volver" en DexCarousel */
-.dex-container .back-button {
+.dex-container-carrousel .back-button-carrousel {
   background: rgba(236, 236, 218, 0.1);  /* Fondo similar al badge de tipo */
   border: none;                         /* Sin borde */
   color: #ECECDA;                       /* Color de fuente acorde */
@@ -245,29 +245,28 @@
   margin-bottom: 1rem;
 }
 
-.dex-container .back-button:hover {
+.dex-container-carrousel .back-button-carrousel:hover {
   background: rgba(236, 236, 218, 0.2);
   transform: scale(1.05);
 }
 
-
 /* Ajustes de scroll para móviles */
-.beast-card {
+.beast-card-carrousel {
   max-height: 80vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
 }
 
-.beast-card::-webkit-scrollbar {
+.beast-card-carrousel::-webkit-scrollbar {
   width: 6px;
 }
 
-.beast-card::-webkit-scrollbar-track {
+.beast-card-carrousel::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.beast-card::-webkit-scrollbar-thumb {
+.beast-card-carrousel::-webkit-scrollbar-thumb {
   background-color: rgba(236, 236, 218, 0.3);
   border-radius: 6px;
 }
