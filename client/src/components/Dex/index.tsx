@@ -87,7 +87,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
             className="back-button-carrousel" 
             onClick={onClose}
           >
-            Volver
+            Back
           </button>
         )}
 
