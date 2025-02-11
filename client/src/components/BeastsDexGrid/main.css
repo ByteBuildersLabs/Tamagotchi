@@ -5,7 +5,6 @@
 .pokedex-grid-container {
   padding: 20px;
   min-height: 100vh;
-  background-color: #000; /* O el color de fondo que uses en tu app */
 }
 
 /* Título principal */

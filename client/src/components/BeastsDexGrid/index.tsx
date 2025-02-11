@@ -1,7 +1,7 @@
 // PokedexGrid.tsx
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
-import DexCarousel from './index';
+import DexCarousel from '../Dex/index';
 import Header from "../Header/index.tsx";
 import './grid.css';
 
