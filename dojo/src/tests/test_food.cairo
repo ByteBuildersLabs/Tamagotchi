@@ -102,9 +102,8 @@ mod tests {
         let initial_hunger = initial_status.hunger;
         let initial_energy = initial_status.energy;
 
-        // println!("Initial Status");
-        // println!("{}", initial_hunger);
-        // println!("{}", initial_energy);
+        println!("Initial Status - Energy: {}, Hunger: {}", 
+        initial_status.energy, initial_status.hunger);
 
         let mut counter: u32 = 0;
         while counter < 10 {
@@ -116,9 +115,8 @@ mod tests {
         // Get updated status
         let updated_status: BeastStatus = world.read_model((1));
 
-        // println!("Updated Status");
-        // println!("{}", updated_status.hunger);
-        // println!("{}", updated_status.energy);
+        println!("Updated Status - Energy: {}, Hunger: {}", 
+        initial_status.energy, initial_status.hunger);
 
         // Verify hunger and energy decreased
         assert(updated_status.hunger < initial_hunger, 'hunger not decreased');
@@ -166,5 +164,52 @@ mod tests {
         let final_food: Food = world.read_model((caller, 0));
         assert(final_food.amount == initial_food.amount, 'food was consumed');
     } 
+
+
+    #[test]
+    fn test_feed_beast_increase_stats() {
+        // Initialize test environment
+        let ndef = namespace_def();
+        let mut world = spawn_test_world([ndef].span());
+        world.sync_perms_and_inits(contract_defs());
+
+        let (contract_address, _) = world.dns(@"actions").unwrap();
+        let actions_system = IActionsDispatcher { contract_address };
+
+        // Create player, food, and beast
+        actions_system.spawn_player();
+        actions_system.add_initial_food();
+        actions_system.spawn(1); // Spawn beast with specie 1
+        actions_system.set_current_beast(1);
+
+        // We decrease the stats to verify that they increase after feeding
+        let mut counter: u32 = 0;
+        while counter < 20 {
+            // Decrease stats
+            actions_system.decrease_status();
+            counter = counter + 1;
+        };
+
+        // Get initial status
+        let initial_status: BeastStatus = world.read_model((1));
+        let initial_hunger = initial_status.hunger;
+        let initial_energy = initial_status.energy;
+
+        println!("Initial Status - Energy: {}, Hunger: {}", 
+        initial_status.energy, initial_status.hunger);
+
+        // Increase stats
+        actions_system.feed(0);
+
+        // Get updated status
+        let updated_status: BeastStatus = world.read_model((1));
+
+        println!("Updated Status - Energy: {}, Hunger: {}", 
+        initial_status.energy, initial_status.hunger);
+
+        // Verify hunger and energy decreased
+        assert(updated_status.hunger > initial_hunger, 'hunger not increased');
+        assert(updated_status.energy > initial_energy, 'energy not increased');
+    }
    
 }
