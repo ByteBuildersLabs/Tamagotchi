@@ -1,4 +1,4 @@
-import { useAccount, } from "@starknet-react/core";
+import { useGlobalContext } from "../hooks/appContext.tsx";
 // import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojoStore } from "../main";
 import { useDojo } from "./useDojo";
@@ -6,9 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 import { Account } from "starknet";
 
 export const useSystemCalls = () => {
-    const { account } = useAccount();
+    const { userAccount } = useGlobalContext();
 
     const state = useDojoStore((state) => state);
+
     const {
         setup: { client },
     } = useDojo();
@@ -18,17 +19,13 @@ export const useSystemCalls = () => {
     // };
 
     const spawn = async (specie:number) => {
-
-
         // Generate a unique entity ID
         // const entityId = generateEntityId();
-
 
         // Generate a unique transaction ID
         const transactionId = uuidv4();
 
         // The value to update the Moves model with
-
         // Apply an optimistic update to the state
         // this uses immer drafts to update the state
         // state.applyOptimisticUpdate(transactionId, (draft) => {
@@ -39,8 +36,8 @@ export const useSystemCalls = () => {
 
         try {
             // Execute the spawn action from the client
-            if (account) {
-                await client.actions.spawn(account as Account, specie);
+            if (userAccount) {
+                await client.actions.spawn(userAccount as Account, specie);
             } else {
                 throw new Error("Account is undefined");
             }

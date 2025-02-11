@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useAccount } from "@starknet-react/core";
-import SpawnBeast from "../SpawnBeast/index.tsx";
+import { useGlobalContext } from '../../hooks/appContext.tsx';
 import { DeveloperCode } from "../DeveloperCode/index.tsx";
 import { SchemaType } from '../../dojo/bindings.ts';
 import { SDK } from '@dojoengine/sdk';
+import SpawnBeast from "../SpawnBeast/index.tsx";
 import './styles.css';
 
 function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
-  const { account } = useAccount();
+  const { userAccount } = useGlobalContext();
   const [currentCircle, setCurrentCircle] = useState('play');
   const [showDeveloperCode, setShowDeveloperCode] = useState(false);
 
@@ -28,14 +28,13 @@ function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
     return () => clearInterval(interval);
   }, []);
 
-  if (account) {
+  if (userAccount) {
     return <SpawnBeast sdk={sdk} />;
   }
 
   return (
     <div className="venn-container">
       <h1 className="venn-title">Your Baby Beast Awaits!</h1>
-
       <div className="venn-diagram">
         <svg viewBox="0 0 400 400">
           <defs>

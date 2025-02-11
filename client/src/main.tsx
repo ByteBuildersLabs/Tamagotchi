@@ -9,12 +9,14 @@ import { sepolia } from "@starknet-react/chains";
 import { StarknetConfig, starkscan } from "@starknet-react/core";
 import { RpcProvider } from "starknet";
 import cartridgeConnector from "./config/cartridgeConnector.tsx";
+import { GlobalProvider } from "./hooks/appContext.tsx";
 
 // Import components to use in the routes
 import NewCover from "./components/NewCover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
 import Bag from "./components/Bag/index.tsx";
 import Chat from "./components/Chat/index.tsx";
+import Dex from "./components/Dex/index.tsx";
 
 // Import the layout component
 import AppLayout from "./components/Layouts/AppLayout.tsx";
@@ -60,19 +62,21 @@ async function main() {
             explorer={starkscan}
             provider={provider}
           >
-            <Router>
-              <Routes>
-                {/* Cover route without header*/}
-                <Route path="/" element={<NewCover sdk={sdk} />} />
-                
-                {/* Internal routes using layout for header */}
-                <Route element={<AppLayout />}>
-                  <Route path="/bag" element={<Bag sdk={sdk} />} />
-                  <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
-                  <Route path="/chat" element={<Chat />} />
-                </Route>
-              </Routes>
-            </Router>
+            <GlobalProvider>
+              <Router>
+                <Routes>
+                  {/* Cover route without header*/}
+                  <Route path="/" element={<NewCover sdk={sdk} />} />
+                  {/* Internal routes using layout for header */}
+                  <Route element={<AppLayout />}>
+                    <Route path="/bag" element={<Bag sdk={sdk} />} />
+                    <Route path="/dex" element={<Dex />} />
+                    <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
+                    <Route path="/chat" element={<Chat />} />
+                  </Route>
+                </Routes>
+              </Router>
+            </GlobalProvider>
           </StarknetConfig>
         </DojoContextProvider>
       </StrictMode>,

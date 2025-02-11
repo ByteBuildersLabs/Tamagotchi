@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { useAccount } from "@starknet-react/core";
+import { useGlobalContext } from "../../hooks/appContext.tsx";
 import { SDK } from "@dojoengine/sdk";
 import { Beast, BeastStats, BeastStatus, SchemaType } from "../../dojo/bindings";
 import { Card } from '../../components/ui/card';
@@ -27,6 +27,7 @@ import monster from '../../assets/img/logo.svg';
 import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
+  const { userAccount } = useGlobalContext();
   const { beasts } = useBeast(sdk);
   const { beastsStatus } = useBeastStatus(sdk);
   const { beastsStats } = useBeastsStats(sdk);
@@ -35,11 +36,6 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const beast = beasts.find((beast: Beast) => beast.beast_id === player?.current_beast_id);
   const status = beastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === player?.current_beast_id);
   const stats = beastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === player?.current_beast_id);
-
-  console.log('player', player);
-  console.log('beast', beast);
-  console.log('status', status);
-  console.log('stats', stats);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
@@ -69,8 +65,6 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     updateBackground();
   }, []);
 
-  const { account } = useAccount();
-
   // Animations
   const [currentImage, setCurrentImage] = useState(beast ? initials[beast.specie - 1].idlePicture : '');
   const [firstTime, isFirstTime] = useState(true);
@@ -94,8 +88,8 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (status?.is_alive && account) {
-        await client.actions.decreaseStatus(account as Account);
+      if (status?.is_alive && userAccount) {
+        await client.actions.decreaseStatus(userAccount as Account);
       }
     }, 5000);
 
@@ -156,7 +150,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                     isLoading={isLoading}
                     beast={beast}
                     beastStatus={status}
-                    account={account}
+                    account={userAccount}
                     client={client}
                     setCurrentView={setCurrentView}
                   />
@@ -168,7 +162,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                   <Food 
                     handleAction={handleAction}
                     beast={beast}
-                    account={account}
+                    account={userAccount}
                     client={client}
                     showAnimation={showAnimation}
                   />

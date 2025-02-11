@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAccount } from "@starknet-react/core";
+import { useGlobalContext } from "../../hooks/appContext.tsx";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -15,8 +15,8 @@ import { usePlayer } from "../../hooks/usePlayers.tsx";
 import './main.css';
 
 function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
+  const { userAccount } = useGlobalContext();
   const { spawn } = useSystemCalls();
-  const { account } = useAccount();
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
@@ -46,9 +46,9 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
   const { player } = usePlayer(sdk);
 
   const spawnPlayer = async () => {
-    if (!account) return
-    await client.actions.spawnPlayer(account as Account);
-    await client.actions.addInitialFood(account as Account);
+    if (!userAccount) return
+    await client.actions.spawnPlayer(userAccount as Account);
+    await client.actions.addInitialFood(userAccount as Account);
   };
 
   return (
@@ -72,14 +72,14 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
               Hatch your own Babybeasts and take care of it! Collect them all!
             </p>
           </div>
-          { account && !player && 
+          { userAccount && !player && 
             <button
               className="button"
               onClick={async () => {
                 await spawnPlayer();
               }}>Create player
             </button>}
-          { account && player && 
+          { userAccount && player && 
             <button
               className="button"
               onClick={async () => {

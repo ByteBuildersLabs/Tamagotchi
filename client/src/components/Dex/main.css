@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.dex-container {
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    padding: 20px 0;
+  }
+
+  /* Carousel styles */
+  .beast-card {
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+
+  .beast-card h2 {
+    color: #ECECDA;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .beast-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+
+  .beast-image {
+    width: auto;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .beast-type {
+    color: #ECECDA;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .carousel {
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+    margin-bottom: 20px;
+  }
+
+  .slides {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    touch-action: pan-y;
+  }
+
+  .slide {
+    min-width: 100%;
+    user-select: none;
+  }
+
+  .carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 10; 
+  }
+
+  .control {
+    background: none;
+    border: none;
+    color: #ECECDA;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s ease;
+    z-index: 11; 
+  }
+
+  .control:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .indicators {
+    display: flex;
+  }
+
+  .indicator {
+    width: 10px;
+    height: 10px;
+    margin: 7px;
+    border-radius: 50%;
+    background-color: rgba(220, 200, 120, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .indicator.active {
+    background-color: #ECECDA;
+    transform: scale(1.3);
+  }
+
+  /* Nuevos estilos para la información adicional */
+  .beast-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .beast-name {
+    color: #ECECDA;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .beast-type-badge {
+    background: rgba(236, 236, 218, 0.1);
+    padding: 0.5rem 1rem;
+    margin: 0 120px;
+    border-radius: 20px;
+    color: #ECECDA;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+    display: inline-block;
+  }
+
+.beast-info {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.type-section {
+  margin-bottom: 1.5rem;
+}
+
+.type-section h3 {
+  color: #ECECDA;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.type-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.type-tag {
+  background: rgba(236, 236, 218, 0.15);
+  padding: 0.4rem 0.8rem;
+  border-radius: 15px;
+  color: #ECECDA;
+  font-size: 0.9rem;
+  backdrop-filter: blur(5px);
+}
+
+.evolution-section {
+  margin-bottom: 1.5rem;
+}
+
+.evolution-section h3 {
+  color: #ECECDA;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.evolution-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(236, 236, 218, 0.05);
+  border-radius: 8px;
+}
+
+.evolution-step {
+  display: flex;
+  align-items: center;
+  color: #ECECDA;
+  font-size: 0.9rem;
+}
+
+.evolution-arrow {
+  color: #ECECDA;
+  margin: 0 0.5rem;
+  opacity: 0.7;
+}
+
+.bio-section {
+  margin-top: 1.5rem;
+}
+
+.bio-section h3 {
+  color: #ECECDA;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.bio-paragraph {
+  color: #ECECDA;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+  opacity: 0.9;
+}
+
+/* Ajustes de scroll para móviles */
+.beast-card {
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
+}
+
+.beast-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.beast-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.beast-card::-webkit-scrollbar-thumb {
+  background-color: rgba(236, 236, 218, 0.3);
+  border-radius: 6px;
+}

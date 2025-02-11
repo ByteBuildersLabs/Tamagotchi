@@ -1,0 +1,49 @@
+{
+  "BeastsDex": [
+    {
+      "Name": "BabyEagle",
+      "BeastsType": "Crystal",
+      "EffectiveAgainst": ["Draconic", "Shadow"],
+      "WeakAgainst": ["Magic", "Light"],
+      "BeastsEvolutions": ["YoungEagle", "MajesticEagle"],
+      "BeastsCharacteristics": [
+        "Graceful and free-spirited",
+        "Loves soaring through the skies",
+        "Possesses keen observation skills"
+      ],
+      "Bio": [
+        "Born with the spirit of freedom and grace, BabyEagle is always ready to soar to new heights and share the wonders of the sky."
+      ]
+    },
+    {
+      "Name": "BabyFox",
+      "BeastsType": "Magic",
+      "EffectiveAgainst": ["Crystal", "Light"],
+      "WeakAgainst": ["Shadow", "Draconic"],
+      "BeastsEvolutions": ["Foxling", "ShadowFox"],
+      "BeastsCharacteristics": [
+        "Clever and witty",
+        "Enjoys solving puzzles",
+        "Curious and adventurous"
+      ],
+      "Bio": [
+        "Born with an adventurous spirit and sharp mind, BabyFox is always ready to explore and discover new things."
+      ]
+    },
+    {
+      "Name": "BabyWolf",
+      "BeastsType": "Shadow",
+      "EffectiveAgainst": ["Magic", "Light"],
+      "WeakAgainst": ["Crystal", "Draconic"],
+      "BeastsEvolutions": ["WolfPup", "AlphaWolf"],
+      "BeastsCharacteristics": [
+        "Energetic and social",
+        "Strong pack instincts",
+        "Protective and playful"
+      ],
+      "Bio": [
+        "Born with a protective and playful spirit, BabyWolf is always ready for new adventures and to defend their own."
+      ]
+    }
+  ]
+}

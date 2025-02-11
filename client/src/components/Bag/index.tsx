@@ -1,21 +1,22 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { SDK } from "@dojoengine/sdk";
+import { Beast, SchemaType } from "../../dojo/bindings.ts";
+import { useBeast } from '../../hooks/useBeasts.tsx';
+import { Account } from 'starknet';
+import { useDojo } from '../../dojo/useDojo.tsx';
+import { useGlobalContext } from '../../hooks/appContext.tsx';
+import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
+import initials from "../../data/initials.tsx";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Beast, SchemaType } from "../../dojo/bindings.ts";
-import { useBeast } from '../../hooks/useBeasts.tsx';
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
-import initials from "../../data/initials.tsx";
-import { useAccount } from '@starknet-react/core';
-import { Account } from 'starknet';
-import { useDojo } from '../../dojo/useDojo.tsx';
 import './main.css';
 
 function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
+  const { userAccount } = useGlobalContext();
   const { beasts } = useBeast(sdk);
-  const { account } = useAccount();
+  
   const {
     setup: { client },
   } = useDojo();
@@ -56,7 +57,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
           to={`/play/${beast.beast_id}`} 
           className="button" 
           onClick={async() => {
-            await client.actions.setCurrentBeast(account as Account, beast.beast_id)
+            await client.actions.setCurrentBeast(userAccount as Account, beast.beast_id)
           }}
         >
           PLAY
