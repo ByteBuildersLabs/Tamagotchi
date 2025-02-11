@@ -1,7 +1,7 @@
 // PokedexGrid.tsx
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
-import DexCarousel from '../Dex/index';
+import DexCarousel from '../Dex/index.tsx';
 import './main.css';
 
 interface Beast {
@@ -63,38 +63,40 @@ const PokedexGrid: React.FC = () => {
 
   return (
     <div className="container pokedex-grid-container">
-      <h1 className="text-center my-4">BeastsDex</h1>
       {selectedIndex === null ? (
-        // Vista de grid
-        rows.map((row, rowIndex) => (
-          <div className="row mb-4" key={rowIndex}>
-            {row.map(({ beast, index }) => (
-              <div className="col" key={index}>
-                <div
-                  className="card beast-card"
-                  onClick={() => handleCardClick(index)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {beastImages[beast.Name] ? (
-                    <img
-                      src={beastImages[beast.Name]}
-                      className="card-img-top beast-card-img"
-                      alt={beast.Name}
-                    />
-                  ) : (
-                    <div className="beast-card-img-placeholder">No Image</div>
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{beast.Name}</h5>
-                    <p className="card-text">{beast.BeastsType}</p>
+        <>
+          {/* Título propio del grid */}
+          <h1 className="grid-title">BeastsDex</h1>
+          {rows.map((row, rowIndex) => (
+            <div className="row mb-4" key={rowIndex}>
+              {row.map(({ beast, index }) => (
+                <div className="col" key={index}>
+                  <div
+                    className="card beast-card"
+                    onClick={() => handleCardClick(index)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {beastImages[beast.Name] ? (
+                      <img
+                        src={beastImages[beast.Name]}
+                        className="card-img-top beast-card-img"
+                        alt={beast.Name}
+                      />
+                    ) : (
+                      <div className="beast-card-img-placeholder">No Image</div>
+                    )}
+                    <div className="card-body">
+                      <h5 className="card-title">{beast.Name}</h5>
+                      <p className="card-text">{beast.BeastsType}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ))
+              ))}
+            </div>
+          ))}
+        </>
       ) : (
-        // Vista de detalle: DexCarousel con el botón "Volver"
+        // Vista de detalle: DexCarousel se encarga de mostrar su propio título
         <DexCarousel initialSlide={selectedIndex} onClose={handleCloseDetail} />
       )}
     </div>

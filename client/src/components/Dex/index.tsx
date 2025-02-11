@@ -81,8 +81,6 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
     <>
       <Header />
       <div className="dex-container">
-        <h1 style={{ color: '#ECECDA' }}>BeastsDex</h1>
-
         {/* Botón "Volver": se renderiza si se provee la prop onClose */}
         {onClose && (
           <button 
