@@ -1,0 +1,65 @@
+.stats-dex {
+  width: 100%;
+  height: 153px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  color: #ECECDA;
+}
+
+.stats-dex .item-dex {
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.stats-dex .item-dex .stats-label-dex {
+  width: 30%;
+}
+
+.stats-dex .item-dex .stats-value-dex {
+  width: 60%;
+  display: flex;
+  margin-top: 15px;
+}
+
+.stats-dex .item-dex img {
+  margin-right: 6px;
+}
+
+.stats-dex .progress-bar-dex {
+  background: #434343;
+  width: 100%;
+  height: 40%;
+  margin-right: 7px;
+  border-radius: 30px;
+}
+
+.stats-dex .progress-bar-dex .progress-dex {
+  height: 100%;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.stats-value-dex.Attack .progress-bar-dex .progress-dex {
+  background: linear-gradient(to right, #72e4ff, #7354ff);
+}
+
+.stats-value-dex.Defense .progress-bar-dex .progress-dex {
+  background: linear-gradient(to right, #ee6afe, #ffaab7);
+}
+
+.stats-value-dex.Speed .progress-bar-dex .progress-dex {
+  background: linear-gradient(to right, #b0ff9f, #8cedff);
+}
+
+.stats-value-dex.Experience .progress-bar-dex .progress-dex {
+  background: linear-gradient(to right, #ff807d, #fff263);
+}
