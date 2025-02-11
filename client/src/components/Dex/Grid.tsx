@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
 import DexCarousel from './index';
+import Header from "../Header/index.tsx";
 import './grid.css';
 
 interface Beast {
@@ -37,6 +38,13 @@ const PokedexGrid: React.FC = () => {
     };
 
     loadImages();
+
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) {
+        bodyElement.classList.remove('day', 'night');
+        bodyElement.style.backgroundSize = 'cover';
+        bodyElement.style.padding = '80px 15px 30px';
+    }
   }, []);
 
   // Agregamos el índice a cada beast para mantener el orden original
@@ -62,47 +70,47 @@ const PokedexGrid: React.FC = () => {
   };
 
   return (
-    <div className="container pokedex-grid-container">
-      <h1 className="text-center my-4">BeastsDex</h1>
-      {selectedIndex === null ? (
-        // Renderizamos la vista de grid
-        rows.map((row, rowIndex) => (
-          <div className="row mb-4" key={rowIndex}>
-            {row.map(({ beast, index }) => (
-              <div className="col" key={index}>
-                <div
-                  className="card beast-card"
-                  onClick={() => handleCardClick(index)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {beastImages[beast.Name] ? (
-                    <img
-                      src={beastImages[beast.Name]}
-                      className="card-img-top beast-card-img"
-                      alt={beast.Name}
-                    />
-                  ) : (
-                    <div className="beast-card-img-placeholder">No Image</div>
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{beast.Name}</h5>
-                    <p className="card-text">{beast.BeastsType}</p>
+    <>
+    <Header /><div className="container pokedex-grid-container">
+          <h1 className="text-center my-4">BeastsDex</h1>
+          {selectedIndex === null ? (
+              // Renderizamos la vista de grid
+              rows.map((row, rowIndex) => (
+                  <div className="row mb-4" key={rowIndex}>
+                      {row.map(({ beast, index }) => (
+                          <div className="col" key={index}>
+                              <div
+                                  className="card beast-card"
+                                  onClick={() => handleCardClick(index)}
+                                  style={{ cursor: 'pointer' }}
+                              >
+                                  {beastImages[beast.Name] ? (
+                                      <img
+                                          src={beastImages[beast.Name]}
+                                          className="card-img-top beast-card-img"
+                                          alt={beast.Name} />
+                                  ) : (
+                                      <div className="beast-card-img-placeholder">No Image</div>
+                                  )}
+                                  <div className="card-body">
+                                      <h5 className="card-title">{beast.Name}</h5>
+                                      <p className="card-text">{beast.BeastsType}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      ))}
                   </div>
-                </div>
+              ))
+          ) : (
+              // Renderizamos la vista de detalle con DexCarousel
+              <div className="detail-view">
+                  <button className="btn btn-secondary mb-3" onClick={handleCloseDetail}>
+                      Volver
+                  </button>
+                  <DexCarousel initialSlide={selectedIndex} />
               </div>
-            ))}
-          </div>
-        ))
-      ) : (
-        // Renderizamos la vista de detalle con DexCarousel
-        <div className="detail-view">
-          <button className="btn btn-secondary mb-3" onClick={handleCloseDetail}>
-            Volver
-          </button>
-          <DexCarousel initialSlide={selectedIndex} />
-        </div>
-      )}
-    </div>
+          )}
+      </div></>
   );
 };
 
