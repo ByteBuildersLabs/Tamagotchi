@@ -1,4 +1,3 @@
-/* pokedexGrid.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
 .dex-container-syles {
@@ -23,12 +22,10 @@
   flex: 1;
   overflow-y: auto;
   padding: 0 12px 12px;
-  /* Estilizar la barra de scroll */
   scrollbar-width: thin;
   scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
 }
 
-/* Estilos para la barra de scroll en webkit */
 .scrollable-container::-webkit-scrollbar {
   width: 6px;
 }
