@@ -9,6 +9,7 @@ import './main.css';
 
 interface DexCarouselProps {
   initialSlide?: number;
+  onClose?: () => void; // Callback para el botón "Volver"
 }
 
 /**
@@ -16,7 +17,7 @@ interface DexCarouselProps {
  * @param {DexCarouselProps} props
  * @returns {JSX.Element} The rendered DexCarousel component.
  */
-function DexCarousel({ initialSlide = 0 }: DexCarouselProps) {
+function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps) {
   const [beastImages, setBeastImages] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -81,6 +82,17 @@ function DexCarousel({ initialSlide = 0 }: DexCarouselProps) {
       <Header />
       <div className="dex-container">
         <h1 style={{ color: '#ECECDA' }}>BeastsDex</h1>
+
+        {/* Botón "Volver": se renderiza si se provee la prop onClose */}
+        {onClose && (
+          <button 
+            className="back-button" 
+            onClick={onClose}
+          >
+            Volver
+          </button>
+        )}
+
         <Slider {...settings}>
           {beastsData.BeastsDex.map((beast, index) => (
             <div key={index} className="beast-card">
