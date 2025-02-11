@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useGlobalContext } from '../../hooks/appContext.tsx';
 import { DeveloperCode } from "../DeveloperCode/index.tsx";
-import { SchemaType } from '../../dojo/bindings.ts';
-import { SDK } from '@dojoengine/sdk';
 import SpawnBeast from "../SpawnBeast/index.tsx";
 import './styles.css';
 
-function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
+function VennDiagram() {
   const { userAccount } = useGlobalContext();
   const [currentCircle, setCurrentCircle] = useState('play');
   const [showDeveloperCode, setShowDeveloperCode] = useState(false);

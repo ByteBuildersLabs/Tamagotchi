@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { SDK } from "@dojoengine/sdk";
-import { Beast, SchemaType } from "../../dojo/bindings.ts";
-import { useBeast } from '../../hooks/useBeasts.tsx';
+import { Beast } from "../../dojo/bindings.ts";
 import { Account } from 'starknet';
 import { useDojo } from '../../dojo/useDojo.tsx';
 import { useGlobalContext } from '../../hooks/appContext.tsx';
@@ -13,22 +11,24 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
 
-function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
-  const { userAccount } = useGlobalContext();
-  const { beasts } = useBeast(sdk);
+function Bag() {
+  const { 
+    userAccount,
+    userBeasts 
+  } = useGlobalContext();
   
   const {
     setup: { client },
   } = useDojo();
 
   const settings = {
-    dots: beasts.length > 1,
+    dots: userBeasts.length > 1,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    swipe: beasts.length > 1,
+    swipe: userBeasts.length > 1,
     customPaging: function() {
       return (
         <div className="indicator"></div>
@@ -36,7 +36,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
     }
   };
 
-  const getSlideContent = (beast: typeof beasts[0]) => (
+  const getSlideContent = (beast: typeof userBeasts[0]) => (
     <div className="beast-slide">
       <div className="beast">
         <div className="beast-header">
@@ -76,7 +76,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
   }, []);
 
   // if no beasts are available, show an empty state
-  if (beasts.length === 0) {
+  if (userBeasts.length === 0) {
     return (
       <div className="bag">
         <div className='d-flex justify-content-between align-items-center'>
@@ -103,13 +103,13 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
         <ControllerConnectButton />
       </div>
       <div className="carousel">
-        {beasts.length === 1 ? (
+        {userBeasts.length === 1 ? (
           // if only one beast, show it directly without the slider
-          getSlideContent(beasts[0])
+          getSlideContent(userBeasts[0])
         ) : (
           // if more than one beast, show them in a slider
           <Slider {...settings}>
-            {beasts.map((beast: Beast, index: number) => (
+            {userBeasts.map((beast: Beast, index: number) => (
               <div key={index}>
                 {getSlideContent(beast)}
               </div>

@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { Account } from "starknet";
-import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
-import { SDK } from "@dojoengine/sdk";
-import { Beast, BeastStats, BeastStatus, SchemaType } from "../../dojo/bindings";
+import { Beast, BeastStats, BeastStatus } from "../../dojo/bindings";
 import { Card } from '../../components/ui/card';
 import { useDojo } from "../../dojo/useDojo.tsx";
-import { useBeast } from "../../hooks/useBeasts.tsx";
-import { useBeastStatus } from "../../hooks/useBeastsStatus.tsx";
-import { useBeastsStats } from "../../hooks/useBeastsStats.tsx";
 import initials from "../../data/initials.tsx";
 import message from '../../assets/img/message.svg';
 import dead from '../../assets/img/dead.gif';
@@ -26,16 +21,18 @@ import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
 import './main.css';
 
-function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
-  const { userAccount } = useGlobalContext();
-  const { beasts } = useBeast(sdk);
-  const { beastsStatus } = useBeastStatus(sdk);
-  const { beastsStats } = useBeastsStats(sdk);
-  const { player } = usePlayer(sdk);
+function Tamagotchi() {
+  const { 
+    userAccount,
+    userPlayer,
+    userBeasts,
+    userBeastsStatus,
+    userBeastsStats
+  } = useGlobalContext();
   
-  const beast = beasts.find((beast: Beast) => beast.beast_id === player?.current_beast_id);
-  const status = beastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === player?.current_beast_id);
-  const stats = beastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === player?.current_beast_id);
+  const beast = userBeasts.find((beast: Beast) => beast.beast_id === userPlayer?.current_beast_id);
+  const status = userBeastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === userPlayer?.current_beast_id);
+  const stats = userBeastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === userPlayer?.current_beast_id);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
