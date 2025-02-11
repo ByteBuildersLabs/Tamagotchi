@@ -1,10 +1,12 @@
 /* pokedexGrid.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
-.grid-container {
+.dex-container-syles {
   width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .grid-title {
@@ -12,36 +14,62 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 1.5rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+
+.scrollable-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px 12px;
+  /* Estilizar la barra de scroll */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
+}
+
+/* Estilos para la barra de scroll en webkit */
+.scrollable-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background-color: rgba(236, 236, 218, 0.3);
+  border-radius: 3px;
 }
 
 .beast-grid {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .grid-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
 .beast-card-wrapper {
   flex: 1;
-  min-width: 0; /* Permite que las cards se contraigan */
+  min-width: 0;
 }
 
 .beast-card {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
   transition: transform 0.2s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .beast-card:hover {
@@ -54,7 +82,7 @@
   background: rgba(236, 236, 218, 0.05);
   border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .beast-image {
@@ -72,38 +100,42 @@
   background: rgba(236, 236, 218, 0.05);
   color: #ECECDA;
   border-radius: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .beast-info {
   text-align: center;
+  padding: 0 2px;
+  min-width: 0;
 }
 
 .beast-name {
   font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
+  font-size: 0.5rem;
   color: #ECECDA;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
+  padding: 0 2px;
 }
 
 .beast-type {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   color: #ECECDA;
   background: rgba(236, 236, 218, 0.1);
-  padding: 4px 8px;
-  border-radius: 12px;
+  padding: 2px 4px;
+  border-radius: 10px;
   font-family: 'Montserrat', sans-serif;
   display: inline-block;
+  white-space: nowrap;
 }
 
-/* Ajustes específicos para pantallas muy pequeñas */
-@media (max-width: 360px) {
-  .grid-container {
-    padding: 8px;
+@media (max-width: 320px) {
+  .scrollable-container {
+    padding: 0 8px 8px;
   }
   
   .grid-row {
@@ -111,39 +143,20 @@
   }
   
   .beast-card {
-    padding: 6px;
+    padding: 4px;
   }
   
   .beast-name {
-    font-size: 0.75rem;
-  }
-  
-  .beast-type {
-    font-size: 0.65rem;
-    padding: 3px 6px;
+    font-size: 0.45rem;
   }
 }
 
-/* Ajustes para tablets y escritorio */
 @media (min-width: 768px) {
-  .grid-container {
-    padding: 24px;
-  }
-  
-  .grid-row {
-    gap: 16px;
+  .beast-name {
+    font-size: 0.6rem;
   }
   
   .beast-card {
-    padding: 16px;
-  }
-  
-  .beast-name {
-    font-size: 1.125rem;
-  }
-  
-  .beast-type {
-    font-size: 0.875rem;
-    padding: 6px 12px;
+    padding: 8px;
   }
 }

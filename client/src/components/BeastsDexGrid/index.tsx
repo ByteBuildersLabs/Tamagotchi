@@ -41,7 +41,6 @@ const PokedexGrid: React.FC = () => {
     index,
   }));
 
-  // Crear filas de 3 elementos
   const createRows = (items: BeastWithIndex[]): BeastWithIndex[][] => {
     const result: BeastWithIndex[][] = [];
     for (let i = 0; i < items.length; i += 3) {
@@ -61,40 +60,42 @@ const PokedexGrid: React.FC = () => {
   };
 
   return (
-    <div className="grid-container">
+    <div className="dex-container-syles">
       {selectedIndex === null ? (
         <>
           <h1 className="grid-title">BeastsDex</h1>
-          <div className="beast-grid">
-            {rows.map((row, rowIndex) => (
-              <div className="grid-row" key={rowIndex}>
-                {row.map(({ beast, index }) => (
-                  <div 
-                    className="beast-card-wrapper" 
-                    key={index}
-                    onClick={() => handleCardClick(index)}
-                  >
-                    <div className="beast-card">
-                      {beastImages[beast.Name] ? (
-                        <div className="beast-image-container">
-                          <img
-                            src={beastImages[beast.Name]}
-                            className="beast-image"
-                            alt={beast.Name}
-                          />
+          <div className="scrollable-container">
+            <div className="beast-grid">
+              {rows.map((row, rowIndex) => (
+                <div className="grid-row" key={rowIndex}>
+                  {row.map(({ beast, index }) => (
+                    <div 
+                      className="beast-card-wrapper" 
+                      key={index}
+                      onClick={() => handleCardClick(index)}
+                    >
+                      <div className="beast-card">
+                        {beastImages[beast.Name] ? (
+                          <div className="beast-image-container">
+                            <img
+                              src={beastImages[beast.Name]}
+                              className="beast-image"
+                              alt={beast.Name}
+                            />
+                          </div>
+                        ) : (
+                          <div className="beast-image-placeholder">No Image</div>
+                        )}
+                        <div className="beast-info">
+                          <h2 className="beast-name" style={{ fontSize: '15px' }}>{beast.Name}</h2>
+                          <span className="beast-type" style={{ marginBottom: '5px' }}>{beast.BeastsType}</span>
                         </div>
-                      ) : (
-                        <div className="beast-image-placeholder">No Image</div>
-                      )}
-                      <div className="beast-info">
-                        <h2 className="beast-name">{beast.Name}</h2>
-                        <span className="beast-type">{beast.BeastsType}</span>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </>
       ) : (
