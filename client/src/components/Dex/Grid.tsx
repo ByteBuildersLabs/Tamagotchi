@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
 import DexCarousel from './index';
-import './pokedexGrid.css';
+import './grid.css';
 
 interface Beast {
   Name: string;
