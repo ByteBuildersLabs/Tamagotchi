@@ -13,8 +13,8 @@ import './main.css';
 
 function Bag() {
   const { 
-    userAccount,
-    userBeasts 
+    account,
+    beasts 
   } = useGlobalContext();
   
   const {
@@ -22,13 +22,13 @@ function Bag() {
   } = useDojo();
 
   const settings = {
-    dots: userBeasts.length > 1,
+    dots: beasts.length > 1,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    swipe: userBeasts.length > 1,
+    swipe: beasts.length > 1,
     customPaging: function() {
       return (
         <div className="indicator"></div>
@@ -36,12 +36,9 @@ function Bag() {
     }
   };
 
-  const getSlideContent = (beast: typeof userBeasts[0]) => (
+  const getSlideContent = (beast: typeof beasts[0]) => (
     <div className="beast-slide">
       <div className="beast">
-        <div className="beast-header">
-          <h2>{beast.name}</h2>
-        </div>
         <div className="beast-pic d-flex align-items-end">
           <img src={initials[beast.specie - 1].idlePicture} alt="beast" />
         </div>
@@ -57,7 +54,7 @@ function Bag() {
           to={`/play/${beast.beast_id}`} 
           className="button" 
           onClick={async() => {
-            await client.actions.setCurrentBeast(userAccount as Account, beast.beast_id)
+            await client.actions.setCurrentBeast(account as Account, beast.beast_id)
           }}
         >
           PLAY
@@ -76,7 +73,7 @@ function Bag() {
   }, []);
 
   // if no beasts are available, show an empty state
-  if (userBeasts.length === 0) {
+  if (beasts.length === 0) {
     return (
       <div className="bag">
         <div className='d-flex justify-content-between align-items-center'>
@@ -103,13 +100,13 @@ function Bag() {
         <ControllerConnectButton />
       </div>
       <div className="carousel">
-        {userBeasts.length === 1 ? (
+        {beasts.length === 1 ? (
           // if only one beast, show it directly without the slider
-          getSlideContent(userBeasts[0])
+          getSlideContent(beasts[0])
         ) : (
           // if more than one beast, show them in a slider
           <Slider {...settings}>
-            {userBeasts.map((beast: Beast, index: number) => (
+            {beasts.map((beast: Beast, index: number) => (
               <div key={index}>
                 {getSlideContent(beast)}
               </div>

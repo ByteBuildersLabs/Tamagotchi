@@ -12,7 +12,7 @@ import { Account } from "starknet";
 import './main.css';
 
 function SpawnBeast() {
-  const { userAccount, userPlayer } = useGlobalContext();
+  const { account, player } = useGlobalContext();
   const { spawn } = useSystemCalls();
 
   useEffect(() => {
@@ -41,9 +41,9 @@ function SpawnBeast() {
   } = useDojo();
 
   const spawnPlayer = async () => {
-    if (!userAccount) return
-    await client.actions.spawnPlayer(userAccount as Account);
-    await client.actions.addInitialFood(userAccount as Account);
+    if (!account) return
+    await client.actions.spawnPlayer(account as Account);
+    await client.actions.addInitialFood(account as Account);
   };
 
   return (
@@ -67,14 +67,14 @@ function SpawnBeast() {
               Hatch your own Babybeasts and take care of it! Collect them all!
             </p>
           </div>
-          { userAccount && !userPlayer && 
+          { account && !player && 
             <button
               className="button"
               onClick={async () => {
                 await spawnPlayer();
               }}>Create player
             </button>}
-          { userAccount && userPlayer && 
+          { account && player && 
             <button
               className="button"
               onClick={async () => {

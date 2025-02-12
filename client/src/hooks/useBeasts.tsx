@@ -1,29 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SDK } from "@dojoengine/sdk";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { addAddressPadding } from "starknet";
-import { Models, SchemaType } from "../dojo/bindings.ts";
+import { SchemaType } from "../dojo/bindings.ts";
 import { useAccount } from "@starknet-react/core";
 import { useDojoStore } from "../main.tsx";
-import useModel from "../dojo/useModel.tsx";
+import { usePlayer } from "./usePlayers.tsx";
+
 
 export const useBeast = (sdk: SDK<SchemaType>) => {
   const { account } = useAccount();
+  const { player } = usePlayer(sdk);
   const state = useDojoStore((state) => state);
 
-  const entityId = useMemo(
-    () => account?.address ? getEntityIdFromKeys([BigInt(account.address)]) : null,
-    [account?.address]
-  );
-
-  const beastData = useModel(entityId ?? "", Models.Beast);
-  const [beast, setBeast] = useState(beastData);
-
+  const [beast, setBeast] = useState<any>({});
   const [beasts, setBeasts] = useState<any>([]);
-
-  useEffect(() => {
-    setBeast(beastData);
-  }, [beastData]);
 
   useEffect(() => {
     if (!account) return;
@@ -36,8 +26,8 @@ export const useBeast = (sdk: SDK<SchemaType>) => {
             Beast: {
               $: {
                 where: {
-                  player: {
-                    $is: addAddressPadding(account.address),
+                  beast_id: {
+                    $is: player?.current_beast_id,
                   },
                 },
               },
@@ -48,6 +38,9 @@ export const useBeast = (sdk: SDK<SchemaType>) => {
           if (response.error) {
             console.error("Error setting up entity sync:", response.error);
           } else if (response.data && response.data[0].entityId !== "0x0") {
+            const beastsData = response.data.map((entity) => entity.models.babybeasts.Beast);
+            const beast = beastsData[0];
+            setBeast(beast);
             state.updateEntity(response.data[0]);
           }
         },
@@ -64,7 +57,7 @@ export const useBeast = (sdk: SDK<SchemaType>) => {
         unsubscribe();
       }
     };
-  }, [sdk, account]);
+  }, [sdk, player]);
 
   useEffect(() => {
     if (!account) return;

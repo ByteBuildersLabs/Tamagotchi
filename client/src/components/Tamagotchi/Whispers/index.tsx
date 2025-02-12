@@ -142,7 +142,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus:
             Hygiene: ${beastStatus.hygiene}/100
             
             Responds as a friendly and playful virtual pet, in 2 lines max.,
-            focusing on your most urgent need: ${criticalStat.stat} (${criticalStat.value}/100);`
+            focusing on your most urgent need: ${criticalStat?.stat} (${criticalStat?.value}/100);`
   };
 
   const createWhisper = async (prompt: any) => {

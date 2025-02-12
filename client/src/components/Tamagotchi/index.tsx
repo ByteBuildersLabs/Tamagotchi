@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Account } from "starknet";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
-import { Beast, BeastStats, BeastStatus } from "../../dojo/bindings";
+import { BeastStats, BeastStatus } from "../../dojo/bindings";
 import { Card } from '../../components/ui/card';
 import { useDojo } from "../../dojo/useDojo.tsx";
 import initials from "../../data/initials.tsx";
@@ -23,16 +23,17 @@ import './main.css';
 
 function Tamagotchi() {
   const { 
-    userAccount,
-    userPlayer,
-    userBeasts,
-    userBeastsStatus,
-    userBeastsStats
+    account,
+    player,
+    beast,
+    beastsStatus,
+    beastsStats, 
   } = useGlobalContext();
-  
-  const beast = userBeasts.find((beast: Beast) => beast.beast_id === userPlayer?.current_beast_id);
-  const status = userBeastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === userPlayer?.current_beast_id);
-  const stats = userBeastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === userPlayer?.current_beast_id);
+
+  console.log('rolo', beast);
+
+  const status = beastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === player?.current_beast_id);
+  const stats = beastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === player?.current_beast_id);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
@@ -63,12 +64,18 @@ function Tamagotchi() {
   }, []);
 
   // Animations
-  const [currentImage, setCurrentImage] = useState(beast ? initials[beast.specie - 1].idlePicture : '');
+  const [currentImage, setCurrentImage] = useState(beast ? initials[beast.specie - 1]?.idlePicture : '');
   const [firstTime, isFirstTime] = useState(true);
 
   useEffect(() => {
+    if (beast) {
+      setCurrentImage(beast ? initials[beast.specie - 1]?.idlePicture : '')
+    }
+  }, [beast]);
+  
+  useEffect(() => {
     if (firstTime && beast) {
-      setCurrentImage(beast ? initials[beast.specie - 1].idlePicture : '')
+      setCurrentImage(beast ? initials[beast.specie - 1]?.idlePicture : '')
       isFirstTime(false);
     }
   }, [beast]);
@@ -76,7 +83,7 @@ function Tamagotchi() {
   const showAnimation = (gifPath: string) => {
     setCurrentImage(gifPath);
     setTimeout(() => {
-      setCurrentImage(beast ? initials[beast.specie - 1].idlePicture : '');
+      setCurrentImage(beast ? initials[beast.specie - 1]?.idlePicture : '');
     }, loadingTime);
   };
   const showDeathAnimation = () => {
@@ -85,8 +92,8 @@ function Tamagotchi() {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (status?.is_alive && userAccount) {
-        await client.actions.decreaseStatus(userAccount as Account);
+      if (status?.is_alive && account) {
+        await client.actions.decreaseStatus(account as Account);
       }
     }, 5000);
 
@@ -147,7 +154,7 @@ function Tamagotchi() {
                     isLoading={isLoading}
                     beast={beast}
                     beastStatus={status}
-                    account={userAccount}
+                    account={account}
                     client={client}
                     setCurrentView={setCurrentView}
                   />
@@ -159,7 +166,7 @@ function Tamagotchi() {
                   <Food 
                     handleAction={handleAction}
                     beast={beast}
-                    account={userAccount}
+                    account={account}
                     client={client}
                     showAnimation={showAnimation}
                   />

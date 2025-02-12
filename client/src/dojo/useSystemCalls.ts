@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Account } from "starknet";
 
 export const useSystemCalls = () => {
-    const { userAccount } = useGlobalContext();
+    const { account } = useGlobalContext();
 
     const state = useDojoStore((state) => state);
 
@@ -36,8 +36,8 @@ export const useSystemCalls = () => {
 
         try {
             // Execute the spawn action from the client
-            if (userAccount) {
-                await client.actions.spawn(userAccount as Account, specie);
+            if (account) {
+                await client.actions.spawn(account as Account, specie);
             } else {
                 throw new Error("Account is undefined");
             }

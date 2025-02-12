@@ -5,7 +5,7 @@ import SpawnBeast from "../SpawnBeast/index.tsx";
 import './styles.css';
 
 function VennDiagram() {
-  const { userAccount } = useGlobalContext();
+  const { account } = useGlobalContext();
   const [currentCircle, setCurrentCircle] = useState('play');
   const [showDeveloperCode, setShowDeveloperCode] = useState(false);
 
@@ -21,7 +21,7 @@ function VennDiagram() {
     return () => clearInterval(interval);
   }, []);
 
-  if (userAccount) {
+  if (account) {
     return <SpawnBeast />;
   }
 

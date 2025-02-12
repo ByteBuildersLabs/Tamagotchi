@@ -1,28 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SDK } from "@dojoengine/sdk";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { Models, SchemaType } from "../dojo/bindings.ts";
+import { SchemaType } from "../dojo/bindings.ts";
 import { useAccount } from "@starknet-react/core";
 import { useDojoStore } from "../main.tsx";
-import useModel from "../dojo/useModel.tsx";
+import { usePlayer } from "./usePlayers.tsx";
 
-export const useBeastsStats = (sdk: SDK<SchemaType>, beastId?: number) => {
+export const useBeastsStats = (sdk: SDK<SchemaType>) => {
   const { account } = useAccount();
+  const { player } = usePlayer(sdk);
   const state = useDojoStore((state) => state);
 
-  const entityId = useMemo(
-    () => account?.address ? getEntityIdFromKeys([BigInt(account.address)]) : null,
-    [account?.address]
-  );
-
-  const beastStatsData = useModel(entityId ?? "", Models.BeastStats);
-  const [beastStats, setBeastStats] = useState(beastStatsData);
-
+  const [beastStats, setBeastStats] = useState<any>({});
   const [beastsStats, setBeastsStats] = useState<any>([]);
-
-  useEffect(() => {
-    setBeastStats(beastStatsData);
-  }, [beastStatsData]);
 
   useEffect(() => {
     if (!account) return;
@@ -36,7 +25,7 @@ export const useBeastsStats = (sdk: SDK<SchemaType>, beastId?: number) => {
               $: {
                 where: {
                   beast_id: {
-                    $is: beastId,
+                    $is: player?.current_beast_id,
                   },
                 },
               },
@@ -47,6 +36,9 @@ export const useBeastsStats = (sdk: SDK<SchemaType>, beastId?: number) => {
           if (response.error) {
             console.error("Error setting up entity sync:", response.error);
           } else if (response.data && response.data[0].entityId !== "0x0") {
+            const beastsStatsData = response.data.map((entity) => entity.models.babybeasts.BeastStats);
+            const beastStatsData = beastsStatsData[0];
+            setBeastStats(beastStatsData);
             state.updateEntity(response.data[0]);
           }
         },
@@ -63,7 +55,7 @@ export const useBeastsStats = (sdk: SDK<SchemaType>, beastId?: number) => {
         unsubscribe();
       }
     };
-  }, [sdk, account]);
+  }, [sdk, player]);
 
   useEffect(() => {
     if (!account) return;
