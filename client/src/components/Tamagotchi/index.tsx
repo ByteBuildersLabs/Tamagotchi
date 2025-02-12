@@ -51,7 +51,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
 
   
-  /// Función para manejar el botón principal
+  // Function to handle the main button
   const handleMainButtonClick = () => {
     const nextView = currentView !== 'actions' ? 'actions' : 'stats';
     const newImage = nextView === 'actions' ? monster : goBackIcon;
@@ -60,7 +60,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     setCurrentView(nextView);
   };
 
-  // Función para manejar el botón de chat
+  // Funtion to handle the chat button
   const handleChatButtonClick = () => {
     const nextView = currentView !== 'chat' ? 'chat' : 'actions';
     const newImage = nextView === 'chat' ? goBackIcon : message;
@@ -69,7 +69,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     setCurrentView(nextView);
   };
 
-  // Función para manejar cambios desde otros componentes (como Actions)
+  //Funtion to handle changes from other components (like Actions)
   const handleViewChange = (newView: string) => {
     if (newView === 'food' || newView === 'stats') {
       setCurrentButtonImage(goBackIcon);
