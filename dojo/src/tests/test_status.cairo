@@ -19,39 +19,13 @@ mod tests {
     use babybeasts::models::player::{Player, m_Player};
     use babybeasts::types::food::{FoodType};
     use babybeasts::constants;
-
-    // Define the namespace and resources
-    fn namespace_def() -> NamespaceDef {
-        let ndef = NamespaceDef {
-            namespace: "babybeasts", resources: [
-                TestResource::Model(m_Beast::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
-                TestResource::Model(m_Player::TEST_CLASS_HASH),
-                TestResource::Model(m_Food::TEST_CLASS_HASH),
-                TestResource::Contract(actions::TEST_CLASS_HASH),
-            ].span(),
-        };
-
-        ndef
-    }
-
-    fn contract_defs() -> Span<ContractDef> {
-        [
-            ContractDefTrait::new(@"babybeasts", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"babybeasts")].span())
-        ].span()
-    }
+    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
 
     #[test]
     fn test_beast_sleep() {
-        // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -88,12 +62,9 @@ mod tests {
     #[test]
     fn test_beast_awake() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player and beast
         actions_system.spawn_player();
@@ -122,12 +93,9 @@ mod tests {
     #[test]
     fn test_beast_play() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player and beast
         actions_system.spawn_player();
@@ -161,12 +129,9 @@ mod tests {
     #[test]
     fn test_beast_clean() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player and beast
         actions_system.spawn_player();
@@ -200,12 +165,9 @@ mod tests {
     #[test]
     fn test_beast_death() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player and beast
         actions_system.spawn_player();
@@ -239,12 +201,9 @@ mod tests {
     #[test]
     fn test_beast_revive() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player and beast
         actions_system.spawn_player();

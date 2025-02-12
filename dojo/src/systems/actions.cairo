@@ -32,7 +32,7 @@ pub mod actions {
     use babybeasts::models::beast::{Beast};
     use babybeasts::models::beast_stats::{BeastStats};
     use babybeasts::models::beast_status::{BeastStatus};
-    use babybeasts::models::player::{Player};
+    use babybeasts::models::player::{Player, PlayerAssert};
     use babybeasts::models::food::{Food};
     
     // types import
@@ -77,6 +77,7 @@ pub mod actions {
             let store = StoreTrait::new(world);
 
             let mut player: Player = store.read_player();
+            player.assert_exists();
             player.current_beast_id = beast_id;
 
             store.write_player(@player);
@@ -109,40 +110,53 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
 
             if beast_status.is_alive == true {
+                // Decrease energy based on conditions
                 if beast_status.happiness == 0 || beast_status.hygiene == 0 {
-                    beast_status.energy = beast_status.energy - 2;
+                    beast_status.energy = if beast_status.energy >= 2 {
+                        beast_status.energy - 2
+                    } else {
+                        0
+                    };
                 } else {
-                    beast_status.energy = beast_status.energy - 1;
-                }
-                if beast_status.energy < 0 {
-                    beast_status.energy = 0;
-                }
-
-                beast_status.hunger = beast_status.hunger - 2;
-                if beast_status.hunger < 0 {
-                    beast_status.hunger = 0;
+                    beast_status.energy = if beast_status.energy >= 1 {
+                        beast_status.energy - 1
+                    } else {
+                        0
+                    };
                 }
 
-                beast_status.happiness = beast_status.happiness - 1;
-                if beast_status.happiness < 0 {
-                    beast_status.happiness = 0;
-                }
+                // Decrease hunger safely
+                beast_status.hunger = if beast_status.hunger >= 2 {
+                    beast_status.hunger - 2
+                } else {
+                    0
+                };
 
-                beast_status.hygiene = beast_status.hygiene - 1;
-                if beast_status.hygiene < 0 {
-                    beast_status.hygiene = 0;
-                }
+                // Decrease happiness safely 
+                beast_status.happiness = if beast_status.happiness >= 1 {
+                    beast_status.happiness - 1
+                } else {
+                    0
+                };
 
+                // Decrease hygiene safely
+                beast_status.hygiene = if beast_status.hygiene >= 1 {
+                    beast_status.hygiene - 1
+                } else {
+                    0
+                };
+
+                // Check if beast dies
                 if beast_status.energy == 0 || beast_status.hunger == 0 {
                     beast_status.is_alive = false;
                 }
+
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
             }
@@ -153,15 +167,14 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut food: Food = store.read_food(food_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
 
             if beast_status.is_alive == true {
+                // Validate food is not negative
                 if food.amount > 0 {
                     food.amount = food.amount - 1;
                     beast_status.hunger = beast_status.hunger + constants::XL_UPDATE_POINTS;
@@ -184,10 +197,9 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
 
             if beast_status.is_alive == true {
@@ -210,10 +222,9 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
 
             if beast_status.is_alive == true {
@@ -228,21 +239,32 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
-
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == true {
+                // Increase happiness
                 beast_status.happiness = beast_status.happiness + constants::XL_UPDATE_POINTS;
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast_status.energy = beast_status.energy - constants::L_UPDATE_POINTS;
-                beast_status.hunger = beast_status.hunger - constants::M_UPDATE_POINTS;
+
+                // Decrease energy safety avoiding overflow
+                beast_status.energy = if beast_status.energy >= constants::L_UPDATE_POINTS {
+                    beast_status.energy - constants::L_UPDATE_POINTS
+                } else {
+                    0
+                };
+
+                // Decrease hunger safety avoiding overflow
+                beast_status.hunger = if beast_status.hunger >= constants::M_UPDATE_POINTS {
+                    beast_status.hunger - constants::M_UPDATE_POINTS
+                } else {
+                    0
+                };
 
                 beast_stats.experience = beast_stats.experience + constants::S_UPDATE_POINTS;
                 if beast_stats.experience >= beast_stats.next_level_experience {
@@ -266,12 +288,10 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
-
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == true {
@@ -308,12 +328,10 @@ pub mod actions {
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
+            player.assert_exists();
             let beast_id = player.current_beast_id;
-
             let mut beast: Beast = store.read_beast(beast_id);
-
             let mut beast_status = store.read_beast_status(beast_id);
-
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == false {
@@ -324,23 +342,26 @@ pub mod actions {
                 beast_status.hygiene = 100;
                 beast_stats.experience = 0;
 
-                if beast_stats.attack < 0 {
-                    beast_stats.attack = 0;
+                // Reduce attack safety avoiding overflow
+                beast_stats.attack = if beast_stats.attack >= 1 {
+                    beast_stats.attack - 1
                 } else {
-                    beast_stats.attack = beast_stats.attack - 1;
-                }
+                    0
+                };
 
-                if beast_stats.defense < 0 {
-                    beast_stats.defense = 0;
+                // Reduce defense safety avoiding overflow
+                beast_stats.defense = if beast_stats.defense >= 1 {
+                    beast_stats.defense - 1
                 } else {
-                    beast_stats.defense = beast_stats.defense - 1;
-                }
+                    0
+                };
 
-                if beast_stats.speed < 0 {
-                    beast_stats.speed = 0;
+                // Reduce speed safety avoiding overflow
+                beast_stats.speed = if beast_stats.speed >= 1 {
+                    beast_stats.speed - 1
                 } else {
-                    beast_stats.speed = beast_stats.speed - 1;
-                }
+                    0
+                };
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
@@ -349,22 +370,31 @@ pub mod actions {
         }
 
         fn init_tap_counter(ref self: ContractState) {
-            let player_address = get_caller_address();
+            let mut world = self.world(@"babybeasts");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
 
-            self.tap_counter.write(player_address, 0);
+            self.tap_counter.write(player.address, 0);
         }
 
 
         fn tap(ref self: ContractState, specie: u32) {
-            let player_address = get_caller_address();
-            let current_tap_counter = self.tap_counter.read(player_address);
+            let mut world = self.world(@"babybeasts");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
+
+            let current_tap_counter = self.tap_counter.read(player.address);
 
             if current_tap_counter == constants::MAX_TAP_COUNTER {
                 self.spawn(specie);
                 self.init_tap_counter();
             }
 
-            self.tap_counter.write(player_address, current_tap_counter+1);
+            self.tap_counter.write(player.address, current_tap_counter+1);
         }
     }
 }

@@ -19,40 +19,14 @@ mod tests {
     use babybeasts::models::player::{Player, m_Player};
     use babybeasts::types::food::{FoodType};
     use babybeasts::constants;
-
-    // Define the namespace and resources
-    fn namespace_def() -> NamespaceDef {
-        let ndef = NamespaceDef {
-            namespace: "babybeasts", resources: [
-                TestResource::Model(m_Beast::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
-                TestResource::Model(m_Player::TEST_CLASS_HASH),
-                TestResource::Model(m_Food::TEST_CLASS_HASH),
-                TestResource::Contract(actions::TEST_CLASS_HASH),
-            ].span(),
-        };
-
-        ndef
-    }
-
-    fn contract_defs() -> Span<ContractDef> {
-        [
-            ContractDefTrait::new(@"babybeasts", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"babybeasts")].span())
-        ].span()
-    }
+    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
 
     #[test]
     fn test_spawn_beast() {
         // Initialize test environment
-        let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Setup player
         actions_system.spawn_player();
@@ -62,7 +36,7 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // Get beast data
-        let beast: Beast = world.read_model((caller, 1));
+        let beast: Beast = world.read_model((PLAYER(), 1));
         println!("Beast Data - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
             beast.beast_id, beast.specie, beast.evolved, beast.vaulted);
 
@@ -76,13 +50,9 @@ mod tests {
     #[test]
     fn test_multiple_beasts() {
         // Initialize test environment
-        let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Setup player
         actions_system.spawn_player();
@@ -93,9 +63,9 @@ mod tests {
         actions_system.spawn(3); // Third beast, specie 3
 
         // Read and verify each beast
-        let beast1: Beast = world.read_model((caller, 1));
-        let beast2: Beast = world.read_model((caller, 2));
-        let beast3: Beast = world.read_model((caller, 3));
+        let beast1: Beast = world.read_model((PLAYER(), 1));
+        let beast2: Beast = world.read_model((PLAYER(), 2));
+        let beast3: Beast = world.read_model((PLAYER(), 3));
 
         println!("Beast 1 - ID: {}, Specie: {}", beast1.beast_id, beast1.specie);
         println!("Beast 2 - ID: {}, Specie: {}", beast2.beast_id, beast2.specie);
@@ -109,16 +79,11 @@ mod tests {
 
 
     #[test]
-    #[should_panic]
     fn test_beast_evolution() {
         // Initialize test environment
-        let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Setup player and beast
         actions_system.spawn_player();
@@ -126,7 +91,7 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // Get initial beast state
-        let initial_beast: Beast = world.read_model((caller, 1));
+        let initial_beast: Beast = world.read_model((PLAYER(), 1));
         println!("Initial Beast State - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
             initial_beast.beast_id, initial_beast.specie, initial_beast.evolved, initial_beast.vaulted);
 
@@ -138,7 +103,7 @@ mod tests {
         };
 
         // Get final beast state
-        let final_beast: Beast = world.read_model((caller, 1));
+        let final_beast: Beast = world.read_model((PLAYER(), 1));
         println!("Final Beast State - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
             final_beast.beast_id, final_beast.specie, final_beast.evolved, final_beast.vaulted);
 

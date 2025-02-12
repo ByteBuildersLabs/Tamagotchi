@@ -1,3 +1,6 @@
+// Starknet import
+use starknet::{ContractAddress, contract_address_const};
+
 // Max status values for a Beast
 const MAX_HUNGER : u32 = 100;
 const MAX_ENERGY: u32 = 100;
@@ -22,3 +25,9 @@ const XL_UPDATE_POINTS: u32 = 15;
 
 // Next level experience
 const NEXT_LEVEL_EXPERIENCE: u32 = 20;
+
+// Zero address
+fn ZERO_ADDRESS() -> ContractAddress {
+    contract_address_const::<0x0>()
+}
+

@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import beastsData from '../../data/dex/BeastsDex.json';
 import Header from "../Header/index.tsx";
+import StatsCarousel from './baseStats.tsx';
 import './main.css';
 
 /**
@@ -148,8 +149,13 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                 )}
               </div>
               <div className="beast-info-carrousel">
+                <div className="info-row">
+                  {renderTypeSection('Height', [beast.Height])}
+                  {renderTypeSection('Weight', [beast.Weight])}
+                </div>
                 {renderTypeSection('Effective Against', beast.EffectiveAgainst)}
                 {renderTypeSection('Weak Against', beast.WeakAgainst)}
+                {renderTypeSection('Favorite Food', beast.FavoriteFood)}
                 <div className="evolution-section-carrousel">
                   <h3>Evolution Line</h3>
                   <div className="evolution-chain-carrousel">
@@ -162,6 +168,10 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className="base-stats-section-carrousel">
+                  <h3>Base Stats </h3>
+                  <StatsCarousel beast={beast} />
                 </div>
                 <div className="bio-section-carrousel">
                   <h3>Bio</h3>
