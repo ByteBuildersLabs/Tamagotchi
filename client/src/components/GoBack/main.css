@@ -1,0 +1,12 @@
+.go-back-button .logo {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+  }
+  
+  .go-back-button .logo img {
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  

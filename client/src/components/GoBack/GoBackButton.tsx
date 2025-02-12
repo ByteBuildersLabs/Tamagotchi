@@ -1,11 +1,11 @@
 // GoBackButton.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import goBack from '../../assets/img/GoBack.svg';
 
 interface GoBackButtonProps {
   /**
-   * Ruta a la que se desea navegar.
-   * Si no se provee, el botón retrocede un paso en el historial.
+   * Ruta a la que se desea navegar. Si no se especifica, se retrocede un paso.
    */
   to?: string;
   /**
@@ -18,12 +18,14 @@ interface GoBackButtonProps {
   className?: string;
 }
 
-const GoBackButton: React.FC<GoBackButtonProps> = ({ to, label = 'Volver', className }) => {
+const GoBackButton: React.FC<GoBackButtonProps> = ({
+  to,
+  label = 'Volver',
+  className = ''
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // Si se especifica una ruta, navega a esa ruta,
-    // de lo contrario retrocede un paso en el historial.
     if (to) {
       navigate(to);
     } else {
@@ -32,8 +34,11 @@ const GoBackButton: React.FC<GoBackButtonProps> = ({ to, label = 'Volver', class
   };
 
   return (
-    <button onClick={handleClick} className={className}>
-      {label}
+    <button onClick={handleClick} className={`go-back-button ${className}`}>
+      <div className="logo">
+        <img src={goBack} alt="Icono de regresar" />
+      </div>
+      <span>{label}</span>
     </button>
   );
 };
