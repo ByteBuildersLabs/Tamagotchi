@@ -63,9 +63,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
         >
           PLAY
         </Link>
-        <GoBackButton label="Back" />
       </div>
-     
     </div>
   );
 
@@ -119,6 +117,9 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
             ))}
           </Slider>
         )}
+      </div>
+      <div className="go-back-container">
+        <GoBackButton to={'/'} />
       </div>
     </div>
   );
