@@ -130,6 +130,13 @@
   white-space: nowrap;
 }
 
+.go-back-container {
+  position: fixed;
+  bottom: 20px; 
+  left: 20px;   
+  z-index: 1000; 
+}
+
 @media (max-width: 320px) {
   .scrollable-container {
     padding: 0 8px 8px;
