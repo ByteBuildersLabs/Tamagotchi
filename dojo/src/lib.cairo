@@ -23,6 +23,7 @@ mod utils {
 
 #[cfg(test)]
 mod tests {
+    mod utils;
     mod test_random;
     mod test_actions;
     mod test_player;

@@ -24,6 +24,7 @@
     margin-bottom: 0.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
 }
 
 .beast-image-container-carrousel {
@@ -49,6 +50,11 @@
     padding: 8px;
     border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
+}
+
+.info-row {
+  display: flex;
+  gap: 30px; 
 }
 
 .carousel-carrousel {
@@ -159,6 +165,7 @@
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .type-tags-carrousel {
@@ -185,6 +192,19 @@
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.base-stats-section-carrousel {
+  margin-bottom: 1.5rem;
+}
+
+.base-stats-section-carrousel h3 {
+  color: #ECECDA;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .evolution-chain-carrousel {
@@ -220,6 +240,7 @@
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .bio-paragraph-carrousel {

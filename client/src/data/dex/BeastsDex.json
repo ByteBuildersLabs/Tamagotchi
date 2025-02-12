@@ -3,9 +3,15 @@
     {
       "Name": "BabyEagle",
       "BeastsType": "Crystal",
+      "Height": "0.2m",
+      "Weight": "800g",
+      "Attack": "5",
+      "Defense": "3",
+      "Speed": "6",
       "EffectiveAgainst": ["Draconic", "Shadow"],
       "WeakAgainst": ["Magic", "Light"],
       "BeastsEvolutions": ["YoungEagle", "MajesticEagle"],
+      "FavoriteFood": ["Fish", "Cherry", "Corn"],
       "BeastsCharacteristics": [
         "Graceful and free-spirited",
         "Loves soaring through the skies",
@@ -18,9 +24,15 @@
     {
       "Name": "BabyFox",
       "BeastsType": "Magic",
+      "Height": "0.5m",
+      "Weight": "2kg",
+      "Attack": "3",
+      "Defense": "5",
+      "Speed": "8",
       "EffectiveAgainst": ["Crystal", "Light"],
       "WeakAgainst": ["Shadow", "Draconic"],
       "BeastsEvolutions": ["Foxling", "ShadowFox"],
+      "FavoriteFood": ["Chicken", "Apple", "Cheese"],
       "BeastsCharacteristics": [
         "Clever and witty",
         "Enjoys solving puzzles",
@@ -33,9 +45,15 @@
     {
       "Name": "BabyWolf",
       "BeastsType": "Shadow",
+      "Height": "0.6m",
+      "Weight": "3kg",
+      "Attack": "8",
+      "Defense": "6",
+      "Speed": "9",
       "EffectiveAgainst": ["Magic", "Light"],
       "WeakAgainst": ["Crystal", "Draconic"],
       "BeastsEvolutions": ["WolfPup", "AlphaWolf"],
+      "FavoriteFood": ["Beef", "Blueberry", "Potato"],
       "BeastsCharacteristics": [
         "Energetic and social",
         "Strong pack instincts",

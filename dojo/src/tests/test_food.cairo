@@ -19,50 +19,24 @@ mod tests {
     use babybeasts::models::player::{Player, m_Player};
     use babybeasts::types::food::{FoodType};
     use babybeasts::constants;
-
-    // Define the namespace and resources
-    fn namespace_def() -> NamespaceDef {
-        let ndef = NamespaceDef {
-            namespace: "babybeasts", resources: [
-                TestResource::Model(m_Beast::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
-                TestResource::Model(m_Player::TEST_CLASS_HASH),
-                TestResource::Model(m_Food::TEST_CLASS_HASH),
-                TestResource::Contract(actions::TEST_CLASS_HASH),
-            ].span(),
-        };
-
-        ndef
-    }
-
-    fn contract_defs() -> Span<ContractDef> {
-        [
-            ContractDefTrait::new(@"babybeasts", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"babybeasts")].span())
-        ].span()
-    }
+    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
 
     #[test]
     #[available_gas(30000000)]
     fn test_add_initial_food() {
         // Initialize test environment
-        let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Initialize player and add initial food
         actions_system.spawn_player();
         actions_system.add_initial_food();
 
         // Read foods after initialization using correct IDs (0, 1, 2)
-        let apple: Food = world.read_model((caller, 0));
-        let banana: Food = world.read_model((caller, 1));
-        let cherry: Food = world.read_model((caller, 2));
+        let apple: Food = world.read_model((PLAYER(), 0));
+        let banana: Food = world.read_model((PLAYER(), 1));
+        let cherry: Food = world.read_model((PLAYER(), 2));
 
         // Debug print
         // debug::print_felt252('Food name in storage:');
@@ -84,12 +58,9 @@ mod tests {
     #[test]
     fn test_feed_beast_decreases_stats() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
-
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        let (actions_system, world) = actions_system_world();
+        
+        cheat_caller_address(PLAYER());
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -126,13 +97,9 @@ mod tests {
     #[test]
     fn test_feed_dead_beast() {
         // Initialize test environment
-        let caller = starknet::contract_address_const::<0x0>();
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -155,13 +122,13 @@ mod tests {
         };
 
         // Get food amount before trying to feed dead beast
-        let initial_food: Food = world.read_model((caller, 0));
+        let initial_food: Food = world.read_model((PLAYER(), 0));
 
         // Try to feed dead beast
         actions_system.feed(0);
 
         // Verify food wasn't consumed
-        let final_food: Food = world.read_model((caller, 0));
+        let final_food: Food = world.read_model((PLAYER(), 0));
         assert(final_food.amount == initial_food.amount, 'food was consumed');
     } 
 
@@ -169,12 +136,9 @@ mod tests {
     #[test]
     fn test_feed_beast_increase_stats() {
         // Initialize test environment
-        let ndef = namespace_def();
-        let mut world = spawn_test_world([ndef].span());
-        world.sync_perms_and_inits(contract_defs());
+        let (actions_system, world) = actions_system_world();
 
-        let (contract_address, _) = world.dns(@"actions").unwrap();
-        let actions_system = IActionsDispatcher { contract_address };
+        cheat_caller_address(PLAYER());
 
         // Create player, food, and beast
         actions_system.spawn_player();
