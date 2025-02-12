@@ -3,26 +3,25 @@
     bottom: 20px;
     left: 20px;
     z-index: 1000;
-    background-color: #ECECDA; /* Color de fondo */
+    background-color: #ECECDA; 
     border: none;
-    width: 30px; /* Ajusta el tamaño para que sea similar */
+    width: 30px; 
     height: 30px;
-    border-radius: 50%; /* Hace que sea circular */
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Pequeña sombra para dar relieve */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
     transition: transform 0.2s ease-in-out;
   }
   
   .go-back:hover {
-    transform: scale(1.1); /* Efecto sutil al pasar el mouse */
+    transform: scale(1.1); 
   }
   
-  /* Estilo para la imagen del icono dentro del botón */
   .go-back__icon img {
-    width: 24px; /* Tamaño ajustado del icono */
+    width: 24px;
     height: 24px;
     object-fit: cover;
   }
