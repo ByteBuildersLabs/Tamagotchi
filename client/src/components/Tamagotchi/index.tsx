@@ -24,6 +24,7 @@ import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
+import goBackIcon from '../../assets/img/GoBack.svg';
 import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
@@ -40,12 +41,54 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
   const [currentView, setCurrentView] = useState('actions');
+  const [currentButtonImage, setCurrentButtonImage] = useState(monster);
+  const [currentChatImage, setCurrentChatImage] = useState(message);
  
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
   const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
+
+  
+  /// Función para manejar el botón principal
+  const handleMainButtonClick = () => {
+    const nextView = currentView !== 'actions' ? 'actions' : 'stats';
+    const newImage = nextView === 'actions' ? monster : goBackIcon;
+    
+    setCurrentButtonImage(newImage);
+    setCurrentView(nextView);
+  };
+
+  // Función para manejar el botón de chat
+  const handleChatButtonClick = () => {
+    const nextView = currentView !== 'chat' ? 'chat' : 'actions';
+    const newImage = nextView === 'chat' ? goBackIcon : message;
+    
+    setCurrentChatImage(newImage);
+    setCurrentView(nextView);
+  };
+
+  // Función para manejar cambios desde otros componentes (como Actions)
+  const handleViewChange = (newView: string) => {
+    if (newView === 'food' || newView === 'stats') {
+      setCurrentButtonImage(goBackIcon);
+    } else if (newView === 'actions') {
+      setCurrentButtonImage(monster);
+    }
+    setCurrentView(newView);
+  };
+
+  const renderButton = (imageSrc: string, onClick: () => void) => {
+    if (imageSrc.includes('GoBack')) {
+      return (
+        <div className="icon-circle" onClick={onClick}>
+          <img src={imageSrc} alt="Go back" />
+        </div>
+      );
+    }
+    return <img src={imageSrc} onClick={onClick} alt="Action" />;
+  };
 
   const {
     setup: { client },
@@ -152,7 +195,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                     beastStatus={status}
                     account={userAccount}
                     client={client}
-                    setCurrentView={setCurrentView}
+                    setCurrentView={handleViewChange}
                   />
                 :
                 currentView === 'chat' ? 
@@ -168,10 +211,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                   />
                 :<></>
               }
-              <div className="beast-interaction">
-                <img src={monster} onClick={() => ( setCurrentView(currentView !== 'actions' ? 'actions' : 'stats') )} />
-                <img src={message} onClick={() => setCurrentView('chat')} />
-              </div>
+                <div className="beast-interaction">
+                {renderButton(currentButtonImage, handleMainButtonClick)}
+                {renderButton(currentChatImage, handleChatButtonClick)}
+                </div>
             </div>
           </Card>
         }</>

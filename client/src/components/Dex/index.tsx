@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import beastsData from '../../data/dex/BeastsDex.json';
 import Header from "../Header/index.tsx";
+import goBackIcon from '../../assets/img/GoBack.svg';
 import './main.css';
 
 /**
@@ -120,15 +121,17 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
     <>
       <Header />
       <div className="dex-container-carrousel">
-        {/* Back Button */}
-        {onClose && (
-          <button 
-            className="back-button-carrousel" 
-            onClick={onClose}
-          >
-            Back
-          </button>
-        )}
+      {/* Back Button */}
+      {onClose && (
+        <button 
+          className="back-button-carrousel" 
+          onClick={onClose}
+        >
+          <div className="back-button-carrousel__icon">
+        <img src={goBackIcon} alt="Back" />
+          </div>
+        </button>
+      )}
 
         <Slider {...settings}>
           {beastsData.BeastsDex.map((beast, index) => (

@@ -230,24 +230,33 @@
   opacity: 0.9;
 }
 
-/* Estilos para el botón "Volver" en DexCarousel */
-.dex-container-carrousel .back-button-carrousel {
-  background: rgba(236, 236, 218, 0.1);  /* Fondo similar al badge de tipo */
-  border: none;                         /* Sin borde */
-  color: #ECECDA;                       /* Color de fuente acorde */
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+.back-button-carrousel {
+  position: fixed;
+  bottom: 543px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #ECECDA; /* Color de fondo */
+  border: none;
+  width: 30px; /* Tamaño del botón circular */
+  height: 30px;
+  border-radius: 50%; /* Hace que sea circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-bottom: 1rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Pequeña sombra para dar relieve */
+  transition: transform 0.2s ease-in-out;
 }
 
-.dex-container-carrousel .back-button-carrousel:hover {
-  background: rgba(236, 236, 218, 0.2);
-  transform: scale(1.05);
+.back-button-carrousel:hover {
+  transform: scale(1.1); /* Efecto sutil al pasar el mouse */
+}
+
+/* Estilo para la imagen del icono dentro del botón */
+.back-button-carrousel__icon img {
+  width: 24px; /* Tamaño del icono */
+  height: 24px;
+  object-fit: cover;
 }
 
 /* Ajustes de scroll para móviles */
