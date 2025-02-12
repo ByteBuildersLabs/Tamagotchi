@@ -33,7 +33,7 @@
   cursor: pointer;
 }
 
-/* Estilos para el contenedor circular del ícono goBack */
+/* Styles for goBack container*/
 .beast-interaction .icon-circle {
   width: 35px;
   height: 35px;
@@ -51,7 +51,6 @@
   transform: scale(1.1);
 }
 
-/* Estilos para el ícono dentro del círculo */
 .beast-interaction .icon-circle img[src*="GoBack"] {
   width: 20px;
   height: 20px;
