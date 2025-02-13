@@ -7,6 +7,7 @@ import Play from '../../../assets/img/play.png';
 import WakeUp from '../../../assets/img/wakeup.png';
 import initials from '../../../data/initials';
 import './main.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture';
 
@@ -34,16 +35,37 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
       {actionButtons.map(({ label, img, action, pictureKey, isRevive }) => (
         <Button
           key={label}
-          onClick={() => {
-            if (action === 'feed') setCurrentView('food');
-            if (action === 'feed') return;
-            handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey]);
+          onClick={async () => {
+            // For the Feed action, change the view and exit.
+            if (action === 'feed') {
+              setCurrentView('food');
+              return;
+            }
+            try {
+              // Wrap the action call with toast.promise to show notifications.
+              await toast.promise(
+                handleAction(
+                  label, 
+                  () => client.actions[action](account as Account), 
+                  initials[beast.specie - 1][pictureKey]
+                ),
+                {
+                  loading: `${label} in progress...`,
+                  success: `${label} executed successfully!`,
+                  error: `Failed to ${label.toLowerCase()}.`,
+                }
+              );
+            } catch (error) {
+              console.error("Action error:", error);
+            }
           }}
           disabled={ isLoading || (isRevive ? beastStatus?.is_alive : !beastStatus?.is_alive)}
         >
-          {img && <img src={img} />} {label}
+          {img && <img src={img} alt={label} />} {label}
         </Button>
       ))}
+      {/* Render the Toaster to display toast notifications */}
+      <Toaster position="bottom-center" />
     </div>
   );
 }
