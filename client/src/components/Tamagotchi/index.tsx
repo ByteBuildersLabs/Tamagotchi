@@ -25,6 +25,7 @@ import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
 import goBackIcon from '../../assets/img/GoBack.svg';
+import toast from 'react-hot-toast';
 import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
@@ -145,6 +146,28 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     }
   }, [status?.is_alive]);
 
+  const handleCuddle = async () => {
+    if (!beast || !userAccount) return;
+    try {
+      await toast.promise(
+        handleAction(
+          "Cuddle",
+          // Call the cuddle action on the client (ensure it's defined in your SDK)
+          () => client.actions.sleep(userAccount as Account), //change sleep action to cuddle action
+          // Use the cuddle animation from your initials data
+          initials[beast.specie - 1].cuddlePicture
+        ),
+        {
+          loading: "Cuddling...",
+          success: "Your tamagotchi enjoyed the cuddle!",
+          error: "Cuddle action failed!",
+        }
+      );
+    } catch (error) {
+      console.error("Cuddle error:", error);
+    }
+  };
+
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
@@ -174,7 +197,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
             />
             <div>
               <div className="scenario flex justify-center items-column">
-                <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
+                <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" onClick={handleCuddle} style={{ cursor: 'pointer' }}/>
               </div>
               <Whispers 
                 beast={beast}

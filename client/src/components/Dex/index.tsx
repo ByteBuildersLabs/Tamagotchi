@@ -8,29 +8,11 @@ import goBackIcon from '../../assets/img/GoBack.svg';
 import StatsCarousel from './baseStats.tsx';
 import './main.css';
 
-/**
- * DexCarouselProps interface - Defines the properties for the DexCarousel component.
- *
- * @typedef {object} DexCarouselProps
- * @property {number} [initialSlide] - The initial slide index to display.
- * @property {() => void} [onClose] - Optional callback function triggered when the back button is clicked.
- */
 interface DexCarouselProps {
   initialSlide?: number;
   onClose?: () => void;
 }
 
-/**
- * DexCarousel Component - Displays a carousel slider with beasts' information.
- *
- * This component dynamically loads beast images, renders beast details in a slider,
- * and optionally displays a back button when the onClose callback is provided.
- *
- * @param {DexCarouselProps} props - The properties for the component.
- * @param {number} [props.initialSlide=0] - The initial slide index to display.
- * @param {() => void} [props.onClose] - Callback function for handling the back button.
- * @returns {JSX.Element} The rendered DexCarousel component.
- */
 function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Element {
   // State for holding dynamically loaded beast images
   const [beastImages, setBeastImages] = useState<Record<string, string>>({});
@@ -68,11 +50,6 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
     loadBeastImages();
   }, []);
 
-  /**
-   * Slider settings configuration for the carousel.
-   *
-   * @type {object}
-   */
   const settings = {
     dots: false,
     infinite: false,
@@ -87,23 +64,10 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
     }
   };
 
-  /**
-   * Handles the event when a beast image fails to load.
-   *
-   * @param {string} beastName - The name of the beast whose image failed to load.
-   * @returns {void}
-   */
   const handleImageError = (beastName: string): void => {
     console.error(`Failed to load image for ${beastName}`);
   };
 
-  /**
-   * Renders a section for displaying a list of types with a title.
-   *
-   * @param {string} title - The title for the type section.
-   * @param {string[]} types - Array of types to display.
-   * @returns {JSX.Element} The rendered type section.
-   */
   const renderTypeSection = (title: string, types: string[]): JSX.Element => (
     <div className="type-section-carrousel">
       <h3>{title}</h3>
@@ -122,25 +86,25 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
     <>
       <Header />
       <div className="dex-container-carrousel">
-      {/* Back Button */}
-      {onClose && (
-        <button 
-          className="back-button-carrousel" 
-          onClick={onClose}
-        >
-          <div className="back-button-carrousel__icon">
-        <img src={goBackIcon} alt="Back" />
-          </div>
-        </button>
-      )}
-
         <Slider {...settings}>
           {beastsData.BeastsDex.map((beast, index) => (
             <div key={index} className="beast-card-carrousel">
-              <div className="beast-header-carrousel">
-                <h2 className="beast-name-carrousel">{beast.Name}</h2>
+              <div className='d-flex justify-content-between'>
+                <div className="beast-header-carrousel">
+                  <h2 className="beast-name-carrousel">{beast.Name}</h2>
+                  <h3 className="beast-type-badge-carrousel">{beast.BeastsType}</h3>
+                </div>
+                {onClose && (
+                  <button
+                    className="back-button-carrousel"
+                    onClick={onClose}
+                  >
+                    <div className="back-button-carrousel__icon">
+                      <img src={goBackIcon} alt="Back" />
+                    </div>
+                  </button>
+                )}
               </div>
-              <div className="beast-type-badge-carrousel">{beast.BeastsType}</div>
               <div className="beast-image-container-carrousel">
                 {beastImages[beast.Name] && (
                   <img
@@ -152,6 +116,14 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                 )}
               </div>
               <div className="beast-info-carrousel">
+                <div className="bio-section-carrousel">
+                  <h3>Bio</h3>
+                  {beast.Bio.map((paragraph, idx) => (
+                    <p key={idx} className="bio-paragraph-carrousel">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
                 <div className="info-row">
                   {renderTypeSection('Height', [beast.Height])}
                   {renderTypeSection('Weight', [beast.Weight])}
@@ -175,14 +147,6 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                 <div className="base-stats-section-carrousel">
                   <h3>Base Stats </h3>
                   <StatsCarousel beast={beast} />
-                </div>
-                <div className="bio-section-carrousel">
-                  <h3>Bio</h3>
-                  {beast.Bio.map((paragraph, idx) => (
-                    <p key={idx} className="bio-paragraph-carrousel">
-                      {paragraph}
-                    </p>
-                  ))}
                 </div>
               </div>
             </div>

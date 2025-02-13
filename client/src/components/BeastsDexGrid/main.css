@@ -2,7 +2,7 @@
 
 .dex-container-syles {
   width: 100%;
-  height: 90vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -11,17 +11,14 @@
 .grid-title {
   color: #ECECDA;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.5rem;
+  font-size: 24px;
+  font-weight: bold;
   text-align: center;
-  margin: 1rem 0;
-  padding: 0 12px;
-  flex-shrink: 0;
+  margin-bottom: 20px;
 }
 
 .scrollable-container {
-  flex: 1;
   overflow-y: auto;
-  padding: 0 12px 12px;
   scrollbar-width: thin;
   scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
 }
@@ -48,7 +45,7 @@
 
 .grid-row {
   display: flex;
-  gap: 6px;
+  gap: 10px;
   width: 100%;
 }
 
@@ -59,8 +56,8 @@
 
 .beast-card {
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 6px;
+  border-radius: 15px;
+  padding: 0 0 10px;
   cursor: pointer;
   transition: transform 0.2s ease;
   height: 100%;
@@ -75,7 +72,7 @@
 
 .beast-image-container {
   width: 100%;
-  aspect-ratio: 1;
+  padding: 15px;
   background: rgba(236, 236, 218, 0.05);
   border-radius: 6px;
   overflow: hidden;
@@ -107,24 +104,18 @@
 }
 
 .beast-name {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.5rem;
+  font-size: 20px;
   color: #ECECDA;
-  margin: 0 0 2px 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
-  padding: 0 2px;
+  margin-bottom: 0;
+  font-weight: bold;
 }
 
 .beast-type {
-  font-size: 0.6rem;
+  font-size: 12px;
   color: #ECECDA;
   background: rgba(236, 236, 218, 0.1);
-  padding: 2px 4px;
-  border-radius: 10px;
   font-family: 'Montserrat', sans-serif;
   display: inline-block;
   white-space: nowrap;
@@ -135,32 +126,4 @@
   bottom: 20px; 
   left: 20px;   
   z-index: 1000; 
-}
-
-@media (max-width: 320px) {
-  .scrollable-container {
-    padding: 0 8px 8px;
-  }
-  
-  .grid-row {
-    gap: 4px;
-  }
-  
-  .beast-card {
-    padding: 4px;
-  }
-  
-  .beast-name {
-    font-size: 0.45rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .beast-name {
-    font-size: 0.6rem;
-  }
-  
-  .beast-card {
-    padding: 8px;
-  }
 }

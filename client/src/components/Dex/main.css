@@ -6,25 +6,14 @@
     height: 100%;
     width: 100%;
     overflow-y: scroll;
-    padding: 20px 0;
-}
-
-/* Carousel styles */
-.beast-card-carrousel {
-    padding: 15px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: auto;
+    overflow-x: hidden;
 }
 
 .beast-card-carrousel h2 {
     color: #ECECDA;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 1px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 12px 0 0;
 }
 
 .beast-image-container-carrousel {
@@ -41,6 +30,7 @@
     object-fit: contain;
     display: block;
     margin: 0 auto;
+    padding: 15px 0;
 }
 
 .beast-type-carrousel {
@@ -120,12 +110,7 @@
 
 /* Nuevos estilos para la información adicional */
 .beast-header-carrousel {
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 0.5rem;
 }
 
 .beast-name-carrousel {
@@ -133,37 +118,32 @@
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    font-family: 'Montserrat', sans-serif;
 }
 
 .beast-type-badge-carrousel {
     background: rgba(236, 236, 218, 0.1);
     padding: 0.5rem 1rem;
-    margin: 0 120px;
     border-radius: 20px;
     color: #ECECDA;
-    font-size: 0.9rem;
+    font-size: 14px;
     font-weight: 600;
-    backdrop-filter: blur(5px);
-    display: inline-block;
 }
 
 .beast-info-carrousel {
   width: 100%;
-  padding: 1rem;
+  padding: 30px 15px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-  margin-top: 1rem;
+  border-radius: 15px;
 }
 
 .type-section-carrousel {
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .type-section-carrousel h3 {
   color: #ECECDA;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  font-size: 16px;
+  margin-bottom: 15px;
   font-weight: 600;
   letter-spacing: 1px;
 }
@@ -177,10 +157,9 @@
 .type-tag-carrousel {
   background: rgba(236, 236, 218, 0.15);
   padding: 0.4rem 0.8rem;
-  border-radius: 15px;
+  border-radius: 10px;
   color: #ECECDA;
-  font-size: 0.9rem;
-  backdrop-filter: blur(5px);
+  font-size: 14px;
 }
 
 .evolution-section-carrousel {
@@ -196,7 +175,7 @@
 }
 
 .base-stats-section-carrousel {
-  margin-bottom: 1.5rem;
+  margin-top: 28px;
 }
 
 .base-stats-section-carrousel h3 {
@@ -232,7 +211,7 @@
 }
 
 .bio-section-carrousel {
-  margin-top: 1.5rem;
+  margin-bottom: 30px;
 }
 
 .bio-section-carrousel h3 {
@@ -252,9 +231,6 @@
 }
 
 .back-button-carrousel {
-  position: fixed;
-  bottom: 543px;
-  left: 20px;
   z-index: 1000;
   background-color: #ECECDA; /* Color de fondo */
   border: none;
@@ -275,17 +251,22 @@
 
 /* Estilo para la imagen del icono dentro del botón */
 .back-button-carrousel__icon img {
-  width: 24px; /* Tamaño del icono */
-  height: 24px;
+  width: 35px; /* Tamaño del icono */
+  height: 35px;
+  padding: 7px;
   object-fit: cover;
 }
 
 /* Ajustes de scroll para móviles */
 .beast-card-carrousel {
-  max-height: 80vh;
+  max-height: 100%;
   overflow-y: auto;
-  scrollbar-width: thin;
+  overflow-x: hidden;
   scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
 }
 
 .beast-card-carrousel::-webkit-scrollbar {

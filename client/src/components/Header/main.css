@@ -31,7 +31,7 @@
 .side-menu {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   padding-right: 15px;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .navbar .search {
-  width: 50px;
+  width: 51px;
   object-fit: cover;
   border-radius: 50%;
   transform: scaleX(-1);

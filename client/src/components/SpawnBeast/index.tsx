@@ -57,8 +57,8 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
       <div className="spawn-beast">
         <div className='d-flex justify-content-between align-items-center'>
           <p className={'title'}>
-            Collect them all!
-            <span className='d-block'>There are many species</span>
+            Hacth the egg
+            <span className='d-block'>Collect them all!</span>
           </p>
           <ControllerConnectButton />
         </div>

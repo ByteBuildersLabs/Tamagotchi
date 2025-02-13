@@ -17,7 +17,7 @@ import './main.css';
 function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
   const { userAccount } = useGlobalContext();
   const { beasts } = useBeast(sdk);
-  
+
   const {
     setup: { client },
   } = useDojo();
@@ -30,7 +30,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
     slidesToScroll: 1,
     arrows: false,
     swipe: beasts.length > 1,
-    customPaging: function() {
+    customPaging: function () {
       return (
         <div className="indicator"></div>
       );
@@ -54,10 +54,10 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
             Your are close to evolve {initials[beast.specie - 1].name}, keep playing to reach the next level
           </p>
         </div>
-        <Link 
-          to={`/play/${beast.beast_id}`} 
-          className="button" 
-          onClick={async() => {
+        <Link
+          to={`/play/${beast.beast_id}`}
+          className="button"
+          onClick={async () => {
             await client.actions.setCurrentBeast(userAccount as Account, beast.beast_id)
           }}
         >
@@ -82,8 +82,8 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
       <div className="bag">
         <div className='d-flex justify-content-between align-items-center'>
           <p className={'title'}>
-            Collect them all!
-            <span className='d-block'>There are many species</span>
+            There are not Beasts
+            <span className='d-block'>Go hatch an egg!</span>
           </p>
           <ControllerConnectButton />
         </div>
@@ -98,8 +98,8 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
     <div className="bag">
       <div className='d-flex justify-content-between align-items-center'>
         <p className={'title'}>
-          Collect them all!
-          <span className='d-block'>There are many species</span>
+          Here are your Beasts
+          <span className='d-block'>Collect them all!</span>
         </p>
         <ControllerConnectButton />
       </div>

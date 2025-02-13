@@ -14,10 +14,10 @@ function Header() {
           <h2>Baby <span>Beast</span></h2>
         </Link>
         <div className="side-menu">
+          <Music />
           <Link to={'/dex'}>
             <img src={search} alt="Search" className="search" />
           </Link>
-          <Music />
           <Link to={'/bag'}>
             <img src={sheep} className='sheep' alt="Sheep" />
           </Link>

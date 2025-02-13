@@ -12,11 +12,6 @@ function VennDiagram({ sdk }: { sdk: SDK<SchemaType> }) {
   const [showDeveloperCode, setShowDeveloperCode] = useState(false);
 
   useEffect(() => {
-    const bodyElement = document.querySelector('.body') as HTMLElement;
-    bodyElement.style.padding = '0';
-  }, []);
-
-  useEffect(() => {
     const sequence = ['play', 'raise', 'evolve'];
     let currentIndex = 0;
 

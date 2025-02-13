@@ -23,6 +23,7 @@ export interface Initial {
   playPicture: string;
   sleepPicture: string;
   cleanPicture: string;
+  cuddlePicture: string;
 }
 
 const initials: Initial[]= [
@@ -34,7 +35,8 @@ const initials: Initial[]= [
     eatPicture: babyWolfEat,
     playPicture: babyWolfPlay,
     sleepPicture: babyWolfSleep,
-    cleanPicture: babyWolfClean 
+    cleanPicture: babyWolfClean,
+    cuddlePicture: babyWolfPlay
   },
   { 
     name: "BabyFox",
@@ -44,7 +46,8 @@ const initials: Initial[]= [
     eatPicture: babyFoxEat,
     playPicture: babyFoxPlay,
     sleepPicture: babyFoxSleep,
-    cleanPicture: babyFoxClean 
+    cleanPicture: babyFoxClean,
+    cuddlePicture: babyFoxPlay
   },
   { 
     name: "BabyBird",
@@ -54,7 +57,8 @@ const initials: Initial[]= [
     eatPicture: babyBirdEat,
     playPicture: babyBirdPlay,
     sleepPicture: babyBirdSleep,
-    cleanPicture: babyBirdClean 
+    cleanPicture: babyBirdClean,
+    cuddlePicture: babyBirdPlay
   },
 ]
 
