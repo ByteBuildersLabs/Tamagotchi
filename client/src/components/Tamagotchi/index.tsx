@@ -153,7 +153,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
         handleAction(
           "Cuddle",
           // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.play(userAccount as Account), //change to play action to cuddle action
+          () => client.actions.sleep(userAccount as Account), //change sleep action to cuddle action
           // Use the cuddle animation from your initials data
           initials[beast.specie - 1].cuddlePicture
         ),
