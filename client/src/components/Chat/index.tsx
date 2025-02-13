@@ -1,20 +1,25 @@
-import axios from "axios";
-import { useState, useRef, useEffect } from "react";
-import MessageComponent, { Message } from "../ui/message";
+import { useRef, useEffect, useState } from "react";
+import { Beast } from "../../dojo/bindings";
+import MessageComponent from "../ui/message";
 import ThinkingDots from '../ui/thinking-dots';
 import message from '../../assets/img/message.svg';
+import { useBeastChat } from '../../hooks/useBeastChat';
+import initials from '../../data/initials';
 import './main.css';
 
-interface ApiError {
-  message: string;
-  status?: number;
+interface ChatProps {
+  beast: Beast;  
 }
 
-function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+function Chat({ beast }: ChatProps) {
+  const { 
+    messages, 
+    isLoading, 
+    error, 
+    sendMessage 
+  } = useBeastChat({ beast });
+
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ApiError | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const MAX_MESSAGE_LENGTH = 500;
@@ -32,80 +37,50 @@ function Chat() {
     restoreFocus();
   }, [messages, isLoading]);
 
-  const sendMessage = async () => {
+  const handleSendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
-    setError(null);
-    setIsLoading(true);
-    const newMessage = { user: "Me", text: input };
-    setMessages([...messages, newMessage]);
+    
+    await sendMessage(input);
     setInput("");
-
-    try {
-      const response = await axios.post(import.meta.env.VITE_ELIZA_URL || "", {
-        text: input,
-      });
-
-      if (response.data && response.data.length > 0) {
-        const { user, text } = response.data[0];
-        const botMessage = { user, text };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
-      } else {
-        throw new Error("Received empty response from server");
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      setError({
-        message: "Oops! Couldn't get a response. Please try again in a moment.",
-        status: 500
-      });
-      setMessages((prevMessages) => [...prevMessages, {
-        user: "System",
-        text: "Failed to get response. Please try again."
-      }]);
-    } finally {
-      setIsLoading(false);
-      restoreFocus();
-    }
+    restoreFocus();
   };
 
   return (
-    <>
-      <div className="chat">
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <MessageComponent key={index} message={message} />
-          ))}
-          {isLoading && <ThinkingDots />}
-          <div ref={messagesEndRef} />
-        </div>
-        <div className="chat-input">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Ask something to the master"
-            value={input}
-            disabled={isLoading}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-              }
-            }}
-            maxLength={MAX_MESSAGE_LENGTH}
-          />
-          <button 
-            type="button" 
-            onClick={sendMessage} 
-            disabled={isLoading}
-            className={`button ${isLoading ? 'loading' : ''}`}
-          >
-            <img src={message} />
-          </button>
-        </div>
-        {error && <div className="error-tooltip">{error.message}</div>}
+    <div className="chat">
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <MessageComponent key={index} message={message} />
+        ))}
+        {isLoading && <ThinkingDots />}
+        <div ref={messagesEndRef} />
       </div>
-    </>
+      <div className="chat-input">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder={`Talk to ${initials[beast.specie - 1].name}`}
+          value={input}
+          disabled={isLoading}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
+          maxLength={MAX_MESSAGE_LENGTH}
+        />
+        <button 
+          type="button" 
+          onClick={handleSendMessage} 
+          disabled={isLoading}
+          className={`button ${isLoading ? 'loading' : ''}`}
+        >
+          <img src={message} alt="Send message" />
+        </button>
+      </div>
+      {error && <div className="error-tooltip">{error.message}</div>}
+    </div>
   );
 }
 

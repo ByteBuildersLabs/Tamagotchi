@@ -1,69 +1,44 @@
 import { Beast, BeastStatus } from "../../../dojo/bindings";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import message from '../../../assets/img/message.svg';
 import MessageComponent, { Message } from "../../ui/message";
 import initials from "../../../data/initials";
+import { useBeastChat } from "../../../hooks/useBeastChat";
 import './main.css';
 
-interface ApiError {
-  message: string;
-  status?: number;
-}
-
 const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus: BeastStatus, expanded: boolean }) => {
-  // Whispers
+  const { messages, isLoading, error, sendMessage, sendSystemPrompt } = useBeastChat({ beast });
+  
   const [whispers, setWhispers] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ApiError | null>(null);
   const [input, setInput] = useState("");
-  // Chat
-  const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const MAX_MESSAGE_LENGTH = 500;
+  const messageTimeoutRef = useRef<NodeJS.Timeout>();
 
   const restoreFocus = () => {
     inputRef.current?.focus();
   };
 
-  const sendMessage = async () => {
+  const handleSendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
-    setError(null);
-    setIsLoading(true);
-    const newMessage = { user: "Me", text: input };
-    setMessages([...messages, newMessage]);
+
+    await sendMessage(input);
     setInput("");
-
-    try {
-      const response = await axios.post(import.meta.env.VITE_ELIZA_URL || "", {
-        text: input,
-      });
-
-      if (response.data && response.data.length > 0) {
-        const { user, text } = response.data[0];
-        const botMessage = { user, text };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
-        setWhispers([botMessage]);
-      } else {
-        throw new Error("Received empty response from server");
+    restoreFocus();
+    
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.user !== "Me") {
+        setWhispers([lastMessage]);
       }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      setError({
-        message: "Oops! Couldn't get a response. Please try again in a moment.",
-        status: 500
-      });
-      setMessages((prevMessages) => [...prevMessages, {
-        user: "System",
-        text: "Failed to get response. Please try again."
-      }]);
-    } finally {
-      setIsLoading(false);
-      restoreFocus();
     }
   };
 
-  const chat = (beast:Beast) => {
+  const clearWhisperMessage = () => {
+    setWhispers([]);
+  };
+
+  const chat = (beast: Beast) => {
     return (
       <div className="whispers-chat">
         <div className='messages'>
@@ -82,22 +57,21 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus:
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                sendMessage();
+                handleSendMessage();
               }
             }}
             maxLength={MAX_MESSAGE_LENGTH}
           />
           <button
             type="button"
-            onClick={sendMessage}
+            onClick={handleSendMessage}
             disabled={isLoading}
             className={`button ${isLoading ? 'loading' : ''}`}
           >
-            <img src={message} />
+            <img src={message} alt="Send message" />
           </button>
         </div>
         {error && <div className="error-tooltip">{error.message}</div>}
-        {error && <p>{error.message}</p>}
       </div>
     );
   }
@@ -135,48 +109,35 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus:
 
   const generatePrompt = (beastStatus: BeastStatus) => {
     const criticalStat = analyzeStats(beastStatus);
-    return `You are Pou, a virtual BabyBeast with the following statistics:
+    return `You are ${initials[beast.specie - 1].name}, with the following statistics:
             Hunger: ${beastStatus.hunger}/100
             Energy: ${beastStatus.energy}/100
             Happiness: ${beastStatus.happiness}/100
             Hygiene: ${beastStatus.hygiene}/100
             
-            Responds as a friendly and playful virtual pet, in 2 lines max.,
-            focusing on your most urgent need: ${criticalStat.stat} (${criticalStat.value}/100);`
+            Respond in ONE short line (max 15 words). 
+            Focus on your ${criticalStat.stat.toLowerCase()} being ${criticalStat.value}%.`;
   };
 
-  const createWhisper = async (prompt: any) => {
+  const createWhisper = async (prompt: string) => {
     if (isLoading) return;
-    setError(null);
-    setIsLoading(true);
 
-    try {
-      const response = await axios.post(import.meta.env.VITE_ELIZA_URL || "", {
-        text: prompt,
-      });
+    // Clean previous timeout if it exists
+    if (messageTimeoutRef.current) {
+      clearTimeout(messageTimeoutRef.current);
+    }
 
-      if (response.data && response.data.length > 0) {
-        const { user, text } = response.data[0];
-        const botWhisper = { user, text };
-        setWhispers(() => [botWhisper]);
-        setMessages((prevMessages) => [...prevMessages, botWhisper]);
-      } else {
-        throw new Error("Received empty response from server");
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      setError({
-        message: "Oops! Couldn't get a response. Please try again in a moment.",
-        status: 500
-      });
-      setWhispers((prevMessages) => [...prevMessages, {
-        user: "System",
-        text: "Failed to get response. Please try again."
-      }]);
-    } finally {
-      setIsLoading(false);
+    const response = await sendSystemPrompt(prompt);
+    if (response) {
+      setWhispers([response]);
+      
+      // Configure new timeout to clear the message every 15 seconds
+      messageTimeoutRef.current = setTimeout(() => {
+        clearWhisperMessage();
+      }, 15000); 
     }
   };
+  
 
   useEffect(() => {
     let intervalId: string | number | NodeJS.Timeout | undefined;
@@ -186,15 +147,17 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus:
       intervalId = setInterval(() => {
         const prompt = generatePrompt(beastStatus);
         createWhisper(prompt);
-      }, 180000);
+      }, 60000); // Changed to 1 minute for better interaction
     }
-    return () => clearInterval(intervalId);
+    
+    // Clear both the interval and the timeout when unmounting
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
+    };
   }, []);
 
-
-  return (
-    expanded ? chat(beast) : uniMessage()
-  );
+  return expanded ? chat(beast) : uniMessage();
 }
 
 export default Whispers;
