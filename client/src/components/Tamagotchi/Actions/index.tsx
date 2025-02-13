@@ -5,11 +5,12 @@ import Sleep from '../../../assets/img/sleep.png';
 import Clean from '../../../assets/img/clean.png';
 import Play from '../../../assets/img/play.png';
 import WakeUp from '../../../assets/img/wakeup.png';
+import Cuddle from '../../../assets/img/play.png';
 import initials from '../../../data/initials';
 import './main.css';
 import toast, { Toaster } from 'react-hot-toast';
 
-type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture';
+type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
 
 const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [
   { label: "Feed", img: Food, action: "feed", pictureKey: "eatPicture" },
@@ -17,6 +18,7 @@ const actionButtons: { label: string, img: string | null, action: string, pictur
   { label: "Clean", img: Clean, action: "clean", pictureKey: "cleanPicture" },
   { label: "Play", img: Play, action: "play", pictureKey: "playPicture" },
   { label: "Wake up", img: WakeUp, action: "wa", pictureKey: "idlePicture" },
+  { label: "Play", img: Cuddle, action: "cuddle", pictureKey: "playPicture" },
   { label: "Revive", img: null, action: "revive", pictureKey: "idlePicture", isRevive: true }
 ];
 
