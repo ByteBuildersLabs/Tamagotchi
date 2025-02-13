@@ -37,7 +37,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
           onClick={() => {
             if (action === 'feed') setCurrentView('food');
             if (action === 'feed') return;
-            handleAction(label, () => client.actions[action](account as Account), initials[beast.specie - 1][pictureKey]);
+            handleAction(label, () => beast && client.actions[action](account as Account), initials[beast.specie - 1][pictureKey]);
           }}
           disabled={ isLoading || (isRevive ? beastStatus?.is_alive : !beastStatus?.is_alive)}
         >

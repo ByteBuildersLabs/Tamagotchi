@@ -14,7 +14,6 @@ export const useBeastsStats = (sdk: SDK<SchemaType>) => {
   const [beastsStats, setBeastsStats] = useState<any>([]);
 
   useEffect(() => {
-    if (!account) return;
     let unsubscribe: (() => void) | undefined;
 
     const subscribe = async () => {
