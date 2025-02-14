@@ -15,7 +15,6 @@ import { GlobalProvider } from "./hooks/appContext.tsx";
 import NewCover from "./components/NewCover/index.tsx";
 import Tamagotchi from "./components/Tamagotchi/index.tsx";
 import Bag from "./components/Bag/index.tsx";
-import Chat from "./components/Chat/index.tsx";
 import Dex from "./components/BeastsDexGrid/index.tsx";
 
 // Import the layout component
@@ -72,7 +71,6 @@ async function main() {
                     <Route path="/bag" element={<Bag sdk={sdk} />} />
                     <Route path="/dex" element={<Dex />} />
                     <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
-                    <Route path="/chat" element={<Chat />} />
                   </Route>
                 </Routes>
               </Router>
