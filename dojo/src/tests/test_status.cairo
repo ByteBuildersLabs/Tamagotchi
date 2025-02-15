@@ -195,7 +195,76 @@ mod tests {
         assert(final_status.hygiene > decreased_status.hygiene, 'hygiene not increased');
         assert(final_status.happiness > decreased_status.happiness, 'happiness not increased');
     }
-   
+
+    #[test]
+    fn test_beast_clean_status() {
+        // Initialize test environment
+        let (actions_system, world) = actions_system_world();
+
+        cheat_caller_address(PLAYER());
+
+        // Create player and beast
+        actions_system.spawn_player();
+        actions_system.spawn(1, 1);
+        actions_system.set_current_beast(1);
+
+        // -----------------------------------------------
+        let mut counter: u32 = 0;
+        while counter < 15 {
+            actions_system.decrease_status();
+            counter = counter + 1;
+        };
+        // HYGIENE: 85
+        let status: BeastStatus = world.read_model(1);
+        assert_eq!(status.clean_status, 'SlightlyDirty', "Clean status not changed");
+
+
+        // -----------------------------------------------
+        counter = 0;
+        while counter < 20 {
+            actions_system.decrease_status();
+            counter = counter + 1;
+        };
+        // HYGIENE: 65
+        let status: BeastStatus = world.read_model(1);
+        assert_eq!(status.clean_status, 'Dirty', "Clean status not changed");
+        
+
+        // -----------------------------------------------
+        counter = 0;
+        while counter < 20 {
+            actions_system.decrease_status();
+            actions_system.feed(1); // feed beast to avoid dead
+            counter = counter + 1;
+        };
+        // HYGIENE: 45
+        let status: BeastStatus = world.read_model(1);
+        assert_eq!(status.clean_status, 'VeryDirty', "Clean status not changed");
+    
+
+        // -----------------------------------------------
+        counter = 0;
+        while counter < 20 {
+            actions_system.decrease_status();
+            actions_system.feed(2); // feed beast to avoid dead
+            counter = counter + 1;
+        };
+        // HYGIENE: 25
+        let status: BeastStatus = world.read_model(1);
+        assert_eq!(status.clean_status, 'SuperDirty', "Clean status not changed");
+        
+
+        // -----------------------------------------------
+        counter = 0;
+        while counter < 20 {
+            actions_system.decrease_status();
+            actions_system.feed(2); // feed beast to avoid dead
+            counter = counter + 1;
+        };
+        // HYGIENE: 5
+        let status: BeastStatus = world.read_model(1);
+        assert_eq!(status.clean_status, 'Filthy', "Clean status not changed");
+    }
 
     #[test]
     fn test_beast_death() {

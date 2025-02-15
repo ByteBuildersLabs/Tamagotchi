@@ -14,6 +14,7 @@ use babybeasts::models::food::{Food};
 
 // types import
 use babybeasts::types::food::{FoodType};
+use babybeasts::types::clean_status::{CleanStatus};
 
 // Constants import
 use babybeasts::constants;
@@ -343,7 +344,7 @@ impl StoreImpl of StoreTrait {
 
     #[inline(always)]
     fn new_beast_status(mut self: Store, beast_id: u32) {
-        let mut beast_stats = BeastStatus {
+        let mut beast_status = BeastStatus {
             beast_id: beast_id,
             is_alive: true,
             is_awake: true,
@@ -351,9 +352,10 @@ impl StoreImpl of StoreTrait {
             energy: 100,
             happiness: 100,
             hygiene: 100,
+            clean_status: CleanStatus::Clean.into(),
         };
 
-        self.world.write_model(@beast_stats);
+        self.world.write_model(@beast_status);
     }
 
     #[inline(always)]

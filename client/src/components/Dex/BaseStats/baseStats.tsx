@@ -1,6 +1,6 @@
-import Attack from '../../assets/img/Attack.svg';
-import Defense from '../../assets/img/Defence.svg';
-import Speed from '../../assets/img/Speed.svg';
+import Attack from '../../../assets/img/Attack.svg';
+import Defense from '../../../assets/img/Defence.svg';
+import Speed from '../../../assets/img/Speed.svg';
 import './baseStats.css';
 
 /**

@@ -32,7 +32,7 @@ pub mod actions {
     // Model imports
     use babybeasts::models::beast::{Beast, BeastTrait};
     use babybeasts::models::beast_stats::{BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus};
+    use babybeasts::models::beast_status::{BeastStatus, BeastStatusTrait};
     use babybeasts::models::player::{Player, PlayerAssert};
     use babybeasts::models::food::{Food};
     
@@ -156,6 +156,9 @@ pub mod actions {
                 if beast_status.energy == 0 || beast_status.hunger == 0 {
                     beast_status.is_alive = false;
                 }
+
+               // update beast clean status
+               beast_status.update_clean_status(beast_status.hygiene);
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
@@ -350,6 +353,9 @@ pub mod actions {
                     beast_stats.defense = beast_stats.defense + 1;
                     beast_stats.speed = beast_stats.speed + 1;
                 }
+                // update beast clean status
+                beast_status.update_clean_status(beast_status.hygiene);
+
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
                 store.write_beast_stats(@beast_stats);
