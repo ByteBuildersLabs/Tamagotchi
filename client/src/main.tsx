@@ -68,11 +68,13 @@ async function main() {
                   {/* Cover route without header*/}
                   <Route path="/" element={<NewCover sdk={sdk} />} />
                   {/* Internal routes using layout for header */}
-                  <Route element={<AppLayout />}>
+                  <Route element={<AppLayout backButton={false} />}>
                     <Route path="/bag" element={<Bag sdk={sdk} />} />
                     <Route path="/dex" element={<Dex />} />
-                    <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
                     <Route path="/chat" element={<Chat />} />
+                  </Route>
+                  <Route element={<AppLayout backButton={true} />}>
+                    <Route path="/play/:beastId" element={<Tamagotchi sdk={sdk} />} />
                   </Route>
                 </Routes>
               </Router>

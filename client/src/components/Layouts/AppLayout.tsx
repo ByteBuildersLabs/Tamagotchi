@@ -1,12 +1,15 @@
-// AppLayout.tsx
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header/index.tsx";
 
-const AppLayout: React.FC = () => {
+interface AppLayoutProps {
+  backButton?: boolean;
+}
+
+const AppLayout: React.FC<AppLayoutProps> = ({ backButton = false }) => {
   return (
     <>
-      <Header />
+      <Header backButton={backButton} />
       <Outlet />
     </>
   );

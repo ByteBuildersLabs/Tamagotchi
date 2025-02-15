@@ -24,8 +24,7 @@ import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
-import goBackIcon from '../../assets/img/GoBack.svg';
-import toast from 'react-hot-toast';
+import Header from '../../components/Header';
 import './main.css';
 
 function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
@@ -38,63 +37,19 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const beast = beasts.find((beast: Beast) => beast.beast_id === player?.current_beast_id);
   const status = beastsStatus.find((beastsStatus: BeastStatus) => beastsStatus?.beast_id === player?.current_beast_id);
   const stats = beastsStats.find((beastsStats: BeastStats) => beastsStats?.beast_id === player?.current_beast_id);
-
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
   const [currentView, setCurrentView] = useState('actions');
-  const [currentButtonImage, setCurrentButtonImage] = useState(monster);
-  const [currentChatImage, setCurrentChatImage] = useState(message);
- 
+
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
   const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
 
-  
-  // Function to handle the main button
-  const handleMainButtonClick = () => {
-    const nextView = currentView !== 'actions' ? 'actions' : 'stats';
-    const newImage = nextView === 'actions' ? monster : goBackIcon;
-    
-    setCurrentButtonImage(newImage);
-    setCurrentView(nextView);
-  };
-
-  // Funtion to handle the chat button
-  const handleChatButtonClick = () => {
-    const nextView = currentView !== 'chat' ? 'chat' : 'actions';
-    const newImage = nextView === 'chat' ? goBackIcon : message;
-    
-    setCurrentChatImage(newImage);
-    setCurrentView(nextView);
-  };
-
-  //Funtion to handle changes from other components (like Actions)
-  const handleViewChange = (newView: string) => {
-    if (newView === 'food' || newView === 'stats') {
-      setCurrentButtonImage(goBackIcon);
-    } else if (newView === 'actions') {
-      setCurrentButtonImage(monster);
-    }
-    setCurrentView(newView);
-  };
-
-  const renderButton = (imageSrc: string, onClick: () => void) => {
-    if (imageSrc.includes('GoBack')) {
-      return (
-        <div className="icon-circle" onClick={onClick}>
-          <img src={imageSrc} alt="Go back" />
-        </div>
-      );
-    }
-    return <img src={imageSrc} onClick={onClick} alt="Action" />;
-  };
-
   const {
     setup: { client },
   } = useDojo();
-
   useEffect(() => {
     const updateBackground = () => {
       const hour = new Date().getHours();
@@ -108,18 +63,15 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     };
     updateBackground();
   }, []);
-
   // Animations
   const [currentImage, setCurrentImage] = useState(beast ? initials[beast.specie - 1].idlePicture : '');
   const [firstTime, isFirstTime] = useState(true);
-
   useEffect(() => {
     if (firstTime && beast) {
       setCurrentImage(beast ? initials[beast.specie - 1].idlePicture : '')
       isFirstTime(false);
     }
   }, [beast]);
-
   const showAnimation = (gifPath: string) => {
     setCurrentImage(gifPath);
     setTimeout(() => {
@@ -129,50 +81,23 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
   const showDeathAnimation = () => {
     setCurrentImage(dead);
   };
-
   useEffect(() => {
     const interval = setInterval(async () => {
       if (status?.is_alive && userAccount) {
         await client.actions.decreaseStatus(userAccount as Account);
       }
     }, 5000);
-
     return () => clearInterval(interval);
   }, [status?.is_alive]);
-
   useEffect(() => {
     if (status?.is_alive == false) {
       showDeathAnimation();
     }
   }, [status?.is_alive]);
-
-  const handleCuddle = async () => {
-    if (!beast || !userAccount) return;
-    try {
-      await toast.promise(
-        handleAction(
-          "Cuddle",
-          // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.sleep(userAccount as Account), //change sleep action to cuddle action
-          // Use the cuddle animation from your initials data
-          initials[beast.specie - 1].cuddlePicture
-        ),
-        {
-          loading: "Cuddling...",
-          success: "Your tamagotchi enjoyed the cuddle!",
-          error: "Cuddle action failed!",
-        }
-      );
-    } catch (error) {
-      console.error("Cuddle error:", error);
-    }
-  };
-
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
     showAnimation(animation);
-
     // Trigger sound based on action
     switch (actionName) {
       case 'Feed': playFeed(); break;
@@ -186,9 +111,9 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     }
     actionFn();
   };
-
   return (
     <>
+    <Header backButton={true} />
       <div className="tamaguchi">
         <>{beast &&
           <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
@@ -197,7 +122,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
             />
             <div>
               <div className="scenario flex justify-center items-column">
-                <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" onClick={handleCuddle} style={{ cursor: 'pointer' }}/>
+                <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
               </div>
               <Whispers 
                 beast={beast}
@@ -218,7 +143,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                     beastStatus={status}
                     account={userAccount}
                     client={client}
-                    setCurrentView={handleViewChange}
+                    setCurrentView={setCurrentView}
                   />
                 :
                 currentView === 'chat' ? 
@@ -234,10 +159,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                   />
                 :<></>
               }
-                <div className="beast-interaction">
-                {renderButton(currentButtonImage, handleMainButtonClick)}
-                {renderButton(currentChatImage, handleChatButtonClick)}
-                </div>
+              <div className="beast-interaction">
+                <img src={monster} onClick={() => ( setCurrentView(currentView !== 'actions' ? 'actions' : 'stats') )} />
+                <img src={message} onClick={() => setCurrentView('chat')} />
+              </div>
             </div>
           </Card>
         }</>
@@ -245,5 +170,4 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     </>
   );
 }
-
 export default Tamagotchi;
