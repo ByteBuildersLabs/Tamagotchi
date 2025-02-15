@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import beastsData from '../../data/dex/BeastsDex.json';
-import DexCarousel from '../Dex/index.tsx';
+import DexCarousel from '../Dex/DexCarousel/index.tsx';
 import GoBackButton from '../GoBack/GoBackButton.tsx';
 import './main.css';
 import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';

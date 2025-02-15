@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import beastsData from '../../data/dex/BeastsDex.json';
-import Header from "../Header/index.tsx";
-import goBackIcon from '../../assets/img/GoBack.svg';
-import StatsCarousel from './baseStats.tsx';
+import beastsData from '../../../data/dex/BeastsDex.json';
+import Header from "../../Header/index.tsx";
+import goBackIcon from '../../../assets/img/GoBack.svg';
+import StatsCarousel from '../BaseStats/baseStats.tsx';
+import RadarStats from '../Radar';
 import './main.css';
 
 interface DexCarouselProps {
@@ -28,7 +29,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
       for (const beast of beastsData.BeastsDex) {
         try {
           // Construct the image path based on the beast's name
-          const imagePath = `../../assets/beasts/${beast.Name}-idle.gif`;
+          const imagePath = `../../../assets/beasts/${beast.Name}-idle.gif`;
           const imageModule = await import(/* @vite-ignore */ imagePath);
           loadedImages[beast.Name] = imageModule.default;
         } catch (error) {
@@ -147,6 +148,10 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                 <div className="base-stats-section-carrousel">
                   <h3>Base Stats </h3>
                   <StatsCarousel beast={beast} />
+                </div>
+                <div className="base-stats-section-carrousel">
+                  <h3>Skills </h3>
+                  <RadarStats beast={beast} />
                 </div>
               </div>
             </div>
