@@ -24,6 +24,7 @@ import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
+import statsIcon from '../../assets/img/stats.svg';
 import Header from '../../components/Header';
 import './main.css';
 
@@ -160,8 +161,9 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                 :<></>
               }
               <div className="beast-interaction">
-                <img src={monster} onClick={() => ( setCurrentView(currentView !== 'actions' ? 'actions' : 'stats') )} />
+                <img src={monster} onClick={() => ( setCurrentView('actions'))} />
                 <img src={message} onClick={() => setCurrentView('chat')} />
+                <img src={statsIcon} onClick={() => setCurrentView('stats')} />
               </div>
             </div>
           </Card>
