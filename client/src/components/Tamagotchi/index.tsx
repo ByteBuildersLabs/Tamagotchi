@@ -131,7 +131,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
             <Status
               beastStatus={status}
             />
-            <div>
+            <div className="game">
               <div className="scenario flex justify-center items-column">
                 <img src={currentImage} alt="Tamagotchi" className="w-40 h-40" />
               </div>

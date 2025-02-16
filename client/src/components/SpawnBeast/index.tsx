@@ -70,7 +70,7 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
               This is a random beast
             </h4>
             <p>
-              Hatch your own Babybeasts and take care of it! Collect them all!
+              Hatch your own Baby Beast and <br />take care of him!
             </p>
           </div>
           { userAccount && !player && 

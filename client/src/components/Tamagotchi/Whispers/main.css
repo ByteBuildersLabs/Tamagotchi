@@ -59,12 +59,12 @@
   font-size: 14px;
   font-weight: bold;
   background: unset;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
   color: #ECECDA;
   margin-bottom: 5px;
   padding: 15px 10px;
 }
 
 .whispers-chat .Me p {
-  background-color: rgba(209, 9, 61, 0.3);
+  background-color: rgba(55, 0, 1, 0.5)
 }

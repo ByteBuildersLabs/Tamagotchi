@@ -40,7 +40,7 @@ export interface iBeastDex {
 
 const beastsDex: iBeastDex[]= [
   { 
-    name: "BabyWolf",
+    name: "WolfPup",
     description: "The wolf is a social animal that lives in packs",
     specie: 0,
     idlePicture: babyWolfIdle,
@@ -69,7 +69,7 @@ const beastsDex: iBeastDex[]= [
     ]
   },
   { 
-    name: "BabyFox",
+    name: "Foxling",
     description: "The fox is a small carnivorous mammal that is found in many parts of the world",
     specie: 1,
     idlePicture: babyFoxIdle,
@@ -98,7 +98,7 @@ const beastsDex: iBeastDex[]= [
     ]
   },
   { 
-    name: "BabyBird",
+    name: "YoungEagle",
     description: "The eagle is a large bird of prey that is found in many parts of the world",
     specie: 2,
     idlePicture: babyBirdIdle,

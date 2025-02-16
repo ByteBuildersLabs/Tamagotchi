@@ -67,7 +67,7 @@ const BeastsDexGrid: React.FC = () => {
             <div className='d-flex justify-content-between align-items-center'>
               <p className={'title'}>
                 Beast DEX
-                <span className='d-block'>Collect them all!</span>
+                <span className='d-block'>Knowledge source</span>
               </p>
               <ControllerConnectButton />
             </div>

@@ -7,7 +7,7 @@ const TamagotchiJR = () => {
 
   const steps = [
     {
-      target: ".navbar .logo",
+      target: ".navbar .logo img",
       content: "Here you will come back to the Tamagotchi Screen",
     },
     {
@@ -20,27 +20,27 @@ const TamagotchiJR = () => {
     },
     {
       target: ".bag-icon",
-      content: "Here are your beasts",
+      content: "Here are your Beasts",
     },
     {
       target: ".status",
-      content: "Here are the stats of your baby beasts, It will decrease every 5 seconds",
+      content: "Here are the stats of your Baby Beast, It will decrease every 5 seconds",
     },
     {
       target: ".beast-interaction .actions-icon",
-      content: "Here are the actions",
+      content: "Here are the actions. Interact with your Baby Beast to increase his stats and level up",
     },
     {
       target: ".beast-interaction .message-icon",
-      content: "Here you can talk to your baby beasts!",
+      content: "Here you can talk to your Baby Beasts! Say hi :D",
     },
     {
       target: ".beast-interaction .stats-icon",
-      content: "Here the stats of your baby beasts",
+      content: "Here the stats of your Baby Beast, the better you care, the better the stats",
     },
     {
       target: ".hatch-icon",
-      content: "Here you can Hatch a new Egg",
+      content: "Here you can hatch a new egg, take your Baby to level 15 and get a surprise!",
     },
   ];
 

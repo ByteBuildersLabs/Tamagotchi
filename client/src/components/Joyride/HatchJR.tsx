@@ -8,15 +8,15 @@ const HatchJR = () => {
   const steps = [
     {
       target: ".initial-beast",
-      content: "Welcome to ByteBeasts Tamagotchi",
+      content: "Welcome to Byte Beasts Tamagotchi",
     },
     {
       target: ".initial-beast",
-      content: "Create a player and Hatch your Egg",
+      content: "Create a player and hatch your egg",
     },
     {
       target: ".navbar .logo img",
-      content: "Once you have a baby beast, you will access the Tamagotchi screen here",
+      content: "Once you have a Baby Beast, you will access the Tamagotchi screen here",
     },
     {
       target: ".sound-button",
@@ -28,7 +28,7 @@ const HatchJR = () => {
     },
     {
       target: ".bag-icon",
-      content: "Here will be your baby beasts once you hatch your egg",
+      content: "Here will be your Baby Beasts once you hatch your egg",
     },
   ];
 
