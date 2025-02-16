@@ -89,8 +89,14 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
             </p>
             <ControllerConnectButton />
           </div>
-          <div className="empty-state">
-            <p>No beasts available</p>
+          <div className="initial-info">
+            <h4>
+              This is your Beasts Bag
+            </h4>
+            <p className='mb-4'>
+              Go hatch and Egg, you will see the baby here
+            </p>
+            <Link to={'/'} className="button">Hatch Your Egg</Link>
           </div>
         </div>
       </>

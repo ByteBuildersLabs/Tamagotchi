@@ -7,6 +7,7 @@
   margin: auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
   position: relative;
   transform: translateY(30px);

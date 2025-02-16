@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Music from "../Music";
 import sheep from "../../assets/img/sheep.svg";
 import monster from "../../assets/img/logo.svg";
 import search from "../../assets/img/search.svg";
@@ -11,11 +10,10 @@ function Header() {
       <Link to={'/'} className="logo">
         <img src={monster} alt="Logo" />
         <h2>
-          Baby <span>Beast</span>
+          Byte <span>Beasts</span>
         </h2>
       </Link>
       <div className="side-menu">
-        <Music />
         <Link to={'/dex'} className="dex-icon">
           <img src={search} alt="Search" className="search" />
         </Link>

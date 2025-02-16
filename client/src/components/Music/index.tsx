@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useSound from "use-sound";
-import backgroundMusic from "../../assets/sounds/chillBeast.mp3";
+import backgroundMusic from "../../assets/sounds/music.mp3";
 import music from "../../assets/img/music.svg";
 import './main.css';
 

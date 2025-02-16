@@ -2,10 +2,14 @@
   background-color: transparent;
   border: 0;
   padding: 0;
+  position: absolute;
+  z-index: 1000;
+  bottom: 45%;
+  left: 15px;
 }
 
 .sound-button img {
-  width: 40px;
+  width: 25px;
   transition: all 0.25s;
 }
 
