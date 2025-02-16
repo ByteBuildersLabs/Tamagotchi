@@ -23,7 +23,6 @@ import AppLayout from "./components/Layouts/AppLayout.tsx";
 import "./index.css";
 import SpawnBeast from "./components/SpawnBeast/index.tsx";
 import Music from "./components/Music/index.tsx";
-import NewCover from "./components/NewCover/index.tsx";
 
 function provider() {
   return new RpcProvider({
