@@ -1,0 +1,183 @@
+/* Estilos para la selección de juegos */
+.game-selection-container {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .game-selection-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .game-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .game-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .game-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .game-name {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #222;
+  }
+  
+  .game-description {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.2;
+  }
+  
+  /* Estilos para el contenedor del juego */
+  .game-high-score {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+  }
+  
+  .game-score-display {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.9rem;
+    z-index: 100;
+  }
+  
+  .game-result-record {
+    font-size: 1.2rem;
+    color: #4caf50;
+    margin-bottom: 10px;
+  }
+  
+  .game-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .return-button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .return-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Estilos para la pantalla de resultado del juego */
+  .game-result-container {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .game-result-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .game-result-score {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+  }
+  
+  .game-result-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .play-again-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .play-again-button:hover {
+    background-color: #388e3c;
+  }
+  
+  /* Estilos para el contenedor de error */
+  .game-error-container {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 600px) {
+    .game-selection-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .game-card {
+      padding: 10px;
+    }
+    
+    .game-icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .game-name {
+      font-size: 0.9rem;
+    }
+    
+    .game-description {
+      font-size: 0.7rem;
+    }
+  }
