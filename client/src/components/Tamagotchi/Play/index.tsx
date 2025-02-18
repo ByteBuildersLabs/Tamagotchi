@@ -162,9 +162,9 @@ const Play = ({
               onClick={() => startGame(game.id)}
             >
               <img src={game.icon} alt={game.name} className="game-icon" />
-              <h3 className="game-name">{game.name}</h3>
-              <p className="game-description">{game.description}</p>
-              <div className="game-high-score">
+              <h3 className="game-name" style={{fontSize: '18px'}}>{game.name}</h3>
+              <p className="game-description" style={{fontSize: '16px'}}>{game.description}</p>
+              <div className="game-high-score" style={{color: '#ECECDA', fontFamily: 'Kallisto', fontSize: '14px'}}>
                 Record: {getHighScore(game.id, beast?.beast_id || 0)}
               </div>
             </div>
