@@ -204,7 +204,14 @@ const Play = ({
                 beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
               />
               <Toaster position="bottom-center" />
+              <button 
+              className="return-button"
+              onClick={returnToGameSelection}
+            >
+              X
+            </button>
             </div>
+            
         );
     } else {
       // Muestra el resultado del juego
