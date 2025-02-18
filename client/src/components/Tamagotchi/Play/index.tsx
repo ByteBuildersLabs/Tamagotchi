@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 
 // Importa las imágenes de los juegos
-import doodleGameIcon from '../../../assets/img/games/doodle-game-icon.png'; // Asegúrate de tener esta imagen
+import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; // Asegúrate de tener esta imagen
 
 // Define los juegos disponibles
 const availableGames = [
@@ -181,7 +181,12 @@ const Play = ({
           <div className="game-score-display">
             <span>Record: {highScore}</span>
           </div>
-          <DoodleGame onScoreUpdate={setCurrentScore} onGameEnd={handleGameEnd} />
+          <DoodleGame 
+            onScoreUpdate={setCurrentScore} 
+            onGameEnd={handleGameEnd}
+            beastImageRight={beastsDex[beast.specie - 1].idlePicture}
+            beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
+          />
           <button 
             className="return-button"
             onClick={returnToGameSelection}
