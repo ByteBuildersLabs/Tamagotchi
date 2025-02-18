@@ -11,8 +11,8 @@ import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; // Asegú
 const availableGames = [
   { 
     id: 'doodleGame',
-    name: 'Doodle Jump',
-    description: 'Ayuda a tu mascota a saltar lo más alto posible',
+    name: 'Sky Jump',
+    description: 'Help your beast to jump as high as possible!',
     icon: doodleGameIcon 
   },
   // Puedes añadir más juegos aquí en el futuro
@@ -27,7 +27,7 @@ const getHighScore = (gameId: string, beastId: number): number => {
     const scores = JSON.parse(scoresStr);
     return scores[`${gameId}_${beastId}`] || 0;
   } catch (e) {
-    console.error('Error parsing high scores from localStorage:', e);
+    console.error('Error parsing high scores:', e);
     return 0;
   }
 };
@@ -46,7 +46,7 @@ const saveHighScore = (gameId: string, beastId: number, score: number): void => 
     scores[`${gameId}_${beastId}`] = score;
     localStorage.setItem('gameHighScores', JSON.stringify(scores));
   } catch (e) {
-    console.error('Error saving high score to localStorage:', e);
+    console.error('Error saving high score:', e);
   }
 };
 
@@ -97,9 +97,9 @@ const Play = ({
           beastsDex[beast.specie - 1].playPicture
         ),
         {
-          loading: 'Preparando el juego...',
-          success: '¡Juego iniciado!',
-          error: 'No se pudo iniciar el juego.',
+          loading: 'Loading the game...',
+          success: '¡Game started!',
+          error: 'Can not start the games.',
         }
       );
       
@@ -113,7 +113,7 @@ const Play = ({
       const savedHighScore = getHighScore(gameId, beast.beast_id);
       setHighScore(savedHighScore);
     } catch (error) {
-      console.error("Error iniciando el juego:", error);
+      console.error("Error starting the game:", error);
     }
   };
 
@@ -130,12 +130,12 @@ const Play = ({
       setHighScore(score);
       
       // Notificar al usuario
-      toast.success(`¡Nueva puntuación máxima: ${score}!`, {
+      toast.success(`¡New max score: ${score}!`, {
         icon: '🏆',
         duration: 4000
       });
     } else {
-      toast.success(`¡Juego terminado! Puntuación: ${score}`, {
+      toast.success(`¡Game over! Score: ${score}`, {
         duration: 3000
       });
     }
@@ -147,11 +147,26 @@ const Play = ({
     setShowGameSelection(true);
   };
 
+  // Añadir este efecto en el componente Play
+    useEffect(() => {
+        // Cuando el juego está activo, añadir clase al body para prevenir scroll
+        if (isPlaying) {
+        document.body.classList.add('game-active');
+        } else {
+        document.body.classList.remove('game-active');
+        }
+        
+        // Limpieza al desmontar
+        return () => {
+        document.body.classList.remove('game-active');
+        };
+    }, [isPlaying]);
+
   // Renderiza la interfaz de selección de juegos
   if (showGameSelection) {
     return (
       <div className="game-selection-container">
-        <h2 className="game-selection-title">Selecciona un Juego</h2>
+        <h2 className="game-selection-title">Choose a game</h2>
         <div className="game-selection-grid">
           {availableGames.map((game) => (
             <div 
@@ -176,48 +191,43 @@ const Play = ({
   // Renderiza el juego seleccionado
   if (selectedGame === 'doodleGame') {
     if (isPlaying) {
-      return (
-        <div className="game-container">
-          <div className="game-score-display">
-            <span>Record: {highScore}</span>
-          </div>
-          <DoodleGame 
-            onScoreUpdate={setCurrentScore} 
-            onGameEnd={handleGameEnd}
-            beastImageRight={beastsDex[beast.specie - 1].idlePicture}
-            beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
-          />
-          <button 
-            className="return-button"
-            onClick={returnToGameSelection}
-          >
-            Volver a la Selección
-          </button>
-          <Toaster position="bottom-center" />
-        </div>
-      );
+        return (
+            <div className="game-container">
+              <div className="game-score-display">
+                <span>Record: {highScore}</span>
+              </div>
+              <DoodleGame 
+                className="fullscreen-doodle"
+                onScoreUpdate={setCurrentScore} 
+                onGameEnd={handleGameEnd}
+                beastImageRight={beastsDex[beast.specie - 1].idlePicture}
+                beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
+              />
+              <Toaster position="bottom-center" />
+            </div>
+        );
     } else {
       // Muestra el resultado del juego
       return (
         <div className="game-result-container">
-          <h2 className="game-result-title">¡Fin del Juego!</h2>
-          <p className="game-result-score">Puntuación: {currentScore}</p>
+          <h2 className="game-result-title">¡Game over!</h2>
+          <p className="game-result-score">Score: {currentScore}</p>
           {currentScore >= highScore && (
-            <p className="game-result-record">¡Nuevo récord! 🏆</p>
+            <p className="game-result-record">New record! 🏆</p>
           )}
-          <p className="game-result-record">Mejor puntuación: {highScore}</p>
+          <p className="game-result-record">Best Score: {highScore}</p>
           <div className="game-result-buttons">
             <button 
               className="play-again-button"
               onClick={() => startGame('doodleGame')}
             >
-              Jugar de Nuevo
+              Play again
             </button>
             <button 
-              className="return-button"
+              className="play-again-button"
               onClick={returnToGameSelection}
             >
-              Volver a la Selección
+              Exit
             </button>
           </div>
           <Toaster position="bottom-center" />
@@ -229,12 +239,12 @@ const Play = ({
   // Por defecto, vuelve a la selección de juegos
   return (
     <div className="game-error-container">
-      <p>Algo salió mal. Por favor, intenta de nuevo.</p>
+      <p>Something were wrong. Please, try again.</p>
       <button 
         className="return-button"
         onClick={returnToGameSelection}
       >
-        Volver a la Selección
+        Exit
       </button>
       <Toaster position="bottom-center" />
     </div>

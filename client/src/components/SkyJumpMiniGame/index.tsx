@@ -106,6 +106,33 @@ const gameContainerStyle: React.CSSProperties = {
       if (!canvas) return;
       const context = canvas.getContext("2d");
       if (!context) return;
+
+      // Función para ajustar el tamaño del juego al viewport
+      const adjustGameSize = () => {
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        
+        // Mantener la proporción original pero ajustar al viewport
+        const aspectRatio = game.boardWidth / game.boardHeight;
+        
+        if (viewportWidth / viewportHeight > aspectRatio) {
+            // Viewport más ancho que alto - ajustar por altura
+            const scaleFactor = viewportHeight * 0.9 / game.boardHeight;
+            canvas.style.height = `${game.boardHeight * scaleFactor}px`;
+            canvas.style.width = `${game.boardWidth * scaleFactor}px`;
+        } else {
+            // Viewport más alto que ancho - ajustar por anchura
+            const scaleFactor = viewportWidth * 0.9 / game.boardWidth;
+            canvas.style.width = `${game.boardWidth * scaleFactor}px`;
+            canvas.style.height = `${game.boardHeight * scaleFactor}px`;
+        }
+      };
+
+      // Ajustar tamaño inicialmente
+      adjustGameSize();
+        
+      // Ajustar cuando cambie el tamaño de la ventana
+      window.addEventListener('resize', adjustGameSize);
   
       // Inicialización del doodler
       game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
@@ -417,6 +444,7 @@ const gameContainerStyle: React.CSSProperties = {
       return () => {
         document.removeEventListener("keydown", moveDoodler);
         document.removeEventListener("keyup", stopDoodler);
+        window.removeEventListener('resize', adjustGameSize);
         if (game.animationFrameId) {
           cancelAnimationFrame(game.animationFrameId);
         }
@@ -427,8 +455,16 @@ const gameContainerStyle: React.CSSProperties = {
     const containerMergedStyle = { ...gameContainerStyle, ...style };
   
     return (
-      <div className={`doodle-game-container ${className}`} style={containerMergedStyle}>
-        <div style={canvasContainerStyle}>
+        <div className={`doodle-game-container ${className}`} style={containerMergedStyle}>
+        <div 
+          style={{
+            ...canvasContainerStyle,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden'
+          }}
+        >
           <canvas
             ref={canvasRef}
             width={gameRef.current.boardWidth}
@@ -438,7 +474,9 @@ const gameContainerStyle: React.CSSProperties = {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              display: "block", // Para evitar espacios en blanco debajo del canvas
+              display: "block",
+              maxHeight: "95vh",
+              objectFit: "contain"
             }}
           />
         </div>

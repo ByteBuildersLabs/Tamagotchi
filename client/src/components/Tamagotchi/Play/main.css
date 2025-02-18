@@ -1,7 +1,7 @@
 /* Estilos para la selección de juegos */
 .game-selection-container {
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #ECECDA;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -29,7 +29,7 @@
 }
 
 .game-card {
-  background-color: white;
+  background-color: #ECECDA;
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -67,6 +67,204 @@
   font-size: 0.8rem;
   color: #666;
   line-height: 1.2;
+}
+
+/* Estilos para ajustar el juego a pantalla completa */
+
+/* Contenedor principal - asegurarse que ocupe toda la altura disponible */
+.doodle-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh; /* Usa toda la altura del viewport */
+  max-height: 100vh;
+  overflow: hidden; /* Previene scroll */
+  padding: 0 !important; /* Elimina padding que podría causar scroll */
+  position: fixed; /* Asegura que el contenedor permanezca fijo */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Valor alto para asegurar que esté por encima de otros elementos */
+}
+
+/* Asegurar que el contenedor del canvas se ajuste proporcionalmente */
+div[style*="canvasContainerStyle"] {
+  height: 100% !important;
+  max-height: 95vh; /* Deja un pequeño margen */
+  width: auto !important; /* Mantiene la proporción */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* El canvas debe ajustarse manteniendo su proporción */
+canvas {
+  height: auto !important;
+  max-height: 95vh !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+/* Estilos para el contenedor principal de Play */
+.game-container {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+}
+
+/* Ajustar el panel de puntuación para que no interfiera */
+.game-score-display {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1100;
+}
+
+/* Botón para volver rediseñado */
+.return-button {
+  background: linear-gradient(to right, #85002A, #D1093D);
+  color: #ECECDA;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-family: 'Kallisto', sans-serif;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.return-button:hover {
+  background: linear-gradient(to right, #95033A, #E11A4D);
+  transform: translateY(-2px);
+}
+
+.return-button:active {
+  background: linear-gradient(to right, #B00833, #6E0022);
+  transform: translateY(0);
+}
+
+/* Ajustes responsivos */
+@media (max-aspect-ratio: 1/1) {
+  /* Para dispositivos verticales (móviles) */
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 85vh !important;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  /* Para dispositivos horizontales */
+  canvas {
+    height: 92vh !important;
+    width: auto !important;
+  }
+}
+
+/* Prevenir scroll en el body cuando el juego está activo */
+body.game-active {
+  overflow: hidden;
+}
+
+/* Estilos para la pantalla de resultado del juego */
+.game-result-container {
+  padding: 20px;
+  background-color: rgba(55, 0, 1, 0.8); /* Usar el mismo fondo semi-transparente que otros componentes */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.game-result-title {
+  font-family: 'Kallisto', sans-serif;
+  font-size: 30px;
+  margin-bottom: 15px;
+  color: #ECECDA;
+  font-weight: bold;
+}
+
+.game-result-score {
+  font-family: 'Montserrat', serif;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ECECDA;
+}
+
+.game-result-record {
+  font-family: 'Montserrat', serif;
+  font-size: 1.2rem;
+  color: #e4a101; /* Color dorado similar al borde de las imágenes */
+  margin-bottom: 10px;
+}
+
+.game-result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.play-again-button {
+  background: linear-gradient(to right, #85002A, #D1093D);
+  color: #ECECDA;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-family: 'Kallisto', sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+.play-again-button:hover {
+  background: linear-gradient(to right, #95033A, #E11A4D);
+  transform: translateY(-2px);
+}
+
+.play-again-button:active {
+  background: linear-gradient(to right, #B00833, #6E0022);
+  transform: translateY(0);
+}
+
+/* Estilos para el contenedor de error */
+.game-error-container {
+  padding: 20px;
+  background-color: rgba(55, 0, 1, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+
+.game-error-container p {
+  font-family: 'Montserrat', serif;
+  color: #ECECDA;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 /* Resto de los estilos sin cambios... */
