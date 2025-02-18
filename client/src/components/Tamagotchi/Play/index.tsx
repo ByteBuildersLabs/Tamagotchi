@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import DoodleGame from '../../SkyJumpMiniGame/index.tsx'; // Ajusta la ruta según tu estructura
+import DoodleGame from '../../SkyJumpMiniGame/index.tsx';
 import './main.css';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 
-// Importa las imágenes de los juegos
-import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; // Asegúrate de tener esta imagen
+import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; 
 
-// Define los juegos disponibles
 const availableGames = [
   { 
     id: 'doodleGame',
@@ -15,10 +13,9 @@ const availableGames = [
     description: 'Help your beast to jump as high as possible!',
     icon: doodleGameIcon 
   },
-  // Puedes añadir más juegos aquí en el futuro
 ];
 
-// Funciones auxiliares para manejar las puntuaciones en localStorage
+// Aux functions to manage high scores in localStorage
 const getHighScore = (gameId: string, beastId: number): number => {
   const scoresStr = localStorage.getItem('gameHighScores');
   if (!scoresStr) return 0;
@@ -63,14 +60,14 @@ const Play = ({
   client: any,
   showAnimation?: (gifPath: string) => void
 }) => {
-  // Estados para controlar la visualización
+
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showGameSelection, setShowGameSelection] = useState(true);
 
-  // Cargar puntuación máxima cuando cambia el juego seleccionado o el beast
+  // Update high score when the game or beast changes
   useEffect(() => {
     if (selectedGame && beast) {
       const savedHighScore = getHighScore(selectedGame, beast.beast_id);
@@ -78,17 +75,14 @@ const Play = ({
     }
   }, [selectedGame, beast]);
 
-  // Función para iniciar un juego
   const startGame = async (gameId: string) => {
     if (!beast) return;
     
-    // Prepara la animación si existe la función showAnimation
     if (showAnimation) {
       const playAnimation = beastsDex[beast.specie - 1].playPicture;
       showAnimation(playAnimation);
     }
-    
-    // Registra el inicio del juego con el backend si es necesario
+
     try {
       await toast.promise(
         handleAction(
@@ -103,13 +97,11 @@ const Play = ({
         }
       );
       
-      // Actualiza el estado para mostrar el juego seleccionado
       setSelectedGame(gameId);
       setCurrentScore(0);
       setIsPlaying(true);
       setShowGameSelection(false);
       
-      // Cargar la puntuación máxima para este juego y mascota
       const savedHighScore = getHighScore(gameId, beast.beast_id);
       setHighScore(savedHighScore);
     } catch (error) {
@@ -117,19 +109,16 @@ const Play = ({
     }
   };
 
-  // Función para manejar el fin del juego y actualizar la puntuación
   const handleGameEnd = async (score: number) => {
     if (!beast || !selectedGame) return;
     
     setCurrentScore(score);
     setIsPlaying(false);
     
-    // Guardar puntuación en localStorage si es un nuevo récord
     if (score > highScore) {
       saveHighScore(selectedGame, beast.beast_id, score);
       setHighScore(score);
       
-      // Notificar al usuario
       toast.success(`¡New max score: ${score}!`, {
         icon: '🏆',
         duration: 4000
@@ -141,29 +130,27 @@ const Play = ({
     }
   };
 
-  // Función para volver a la selección de juegos
   const returnToGameSelection = () => {
     setSelectedGame(null);
     setShowGameSelection(true);
   };
 
-  // Añadir este efecto en el componente Play
     useEffect(() => {
-        // Cuando el juego está activo, añadir clase al body para prevenir scroll
+        // When the game is active, add a class to the body and remove it when the game ends
         if (isPlaying) {
         document.body.classList.add('game-active');
         } else {
         document.body.classList.remove('game-active');
         }
         
-        // Limpieza al desmontar
+        // Cleanup
         return () => {
         document.body.classList.remove('game-active');
         };
     }, [isPlaying]);
 
-  // Renderiza la interfaz de selección de juegos
   if (showGameSelection) {
+    // Render the game selection screen
     return (
       <div className="game-selection-container">
         <h2 className="game-selection-title">Choose a game</h2>
@@ -188,7 +175,7 @@ const Play = ({
     );
   }
 
-  // Renderiza el juego seleccionado
+  // Render the selected game
   if (selectedGame === 'doodleGame') {
     if (isPlaying) {
         return (
@@ -214,7 +201,7 @@ const Play = ({
             
         );
     } else {
-      // Muestra el resultado del juego
+      // Show the game result screen
       return (
         <div className="game-result-container">
           <h2 className="game-result-title">¡Game over!</h2>
@@ -243,7 +230,7 @@ const Play = ({
     }
   }
 
-  // Por defecto, vuelve a la selección de juegos
+  // By default, show an error message if the game is not found
   return (
     <div className="game-error-container">
       <p>Something were wrong. Please, try again.</p>

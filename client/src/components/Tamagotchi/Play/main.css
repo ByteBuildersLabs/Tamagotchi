@@ -1,4 +1,3 @@
-/* Estilos para la selección de juegos */
 .game-selection-container {
   padding: 15px;
   background-color: #ECECDA;
@@ -19,14 +18,12 @@
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 15px;
   margin-bottom: 20px;
-  /* Añadido para centrar el grid */
   justify-content: center;
   justify-items: center;
-  /* Si tienes un solo elemento, puedes usar también: */
   grid-template-columns: minmax(140px, 300px);
   margin-left: auto;
   margin-right: auto;
-  max-width: 300px; /* Ajustar según el ancho deseado */
+  max-width: 300px;
 }
 
 .game-card {
@@ -40,7 +37,6 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* Asegurar que la tarjeta tenga un ancho adecuado */
   width: 100%;
   max-width: 300px;
 }
@@ -70,36 +66,35 @@
   line-height: 1.2;
 }
 
-/* Estilos para ajustar el juego a pantalla completa */
+/* Style to put the game in full screen */
 
-/* Contenedor principal - asegurarse que ocupe toda la altura disponible */
 .doodle-game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh; /* Usa toda la altura del viewport */
+  height: 100vh; 
   max-height: 100vh;
-  overflow: hidden; /* Previene scroll */
-  padding: 0 !important; /* Elimina padding que podría causar scroll */
-  position: fixed; /* Asegura que el contenedor permanezca fijo */
+  overflow: hidden; 
+  padding: 0 !important; 
+  position: fixed; 
   top: 0;
   left: 0;
-  z-index: 1000; /* Valor alto para asegurar que esté por encima de otros elementos */
-}
+    z-index: 1000;
+  }
 
-/* Asegurar que el contenedor del canvas se ajuste proporcionalmente */
+/* Ensure the canvas container fits proportionally */
 div[style*="canvasContainerStyle"] {
   height: 100% !important;
-  max-height: 95vh; /* Deja un pequeño margen */
-  width: auto !important; /* Mantiene la proporción */
+  max-height: 95vh; 
+  width: auto !important; 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* El canvas debe ajustarse manteniendo su proporción */
+/* The canvas must be adjusted maintaining its proportion */
 canvas {
   height: auto !important;
   max-height: 95vh !important;
@@ -108,7 +103,6 @@ canvas {
   object-fit: contain !important;
 }
 
-/* Estilos para el contenedor principal de Play */
 .game-container {
   position: fixed !important;
   top: 0;
@@ -122,10 +116,9 @@ canvas {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Ajustar el panel de puntuación para que no interfiera */
 .game-score-display {
   position: fixed;
   top: 10px;
@@ -133,7 +126,6 @@ canvas {
   z-index: 1100;
 }
 
-/* Botón para volver rediseñado */
 .return-button {
   background: linear-gradient(to right, #85002A, #D1093D);
   color: #ECECDA;
@@ -173,9 +165,7 @@ canvas {
   transform: translateY(0);
 }
 
-/* Ajustes responsivos */
 @media (max-aspect-ratio: 1/1) {
-  /* Para dispositivos verticales (móviles) */
   canvas {
     width: 100% !important;
     height: auto !important;
@@ -184,23 +174,20 @@ canvas {
 }
 
 @media (min-aspect-ratio: 1/1) {
-  /* Para dispositivos horizontales */
   canvas {
     height: 92vh !important;
     width: auto !important;
   }
 }
 
-/* Prevenir scroll en el body cuando el juego está activo */
 body.game-active {
   overflow: hidden;
 }
 
-/* Estilos para la pantalla de resultado del juego */
 .game-result-container {
   padding: 20px;
   height: 230px;
-  background-color: rgba(55, 0, 1, 0.8); /* Usar el mismo fondo semi-transparente que otros componentes */
+  background-color: rgba(55, 0, 1, 0.8); 
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -228,7 +215,7 @@ body.game-active {
 .game-result-record {
   font-family: 'Montserrat', serif;
   font-size: 16px;
-  color: #e4a101; /* Color dorado similar al borde de las imágenes */
+  color: #e4a101; 
   margin-bottom: 0px;
 }
 
@@ -264,7 +251,6 @@ body.game-active {
   transform: translateY(0);
 }
 
-/* Estilos para el contenedor de error */
 .game-error-container {
   padding: 20px;
   background-color: rgba(55, 0, 1, 0.8);
@@ -283,9 +269,7 @@ body.game-active {
   margin-bottom: 20px;
 }
 
-/* Resto de los estilos sin cambios... */
 
-/* Estilos responsivos */
 @media (max-width: 600px) {
   .game-selection-grid {
     grid-template-columns: minmax(120px, 240px);

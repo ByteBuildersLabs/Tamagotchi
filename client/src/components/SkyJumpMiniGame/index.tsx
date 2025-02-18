@@ -6,7 +6,7 @@ import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 
-// Estilo para el contenedor principal del juego
+// Styles for the game container
 const gameContainerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100%',
@@ -16,7 +16,7 @@ const gameContainerStyle: React.CSSProperties = {
     padding: '20px',
   };
   
-  // Estilo para el contenedor del canvas
+  // Styles for the canvas container
   const canvasContainerStyle: React.CSSProperties = {
     position: 'relative',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
@@ -42,14 +42,14 @@ const gameContainerStyle: React.CSSProperties = {
     const canvasRef = useRef<HTMLCanvasElement>(null);
   
     const gameRef = useRef({
-      // Dimensiones del canvas
+      // Canvas dimensions
       boardWidth: 360,
       boardHeight: 576,
   
-      // Propiedades de la cámara
+      // Camera position
       cameraY: 0,
   
-      // Propiedades del doodler
+      // Doodler properties
       doodlerWidth: 46,
       doodlerHeight: 46,
       doodler: {
@@ -61,41 +61,41 @@ const gameContainerStyle: React.CSSProperties = {
         height: 60,
       },
   
-      // Propiedades de las plataformas
+      // Platform properties
       platformWidth: 60,
       platformHeight: 18,
       platforms: [] as any[],
   
-      // Física
+      // Physics
       velocityX: 0,
       velocityY: 0,
       initialVelocityY: -2.5,
       gravity: 0.03,
   
-      // Estado del juego
+      // Game State
       score: 0,
       maxScore: 0,
       gameOver: false,
-      endNotified: false, // Flag para evitar múltiples notificaciones de fin de juego
+      endNotified: false, // flag to prevent multiple game end notifications
       animationFrameId: 0,
   
-      // Imágenes
+      // Img sources
       doodlerRightImg: new Image(),
       doodlerLeftImg: new Image(),
       platformImg: new Image(),
   
-      // Sistema de puntuación
+      // Score tracking for platforms
       touchedPlatforms: new Set() as Set<string>,
   
-      // Backgrounds (cada uno tiene un umbral de puntuación)
+      // Background images and score thresholds for each
       backgrounds: {
         current: 0,
         images: [
           { img: bgImage1, scoreThreshold: 0 },
-          { img: bgImage2, scoreThreshold: 5 },
-          { img: bgImage3, scoreThreshold: 10 },
-          { img: bgImage4, scoreThreshold: 15 },
-          { img: bgImage5, scoreThreshold: 20 },
+          { img: bgImage2, scoreThreshold: 50 },
+          { img: bgImage3, scoreThreshold: 150},
+          { img: bgImage4, scoreThreshold: 300 },
+          { img: bgImage5, scoreThreshold: 450 },
         ],
       },
     });
@@ -107,46 +107,46 @@ const gameContainerStyle: React.CSSProperties = {
       const context = canvas.getContext("2d");
       if (!context) return;
 
-      // Función para ajustar el tamaño del juego al viewport
+      // Function to adjust the game size to the viewport
       const adjustGameSize = () => {
         const viewportHeight = window.innerHeight;
         const viewportWidth = window.innerWidth;
         
-        // Mantener la proporción original pero ajustar al viewport
+        // Keep the original aspect ratio but adjust to the viewport
         const aspectRatio = game.boardWidth / game.boardHeight;
         
         if (viewportWidth / viewportHeight > aspectRatio) {
-            // Viewport más ancho que alto - ajustar por altura
+            // Viewport more wide than tall - adjust by height
             const scaleFactor = viewportHeight * 0.9 / game.boardHeight;
             canvas.style.height = `${game.boardHeight * scaleFactor}px`;
             canvas.style.width = `${game.boardWidth * scaleFactor}px`;
         } else {
-            // Viewport más alto que ancho - ajustar por anchura
+            // Viewport more tall than wide - adjust by width
             const scaleFactor = viewportWidth * 0.9 / game.boardWidth;
             canvas.style.width = `${game.boardWidth * scaleFactor}px`;
             canvas.style.height = `${game.boardHeight * scaleFactor}px`;
         }
       };
 
-      // Ajustar tamaño inicialmente
+      // Adjust size initially
       adjustGameSize();
         
-      // Ajustar cuando cambie el tamaño de la ventana
+      // Adjust when window size changes
       window.addEventListener('resize', adjustGameSize);
   
-      // Inicialización del doodler
+      // Doodler initialization
       game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
       game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
       game.doodler.worldY = game.doodler.y;
   
-      // Cargar imágenes
+      // Update images
       game.doodlerRightImg.src = beastImageRight || '';
       game.doodlerLeftImg.src = beastImageLeft || '';
       game.platformImg.src = platformImg;
       game.doodler.img = game.doodlerRightImg;
       game.velocityY = game.initialVelocityY;
   
-      // Actualiza el fondo según la puntuación
+      // Update background based on score
       const updateBackground = (score: number) => {
         let newBackgroundIndex = 0;
         for (let i = game.backgrounds.images.length - 1; i >= 0; i--) {
@@ -161,12 +161,9 @@ const gameContainerStyle: React.CSSProperties = {
         }
       };
   
-      // ... Resto del código del juego ...
-      // (Mantenemos el código del juego igual que en el original)
-  
       const placePlatforms = () => {
         game.platforms = [];
-        // Plataforma inicial
+        // Initial platform
         game.platforms.push({
           img: game.platformImg,
           x: game.boardWidth / 2 - game.platformWidth / 2,
@@ -175,7 +172,7 @@ const gameContainerStyle: React.CSSProperties = {
           width: game.platformWidth,
           height: game.platformHeight,
         });
-        // Plataformas adicionales
+        // Additional platforms
         for (let i = 0; i < 6; i++) {
           let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
           let worldY = game.boardHeight - 75 * i - 150;
@@ -225,7 +222,7 @@ const gameContainerStyle: React.CSSProperties = {
           game.touchedPlatforms.add(platformId);
           updateBackground(game.score);
           
-          // Notificar al componente padre sobre la actualización de la puntuación
+          // Notify parent component about score update
           if (onScoreUpdate) {
             onScoreUpdate(game.score);
           }
@@ -245,7 +242,7 @@ const gameContainerStyle: React.CSSProperties = {
         game.doodler.y = game.doodler.worldY - game.cameraY;
       };
   
-      // Función auxiliar para dibujar un rectángulo redondeado
+      // Helper function to draw a rounded rectangle
       const roundRect = (
         ctx: CanvasRenderingContext2D,
         x: number,
@@ -271,7 +268,7 @@ const gameContainerStyle: React.CSSProperties = {
         if (stroke) ctx.stroke();
       };
   
-      // Función para dibujar la tarjeta de puntuación en el canvas
+      // Function to draw the scorecard on the canvas
       const drawScoreCard = () => {
         const cardX = 5;
         const cardY = 5;
@@ -279,21 +276,21 @@ const gameContainerStyle: React.CSSProperties = {
         const cardHeight = 30;
         const radius = 10;
   
-        // Fondo semitransparente del card
+        // Semi-transparent card background
         context.fillStyle = "rgba(255, 255, 255, 0.8)";
         roundRect(context, cardX, cardY, cardWidth, cardHeight, radius, true, false);
   
-        // Borde del card
+        // Card border
         context.strokeStyle = "black";
         roundRect(context, cardX, cardY, cardWidth, cardHeight, radius, false, true);
   
-        // Texto de la puntuación centrado
+        // Centered score text
         context.fillStyle = "black";
         context.font = "16px sans-serif";
         const text = game.score.toString();
         const textWidth = context.measureText(text).width;
         const textX = cardX + (cardWidth - textWidth) / 2;
-        const textY = cardY + cardHeight / 2 + 6; // Ajuste vertical aproximado
+        const textY = cardY + cardHeight / 2 + 6; 
         context.fillText(text, textX, textY);
       };
   
@@ -307,13 +304,12 @@ const gameContainerStyle: React.CSSProperties = {
             (game.boardHeight * 7) / 8
           );
   
-          // Notificar al componente padre sobre la puntuación final
+          // Notify parent component about final score
           if (onScoreUpdate) {
             onScoreUpdate(game.score);
           }
           
-          // Notificar que el juego ha terminado si onGameEnd está definido
-          // y todavía no se ha notificado
+          // Notify that the game has ended if onGameEnd is defined and has not yet been notified
           if (onGameEnd && !game.endNotified) {
             game.endNotified = true;
             onGameEnd(game.score);
@@ -325,7 +321,7 @@ const gameContainerStyle: React.CSSProperties = {
   
         context.clearRect(0, 0, game.boardWidth, game.boardHeight);
   
-        // Actualiza la posición horizontal del doodler
+        // Update the horizontal position of the doodler
         game.doodler.x += game.velocityX;
         if (game.doodler.x > game.boardWidth) {
           game.doodler.x = 0;
@@ -333,7 +329,7 @@ const gameContainerStyle: React.CSSProperties = {
           game.doodler.x = game.boardWidth;
         }
   
-        // Ajusta la física vertical
+        // Adjust vertical physics
         const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
         const currentGravity = game.gravity * difficultyMultiplier;
         game.velocityY = Math.min(game.velocityY + currentGravity, 8);
@@ -341,12 +337,12 @@ const gameContainerStyle: React.CSSProperties = {
   
         updateCamera();
   
-        // Comprueba si se produjo Game Over
+        // Check if Game Over occurred
         if (game.doodler.worldY > game.cameraY + game.boardHeight) {
           game.gameOver = true;
         }
   
-        // Dibuja y verifica colisiones con cada plataforma
+        // Draw and check collisions with each platform
         for (let i = 0; i < game.platforms.length; i++) {
           let platform = game.platforms[i];
           if (platform.y >= -platform.height && platform.y <= game.boardHeight) {
@@ -365,7 +361,7 @@ const gameContainerStyle: React.CSSProperties = {
           }
         }
   
-        // Dibuja el doodler
+        // Draw the doodler
         context.drawImage(
           game.doodler.img!,
           game.doodler.x,
@@ -374,7 +370,7 @@ const gameContainerStyle: React.CSSProperties = {
           game.doodler.height
         );
   
-        // Repone plataformas que salen de la vista
+        // Replenishes platforms that go out of sight
         while (
           game.platforms.length > 0 &&
           game.platforms[0].worldY > game.cameraY + game.boardHeight
@@ -383,7 +379,7 @@ const gameContainerStyle: React.CSSProperties = {
           game.platforms.push(newPlatform());
         }
   
-        // Dibuja la tarjeta (card) de la puntuación sobre el canvas
+        // Draw the score card on the canvas
         drawScoreCard();
   
         game.animationFrameId = requestAnimationFrame(update);
@@ -397,12 +393,12 @@ const gameContainerStyle: React.CSSProperties = {
           game.velocityX = -4;
           game.doodler.img = game.doodlerLeftImg;
         } else if (e.code === "Space" && game.gameOver) {
-          // Reinicia el juego
+          // Reset game state
           game.score = 0;
           game.maxScore = 0;
           game.touchedPlatforms.clear();
           game.backgrounds.current = 0;
-          game.endNotified = false; // Resetea la bandera de notificación
+          game.endNotified = false;
           canvas.style.backgroundImage = `url(${game.backgrounds.images[0].img})`;
   
           if (game.animationFrameId) {
@@ -451,7 +447,7 @@ const gameContainerStyle: React.CSSProperties = {
       };
     }, [beastImageRight, beastImageLeft]);
   
-    // Mezclamos los estilos personalizados con los estilos predeterminados
+    // We mix custom styles with default styles
     const containerMergedStyle = { ...gameContainerStyle, ...style };
   
     return (
