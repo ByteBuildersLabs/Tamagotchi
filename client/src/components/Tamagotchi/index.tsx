@@ -18,6 +18,7 @@ import Stats from "./Stats/index.tsx";
 import Actions from "./Actions/index.tsx";
 import Status from "./Status/index.tsx";
 import Food from "./Food/index.tsx";
+import Play from "./Play/index.tsx";
 import Whispers from "./Whispers/index.tsx";
 import TamagotchiJR from "../Joyride/TamagotchiJR.tsx";
 import feedSound from '../../assets/sounds/bbeating.mp3';
@@ -179,13 +180,10 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                 expanded={currentView === 'chat'}
                 beastStatus={status}
               />
-              {
-                currentView === 'stats' ?
-                  <Stats
-                    beastStats={stats}
-                  />
-                  :
-                  currentView === 'actions' ?
+                {
+                  currentView === 'stats' ? (
+                    <Stats beastStats={stats} />
+                  ) : currentView === 'actions' ? (
                     <Actions
                       handleAction={handleAction}
                       isLoading={isLoading}
@@ -195,20 +193,27 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                       client={client}
                       setCurrentView={setCurrentView}
                     />
-                    :
-                    currentView === 'chat' ?
-                      <></>
-                      :
-                      currentView === 'food' ?
-                        <Food
-                          handleAction={handleAction}
-                          beast={beast}
-                          account={userAccount}
-                          client={client}
-                          showAnimation={showAnimation}
-                        />
-                        : <></>
-              }
+                  ) : currentView === 'chat' ? (
+                    <></>
+                  ) : currentView === 'food' ? (
+                    <Food
+                      handleAction={handleAction}
+                      beast={beast}
+                      account={userAccount}
+                      client={client}
+                      showAnimation={showAnimation}
+                    />
+                  ) : currentView === 'play' ? (
+                      <Play
+                        handleAction={handleAction}
+                        beast={beast}
+                        account={userAccount}
+                        client={client}
+                      />
+                    ) : (
+                    <></>
+                  )
+                }
               <div className="beast-interaction">
                 <div>
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />

@@ -41,6 +41,12 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               setCurrentView('food');
               return;
             }
+
+            if (action === 'play') {
+              setCurrentView('play');
+              return;
+            }
+
             try {
               // Wrap the action call with toast.promise to show notifications.
               await toast.promise(
