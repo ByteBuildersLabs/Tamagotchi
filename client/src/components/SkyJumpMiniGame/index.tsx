@@ -370,7 +370,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     // Plataformas adicionales
     for (let i = 0; i < 6; i++) {
       let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
-      let worldY = game.boardHeight - 75 * i - 150;
+      let worldY = game.boardHeight - 100 * i - 150;
       game.platforms.push({
         img: game.platformImg,
         x: randomX,
@@ -384,7 +384,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
 
   const newPlatform = (game: any) => {
     let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
-    const baseGap = 75;
+    const baseGap = 100;
     const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
     const gapIncrement = game.score * 0.2 * difficultyMultiplier;
     let worldY =
