@@ -181,7 +181,6 @@ const Play = ({
         return (
             <div className="game-container">
               <div className="game-score-display">
-                <span>Record: {highScore}</span>
               </div>
               <DoodleGame 
                 className="fullscreen-doodle"
