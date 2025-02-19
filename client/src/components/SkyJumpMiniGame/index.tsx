@@ -45,6 +45,7 @@ interface DoodleGameProps {
   onGameEnd?: (score: number) => void;
   beastImageRight?: string;
   beastImageLeft?: string;
+  onExitGame?: () => void;
 }
 
 const DoodleGame: React.FC<DoodleGameProps> = ({
@@ -54,6 +55,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
   onGameEnd,
   beastImageRight,
   beastImageLeft,
+  onExitGame,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -356,6 +358,18 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   }, [usingGyroscope, gyroscopePermission]);
 
+  const toggleGyroscope = () => {
+    if (usingGyroscope) {
+      // Desactivamos el giroscopio: dejamos de recibir eventos y cambiamos el estado.
+      gameRef.current.gyroControls.enabled = false;
+      setUsingGyroscope(false);
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+    } else {
+      // Activamos el giroscopio solicitando permiso
+      requestOrientationPermission();
+    }
+  };
+
   const placePlatforms = (game: any) => {
     game.platforms = [];
     // Plataforma inicial
@@ -627,7 +641,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
           onClick={gameRef.current.gameOver ? handleRestartTouch : undefined}
         />
 
-        {/* Controles táctiles para móviles */}
+        {/* Touch controls for mobile devices */}
         {isMobile && !usingGyroscope && (
           <>
             <div
@@ -653,14 +667,24 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
           </>
         )}
 
-        {/* Botón para activar giroscopio en móvil */}
+        {/* Button to Exit */}
+        {onExitGame && (
+          <button 
+            className="return-button"
+            onClick={onExitGame}
+          >
+            X
+          </button>
+        )}
+
+        {/* Button to activate gyroscope on mobile */}
         {isMobile && (
           <div
             style={{
               position: 'absolute',
               top: '50px',
               right: '10px',
-              backgroundColor: usingGyroscope ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
+              backgroundColor: usingGyroscope ? 'rgba(0,0,0,0.3)' : 'rgba(255, 255, 255, 0.5)',
               padding: '8px',
               borderRadius: '8px',
               fontSize: '14px',
@@ -668,9 +692,9 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
               cursor: 'pointer',
               backdropFilter: 'blur(4px)',
             }}
-            onClick={requestOrientationPermission}
+            onClick={toggleGyroscope}
           >
-            {usingGyroscope ? '🔄 Tilt activated' : '📱 Activate tilt'}
+            {usingGyroscope ? '🔓' : '🔒'}
           </div>
         )}
       </div>

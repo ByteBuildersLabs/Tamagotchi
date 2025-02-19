@@ -188,14 +188,9 @@ const Play = ({
                 onGameEnd={handleGameEnd}
                 beastImageRight={beastsDex[beast.specie - 1].idlePicture}
                 beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
+                onExitGame={returnToGameSelection}
               />
               <Toaster position="bottom-center" />
-              <button 
-              className="return-button"
-              onClick={returnToGameSelection}
-            >
-              X
-            </button>
             </div>
             
         );
