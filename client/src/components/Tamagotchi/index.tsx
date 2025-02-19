@@ -197,19 +197,27 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                       setCurrentView={setCurrentView}
                     />
                     :
-                    currentView === 'chat' ?
+                    currentView === 'chat' ? (
                       <></>
-                      :
-                      currentView === 'food' ?
-                        <Food
-                          handleAction={handleAction}
-                          beast={beast}
-                          account={userAccount}
-                          client={client}
-                          showAnimation={showAnimation}
-                          sdk={sdk}
-                        />
-                        : <></>
+                    ) : currentView === 'food' ? (
+                      <Food
+                        handleAction={handleAction}
+                        beast={beast}
+                        account={userAccount}
+                        client={client}
+                        showAnimation={showAnimation}
+                        sdk={sdk}
+                      />
+                    ) : currentView === 'play' ? (
+                      <Play
+                        handleAction={handleAction}
+                        beast={beast}
+                        account={userAccount}
+                        client={client}
+                      />
+                    ) : (
+                      <></>
+                    )
               }
               <div className="beast-interaction">
                 <div>
