@@ -21,24 +21,24 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-DCgLxktZ.svg"],
+      includeAssets: ["/assets/logo-Cwg6g-uB.jpg"],
       manifest: {
-        name: "BabyBeasts",
-        short_name: "BabyBeasts",
-        description: "Take care of your baby beasts",
+        name: "Byte Beasts Tamagotchi",
+        short_name: "Byte Beasts Tamagotchi",
+        description: "Take care of your Baby Beasts",
         theme_color: "#000",
         background_color: "#000",
         display: "standalone",
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-DCgLxktZ.svg",
+            src: "/assets/logo-Cwg6g-uB.jpg",
             sizes: "180x180",
             type: "image/svg",
           },
         ],
         start_url: "/",
-        id: "ByteBeasts Tamagotchi",
+        id: "Byte Beasts Tamagotchi",
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // Set to 5 MiB

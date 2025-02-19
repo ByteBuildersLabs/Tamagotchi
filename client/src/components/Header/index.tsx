@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import monster from "../../assets/img/logo.svg";
+import monster from "../../assets/img/logo.jpg";
 import book from "../../assets/img/book.svg";
 import dragon from "../../assets/img/dragon.svg";
 import "./main.css";

@@ -1,9 +1,9 @@
 .react-joyride__tooltip {
-  background-color: rgba(55, 0, 1, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
   color: #ECECDA !important;
   font-family: "Montserrat", serif !important;
   border-radius: 30px;
-  padding: 24px 10=5px !important;
+  padding: 24px 10px !important;
   font-weight: bold;
   margin: auto !important;
 }

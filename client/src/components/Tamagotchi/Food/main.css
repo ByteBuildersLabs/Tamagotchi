@@ -2,11 +2,11 @@
   width: 100%;
   height: 153px;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
+  padding: 15px;
   border-radius: 0 0 0 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   color: #ECECDA;
   position: relative;
   overflow: hidden;
@@ -71,40 +71,42 @@
   background-color: #950124;
 }
 
+.slick-list {
+  overflow: visible;
+  height: 65px;
+}
+
+.slick-slider {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .slick-slide {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
 .slick-dots {
-  position: absolute;
-  bottom: -25px; 
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  gap: 5px; 
-  flex-wrap: wrap; 
-  white-space: normal; 
+  position: relative;
+  gap: 10px; 
   width: 100%;
-  padding: 5px 10px;
+  height: 30px;
 }
 
 .slick-dots li {
-  flex-shrink: 0;
-  width: 10px;
-  height: 10px;
-  margin: 0;
+  width: 15px;
+  height: 15px;
+  margin: auto 0;
   list-style: none;
 }
 
 .slick-dots li button:before {
   font-size: 10px;
   color: #ECECDA !important;
-  opacity: 0.8;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 

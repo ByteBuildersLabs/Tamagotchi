@@ -29,7 +29,7 @@ const BeastsDexGrid: React.FC = () => {
     if (bodyElement) {
       bodyElement.classList.remove('day', 'night');
       bodyElement.style.backgroundSize = 'cover';
-      bodyElement.style.padding = '15px 15px 30px';
+      bodyElement.style.padding = '15px';
     }
   }, []);
 

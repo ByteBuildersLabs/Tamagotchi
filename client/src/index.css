@@ -214,7 +214,7 @@ p, span {
 }
 
 #_rht_toaster div div {
-  background-color: rgba(55, 0, 1, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
   color: #ECECDA;
   border-radius: 3px !important;
   font-weight: bold !important;
@@ -230,7 +230,7 @@ p, span {
 
 .hatch {
   height: 35px;
-  background-color: #ECECDA;
+  background-color: #ECECDA !important;
   border-radius: 30px;
   display: flex;
   align-items: center;
@@ -240,7 +240,7 @@ p, span {
 }
 
 .hatch span {
-  color: #891a29;
+  color: #891a29 !important;
   font-weight: bold;
 }
 

@@ -3,7 +3,7 @@
   height: 153px;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
-  border-radius: 0 0 0 10px;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -47,14 +47,14 @@
 }
 
 .stats-value.Attack .progress-bar .progress {
-  background: linear-gradient(to right, #72e4ff, #7354ff);
+  background: linear-gradient(to right, #72e4ff, #7354ff) !important;
 }
 .stats-value.Defense .progress-bar .progress {
-  background: linear-gradient(to right, #ee6afe, #ffaab7);
+  background: linear-gradient(to right, #ee6afe, #ffaab7) !important;
 }
 .stats-value.Speed .progress-bar .progress {
-  background: linear-gradient(to right, #b0ff9f, #8cedff);
+  background: linear-gradient(to right, #b0ff9f, #8cedff) !important;
 }
 .stats-value.Experience .progress-bar .progress {
-  background: linear-gradient(to right, #ff807d, #fff263);
+  background: linear-gradient(to right, #ff807d, #fff263) !important;
 }

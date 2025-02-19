@@ -28,7 +28,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
       if (bodyElement) {
         bodyElement.classList.remove('day', 'night');
         bodyElement.style.backgroundSize = 'cover';
-        bodyElement.style.padding = '15px 15px 30px';
+        bodyElement.style.padding = '15px';
       }
     };
 

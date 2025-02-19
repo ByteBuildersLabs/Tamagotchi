@@ -1,10 +1,9 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
-
-import toast, { Toaster } from 'react-hot-toast';
 
 import Apple from '../../../assets/img/food/fruit_apple.png';
 import Banana from '../../../assets/img/food/fruit_banana.png';
@@ -24,6 +23,9 @@ import Corn from '../../../assets/img/food/vegetable_corn.png';
 import Potato from '../../../assets/img/food/vegetable_potato.png';
 
 import beastsDex from '../../../data/beastDex.tsx';
+import { useFood } from '../../../hooks/useFood.tsx';
+import { SchemaType } from '../../../dojo/bindings.ts';
+import { SDK } from '@dojoengine/sdk';
 
 const initialFoodItems = [
   { name: 'Apple', img: Apple, count: 5, id: 1 },
@@ -44,13 +46,17 @@ const initialFoodItems = [
   { name: 'Potato', img: Potato, count: 7, id: 15 }
 ];
 
-const Food = ({ handleAction, beast, account, client, showAnimation }: { 
+const Food = ({ handleAction, beast, account, client, showAnimation, sdk }: { 
   handleAction: any, 
   beast: any, 
   account: any, 
   client: any,
-  showAnimation: (gifPath: string) => void 
+  showAnimation: (gifPath: string) => void,
+  sdk: SDK<SchemaType>
 }) => {
+  const { foods } = useFood(sdk);
+  console.log(foods);
+
   const [foodItems, setFoodItems] = useState(initialFoodItems);
 
   // Mark the function as async so we can await the promise

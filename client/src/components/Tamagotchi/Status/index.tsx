@@ -1,8 +1,8 @@
 import { BeastStatus } from "../../../dojo/bindings";
-import Energy from '../../../assets/img/Energy.png';
-import Happyness from '../../../assets/img/Happyness.png';
-import Hygienne from '../../../assets/img/Hygienne.png';
-import Hunger from '../../../assets/img/Hunger.png';
+import Energy from '../../../assets/img/energy.svg';
+import Happyness from '../../../assets/img/happiness.svg';
+import Hygienne from '../../../assets/img/bubble.svg';
+import Hunger from '../../../assets/img/hunger.svg';
 import './main.css';
 
 const statusItems = [

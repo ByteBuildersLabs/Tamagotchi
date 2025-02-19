@@ -14,58 +14,30 @@
 .actions button {
   width: 48%;
   height: 45px;
-  border-radius: 40px;
+  border-radius: 25px;
   font-size: 16px;
   margin-bottom: 6px;
   background-color: transparent;
-  color: #ECECDA;
   font-weight: bold;
   text-transform: uppercase;
   position: relative;
   transition: all 0.5s;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ececda !important;
+  border: 0;
+  transition: all 0.5s;
+  cursor: pointer;
 }
 
-.actions button:nth-child(1) {
-  border: 3px solid #FF7E7E;
-}
-.actions button:nth-child(2) {
-  border: 3px solid #EE69FF;
-}
-.actions button:nth-child(3) {
-  border: 3px solid #71E4FF;
-}
-.actions button:nth-child(4) {
-  border: 3px solid #B0FF9F;
-}
-.actions button:nth-child(5) {
-  border: 3px solid #FFF362;
-}
-.actions button:nth-child(6) {
-  border: 3px solid #000000;
-}
-
-.actions button:nth-child(1):hover {
-  box-shadow: 0 0 30px #FF7E7E;
-}
-.actions button:nth-child(2):hover {
-  box-shadow: 0 0 30px #EE69FF;
-}
-.actions button:nth-child(3):hover {
-  box-shadow: 0 0 30px #71E4FF;
-}
-.actions button:nth-child(4):hover {
-  box-shadow: 0 0 30px #B0FF9F;
-}
-.actions button:nth-child(5):hover {
-  box-shadow: 0 0 30px  #FFF362;
-}
-.actions button:nth-child(6):hover {
-  box-shadow: 0 0 30px  #000000;
+.actions button:hover {
+  background-color: #85002A;
 }
 
 .actions button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
+  box-shadow: 0;
 }
+
 .actions button:disabled:hover {
   box-shadow: 0;
 }

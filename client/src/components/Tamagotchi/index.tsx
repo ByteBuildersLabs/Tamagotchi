@@ -64,7 +64,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
       const bodyElement = document.querySelector('.body') as HTMLElement;
       if (bodyElement) {
         bodyElement.classList.add(`${isDayTime ? 'day' : 'night'}`);
-        bodyElement.style.padding = '15px 15px 30px';
+        bodyElement.style.padding = '15px';
       }
     };
     updateBackground();
@@ -129,23 +129,23 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
     if (!status?.is_alive) return;
     try {
       await toast.promise(
-      handleAction(
-        "Cuddle",
-        // Call the cuddle action on the client (ensure it's defined in your SDK)
-        () => client.actions.pet(userAccount as Account), //change sleep action to cuddle action
-        // Use the cuddle animation from your initials data
-        beastsDex[beast.specie - 1].cuddlePicture
-      ),
-      {
-        loading: "Cuddling...",
-        success: "Your Baby Beast is enjoying!",
-        error: "Cuddle action failed!",
-      }
+        handleAction(
+          "Cuddle",
+          // Call the cuddle action on the client (ensure it's defined in your SDK)
+          () => client.actions.pet(userAccount as Account), //change sleep action to cuddle action
+          // Use the cuddle animation from your initials data
+          beastsDex[beast.specie - 1].cuddlePicture
+        ),
+        {
+          loading: "Cuddling...",
+          success: "Your Baby Beast is enjoying!",
+          error: "Cuddle action failed!",
+        }
       );
       // Disable the button for 5 seconds
       setIsLoading(true);
       setTimeout(() => {
-      setIsLoading(false);
+        setIsLoading(false);
       }, 5000);
     } catch (error) {
       console.error("Cuddle error:", error);
@@ -157,19 +157,19 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
       <Header />
       <div className="tamaguchi">
         <>{beast &&
-          <Card style={{ 
+          <Card style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            height: '100%'
+            height: '99%'
           }}>
             <Status
               beastStatus={status}
             />
             <div className="game">
               <div className="scenario flex justify-center items-column">
-                <img 
-                  src={currentImage} 
+                <img
+                  src={currentImage}
                   alt="Tamagotchi"
                   className="w-40 h-40"
                   onClick={handleCuddle} style={{ cursor: 'pointer' }}
@@ -180,10 +180,13 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                 expanded={currentView === 'chat'}
                 beastStatus={status}
               />
-                {
-                  currentView === 'stats' ? (
-                    <Stats beastStats={stats} />
-                  ) : currentView === 'actions' ? (
+              {
+                currentView === 'stats' ?
+                  <Stats
+                    beastStats={stats}
+                  />
+                  :
+                  currentView === 'actions' ?
                     <Actions
                       handleAction={handleAction}
                       isLoading={isLoading}
@@ -193,27 +196,21 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
                       client={client}
                       setCurrentView={setCurrentView}
                     />
-                  ) : currentView === 'chat' ? (
-                    <></>
-                  ) : currentView === 'food' ? (
-                    <Food
-                      handleAction={handleAction}
-                      beast={beast}
-                      account={userAccount}
-                      client={client}
-                      showAnimation={showAnimation}
-                    />
-                  ) : currentView === 'play' ? (
-                      <Play
-                        handleAction={handleAction}
-                        beast={beast}
-                        account={userAccount}
-                        client={client}
-                      />
-                    ) : (
-                    <></>
-                  )
-                }
+                    :
+                    currentView === 'chat' ?
+                      <></>
+                      :
+                      currentView === 'food' ?
+                        <Food
+                          handleAction={handleAction}
+                          beast={beast}
+                          account={userAccount}
+                          client={client}
+                          showAnimation={showAnimation}
+                          sdk={sdk}
+                        />
+                        : <></>
+              }
               <div className="beast-interaction">
                 <div>
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />

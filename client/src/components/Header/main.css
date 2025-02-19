@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0;
-  margin: 0 auto 20px;
+  margin: 0 auto 15px;
   transform: translateY(30px);
   animation: fade-in-up 1s ease-out forwards;
 }
