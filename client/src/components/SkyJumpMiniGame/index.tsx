@@ -6,6 +6,7 @@ import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 
+// Container style for the game wrapper
 const gameContainerStyle: React.CSSProperties = {
   position: 'relative',
   width: '100%',
@@ -15,6 +16,7 @@ const gameContainerStyle: React.CSSProperties = {
   padding: '20px',
 };
 
+// Container style for the canvas
 const canvasContainerStyle: React.CSSProperties = {
   position: 'relative',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
@@ -22,6 +24,7 @@ const canvasContainerStyle: React.CSSProperties = {
   overflow: 'hidden',
 };
 
+// Style for mobile control buttons
 const controlButtonStyle: React.CSSProperties = {
   position: 'absolute',
   bottom: '20px',
@@ -38,6 +41,7 @@ const controlButtonStyle: React.CSSProperties = {
   zIndex: 100,
 };
 
+// Props interface for the DoodleGame component
 interface DoodleGameProps {
   className?: string;
   style?: React.CSSProperties;
@@ -57,18 +61,20 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
   beastImageLeft,
   onExitGame,
 }) => {
+  // Reference to the canvas element
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // State to determine if device is mobile
   const [isMobile, setIsMobile] = useState(false);
+  // State to store gyroscope permission status
   const [gyroscopePermission, setGyroscopePermission] = useState<PermissionState | null>(null);
+  // State to indicate if gyroscope is currently used
   const [usingGyroscope, setUsingGyroscope] = useState(false);
 
+  // Game state and configuration stored in a ref
   const gameRef = useRef<any>({
-    // Canvas dimensions
-    boardWidth: 360,
-    boardHeight: 576,
-
-    // Camera position
-    cameraY: 0,
+    boardWidth: 360, // Canvas width
+    boardHeight: 576, // Canvas height
+    cameraY: 0, // Camera vertical position
 
     // Doodler properties
     doodlerWidth: 46,
@@ -87,29 +93,29 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     platformHeight: 18,
     platforms: [] as any[],
 
-    // Physics
+    // Physics properties
     velocityX: 0,
     velocityY: 0,
     initialVelocityY: -8,
     gravity: 0.25,
 
-    // Game State
+    // Game state variables
     score: 0,
     maxScore: 0,
     gameOver: false,
     endNotified: false,
     animationFrameId: 0,
-    lastTimestamp: 0, // Para delta time
+    lastTimestamp: 0, // For delta time calculation
 
-    // Imágenes
+    // Image objects for doodler and platform
     doodlerRightImg: new Image(),
     doodlerLeftImg: new Image(),
     platformImg: new Image(),
 
-    // Control de plataformas ya tocadas (para puntaje)
+    // Set to track platforms already scored
     touchedPlatforms: new Set() as Set<string>,
 
-    // Fondos y sus umbrales de puntaje
+    // Background images with score thresholds
     backgrounds: {
       current: 0,
       images: [
@@ -121,13 +127,13 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       ],
     },
 
-    // Controles táctiles para móviles
+    // Mobile touch controls state
     touchControls: {
       isPressed: false,
-      direction: 0, // -1 izquierda, 0 ninguno, 1 derecha
+      direction: 0, // -1 for left, 0 for none, 1 for right
     },
 
-    // Controles de giroscopio
+    // Gyroscope control configuration
     gyroControls: {
       enabled: false,
       calibration: 0,
@@ -135,7 +141,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     },
   });
 
-  // Detecta si el dispositivo es móvil
+  // Check if the current device is mobile
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor;
@@ -145,7 +151,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     checkMobile();
   }, []);
 
-  // Solicita permiso para usar el giroscopio (en iOS 13+ y otros)
+  // Request permission to use device orientation (gyroscope)
   const requestOrientationPermission = async () => {
     try {
       if (typeof DeviceOrientationEvent !== 'undefined' && 
@@ -155,7 +161,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
         if (permissionState === 'granted') {
           gameRef.current.gyroControls.enabled = true;
           setUsingGyroscope(true);
-          // Calibrar una sola vez
+          // Calibrate once on permission grant
           window.addEventListener('deviceorientation', calibrateGyroscope, { once: true });
         }
       } else {
@@ -165,17 +171,19 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
         window.addEventListener('deviceorientation', calibrateGyroscope, { once: true });
       }
     } catch (error) {
-      console.error('Error al solicitar permiso para orientación:', error);
+      console.error('Error requesting orientation permission:', error);
       setGyroscopePermission('denied');
     }
   };
 
+  // Calibrate the gyroscope by setting a baseline gamma value
   const calibrateGyroscope = (event: DeviceOrientationEvent) => {
     if (event.gamma !== null) {
       gameRef.current.gyroControls.calibration = event.gamma;
     }
   };
 
+  // Handle device orientation event to update horizontal velocity
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
     if (!gameRef.current.gyroControls.enabled || gameRef.current.gameOver) return;
     const game = gameRef.current;
@@ -193,7 +201,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   };
 
-  // Controles táctiles
+  // Handle touch start event for mobile controls
   const handleTouchStart = (direction: number) => {
     const game = gameRef.current;
     game.touchControls.isPressed = true;
@@ -207,6 +215,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   };
 
+  // Handle touch end event to stop mobile control movement
   const handleTouchEnd = () => {
     const game = gameRef.current;
     game.touchControls.isPressed = false;
@@ -214,13 +223,14 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     game.velocityX = 0;
   };
 
+  // Handle canvas click to restart game if game is over
   const handleRestartTouch = () => {
     if (gameRef.current.gameOver) {
       resetGame();
     }
   };
 
-  // Reinicia el juego
+  // Reset game state and restart the game loop
   const resetGame = () => {
     const game = gameRef.current;
     const canvas = canvasRef.current;
@@ -236,9 +246,10 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     if (game.animationFrameId) {
       cancelAnimationFrame(game.animationFrameId);
     }
-    // Reiniciamos el timestamp para evitar saltos
+    // Reset timestamp to avoid large delta values
     game.lastTimestamp = 0;
 
+    // Reset doodler position and image
     game.doodler = {
       img: game.doodlerRightImg,
       x: game.boardWidth / 2 - game.doodlerWidth / 2,
@@ -259,6 +270,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     );
   };
 
+  // Adjust canvas size on window resize and initialize game images
   useEffect(() => {
     const game = gameRef.current;
     const canvas = canvasRef.current;
@@ -266,7 +278,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    // Ajuste del tamaño del canvas según el viewport
+    // Function to adjust the canvas size based on viewport
     const adjustGameSize = () => {
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
@@ -289,7 +301,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       document.body.classList.add('mobile-gameplay');
     }
 
-    // Inicialización del doodler y las imágenes
+    // Initialize doodler position and image sources
     game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
     game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
     game.doodler.worldY = game.doodler.y;
@@ -306,7 +318,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       update(ts, canvas, game)
     );
 
-    // Controles por teclado
+    // Keyboard controls: start moving doodler
     const moveDoodler = (e: KeyboardEvent) => {
       if (e.code === 'ArrowRight' || e.code === 'KeyD') {
         game.velocityX = 4;
@@ -319,6 +331,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       }
     };
 
+    // Keyboard controls: stop moving doodler
     const stopDoodler = (e: KeyboardEvent) => {
       if ((e.code === 'ArrowRight' || e.code === 'KeyD') && game.velocityX > 0) {
         game.velocityX = 0;
@@ -349,6 +362,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     };
   }, [beastImageRight, beastImageLeft, isMobile]);
 
+  // Add/remove device orientation event listener based on gyroscope usage
   useEffect(() => {
     if (usingGyroscope && gyroscopePermission === 'granted') {
       window.addEventListener('deviceorientation', handleDeviceOrientation);
@@ -358,21 +372,23 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   }, [usingGyroscope, gyroscopePermission]);
 
+  // Toggle gyroscope control on or off
   const toggleGyroscope = () => {
     if (usingGyroscope) {
-      // Desactivamos el giroscopio: dejamos de recibir eventos y cambiamos el estado.
+      // Disable gyroscope: remove event listener and update state
       gameRef.current.gyroControls.enabled = false;
       setUsingGyroscope(false);
       window.removeEventListener('deviceorientation', handleDeviceOrientation);
     } else {
-      // Activamos el giroscopio solicitando permiso
+      // Enable gyroscope by requesting permission
       requestOrientationPermission();
     }
   };
 
+  // Initialize platforms for the game
   const placePlatforms = (game: any) => {
     game.platforms = [];
-    // Plataforma inicial
+    // Add initial platform
     game.platforms.push({
       img: game.platformImg,
       x: game.boardWidth / 2 - game.platformWidth / 2,
@@ -381,7 +397,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       width: game.platformWidth,
       height: game.platformHeight,
     });
-    // Plataformas adicionales
+    // Add additional platforms
     for (let i = 0; i < 6; i++) {
       let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
       let worldY = game.boardHeight - 100 * i - 150;
@@ -396,6 +412,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   };
 
+  // Create a new platform when one goes off-screen
   const newPlatform = (game: any) => {
     let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
     const baseGap = 100;
@@ -414,6 +431,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     };
   };
 
+  // Detect collision between doodler and a platform
   const detectCollision = (a: any, b: any) => {
     return (
       a.x < b.x + b.width &&
@@ -423,6 +441,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     );
   };
 
+  // Update game score when doodler lands on a platform
   const updateScore = (game: any, platform: any) => {
     const platformId = `${platform.worldY}`;
     if (!game.touchedPlatforms.has(platformId)) {
@@ -436,6 +455,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   };
 
+  // Update canvas background based on current score threshold
   const updateBackground = (game: any) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -452,6 +472,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     }
   };
 
+  // Update camera position to follow the doodler
   const updateCamera = (game: any) => {
     const cameraThreshold = 150;
     game.doodler.y = game.doodler.worldY - game.cameraY;
@@ -465,7 +486,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     game.doodler.y = game.doodler.worldY - game.cameraY;
   };
 
-  // Dibuja un rectángulo redondeado
+  // Draw a rounded rectangle on the canvas
   const roundRect = (
     ctx: CanvasRenderingContext2D,
     x: number,
@@ -476,8 +497,8 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     fill: boolean,
     stroke: boolean
   ) => {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
+    ctx.beginPath(); // Start path
+    ctx.moveTo(x + radius, y); // Move to starting point
     ctx.lineTo(x + width - radius, y);
     ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
     ctx.lineTo(x + width, y + height - radius);
@@ -486,11 +507,12 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
     ctx.lineTo(x, y + radius);
     ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    if (fill) ctx.fill();
-    if (stroke) ctx.stroke();
+    ctx.closePath(); // Close path
+    if (fill) ctx.fill(); // Fill if needed
+    if (stroke) ctx.stroke(); // Stroke if needed
   };
 
+  // Draw the score card on the canvas
   const drawScoreCard = (ctx: CanvasRenderingContext2D, game: any) => {
     const cardX = 5;
     const cardY = 5;
@@ -510,18 +532,17 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     ctx.fillText(text, textX, textY);
   };
 
-  // Función principal de actualización usando delta time
+  // Main game loop function using delta time for consistent movement
   const update = (timestamp: number, canvas: HTMLCanvasElement, game: any) => {
     const context = canvas.getContext('2d');
     if (!context) return;
 
     if (!game.lastTimestamp) {
-      game.lastTimestamp = timestamp;
+      game.lastTimestamp = timestamp; // Initialize lastTimestamp on first frame
     }
-    const dt = (timestamp - game.lastTimestamp) / 1000;
+    const dt = (timestamp - game.lastTimestamp) / 1000; // Calculate delta time in seconds
     game.lastTimestamp = timestamp;
-    // Factor de escala basado en 60 fps
-    const frameFactor = dt * 60;
+    const frameFactor = dt * 60; // Scale factor based on 60 FPS
 
     if (game.gameOver) {
       context.fillStyle = 'black';
@@ -548,7 +569,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
 
     context.clearRect(0, 0, game.boardWidth, game.boardHeight);
 
-    // Actualiza posición horizontal usando frameFactor
+    // Update horizontal position using frameFactor
     game.doodler.x += game.velocityX * frameFactor;
     if (game.doodler.x > game.boardWidth) {
       game.doodler.x = 0;
@@ -570,6 +591,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       game.gameOver = true;
     }
 
+    // Draw each platform and check for collisions
     for (let i = 0; i < game.platforms.length; i++) {
       let platform = game.platforms[i];
       if (platform.y >= -platform.height && platform.y <= game.boardHeight) {
@@ -588,6 +610,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       }
     }
 
+    // Draw the doodler image on the canvas
     context.drawImage(
       game.doodler.img!,
       game.doodler.x,
@@ -596,6 +619,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       game.doodler.height
     );
 
+    // Replenish platforms that move off-screen
     while (
       game.platforms.length > 0 &&
       game.platforms[0].worldY > game.cameraY + game.boardHeight
@@ -611,6 +635,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     );
   };
 
+  // Merge external and internal container styles
   const containerMergedStyle = { ...gameContainerStyle, ...style };
 
   return (
@@ -677,7 +702,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
           </button>
         )}
 
-        {/* Button to activate gyroscope on mobile */}
+        {/* Button to toggle gyroscope on mobile */}
         {isMobile && (
           <div
             style={{
