@@ -18,7 +18,7 @@
   margin: 0 auto;
   padding: 0 15px 30px;
   width: 100vw;
-  height: 100dvh;
+  min-height: 100dvh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -155,14 +155,9 @@ p, span {
 .cover .cover-pic {
   width: 100%;
   height: 300px;
-  border: 2px solid #e4a101;
+  border: 2px solid #ECECDA;
   object-fit: cover;
   border-radius: 25px;
-}
-
-.footer img {
-  max-width: unset;
-  height: 18px;
 }
 
 .info {

@@ -23,6 +23,7 @@ import AppLayout from "./components/Layouts/AppLayout.tsx";
 import "./index.css";
 import SpawnBeast from "./components/SpawnBeast/index.tsx";
 import Music from "./components/Music/index.tsx";
+import Lore from "./components/Lore/index.tsx";
 
 function provider() {
   return new RpcProvider({
@@ -72,6 +73,7 @@ async function main() {
                     <Route path="/hatch" element={<SpawnBeast sdk={sdk} />} />
                     <Route path="/bag" element={<Bag sdk={sdk} />} />
                     <Route path="/dex" element={<Dex />} />
+                    <Route path="/lore" element={<Lore />} />
                     <Route path="/chat" element={<Chat />} />
                   </Route>
                 </Routes>

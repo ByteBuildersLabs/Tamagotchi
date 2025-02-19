@@ -25,7 +25,7 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
     if (bodyElement) {
       bodyElement.classList.remove('day', 'night');
       bodyElement.style.backgroundSize = 'cover';
-      bodyElement.style.padding = '15px';
+      bodyElement.style.padding = '22px 15px';
     }
   }, []);
 
