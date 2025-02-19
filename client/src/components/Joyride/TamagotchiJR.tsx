@@ -15,6 +15,10 @@ const TamagotchiJR = () => {
       content: "Enable and disable the sound",
     },
     {
+      target: ".lore-icon",
+      content: "Here is the lore of Byte Beasts",
+    },
+    {
       target: ".dex-icon",
       content: "Here is your Beasts Dex",
     },

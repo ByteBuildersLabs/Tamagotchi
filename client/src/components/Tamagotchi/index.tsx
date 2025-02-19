@@ -63,7 +63,7 @@ function Tamagotchi({ sdk }: { sdk: SDK<SchemaType> }) {
       const bodyElement = document.querySelector('.body') as HTMLElement;
       if (bodyElement) {
         bodyElement.classList.add(`${isDayTime ? 'day' : 'night'}`);
-        bodyElement.style.padding = '15px';
+        bodyElement.style.padding = '22px 15px';
       }
     };
     updateBackground();

@@ -64,7 +64,8 @@
 }
 
 .dex-icon,
-.bag-icon {
+.bag-icon,
+.info-icon {
   background-image: url('../../assets/img/back.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -82,6 +83,13 @@
 .bag-icon img {
   width: 25px;
   height: 25px;
+  border-radius: unset;
+  object-fit: contain;
+}
+
+.info-icon img {
+  width: 30px;
+  height: 30px;
   border-radius: unset;
   object-fit: contain;
 }

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 85vh;
   width: 100%;
   max-width: 400px;
   margin: auto;
@@ -51,13 +51,13 @@
 .stat-icon {
   width: 18px;
   height: 18px;
-  color: #e4a101;
+  color: #ECECDA;
 }
 
 .carousel {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 78%;
   overflow-x: hidden;
   margin: auto;
 }
