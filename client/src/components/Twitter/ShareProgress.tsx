@@ -1,6 +1,6 @@
 // ShareModal.tsx
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import './ShareModal.css';
+import './main.css';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -30,21 +30,21 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
   useEffect(() => {
     if (type === 'beast' && stats) {
       setTweetMsg(
-        `🎮 Jugando ByteBeasts Tamagotchi y este es el progreso de mi Beast:\n\n` +
+        `🎮 Playing ByteBeasts Tamagotchi, and here is my Beasts progress:\n\n` +
         `Level ${stats.level} 🆙\n` +
-        `Fuerza: ${stats.strength} 💪\n` +
-        `Defensa: ${stats.defense} 🛡️\n` +
-        `Velocidad: ${stats.speed} ⚡\n\n` +
-        `¡Estas estadísticas dependen totalmente de cómo lo alimento y lo cuido! 🌟\n\n` +
-        `¡Crea tu propio Beast! 🚀\n` +
-        `play.bytebeast.xyz`
+        `Strength: ${stats.strength} 💪\n` +
+        `Defense: ${stats.defense} 🛡️\n` +
+        `Speed: ${stats.speed} ⚡\n\n` +
+        `Every stat depends entirely on how I feed and care for it! 🌟\n\n` +
+        `Ready to raise your own Beast? 🚀\n` +
+        `👉 https://www.babybeasts.games`
       );
     } else if (type === 'minigame' && minigameData) {
       setTweetMsg(
         `🎮 I just played ${minigameData.name} mini-game in ByteBeasts Tamagotchi\n\n` +
         `My score: ${minigameData.score} 🏆\n\n` +
-        `Can you break it? Challenge accepted! 💪\n` +
-        `play.bytebeast.xyz`
+        `Think you can beat it? Bring it on!🔥\n` +
+        `👉 https://www.babybeasts.games`
       );
     }
   }, [type, stats, minigameData]);
@@ -61,7 +61,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Compartir en X</h2>
+          <h2>Share on X</h2>
           <button className="close-button" onClick={onClose}>×</button>
         </div>
         
@@ -81,7 +81,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             rel="noreferrer"
             className="share-button"
           >
-            Share on X
+            Share
           </a>
         </div>
       </div>
