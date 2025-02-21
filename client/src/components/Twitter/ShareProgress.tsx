@@ -1,16 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+// ShareModal.tsx
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import './ShareModal.css';
 
-import './main.css';
-
-interface ShareProgressProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface ShareModalProps {
+  isOpen: boolean;
+  onClose: () => void;
   type: 'beast' | 'minigame';
   stats?: {
     level: number;
@@ -24,9 +18,9 @@ interface ShareProgressProps {
   };
 }
 
-export const ShareProgress: React.FC<ShareProgressProps> = ({
-  open,
-  setOpen,
+export const ShareModal: React.FC<ShareModalProps> = ({
+  isOpen,
+  onClose,
   type,
   stats,
   minigameData,
@@ -53,7 +47,7 @@ export const ShareProgress: React.FC<ShareProgressProps> = ({
         `play.bytebeast.xyz`
       );
     }
-  }, [type, stats, minigameData, open]);
+  }, [type, stats, minigameData]);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTweetMsg(event.target.value);
@@ -61,39 +55,36 @@ export const ShareProgress: React.FC<ShareProgressProps> = ({
 
   const tweetText = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetMsg)}`;
 
-  const handleShare = () => {
-    // Aquí puedes agregar analytics si lo necesitas
-    console.log('Shared on X:', {
-      type,
-      ...(stats && { stats }),
-      ...(minigameData && { minigameData }),
-    });
-  };
+  if (!isOpen) return null;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[500px] w-[95%] px-1 rounded-lg">
-        <DialogHeader className="flex items-center text-2xl">
-          <DialogTitle>Compartir en X</DialogTitle>
-        </DialogHeader>
-        <textarea
-          className="bg-transparent text-white border border-white outline-none p-2 w-full min-h-[150px] rounded"
-          value={tweetMsg}
-          onChange={handleChange}
-          rows={6}
-        />
-        <div className="mt-8 flex w-full justify-center">
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Compartir en X</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        
+        <div className="modal-body">
+          <textarea
+            value={tweetMsg}
+            onChange={handleChange}
+            rows={6}
+            className="tweet-textarea"
+          />
+        </div>
+        
+        <div className="modal-footer">
           <a
-            className="text-white twitter-share-button bg-black border border-white rounded px-4 py-2 hover:bg-white hover:text-black transition-colors"
             href={tweetText}
             target="_blank"
             rel="noreferrer"
-            onClick={handleShare}
+            className="share-button"
           >
             Share on X
           </a>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
