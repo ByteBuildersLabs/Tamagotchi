@@ -18,7 +18,7 @@ interface ShareModalProps {
   };
 }
 
-export const ShareModal: React.FC<ShareModalProps> = ({
+export const ShareProgress: React.FC<ShareModalProps> = ({
   isOpen,
   onClose,
   type,
