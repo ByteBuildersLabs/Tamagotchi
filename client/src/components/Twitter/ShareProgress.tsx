@@ -6,6 +6,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import './main.css';
+
 interface ShareProgressProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
