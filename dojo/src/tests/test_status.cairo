@@ -33,7 +33,7 @@ mod tests {
         actions_system.spawn(1, 1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 20 {
             // Decrease stats
             actions_system.decrease_status();
@@ -102,7 +102,7 @@ mod tests {
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 20 {
             actions_system.decrease_status();
             counter = counter + 1;
@@ -138,7 +138,7 @@ mod tests {
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 20 {
             actions_system.decrease_status();
             counter = counter + 1;
@@ -173,7 +173,7 @@ mod tests {
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 20 {
             actions_system.decrease_status();
             counter = counter + 1;
@@ -209,7 +209,7 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // -----------------------------------------------
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 15 {
             actions_system.decrease_status();
             counter = counter + 1;
@@ -279,7 +279,7 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // Decrease stats until death
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         loop {
             let status: BeastStatus = world.read_model(1);
             if !status.is_alive {
@@ -315,7 +315,7 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // Kill beast first
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         loop {
             let status: BeastStatus = world.read_model(1);
             if !status.is_alive {

@@ -4,9 +4,9 @@ trait IActions<T> {
     // Player methods
     fn spawn_player(ref self: T);
     fn add_initial_food(ref self: T);
-    fn set_current_beast(ref self: T, beast_id: u32);
+    fn set_current_beast(ref self: T, beast_id: u16);
     // Beast Methods
-    fn spawn(ref self: T, specie: u32, beast_type: u32);
+    fn spawn(ref self: T, specie: u8, beast_type: u8);
     fn decrease_status(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -17,7 +17,7 @@ trait IActions<T> {
     fn revive(ref self: T);
     // Other methods
     fn init_tap_counter(ref self: T);
-    fn tap(ref self: T, specie: u32, beast_type: u32);
+    fn tap(ref self: T, specie: u8, beast_type: u8);
 }
 
 #[dojo::contract]
@@ -52,8 +52,8 @@ pub mod actions {
     // Storage
     #[storage]
     struct Storage {
-        beast_counter: u32,
-        tap_counter: Map<ContractAddress, u32>
+        beast_counter: u16,
+        tap_counter: Map<ContractAddress, u8>
     }
 
     // Constructor
@@ -81,7 +81,7 @@ pub mod actions {
             store.init_player_food();
         }
         
-        fn set_current_beast(ref self: ContractState, beast_id: u32) {
+        fn set_current_beast(ref self: ContractState, beast_id: u16) {
             let mut world = self.world(@"babybeasts");
             let store = StoreTrait::new(world);
 
@@ -92,7 +92,7 @@ pub mod actions {
             store.write_player(@player);
         }
 
-        fn spawn(ref self: ContractState, specie: u32, beast_type: u32) {
+        fn spawn(ref self: ContractState, specie: u8, beast_type: u8) {
             let mut world = self.world(@"babybeasts");
             let store = StoreTrait::new(world);
             
@@ -419,7 +419,7 @@ pub mod actions {
         }
 
 
-        fn tap(ref self: ContractState, specie: u32, beast_type: u32) {
+        fn tap(ref self: ContractState, specie: u8, beast_type: u8) {
             let mut world = self.world(@"babybeasts");
             let store = StoreTrait::new(world);
             

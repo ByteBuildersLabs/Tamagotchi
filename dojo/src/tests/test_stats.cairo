@@ -66,7 +66,7 @@ mod tests {
             initial_stats.level, initial_stats.experience, initial_stats.next_level_experience);
 
         // Play multiple times
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 3 {
             actions_system.play();
             counter = counter + 1;
@@ -100,7 +100,7 @@ mod tests {
             initial_stats.level, initial_stats.attack, initial_stats.defense, initial_stats.speed);
 
         // Play many times to level up
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 10 {
             actions_system.play();
             counter = counter + 1;

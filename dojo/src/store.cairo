@@ -41,7 +41,7 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn read_beast(self: Store, beast_id: u32) -> Beast {
+    fn read_beast(self: Store, beast_id: u16) -> Beast {
         let player_address = get_caller_address();
         self.world.read_model((player_address, beast_id))
     }
@@ -53,12 +53,12 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn read_beast_stats(self: Store, beast_id: u32) -> BeastStats {
+    fn read_beast_stats(self: Store, beast_id: u16) -> BeastStats {
         self.world.read_model(beast_id)
     }
 
     #[inline(always)]
-    fn read_beast_status(self: Store, beast_id: u32) -> BeastStatus {
+    fn read_beast_status(self: Store, beast_id: u16) -> BeastStatus {
         self.world.read_model(beast_id)
     }
 
@@ -328,7 +328,7 @@ impl StoreImpl of StoreTrait {
 
 
     #[inline(always)]
-    fn new_beast_stats(mut self: Store, beast_id: u32) {
+    fn new_beast_stats(mut self: Store, beast_id: u16) {
         let mut beast_stats = BeastStats {
             beast_id: beast_id,
             attack: 5,
@@ -343,7 +343,7 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn new_beast_status(mut self: Store, beast_id: u32) {
+    fn new_beast_status(mut self: Store, beast_id: u16) {
         let mut beast_status = BeastStatus {
             beast_id: beast_id,
             is_alive: true,
@@ -359,7 +359,7 @@ impl StoreImpl of StoreTrait {
     }
 
     #[inline(always)]
-    fn new_beast(mut self: Store, beast_id: u32, specie: u32, beast_type: u32) {
+    fn new_beast(mut self: Store, beast_id: u16, specie: u8, beast_type: u8) {
         let player = get_caller_address();
 
         let mut new_beast = Beast {

@@ -14,9 +14,9 @@ pub struct Beast {
     #[key]
     pub player: ContractAddress, 
     #[key]
-    pub beast_id: u32,
-    pub specie: u32,
-    pub beast_type: u32,
+    pub beast_id: u16,
+    pub specie: u8,
+    pub beast_type: u8,
     pub evolved: bool,
     pub vaulted: bool
 }
@@ -59,7 +59,7 @@ impl BeastImpl of BeastTrait {
     }
 
     #[inline(always)]
-    fn feed(ref self: Beast, food_id: u8) -> (u32, u32, u32) {
+    fn feed(ref self: Beast, food_id: u8) -> (u8, u8, u8) {
         if self.is_favorite_meal(food_id){
             // (hunger, happiness, energy)
             (constants::XL_UPDATE_POINTS, constants::XL_UPDATE_POINTS, constants::XL_UPDATE_POINTS)
@@ -83,16 +83,16 @@ mod tests {
 
         let beast = Beast {
             player: player_address,
-            beast_id: 1_u32,
-            specie: 1_u32,
-            beast_type: 1_u32,
+            beast_id: 1,
+            specie: 1,
+            beast_type: 1,
             evolved: false,
             vaulted: false,
         };
 
         assert_eq!(beast.player, player_address, "Player address should match");
-        assert_eq!(beast.beast_id, 1_u32, "Beast ID should be 1");
-        assert_eq!(beast.specie, 1_u32, "Specie should be 1");
+        assert_eq!(beast.beast_id, 1, "Beast ID should be 1");
+        assert_eq!(beast.specie, 1, "Specie should be 1");
         assert!(!beast.evolved, "Beast should not be evolved initially");
         assert!(!beast.vaulted, "Beast should not be vaulted initially");
     }
@@ -104,18 +104,18 @@ mod tests {
         
         let beast1 = Beast {
             player: player_address,
-            beast_id: 1_u32,
-            specie: 1_u32,
-            beast_type: 1_u32,
+            beast_id: 1,
+            specie: 1,
+            beast_type: 1,
             evolved: false,
             vaulted: false,
         };
 
         let beast2 = Beast {
             player: player_address,
-            beast_id: 2_u32,
-            specie: 2_u32,
-            beast_type: 2_u32,
+            beast_id: 2,
+            specie: 2,
+            beast_type: 2,
             evolved: false,
             vaulted: false,
         };
@@ -132,9 +132,9 @@ mod tests {
         
         let evolved_beast = Beast {
             player: player_address,
-            beast_id: 1_u32,
-            specie: 1_u32,
-            beast_type: 1_u32,
+            beast_id: 1,
+            specie: 1,
+            beast_type: 1,
             evolved: true,
             vaulted: false,
         };
@@ -149,9 +149,9 @@ mod tests {
         
         let vaulted_beast = Beast {
             player: player_address,
-            beast_id: 1_u32,
-            specie: 1_u32,
-            beast_type: 1_u32,
+            beast_id: 1,
+            specie: 1,
+            beast_type: 1,
             evolved: false,
             vaulted: true,
         };
@@ -166,13 +166,13 @@ mod tests {
         
         let beast = Beast {
             player: player_address,
-            beast_id: 1_u32,
-            specie: 1_u32,
-            beast_type: 1_u32,
+            beast_id: 1,
+            specie: 1,
+            beast_type: 1,
             evolved: false,
             vaulted: false,
         };
 
-        assert_eq!(beast.beast_id, 1_u32, "Beast ID should be 1");
+        assert_eq!(beast.beast_id, 1, "Beast ID should be 1");
     }
 }

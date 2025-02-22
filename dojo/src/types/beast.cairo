@@ -18,9 +18,9 @@ impl IntoBeastTypeFelt252 of core::Into<BeastType, felt252> {
     }
 }
 
-impl IntoBeastTypeU32 of core::Into<BeastType, u32> {
+impl IntoBeastTypeu8 of core::Into<BeastType, u8> {
     #[inline(always)]
-    fn into(self: BeastType) -> u32 {
+    fn into(self: BeastType) -> u8 {
         match self {
             BeastType::None => 0,
             BeastType::Light => 1,
@@ -30,10 +30,10 @@ impl IntoBeastTypeU32 of core::Into<BeastType, u32> {
     }
 }
 
-impl IntoU32BeastType of core::Into<u32, BeastType> {
+impl Intou8BeastType of core::Into<u8, BeastType> {
     #[inline]
-    fn into(self: u32) -> BeastType {
-        let beast_type: u32 = self.into();
+    fn into(self: u8) -> BeastType {
+        let beast_type: u8 = self.into();
         match beast_type {
             0 =>  BeastType::None,
             1 => BeastType::Light,

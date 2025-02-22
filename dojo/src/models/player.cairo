@@ -13,7 +13,7 @@ use babybeasts::models::beast::{Beast};
 pub struct Player {
     #[key]
     pub address: ContractAddress, 
-    pub current_beast_id: u32
+    pub current_beast_id: u16
 }
 
 // Traits Implementations
@@ -62,7 +62,7 @@ mod tests {
     fn test_player_initialization() {
         // Use contract_address_const to create a mock address
         let mock_address: ContractAddress = contract_address_const::<0x123>();
-        let initial_beast_id: u32 = 1;
+        let initial_beast_id: u16 = 1;
 
         let player = Player {
             address: mock_address,

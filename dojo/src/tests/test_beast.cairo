@@ -96,7 +96,7 @@ mod tests {
             initial_beast.beast_id, initial_beast.specie, initial_beast.evolved, initial_beast.vaulted);
 
         // Play many times to trigger evolution
-        let mut counter: u32 = 0;
+        let mut counter: u8 = 0;
         while counter < 20 {
             actions_system.play();
             counter = counter + 1;

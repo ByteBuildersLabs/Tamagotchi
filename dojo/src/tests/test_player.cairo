@@ -48,7 +48,7 @@ mod tests {
         actions_system.spawn(1, 1); // Spawn beast with specie 1
 
         // Set current beast
-        let beast_id: u32 = 1;
+        let beast_id: u16 = 1;
         actions_system.set_current_beast(beast_id);
 
         // Verify current beast was set correctly
