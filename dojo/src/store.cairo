@@ -96,7 +96,6 @@ impl StoreImpl of StoreTrait {
         let apples = Food {
             player: caller,
             id: FoodType::Apple.into(),
-            name: FoodType::Apple.into(),
             amount: constants::MAX_FOOD_AMOUNT
         };
         self.world.write_model(@apples);
@@ -108,7 +107,6 @@ impl StoreImpl of StoreTrait {
         let bananas = Food {
             player: caller,
             id: FoodType::Banana.into(),
-            name: FoodType::Banana.into(),
             amount: constants::MAX_FOOD_AMOUNT
         };
         self.world.write_model(@bananas);
@@ -120,7 +118,6 @@ impl StoreImpl of StoreTrait {
         let cherries = Food {
             player: caller,
             id: FoodType::Cherry.into(),
-            name: FoodType::Cherry.into(),
             amount: constants::MAX_FOOD_AMOUNT
         };
         self.world.write_model(@cherries);
@@ -132,7 +129,6 @@ impl StoreImpl of StoreTrait {
         let burguers = Food {
             player: caller,
             id: FoodType::Burguer.into(),
-            name: FoodType::Burguer.into(),
             amount: constants::MAX_FOOD_AMOUNT
         };
         self.world.write_model(@burguers);
@@ -144,7 +140,6 @@ impl StoreImpl of StoreTrait {
         let cake_chocolates = Food {
             player: caller,
             id: FoodType::CakeChocolate.into(),
-            name: FoodType::CakeChocolate.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@cake_chocolates);
@@ -156,7 +151,6 @@ impl StoreImpl of StoreTrait {
         let cake_strawberries = Food {
             player: caller,
             id: FoodType::CakeStrawberry.into(),
-            name: FoodType::CakeStrawberry.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@cake_strawberries);
@@ -168,7 +162,6 @@ impl StoreImpl of StoreTrait {
         let cheeses = Food {
             player: caller,
             id: FoodType::Cheese.into(),
-            name: FoodType::Cheese.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@cheeses);
@@ -180,7 +173,6 @@ impl StoreImpl of StoreTrait {
         let chickens = Food {
             player: caller,
             id: FoodType::Chicken.into(),
-            name: FoodType::Chicken.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@chickens);
@@ -192,7 +184,6 @@ impl StoreImpl of StoreTrait {
         let eggs = Food {
             player: caller,
             id: FoodType::Eggs.into(),
-            name: FoodType::Eggs.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@eggs);
@@ -204,7 +195,6 @@ impl StoreImpl of StoreTrait {
         let fish = Food {
             player: caller,
             id: FoodType::Fish.into(),
-            name: FoodType::Fish.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@fish);
@@ -216,7 +206,6 @@ impl StoreImpl of StoreTrait {
         let french_fries = Food {
             player: caller,
             id: FoodType::FrenchFries.into(),
-            name: FoodType::FrenchFries.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@french_fries);
@@ -228,7 +217,6 @@ impl StoreImpl of StoreTrait {
         let blue_berries = Food {
             player: caller,
             id: FoodType::BlueBerry.into(),
-            name: FoodType::BlueBerry.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@blue_berries);
@@ -240,7 +228,6 @@ impl StoreImpl of StoreTrait {
         let beefs = Food {
             player: caller,
             id: FoodType::Beef.into(),
-            name: FoodType::Beef.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@beefs);
@@ -252,7 +239,6 @@ impl StoreImpl of StoreTrait {
         let pizzas = Food {
             player: caller,
             id: FoodType::Pizza.into(),
-            name: FoodType::Pizza.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@pizzas);
@@ -264,7 +250,6 @@ impl StoreImpl of StoreTrait {
         let corns = Food {
             player: caller,
             id: FoodType::Corn.into(),
-            name: FoodType::Corn.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@corns);
@@ -276,7 +261,6 @@ impl StoreImpl of StoreTrait {
         let potatoes = Food {
             player: caller,
             id: FoodType::Potato.into(),
-            name: FoodType::Potato.into(),
             amount: constants::MAX_FOOD_AMOUNT,
         };
         self.world.write_model(@potatoes);

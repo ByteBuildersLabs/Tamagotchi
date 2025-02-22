@@ -45,9 +45,9 @@ mod tests {
         // debug::print_felt252(cherry.name);
 
         // Verify food types
-        assert(apple.name == 'Apple', 'wrong apple type');
-        assert(banana.name == 'Banana', 'wrong banana type');
-        assert(cherry.name == 'Cherry', 'wrong cherry type');
+        assert(apple.id == 1, 'wrong apple type');
+        assert(banana.id == 2, 'wrong banana type');
+        assert(cherry.id == 3, 'wrong cherry type');
 
         // Verify initial amounts
         assert(apple.amount == constants::MAX_FOOD_AMOUNT, 'wrong apple amount');
