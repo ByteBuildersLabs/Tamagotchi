@@ -1,6 +1,6 @@
 ![HORIZONTAL 1](https://github.com/user-attachments/assets/23cf4504-95b4-492a-ab0d-1e98ffd79154)
 
-# BabyBeast Dojo Engine
+# ByteBeast-Tamagotchi Dojo Engine
 
 ## Running Locally
 
