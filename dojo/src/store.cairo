@@ -21,13 +21,13 @@ use tamagotchi::constants;
 
 // Store struct.
 #[derive(Copy, Drop)]
-struct Store {
+pub struct Store {
     world: WorldStorage,
 }
 
 //Implementation of the `StoreTrait` trait for the `Store` struct.
 #[generate_trait]
-impl StoreImpl of StoreTrait {
+pub impl StoreImpl of StoreTrait {
     fn new(world: WorldStorage) -> Store {
         Store { world: world }
     }

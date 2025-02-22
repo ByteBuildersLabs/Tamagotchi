@@ -22,7 +22,7 @@ pub struct Beast {
 }
 
 #[generate_trait]
-impl BeastImpl of BeastTrait {
+pub impl BeastImpl of BeastTrait {
     #[inline(always)]
     fn is_favorite_meal(ref self: Beast, food_id: u8) -> bool {
         let beast_type: BeastType = self.beast_type.into();

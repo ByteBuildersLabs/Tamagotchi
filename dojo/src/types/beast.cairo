@@ -1,12 +1,14 @@
+use core::traits::Into;
+
 #[derive(Copy, Drop, Serde)]
-enum BeastType {
+pub enum BeastType {
     Light,
     Magic,
     Shadow,
     None,
 }
 
-impl IntoBeastTypeFelt252 of core::Into<BeastType, felt252> {
+pub impl IntoBeastTypeFelt252 of Into<BeastType, felt252> {
     #[inline(always)]
     fn into(self: BeastType) -> felt252 {
         match self {
@@ -18,7 +20,7 @@ impl IntoBeastTypeFelt252 of core::Into<BeastType, felt252> {
     }
 }
 
-impl IntoBeastTypeu8 of core::Into<BeastType, u8> {
+pub impl IntoBeastTypeu8 of Into<BeastType, u8> {
     #[inline(always)]
     fn into(self: BeastType) -> u8 {
         match self {
@@ -30,7 +32,7 @@ impl IntoBeastTypeu8 of core::Into<BeastType, u8> {
     }
 }
 
-impl Intou8BeastType of core::Into<u8, BeastType> {
+pub impl Intou8BeastType of Into<u8, BeastType> {
     #[inline]
     fn into(self: u8) -> BeastType {
         let beast_type: u8 = self.into();

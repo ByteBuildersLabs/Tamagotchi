@@ -1,7 +1,8 @@
 [package]
-cairo-version = "=2.8.4"
+cairo-version = "=2.9.2"
 name = "tamagotchi"
-version = "1.0.8"
+version = "0.1.0"
+edition = "2024_07"
 
 [cairo]
 sierra-replace-ids = true
@@ -12,11 +13,11 @@ spawn = "sozo execute tamagotchi-actions spawn --wait"    # scarb run spawn
 move = "sozo execute tamagotchi-actions move -c 1 --wait" # scarb run move
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }
-cartridge_vrf = { git = "https://github.com/cartridge-gg/vrf" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }
 
 [[target.starknet-contract]]
 build-external-contracts = ["dojo::world::world_contract::world"]
 
 [dev-dependencies]
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }
+cairo_test = "=2.9.2"
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }

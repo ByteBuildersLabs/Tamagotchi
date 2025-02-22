@@ -1,11 +1,5 @@
-// Starknet import
-use starknet::ContractAddress;
-
-// Model imports
-use tamagotchi::models::beast_stats::{BeastStats};
-
 // Types imports
-use tamagotchi::types::clean_status::{CleanStatus};
+use tamagotchi::types::clean_status::CleanStatus;
 
 #[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
@@ -22,9 +16,7 @@ pub struct BeastStatus {
 }
 
 #[generate_trait]
-impl BeastStatusImpl of BeastStatusTrait {
-
-    #[inline(always)]
+pub impl BeastStatusImpl of BeastStatusTrait {
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
             if hygiene>=90{
                 self.clean_status = CleanStatus::Clean.into();

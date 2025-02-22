@@ -1,11 +1,9 @@
 // Starknet import
 use starknet::ContractAddress;
+use core::num::traits::zero::Zero;
 
 // Constants imports
 use tamagotchi::constants;
-
-// Model imports
-use tamagotchi::models::beast::{Beast};
 
 // Model
 #[derive(Copy, Drop, Serde, IntrospectPacked, Debug)]
@@ -18,7 +16,7 @@ pub struct Player {
 
 // Traits Implementations
 #[generate_trait]
-impl PlayerAssert of AssertTrait {
+pub impl PlayerAssert of AssertTrait {
     #[inline(always)]
     fn assert_exists(self: Player) {
         assert(self.is_non_zero(), 'Player: Does not exist');
@@ -30,7 +28,7 @@ impl PlayerAssert of AssertTrait {
     }
 }
 
-impl ZeroablePlayerTrait of core::Zeroable<Player> {
+pub impl ZeroablePlayerTrait of Zero<Player> {
     #[inline(always)]
     fn zero() -> Player {
         Player {
@@ -40,12 +38,12 @@ impl ZeroablePlayerTrait of core::Zeroable<Player> {
     }
 
     #[inline(always)]
-    fn is_zero(self: Player) -> bool {
-        self.address == constants::ZERO_ADDRESS()
+    fn is_zero(self: @Player) -> bool {
+       *self.address == constants::ZERO_ADDRESS()
     }
 
     #[inline(always)]
-    fn is_non_zero(self: Player) -> bool {
+    fn is_non_zero(self: @Player) -> bool {
         !self.is_zero()
     }
 }
