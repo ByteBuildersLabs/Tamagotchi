@@ -1,7 +1,7 @@
 // Starknet import
 use starknet::ContractAddress;
 
-#[derive(Drop, Serde, Debug)]
+#[derive(Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct BeastStats {
     #[key]

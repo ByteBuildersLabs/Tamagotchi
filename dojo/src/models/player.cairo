@@ -8,7 +8,7 @@ use babybeasts::constants;
 use babybeasts::models::beast::{Beast};
 
 // Model
-#[derive(Copy, Drop, Serde, Debug)]
+#[derive(Copy, Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct Player {
     #[key]

@@ -8,7 +8,7 @@ use babybeasts::types::food::{FoodType};
 // Constants import
 use babybeasts::constants;
 
-#[derive(Drop, Serde, Debug)]
+#[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
 pub struct Beast {
     #[key]

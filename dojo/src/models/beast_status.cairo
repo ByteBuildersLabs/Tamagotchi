@@ -7,7 +7,7 @@ use babybeasts::models::beast_stats::{BeastStats};
 // Types imports
 use babybeasts::types::clean_status::{CleanStatus};
 
-#[derive(Drop, Serde, Debug)]
+#[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
 pub struct BeastStatus {
     #[key]
