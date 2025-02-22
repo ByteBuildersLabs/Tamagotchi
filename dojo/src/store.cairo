@@ -90,9 +90,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@new_player)
     }
 
-    fn new_apples(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_apples(mut self: Store, caller: ContractAddress) {
         let apples = Food {
             player: caller,
             id: FoodType::Apple.into(),
@@ -101,9 +99,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@apples);
     }
 
-    fn new_bananas(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_bananas(mut self: Store, caller: ContractAddress) {
         let bananas = Food {
             player: caller,
             id: FoodType::Banana.into(),
@@ -112,9 +108,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@bananas);
     }
 
-    fn new_cherries(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_cherries(mut self: Store, caller: ContractAddress) {
         let cherries = Food {
             player: caller,
             id: FoodType::Cherry.into(),
@@ -123,9 +117,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cherries);
     }
 
-    fn new_burguers(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_burguers(mut self: Store, caller: ContractAddress) {
         let burguers = Food {
             player: caller,
             id: FoodType::Burguer.into(),
@@ -134,9 +126,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@burguers);
     }
 
-    fn new_cake_chocolates(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_cake_chocolates(mut self: Store, caller: ContractAddress) {
         let cake_chocolates = Food {
             player: caller,
             id: FoodType::CakeChocolate.into(),
@@ -145,9 +135,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cake_chocolates);
     }
 
-    fn new_cake_strawberries(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_cake_strawberries(mut self: Store, caller: ContractAddress) {
         let cake_strawberries = Food {
             player: caller,
             id: FoodType::CakeStrawberry.into(),
@@ -156,9 +144,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cake_strawberries);
     }
 
-    fn new_cheeses(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_cheeses(mut self: Store, caller: ContractAddress) {
         let cheeses = Food {
             player: caller,
             id: FoodType::Cheese.into(),
@@ -167,9 +153,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cheeses);
     }
 
-    fn new_chickens(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_chickens(mut self: Store, caller: ContractAddress) {
         let chickens = Food {
             player: caller,
             id: FoodType::Chicken.into(),
@@ -178,9 +162,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@chickens);
     }
 
-    fn new_eggs(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_eggs(mut self: Store, caller: ContractAddress) {
         let eggs = Food {
             player: caller,
             id: FoodType::Eggs.into(),
@@ -189,9 +171,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@eggs);
     }
 
-    fn new_fish(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_fish(mut self: Store, caller: ContractAddress) {
         let fish = Food {
             player: caller,
             id: FoodType::Fish.into(),
@@ -200,9 +180,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@fish);
     }
 
-    fn new_french_fries(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_french_fries(mut self: Store, caller: ContractAddress) {
         let french_fries = Food {
             player: caller,
             id: FoodType::FrenchFries.into(),
@@ -211,9 +189,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@french_fries);
     }
 
-    fn new_blue_berries(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_blue_berries(mut self: Store, caller: ContractAddress) {
         let blue_berries = Food {
             player: caller,
             id: FoodType::BlueBerry.into(),
@@ -222,9 +198,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@blue_berries);
     }
 
-    fn new_beefs(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_beefs(mut self: Store, caller: ContractAddress) {
         let beefs = Food {
             player: caller,
             id: FoodType::Beef.into(),
@@ -233,9 +207,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@beefs);
     }
 
-    fn new_pizzas(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_pizzas(mut self: Store, caller: ContractAddress) {
         let pizzas = Food {
             player: caller,
             id: FoodType::Pizza.into(),
@@ -244,9 +216,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@pizzas);
     }
 
-    fn new_corns(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_corns(mut self: Store, caller: ContractAddress) {
         let corns = Food {
             player: caller,
             id: FoodType::Corn.into(),
@@ -255,9 +225,7 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@corns);
     }
 
-    fn new_potatoes(mut self: Store) {
-        let caller = get_caller_address();
-
+    fn new_potatoes(mut self: Store, caller: ContractAddress) {
         let potatoes = Food {
             player: caller,
             id: FoodType::Potato.into(),
@@ -267,22 +235,24 @@ impl StoreImpl of StoreTrait {
     }
 
     fn init_player_food(mut self: Store) {
-        self.new_apples();
-        self.new_bananas();
-        self.new_cherries();
-        self.new_burguers();
-        self.new_cake_chocolates();
-        self.new_cake_strawberries();
-        self.new_cheeses();
-        self.new_chickens();
-        self.new_eggs();
-        self.new_fish();
-        self.new_french_fries();
-        self.new_blue_berries();
-        self.new_beefs();
-        self.new_pizzas();
-        self.new_corns();
-        self.new_potatoes();
+        let caller = get_caller_address();
+
+        self.new_apples(caller);
+        self.new_bananas(caller);
+        self.new_cherries(caller);
+        self.new_burguers(caller);
+        self.new_cake_chocolates(caller);
+        self.new_cake_strawberries(caller);
+        self.new_cheeses(caller);
+        self.new_chickens(caller);
+        self.new_eggs(caller);
+        self.new_fish(caller);
+        self.new_french_fries(caller);
+        self.new_blue_berries(caller);
+        self.new_beefs(caller);
+        self.new_pizzas(caller);
+        self.new_corns(caller);
+        self.new_potatoes(caller);
     }
 
     fn new_beast_stats(mut self: Store, beast_id: u16) {
