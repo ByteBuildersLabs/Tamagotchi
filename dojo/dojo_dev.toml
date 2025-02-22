@@ -1,19 +1,18 @@
 [world]
-name = "Dojo starter"
-description = "The official Dojo Starter guide, the quickest and most streamlined way to get your Dojo Autonomous World up and running. This guide will assist you with the initial setup, from cloning the repository to deploying your world."
+name = "ByteBeasts Tamagotchi
+description = "This is the first game in the on-chain ByteBeasts universe, where players nurture and care for their BabyBeasts, guiding them through their journey to their first evolution."
 cover_uri = "file://assets/cover.png"
 icon_uri = "file://assets/icon.png"
-website = "https://github.com/dojoengine/dojo-starter"
-seed = "babybeasts"
+website = "https://github.com/ByteBuildersLabs/BabyBeastsv2"
+seed = "tamagotchi"
 
 [world.socials]
-x = "https://x.com/ohayo_dojo"
-discord = "https://discord.gg/FB2wR6uF"
-github = "https://github.com/dojoengine/dojo-starter"
-telegram = "https://t.me/dojoengine"
+x = "https://x.com/0xByteBeasts"
+github = "https://github.com/ByteBuildersLabs/BabyBeastsv2"
+telegram = "https://t.me/+-84e2pqLtqNkZDAx
 
 [namespace]
-default = "babybeasts"
+default = "tamagotchi"
 
 [env]
 rpc_url = "https://api.cartridge.gg/x/bbhackerhouse/katana"
@@ -23,4 +22,4 @@ private_key = "0x33003003001800009900180300d206308b0070db00121318d17b5e6262150b"
 # world_address = "0x06171ed98331e849d6084bf2b3e3186a7ddf35574dd68cab4691053ee8ab69d7"
 
 [writers]
-"babybeasts" = ["babybeasts-actions"]
+"tamagotchi" = ["tamagotchi-actions"]

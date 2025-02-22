@@ -2,10 +2,10 @@
 use starknet::ContractAddress;
 
 // Constants imports
-use babybeasts::constants;
+use tamagotchi::constants;
 
 // Model imports
-use babybeasts::models::beast::{Beast};
+use tamagotchi::models::beast::{Beast};
 
 // Model
 #[derive(Copy, Drop, Serde, IntrospectPacked, Debug)]
@@ -54,7 +54,7 @@ impl ZeroablePlayerTrait of core::Zeroable<Player> {
 #[cfg(test)]
 mod tests {
     use super::{Player, ZeroablePlayerTrait};
-    use babybeasts::constants;
+    use tamagotchi::constants;
     use starknet::{ContractAddress, contract_address_const};
 
     #[test]

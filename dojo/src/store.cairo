@@ -6,18 +6,18 @@ use dojo::world::WorldStorage;
 use dojo::model::ModelStorage;
 
 // Models imports
-use babybeasts::models::beast::{Beast};
-use babybeasts::models::beast_stats::{BeastStats};
-use babybeasts::models::beast_status::{BeastStatus};
-use babybeasts::models::player::{Player};
-use babybeasts::models::food::{Food};
+use tamagotchi::models::beast::{Beast};
+use tamagotchi::models::beast_stats::{BeastStats};
+use tamagotchi::models::beast_status::{BeastStatus};
+use tamagotchi::models::player::{Player};
+use tamagotchi::models::food::{Food};
 
 // types import
-use babybeasts::types::food::{FoodType};
-use babybeasts::types::clean_status::{CleanStatus};
+use tamagotchi::types::food::{FoodType};
+use tamagotchi::types::clean_status::{CleanStatus};
 
 // Constants import
-use babybeasts::constants;
+use tamagotchi::constants;
 
 // Store struct.
 #[derive(Copy, Drop)]

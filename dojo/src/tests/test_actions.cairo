@@ -9,13 +9,13 @@ mod tests {
     };
 
     // Game imports
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use babybeasts::models::beast::{Beast};
-    use babybeasts::models::beast_stats::{BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus};
-    use babybeasts::models::player::{Player};
-    use babybeasts::models::food::{Food};
-    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
+    use tamagotchi::models::beast::{Beast};
+    use tamagotchi::models::beast_stats::{BeastStats};
+    use tamagotchi::models::beast_status::{BeastStatus};
+    use tamagotchi::models::player::{Player};
+    use tamagotchi::models::food::{Food};
+    use tamagotchi::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
 
     // This is a quick test to run the actions
     #[test]

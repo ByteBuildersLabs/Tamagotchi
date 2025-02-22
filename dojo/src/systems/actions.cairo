@@ -30,20 +30,20 @@ pub mod actions {
     use super::{IActions};
     
     // Model imports
-    use babybeasts::models::beast::{Beast, BeastTrait};
-    use babybeasts::models::beast_stats::{BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus, BeastStatusTrait};
-    use babybeasts::models::player::{Player, PlayerAssert};
-    use babybeasts::models::food::{Food};
+    use tamagotchi::models::beast::{Beast, BeastTrait};
+    use tamagotchi::models::beast_stats::{BeastStats};
+    use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
+    use tamagotchi::models::player::{Player, PlayerAssert};
+    use tamagotchi::models::food::{Food};
     
     // types import
-    use babybeasts::types::food::{FoodType};
+    use tamagotchi::types::food::{FoodType};
 
     // Constants import
-    use babybeasts::constants;
+    use tamagotchi::constants;
 
     // Store import
-    use babybeasts::store::{Store, StoreTrait};
+    use tamagotchi::store::{Store, StoreTrait};
 
     // Dojo Imports
     use dojo::model::{ModelStorage, ModelValueStorage};
@@ -65,7 +65,7 @@ pub mod actions {
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
         fn spawn_player(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             store.new_player();
@@ -75,14 +75,14 @@ pub mod actions {
         }
 
         fn add_initial_food(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             store.init_player_food();
         }
         
         fn set_current_beast(ref self: ContractState, beast_id: u16) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             let mut player: Player = store.read_player();
@@ -93,7 +93,7 @@ pub mod actions {
         }
 
         fn spawn(ref self: ContractState, specie: u8, beast_type: u8) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let current_beast_id = self.beast_counter.read();
@@ -106,7 +106,7 @@ pub mod actions {
         }
 
         fn decrease_status(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -166,7 +166,7 @@ pub mod actions {
         }
 
         fn feed(ref self: ContractState, food_id: u8) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -204,7 +204,7 @@ pub mod actions {
         }
 
         fn sleep(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -229,7 +229,7 @@ pub mod actions {
         }
 
         fn awake(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -246,7 +246,7 @@ pub mod actions {
         }
 
         fn play(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -295,7 +295,7 @@ pub mod actions {
         }
 
         fn pet(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -320,7 +320,7 @@ pub mod actions {
         }
 
         fn clean(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -363,7 +363,7 @@ pub mod actions {
         }
 
         fn revive(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -409,7 +409,7 @@ pub mod actions {
         }
 
         fn init_tap_counter(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -420,7 +420,7 @@ pub mod actions {
 
 
         fn tap(ref self: ContractState, specie: u8, beast_type: u8) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();

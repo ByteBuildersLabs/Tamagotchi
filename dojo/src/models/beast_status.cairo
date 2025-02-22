@@ -2,10 +2,10 @@
 use starknet::ContractAddress;
 
 // Model imports
-use babybeasts::models::beast_stats::{BeastStats};
+use tamagotchi::models::beast_stats::{BeastStats};
 
 // Types imports
-use babybeasts::types::clean_status::{CleanStatus};
+use tamagotchi::types::clean_status::{CleanStatus};
 
 #[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
@@ -51,7 +51,7 @@ impl BeastStatusImpl of BeastStatusTrait {
 #[cfg(test)]
 mod tests {
     use super::BeastStatus;
-    use babybeasts::types::clean_status::{CleanStatus};
+    use tamagotchi::types::clean_status::{CleanStatus};
 
     #[test]
     #[available_gas(300000)]

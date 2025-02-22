@@ -1,6 +1,6 @@
 [package]
 cairo-version = "=2.8.4"
-name = "babybeasts"
+name = "tamagotchi"
 version = "1.0.8"
 
 [cairo]
@@ -8,8 +8,8 @@ sierra-replace-ids = true
 
 [scripts]
 migrate = "sozo build && sozo migrate"                      # scarb run migrate
-spawn = "sozo execute babybeasts-actions spawn --wait"    # scarb run spawn
-move = "sozo execute babybeasts-actions move -c 1 --wait" # scarb run move
+spawn = "sozo execute tamagotchi-actions spawn --wait"    # scarb run spawn
+move = "sozo execute tamagotchi-actions move -c 1 --wait" # scarb run move
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.8" }

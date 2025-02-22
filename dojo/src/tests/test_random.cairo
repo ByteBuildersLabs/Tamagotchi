@@ -1,5 +1,5 @@
 mod test_random {
-    use babybeasts::utils::random::{RandomImpl, Random};
+    use tamagotchi::utils::random::{RandomImpl, Random};
     use starknet::get_caller_address;
 
     fn VRF_ADDRESS() -> starknet::ContractAddress {

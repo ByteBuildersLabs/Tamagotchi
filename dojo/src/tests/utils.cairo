@@ -12,13 +12,13 @@ mod utils {
     };
 
     // Game imports
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use babybeasts::models::beast::{Beast, m_Beast};
-    use babybeasts::models::beast_stats::{BeastStats, m_BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus, m_BeastStatus};
-    use babybeasts::models::player::{Player, m_Player};
-    use babybeasts::models::food::{Food, m_Food};
-    use babybeasts::constants;
+    use tamagotchi::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
+    use tamagotchi::models::beast::{Beast, m_Beast};
+    use tamagotchi::models::beast_stats::{BeastStats, m_BeastStats};
+    use tamagotchi::models::beast_status::{BeastStatus, m_BeastStatus};
+    use tamagotchi::models::player::{Player, m_Player};
+    use tamagotchi::models::food::{Food, m_Food};
+    use tamagotchi::constants;
 
     // Constants
     fn PLAYER() -> ContractAddress {
@@ -27,7 +27,7 @@ mod utils {
 
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
-            namespace: "babybeasts",
+            namespace: "tamagotchi",
             resources: [
                 TestResource::Model(m_Beast::TEST_CLASS_HASH),
                 TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
@@ -43,8 +43,8 @@ mod utils {
 
     fn contract_defs() -> Span<ContractDef> {
         [
-            ContractDefTrait::new(@"babybeasts", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"babybeasts")].span())
+            ContractDefTrait::new(@"tamagotchi", @"actions")
+                .with_writer_of([dojo::utils::bytearray_hash(@"tamagotchi")].span())
         ]
             .span()
     }

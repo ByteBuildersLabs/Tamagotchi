@@ -2,11 +2,11 @@
 use starknet::ContractAddress;
 
 // Types imports
-use babybeasts::types::beast::{BeastType};
-use babybeasts::types::food::{FoodType};
+use tamagotchi::types::beast::{BeastType};
+use tamagotchi::types::food::{FoodType};
 
 // Constants import
-use babybeasts::constants;
+use tamagotchi::constants;
 
 #[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]

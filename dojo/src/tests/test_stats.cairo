@@ -9,17 +9,17 @@ mod tests {
     };
 
     // Import the interface and implementations
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
+    use tamagotchi::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
 
     // Import models and types
-    use babybeasts::models::food::{Food, m_Food};
-    use babybeasts::models::beast::{Beast, m_Beast};
-    use babybeasts::models::beast_status::{BeastStatus, m_BeastStatus};
-    use babybeasts::models::beast_stats::{BeastStats, m_BeastStats};
-    use babybeasts::models::player::{Player, m_Player};
-    use babybeasts::types::food::{FoodType};
-    use babybeasts::constants;
-    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::models::food::{Food, m_Food};
+    use tamagotchi::models::beast::{Beast, m_Beast};
+    use tamagotchi::models::beast_status::{BeastStatus, m_BeastStatus};
+    use tamagotchi::models::beast_stats::{BeastStats, m_BeastStats};
+    use tamagotchi::models::player::{Player, m_Player};
+    use tamagotchi::types::food::{FoodType};
+    use tamagotchi::constants;
+    use tamagotchi::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
 
     #[test]
     fn test_initial_beast_stats() {
