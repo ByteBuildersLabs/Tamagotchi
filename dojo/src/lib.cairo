@@ -17,6 +17,7 @@ pub mod types {
     pub mod food;
     pub mod beast;
     pub mod clean_status;
+    pub mod cold_status;
 }
 
 // pub mod utils {
