@@ -28,42 +28,35 @@ struct Store {
 //Implementation of the `StoreTrait` trait for the `Store` struct.
 #[generate_trait]
 impl StoreImpl of StoreTrait {
-    #[inline(always)]
     fn new(world: WorldStorage) -> Store {
         Store { world: world }
     }
 
     // --------- Getters ---------
-    #[inline(always)]
     fn read_player(self: Store) -> Player {
         let player_address = get_caller_address();
         self.world.read_model(player_address)
     }
 
-    #[inline(always)]
     fn read_beast(self: Store, beast_id: u16) -> Beast {
         let player_address = get_caller_address();
         self.world.read_model((player_address, beast_id))
     }
 
-    #[inline(always)]
     fn read_food(self: Store, food_id: u8) -> Food {
         let player_address = get_caller_address();
         self.world.read_model((player_address, food_id))
     }
 
-    #[inline(always)]
     fn read_beast_stats(self: Store, beast_id: u16) -> BeastStats {
         self.world.read_model(beast_id)
     }
 
-    #[inline(always)]
     fn read_beast_status(self: Store, beast_id: u16) -> BeastStatus {
         self.world.read_model(beast_id)
     }
 
     // --------- Setters ---------
-    #[inline(always)]
     fn write_player(mut self: Store, mut player: @Player) {
         self.world.write_model(player)
     }
@@ -86,7 +79,6 @@ impl StoreImpl of StoreTrait {
 
     
     // --------- New entities ---------
-    #[inline(always)]
     fn new_player(mut self: Store) {
         let caller = get_caller_address();
 
@@ -98,7 +90,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@new_player)
     }
 
-    #[inline(always)]
     fn new_apples(mut self: Store) {
         let caller = get_caller_address();
 
@@ -111,7 +102,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@apples);
     }
 
-    #[inline(always)]
     fn new_bananas(mut self: Store) {
         let caller = get_caller_address();
 
@@ -124,7 +114,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@bananas);
     }
 
-    #[inline(always)]
     fn new_cherries(mut self: Store) {
         let caller = get_caller_address();
 
@@ -137,7 +126,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cherries);
     }
 
-    #[inline(always)]
     fn new_burguers(mut self: Store) {
         let caller = get_caller_address();
 
@@ -150,7 +138,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@burguers);
     }
 
-    #[inline(always)]
     fn new_cake_chocolates(mut self: Store) {
         let caller = get_caller_address();
 
@@ -163,7 +150,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cake_chocolates);
     }
 
-    #[inline(always)]
     fn new_cake_strawberries(mut self: Store) {
         let caller = get_caller_address();
 
@@ -176,7 +162,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cake_strawberries);
     }
 
-    #[inline(always)]
     fn new_cheeses(mut self: Store) {
         let caller = get_caller_address();
 
@@ -189,7 +174,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@cheeses);
     }
 
-    #[inline(always)]
     fn new_chickens(mut self: Store) {
         let caller = get_caller_address();
 
@@ -202,7 +186,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@chickens);
     }
 
-    #[inline(always)]
     fn new_eggs(mut self: Store) {
         let caller = get_caller_address();
 
@@ -215,7 +198,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@eggs);
     }
 
-    #[inline(always)]
     fn new_fish(mut self: Store) {
         let caller = get_caller_address();
 
@@ -228,7 +210,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@fish);
     }
 
-    #[inline(always)]
     fn new_french_fries(mut self: Store) {
         let caller = get_caller_address();
 
@@ -241,7 +222,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@french_fries);
     }
 
-    #[inline(always)]
     fn new_blue_berries(mut self: Store) {
         let caller = get_caller_address();
 
@@ -254,7 +234,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@blue_berries);
     }
 
-    #[inline(always)]
     fn new_beefs(mut self: Store) {
         let caller = get_caller_address();
 
@@ -267,7 +246,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@beefs);
     }
 
-    #[inline(always)]
     fn new_pizzas(mut self: Store) {
         let caller = get_caller_address();
 
@@ -280,7 +258,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@pizzas);
     }
 
-    #[inline(always)]
     fn new_corns(mut self: Store) {
         let caller = get_caller_address();
 
@@ -293,7 +270,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@corns);
     }
 
-    #[inline(always)]
     fn new_potatoes(mut self: Store) {
         let caller = get_caller_address();
 
@@ -306,7 +282,6 @@ impl StoreImpl of StoreTrait {
         self.world.write_model(@potatoes);
     }
 
-    #[inline(always)]
     fn init_player_food(mut self: Store) {
         self.new_apples();
         self.new_bananas();
@@ -326,8 +301,6 @@ impl StoreImpl of StoreTrait {
         self.new_potatoes();
     }
 
-
-    #[inline(always)]
     fn new_beast_stats(mut self: Store, beast_id: u16) {
         let mut beast_stats = BeastStats {
             beast_id: beast_id,
@@ -341,8 +314,7 @@ impl StoreImpl of StoreTrait {
 
         self.world.write_model(@beast_stats);
     }
-
-    #[inline(always)]
+    
     fn new_beast_status(mut self: Store, beast_id: u16) {
         let mut beast_status = BeastStatus {
             beast_id: beast_id,
@@ -357,8 +329,7 @@ impl StoreImpl of StoreTrait {
 
         self.world.write_model(@beast_status);
     }
-
-    #[inline(always)]
+    
     fn new_beast(mut self: Store, beast_id: u16, specie: u8, beast_type: u8) {
         let player = get_caller_address();
 
@@ -373,6 +344,5 @@ impl StoreImpl of StoreTrait {
 
         self.world.write_model(@new_beast);
     }
-
     // Delete
 }
