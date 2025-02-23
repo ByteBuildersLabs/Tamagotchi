@@ -55,7 +55,7 @@ export const TextToSpeech = ({ beastName, text }: TextToSpeechProps) => {
       onClick={() => isPlaying ? handleStop() : handlePlay()}
       title={`Listen to ${beastName}'s description`}
     >
-      <div>
+      <div className="audio-button_icon">
         <img src={textToSpeechIcon} alt="text to speech" />
       </div>
     </button>

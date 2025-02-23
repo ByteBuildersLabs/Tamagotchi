@@ -79,11 +79,11 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                 <div className="beast-header-carrousel">
                   <h2 className="beast-name-carrousel">{beast.name}</h2>
                   <h3 className="beast-type-badge-carrousel">{beast.BeastsType}</h3>
-                </div>
-                <TextToSpeech 
+                  <TextToSpeech 
                   beastName={beast.name}
                   text={beast.Bio ? beast.Bio.join('. ') : beast.description}
                 />
+                </div>
                 {onClose && (
                   <button
                     className="back-button-carrousel"
