@@ -16,9 +16,7 @@ pub struct Beast {
     #[key]
     pub beast_id: u16,
     pub specie: u8,
-    pub beast_type: u8,
-    pub evolved: bool,
-    pub vaulted: bool
+    pub beast_type: u8
 }
 
 #[generate_trait]
@@ -86,15 +84,11 @@ mod tests {
             beast_id: 1,
             specie: 1,
             beast_type: 1,
-            evolved: false,
-            vaulted: false,
         };
 
         assert_eq!(beast.player, player_address, "Player address should match");
         assert_eq!(beast.beast_id, 1, "Beast ID should be 1");
         assert_eq!(beast.specie, 1, "Specie should be 1");
-        assert!(!beast.evolved, "Beast should not be evolved initially");
-        assert!(!beast.vaulted, "Beast should not be vaulted initially");
     }
 
     #[test]
@@ -107,8 +101,6 @@ mod tests {
             beast_id: 1,
             specie: 1,
             beast_type: 1,
-            evolved: false,
-            vaulted: false,
         };
 
         let beast2 = Beast {
@@ -116,47 +108,11 @@ mod tests {
             beast_id: 2,
             specie: 2,
             beast_type: 2,
-            evolved: false,
-            vaulted: false,
         };
 
         assert_eq!(beast1.player, beast2.player, "Beasts should belong to same player");
         assert!(beast1.beast_id != beast2.beast_id, "Beasts should have different IDs");
         assert!(beast1.specie != beast2.specie, "Beasts should be different species");
-    }
-
-    #[test]
-    #[available_gas(300000)]
-    fn test_evolved_beast() {
-        let player_address = contract_address_const::<0x123>();
-        
-        let evolved_beast = Beast {
-            player: player_address,
-            beast_id: 1,
-            specie: 1,
-            beast_type: 1,
-            evolved: true,
-            vaulted: false,
-        };
-
-        assert!(evolved_beast.evolved, "Beast should be evolved");
-    }
-
-    #[test]
-    #[available_gas(300000)]
-    fn test_vaulted_beast() {
-        let player_address = contract_address_const::<0x123>();
-        
-        let vaulted_beast = Beast {
-            player: player_address,
-            beast_id: 1,
-            specie: 1,
-            beast_type: 1,
-            evolved: false,
-            vaulted: true,
-        };
-
-        assert!(vaulted_beast.vaulted, "Beast should be vaulted");
     }
 
     #[test]
@@ -169,8 +125,6 @@ mod tests {
             beast_id: 1,
             specie: 1,
             beast_type: 1,
-            evolved: false,
-            vaulted: false,
         };
 
         assert_eq!(beast.beast_id, 1, "Beast ID should be 1");

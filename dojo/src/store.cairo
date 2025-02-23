@@ -271,8 +271,6 @@ pub impl StoreImpl of StoreTrait {
             beast_id: beast_id,
             specie: specie,
             beast_type: beast_type,
-            evolved: false,
-            vaulted: false
         };
 
         self.world.write_model(@new_beast);
