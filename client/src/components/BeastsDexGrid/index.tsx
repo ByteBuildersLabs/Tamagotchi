@@ -64,7 +64,7 @@ const BeastsDexGrid: React.FC = () => {
       <div className="dex-container-syles">
         {selectedIndex === null ? (
           <>
-            <div className='d-flex justify-content-between align-items-center'>
+            <div className='dex-header'>
               <p className={'title'}>
                 Beast DEX
                 <span className='d-block'>Knowledge source</span>

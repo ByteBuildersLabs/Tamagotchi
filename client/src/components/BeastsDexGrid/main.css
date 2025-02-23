@@ -3,15 +3,20 @@
 .dex-container-syles {
   width: 100%;
   max-width: 400px;
-  height: 85vh;
+  min-height: 85vh;
   margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   overflow: hidden;
   position: relative;
-  transform: translateY(30px);
   animation: fade-in-up 1s ease-out forwards;
+}
+
+.dex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .grid-title {
@@ -24,6 +29,9 @@
 }
 
 .scrollable-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(236, 236, 218, 0.3) transparent;
@@ -47,6 +55,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 10px;
 }
 
 .grid-row {
@@ -125,4 +134,9 @@
   font-family: 'Montserrat', sans-serif;
   display: inline-block;
   white-space: nowrap;
+}
+
+.initial-info{
+  margin-top: auto;
+  padding: 20px;
 }
