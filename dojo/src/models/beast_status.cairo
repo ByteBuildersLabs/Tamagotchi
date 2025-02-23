@@ -85,7 +85,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                 } else {
                     0
                 };
-
+                
                 self.update_clean_status(self.hygiene);
 
                 // Check if beast dies

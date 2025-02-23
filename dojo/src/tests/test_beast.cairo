@@ -7,7 +7,7 @@ mod tests {
 
     // Import models and types
     use tamagotchi::models::beast::{Beast};
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
 
     #[test]
     fn test_spawn_beast() {
@@ -31,6 +31,34 @@ mod tests {
         // Verify initial beast state
         assert(beast.beast_id == 1, 'wrong beast id');
         assert(beast.specie == 1, 'wrong specie');
+    }
+
+    #[test]
+    fn test_beast_age() {
+        // Initialize test environment
+        let (actions_system, _) = actions_system_world();
+
+        cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
+
+        actions_system.spawn_player();
+        actions_system.spawn_beast(1, 1);
+        actions_system.set_current_beast(1);
+
+        // Get beast age
+        cheat_block_timestamp(7172000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 1, 'wrong beast age');
+
+        // Get beast age
+        cheat_block_timestamp(7173000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 2, 'wrong beast age');
+
+        // Get beast age
+        cheat_block_timestamp(7260000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 3, 'wrong beast age');
     }
 
     #[test]

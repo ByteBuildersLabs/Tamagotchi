@@ -23,6 +23,14 @@ pub struct Beast {
 
 #[generate_trait]
 pub impl BeastImpl of BeastTrait {
+    fn calculate_age(ref self: Beast, current_timestamp: u64){
+        let total_seconds: u64 =  current_timestamp - self.birth_date;
+
+        let total_days: u64 = total_seconds / 86400; // 86400: total seconds in a day
+
+        self.age = total_days.try_into().unwrap();
+    }
+
     fn is_favorite_meal(ref self: Beast, food_id: u8) -> bool {
         let beast_type: BeastType = self.beast_type.into();
         match beast_type {
