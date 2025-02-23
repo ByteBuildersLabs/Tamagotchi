@@ -1,4 +1,3 @@
-// src/components/TextToSpeech/TextToSpeech.tsx
 import { useState } from 'react';
 import { generateSpeech } from '../../services/text-to-speech';
 import { findMatchingVoice } from '../../utils/voiceUtils';
