@@ -13,6 +13,7 @@ pub struct BeastStatus {
     pub happiness: u8,
     pub hygiene: u8,
     pub clean_status: felt252,
+    pub last_timestamp: u64,
 }
 
 #[generate_trait]
@@ -38,6 +39,72 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             }
     }
 
+    fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
+        let total_seconds: u64 =  current_timestamp - self.last_timestamp;
+        let total_points: u64 = total_seconds / 600; // 600: total seconds in 10 minutes   
+
+        if total_points < 100 {
+            let points_to_drecrease: u8 = total_points.try_into().unwrap();
+
+            let multiplied_hunger_to_decrease = points_to_drecrease * 2;
+            let multiplied_energy_to_decrease = points_to_drecrease * 2;
+
+            if self.is_alive == true {
+                // Decrease energy based on conditions
+                if self.happiness == 0 || self.hygiene == 0 {
+                    self.energy = if self.energy >= multiplied_energy_to_decrease {
+                        self.energy - multiplied_energy_to_decrease
+                    } else {
+                        0
+                    };
+                } else {
+                    self.energy = if self.energy >= points_to_drecrease {
+                        self.energy - points_to_drecrease
+                    } else {
+                        0
+                    };
+                }
+
+                // Decrease hunger safely
+                self.hunger = if self.hunger >= multiplied_hunger_to_decrease {
+                    self.hunger - multiplied_hunger_to_decrease
+                } else {
+                    0
+                };
+
+                // Decrease happiness safely 
+                self.happiness = if self.happiness >= points_to_drecrease {
+                    self.happiness - points_to_drecrease
+                } else {
+                    0
+                };
+
+                // Decrease hygiene safely
+                self.hygiene = if self.hygiene >= points_to_drecrease {
+                    self.hygiene - points_to_drecrease
+                } else {
+                    0
+                };
+
+                self.update_clean_status(self.hygiene);
+
+                // Check if beast dies
+                if self.energy == 0 || self.hunger == 0 {
+                    self.is_alive = false;
+                }
+            }
+        }
+        else{
+            self.hygiene = 0;
+            self.happiness = 0;
+            self.energy = 0;
+            self.hunger = 0;
+            self.is_alive = false;
+        }
+        // updae timestamp
+        self.last_timestamp = current_timestamp;
+    }
+
 }
 
 #[cfg(test)]
@@ -57,6 +124,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         assert_eq!(beast_status.beast_id, 1, "Beast ID should be 1");
@@ -81,6 +149,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         assert!(max_stats_beast.hunger <= 100, "Hunger should not exceed 100");
@@ -102,6 +171,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         let beast2 = BeastStatus {
@@ -113,6 +183,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         assert!(
@@ -133,6 +204,7 @@ mod tests {
             happiness: 0,
             hygiene: 0,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         assert!(!deceased_beast.is_alive, "Beast should be deceased");
@@ -153,6 +225,7 @@ mod tests {
             happiness: 1,
             hygiene: 1,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 1,
         };
 
         assert!(low_stats_beast.hunger >= 0, "Hunger should never be negative");
@@ -178,6 +251,7 @@ mod tests {
             happiness: 0,
             hygiene: 0,
             clean_status: CleanStatus::Filthy.into(),
+            last_timestamp: 1,
         };
 
         assert_eq!(zero_stats_beast.hunger, 0, "Minimum hunger should be 0");

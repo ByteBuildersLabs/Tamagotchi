@@ -23,7 +23,7 @@ import Corn from '../../../assets/img/food/vegetable_corn.png';
 import Potato from '../../../assets/img/food/vegetable_potato.png';
 
 import beastsDex from '../../../data/beastDex.tsx';
-import { useFood } from '../../../hooks/useFood.tsx';
+// import { useFood } from '../../../hooks/useFood.tsx';
 
 const initialFoodItems = [
   { name: 'Apple', img: Apple, count: 5, id: 1 },
@@ -51,7 +51,6 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   client: any,
   showAnimation: (gifPath: string) => void,
 }) => {
-  const { food } = useFood();
 
   const [foodItems, setFoodItems] = useState(initialFoodItems);
 

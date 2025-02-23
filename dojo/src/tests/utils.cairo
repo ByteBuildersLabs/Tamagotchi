@@ -1,6 +1,6 @@
 pub mod utils {
     // Starknet imports
-    use starknet::testing::{set_contract_address, set_account_contract_address};
+    use starknet::testing::{set_contract_address, set_account_contract_address, set_block_timestamp};
     use starknet::{ContractAddress};
     
     // Dojo imports
@@ -69,6 +69,10 @@ pub mod utils {
     pub fn cheat_caller_address(address: ContractAddress) {
         set_contract_address(address);
         set_account_contract_address(address);
+    }
+
+    pub fn cheat_block_timestamp(timestamp: u64) {
+        set_block_timestamp(timestamp);
     }
 
 }

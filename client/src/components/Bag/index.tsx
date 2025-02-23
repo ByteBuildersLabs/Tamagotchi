@@ -37,14 +37,14 @@ function Bag() {
     <div className="beast-slide">
       <div className="beast">
         <div className="beast-pic d-flex align-items-end">
-          <img src={beastsDex[beast?.specie - 1].idlePicture} alt="beast" />
+          <img src={beastsDex[beast?.specie - 1]?.idlePicture} alt="beast" />
         </div>
         <div className="initial-info">
           <h4>
-            {beastsDex[beast?.specie - 1].name}
+            {beastsDex[beast?.specie - 1]?.name}
           </h4>
           <p>
-            Your are close to evolve {beastsDex[beast?.specie - 1].name}, keep playing to reach the next level
+            Your are close to evolve {beastsDex[beast?.specie - 1]?.name}, keep playing to reach the next level
           </p>
         </div>
         <Link

@@ -1,4 +1,4 @@
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+// import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { v4 as uuidv4 } from "uuid";
 import { useAccount } from "@starknet-react/core";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -13,9 +13,9 @@ export const useSystemCalls = () => {
      * Generates a unique entity ID based on the current account address.
      * @returns {string} The generated entity ID
      */
-    const generateEntityId = () => {
-        return getEntityIdFromKeys([BigInt(account!.address)]);
-    };
+    // const generateEntityId = () => {
+    //     return getEntityIdFromKeys([BigInt(account!.address)]);
+    // };
 
     /**
      * Spawns a new entity with initial moves and handles optimistic updates.

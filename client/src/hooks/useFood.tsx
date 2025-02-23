@@ -10,7 +10,7 @@ export const useFood = () => {
   const { useDojoStore, sdk } = useDojoSDK();
   const { account } = useAccount();
   const state = useDojoStore((state) => state);
-  const entities = useDojoStore((state) => state.entities);
+  // const entities = useDojoStore((state) => state.entities);
 
   const entityId = useMemo(() => {
     if (account) {
