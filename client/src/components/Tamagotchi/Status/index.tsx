@@ -12,7 +12,7 @@ const statusItems = [
   { label: "Hygiene", value: (beastStatus: BeastStatus) => Math.round(beastStatus.hygiene), pic: Hygienne }
 ];
 
-function Status({ beastStatus }: { beastStatus: BeastStatus }) {
+function Status({ beastStatus }: { beastStatus: any }) {
 
   if(beastStatus) {
     return (

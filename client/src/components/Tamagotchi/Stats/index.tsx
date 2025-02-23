@@ -12,7 +12,7 @@ const statsItems = [
   { label: "Experience", value: (beastsStats: BeastStats) => beastsStats.experience, pic: Experience }
 ];
 
-function Stats({ beastStats }: { beastStats: BeastStats }) {
+function Stats({ beastStats }: { beastStats: any }) {
 
   if (beastStats) {
     return (
