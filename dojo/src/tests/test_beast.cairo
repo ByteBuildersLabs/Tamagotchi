@@ -1,25 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use starknet::{ContractAddress, get_caller_address};
-    use dojo_cairo_test::WorldStorageTestTrait;
-    use dojo::model::{ModelStorage, ModelStorageTest};
-    use dojo::world::WorldStorageTrait;
-    use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
-    };
+    use dojo::model::{ModelStorage};
 
     // Import the interface and implementations
-    use tamagotchi::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
+    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
 
     // Import models and types
-    use tamagotchi::models::food::{Food, m_Food};
-    use tamagotchi::models::beast::{Beast, m_Beast};
-    use tamagotchi::models::beast_status::{BeastStatus, m_BeastStatus};
-    use tamagotchi::models::beast_stats::{BeastStats, m_BeastStats};
-    use tamagotchi::models::player::{Player, m_Player};
-    use tamagotchi::types::food::{FoodType};
-    use tamagotchi::constants;
-    use tamagotchi::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::models::beast::{Beast};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
 
     #[test]
     fn test_spawn_beast() {

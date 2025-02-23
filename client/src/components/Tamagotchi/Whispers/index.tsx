@@ -6,7 +6,7 @@ import beastsDex from "../../../data/beastDex";
 import { useBeastChat } from "../../../hooks/useBeastChat";
 import './main.css';
 
-const Whispers = ({ beast, expanded, beastStatus }: { beast: Beast, beastStatus: BeastStatus, expanded: boolean }) => {
+const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: any, expanded: boolean }) => {
   const { messages, isLoading, error, sendMessage, sendSystemPrompt } = useBeastChat({ beast });
   
   const [whispers, setWhispers] = useState<Message[]>([]);

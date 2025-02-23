@@ -1,23 +1,12 @@
 #[cfg(test)]
 mod tests {
-    // Starknet import
-    use starknet::get_caller_address;
-
     // Dojo imports
-    use dojo_cairo_test::WorldStorageTestTrait;
-    use dojo::model::{ModelStorage, ModelStorageTest};
-    use dojo::world::WorldStorageTrait;
-    use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
-    };
+    use dojo::model::{ModelStorage};
 
     // Game imports
-    use tamagotchi::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use tamagotchi::models::beast::{Beast};
-    use tamagotchi::models::beast_stats::{BeastStats};
-    use tamagotchi::models::beast_status::{BeastStatus};
+    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
     use tamagotchi::models::player::{Player};
-    use tamagotchi::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
 
     #[test]
     #[available_gas(40000000)]

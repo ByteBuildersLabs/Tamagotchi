@@ -1,32 +1,32 @@
-mod constants;
-mod store;
+pub mod constants;
+pub mod store;
 
-mod systems {
-    mod actions;
+pub mod systems {
+    pub mod actions;
 }
 
-mod models {
-    mod beast;
-    mod beast_stats;
-    mod beast_status;
-    mod player;
-    mod food;
+pub mod models {
+    pub mod beast;
+    pub mod beast_stats;
+    pub mod beast_status;
+    pub mod player;
+    pub mod food;
 }
 
-mod types {
-    mod food;
-    mod beast;
-    mod clean_status;
+pub mod types {
+    pub mod food;
+    pub mod beast;
+    pub mod clean_status;
 }
 
-mod utils {
-    mod random;
-}
+// pub mod utils {
+//     mod random;
+// }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     mod utils;
-    mod test_random;
+    // mod test_random;
     mod test_actions;
     mod test_player;
     mod test_food;

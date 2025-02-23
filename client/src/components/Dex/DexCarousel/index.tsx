@@ -23,7 +23,7 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
   useEffect(() => {
 
     const loadBeastImages = async () => {
-      const loadedImages = beastsDex.map((beast) => beast.idlePicture);
+      const loadedImages = beastsDex.map((beast) => beast?.idlePicture);
       setBeastImages(loadedImages);
       // Update body element styling after images are loaded
       const bodyElement = document.querySelector('.body') as HTMLElement;

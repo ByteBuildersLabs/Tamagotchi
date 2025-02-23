@@ -1,6 +1,6 @@
 // Interface definition
 #[starknet::interface]
-trait IActions<T> {
+pub trait IActions<T> {
     // Player methods
     fn spawn_player(ref self: T);
     fn add_initial_food(ref self: T);
@@ -23,30 +23,30 @@ trait IActions<T> {
 #[dojo::contract]
 pub mod actions {
     // Starknet imports
-    use starknet::{ContractAddress, get_caller_address};
-    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::{ContractAddress};
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerWriteAccess, StoragePointerReadAccess};
     
     // Local import
     use super::{IActions};
     
     // Model imports
+    #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
-    use tamagotchi::models::beast_stats::{BeastStats};
-    use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
+    use tamagotchi::models::beast_status::{BeastStatusTrait};
     use tamagotchi::models::player::{Player, PlayerAssert};
     use tamagotchi::models::food::{Food};
-    
-    // types import
-    use tamagotchi::types::food::{FoodType};
 
     // Constants import
     use tamagotchi::constants;
 
     // Store import
-    use tamagotchi::store::{Store, StoreTrait};
+    use tamagotchi::store::{StoreTrait};
 
     // Dojo Imports
-    use dojo::model::{ModelStorage, ModelValueStorage};
+    #[allow(unused_imports)]
+    use dojo::model::{ModelStorage};
+
+    #[allow(unused_imports)]
     use dojo::event::EventStorage;
 
     // Storage

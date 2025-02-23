@@ -1,5 +1,7 @@
+use core::traits::Into;
+
 #[derive(Copy, Drop, Serde)]
-enum CleanStatus {
+pub enum CleanStatus {
     Clean,
     SlightlyDirty,
     Dirty,
@@ -9,7 +11,7 @@ enum CleanStatus {
     None,
 }
 
-impl IntoCleanStatusFelt252 of core::Into<CleanStatus, felt252> {
+pub impl IntoCleanStatusFelt252 of Into<CleanStatus, felt252> {
     #[inline(always)]
     fn into(self: CleanStatus) -> felt252 {
         match self {
@@ -24,7 +26,7 @@ impl IntoCleanStatusFelt252 of core::Into<CleanStatus, felt252> {
     }
 }
 
-impl IntoCleanStatusU32 of core::Into<CleanStatus, u32> {
+pub impl IntoCleanStatusU32 of Into<CleanStatus, u32> {
     #[inline(always)]
     fn into(self: CleanStatus) -> u32 {
         match self {
@@ -39,7 +41,7 @@ impl IntoCleanStatusU32 of core::Into<CleanStatus, u32> {
     }
 }
 
-impl IntoU32CleanStatus of core::Into<u32, CleanStatus> {
+pub impl IntoU32CleanStatus of Into<u32, CleanStatus> {
     #[inline]
     fn into(self: u32) -> CleanStatus {
         let clean_status: u32 = self.into();

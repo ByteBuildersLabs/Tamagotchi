@@ -24,8 +24,6 @@ import Potato from '../../../assets/img/food/vegetable_potato.png';
 
 import beastsDex from '../../../data/beastDex.tsx';
 import { useFood } from '../../../hooks/useFood.tsx';
-import { SchemaType } from '../../../dojo/bindings.ts';
-import { SDK } from '@dojoengine/sdk';
 
 const initialFoodItems = [
   { name: 'Apple', img: Apple, count: 5, id: 1 },
@@ -46,16 +44,14 @@ const initialFoodItems = [
   { name: 'Potato', img: Potato, count: 7, id: 15 }
 ];
 
-const Food = ({ handleAction, beast, account, client, showAnimation, sdk }: { 
+const Food = ({ handleAction, beast, account, client, showAnimation }: { 
   handleAction: any, 
   beast: any, 
   account: any, 
   client: any,
   showAnimation: (gifPath: string) => void,
-  sdk: SDK<SchemaType>
 }) => {
-  const { foods } = useFood(sdk);
-  console.log(foods);
+  const { food } = useFood();
 
   const [foodItems, setFoodItems] = useState(initialFoodItems);
 

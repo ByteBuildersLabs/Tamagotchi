@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { SDK } from "@dojoengine/sdk";
-import { Beast, SchemaType } from "../../dojo/bindings.ts";
-import { useBeast } from '../../hooks/useBeasts.tsx';
+import { Beast } from "../../dojo/bindings.ts";
+import { useBeasts } from '../../hooks/useBeasts.tsx';
+import { useDojoSDK } from '@dojoengine/sdk/react';
 import { Account } from 'starknet';
-import { useDojo } from '../../dojo/useDojo.tsx';
 import { useGlobalContext } from '../../hooks/appContext.tsx';
 import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import beastsDex from "../../data/beastDex.tsx";
@@ -14,13 +13,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
 
-function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
+function Bag() {
   const { userAccount } = useGlobalContext();
-  const { beasts } = useBeast(sdk);
-
-  const {
-    setup: { client },
-  } = useDojo();
+  const { beasts } = useBeasts();
+  const { client } = useDojoSDK();
 
   const settings = {
     dots: beasts.length > 1,
@@ -41,21 +37,21 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
     <div className="beast-slide">
       <div className="beast">
         <div className="beast-pic d-flex align-items-end">
-          <img src={beastsDex[beast.specie - 1].idlePicture} alt="beast" />
+          <img src={beastsDex[beast?.specie - 1]?.idlePicture} alt="beast" />
         </div>
         <div className="initial-info">
           <h4>
-            {beastsDex[beast.specie - 1].name}
+            {beastsDex[beast?.specie - 1]?.name}
           </h4>
           <p>
-            Your are close to evolve {beastsDex[beast.specie - 1].name}, keep playing to reach the next level
+            Your are close to evolve {beastsDex[beast?.specie - 1]?.name}, keep playing to reach the next level
           </p>
         </div>
         <Link
           to={`/`}
           className="button"
           onClick={async () => {
-            await client.actions.setCurrentBeast(userAccount as Account, beast.beast_id)
+            await client.actions.setCurrentBeast(userAccount as Account, beast?.beast_id)
           }}
         >
           PLAY
@@ -118,7 +114,7 @@ function Bag({ sdk }: { sdk: SDK<SchemaType> }) {
           ) : (
             // if more than one beast, show them in a slider
             <Slider {...settings}>
-              {beasts.map((beast: Beast, index: number) => (
+              {beasts.filter((beast): beast is Beast => beast !== undefined).map((beast: Beast, index: number) => (
                 <div key={index}>
                   {getSlideContent(beast)}
                 </div>
