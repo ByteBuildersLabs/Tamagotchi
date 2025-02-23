@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import useSound from "use-sound";
 import backgroundMusic from "../../assets/sounds/music.mp3";
 import music from "../../assets/img/music.svg";
-import './main.css';
 
 function Music() {
   const [isMuted, setIsMuted] = useState(false);
@@ -23,12 +22,10 @@ function Music() {
   };
 
   return (
-    <>
-      <button onClick={toggleMute} className="sound-button">
-        <img src={music} className={isMuted ? 'muted' : ''} />
-      </button>
-    </>
-  )
+    <button onClick={toggleMute} className="music-icon">
+      <img src={music} className={isMuted ? 'muted' : ''} alt="Music control" />
+    </button>
+  );
 }
 
 export default Music;

@@ -5,6 +5,8 @@ import game from "../../assets/img/game.svg";
 import dragon from "../../assets/img/dragon.svg";
 import "./main.css";
 
+import Music from "../Music";
+
 function Header() {
   return (
     <nav className="navbar">
@@ -15,6 +17,7 @@ function Header() {
         </h2>
       </Link>
       <div className="side-menu">
+        <Music />
         <Link to={'/lore'} className="lore-icon">
           <img src={book} className="Beast Dex" />
         </Link>

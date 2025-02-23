@@ -21,7 +21,6 @@ import Chat from "./components/Chat/index.tsx";
 // Import the layout component
 import AppLayout from "./components/Layouts/AppLayout.tsx";
 import SpawnBeast from "./components/SpawnBeast/index.tsx";
-import Music from "./components/Music/index.tsx";
 import Lore from "./components/Lore/index.tsx";
 import "./index.css";
 
@@ -44,7 +43,6 @@ async function main() {
   if (rootElement) {
     ReactDOM.render(
       <StrictMode>
-        <Music />
         <DojoSdkProvider
           sdk={sdk}
           dojoConfig={dojoConfig}

@@ -65,7 +65,8 @@
 
 .dex-icon,
 .bag-icon,
-.lore-icon {
+.lore-icon,
+.music-icon {
   background-image: url('../../assets/img/back.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -80,7 +81,8 @@
 }
 
 .dex-icon img,
-.bag-icon img {
+.bag-icon img,
+.music-icon img {
   width: 25px;
   height: 25px;
   border-radius: unset;
@@ -92,4 +94,16 @@
   height: 30px;
   border-radius: unset;
   object-fit: contain;
+}
+
+
+.music-icon {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.music-icon .muted {
+  filter: brightness(0.5);
+  transition: all 0.25s;
 }
