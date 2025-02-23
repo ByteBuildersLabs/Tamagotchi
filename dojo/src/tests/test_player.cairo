@@ -34,7 +34,7 @@ mod tests {
         actions_system.spawn_player();
         
         // Spawn a beast first
-        actions_system.spawn(1, 1); // Spawn beast with specie 1
+        actions_system.spawn_beast(1, 1); // Spawn beast with specie 1
 
         // Set current beast
         let beast_id: u16 = 1;
@@ -56,8 +56,8 @@ mod tests {
         actions_system.spawn_player();
         
         // Spawn multiple beasts
-        actions_system.spawn(1 ,2); // First beast
-        actions_system.spawn(2, 3); // Second beast
+        actions_system.spawn_beast(1 ,2); // First beast
+        actions_system.spawn_beast(2, 3); // Second beast
         
         // Set and verify we can switch between beasts
         actions_system.set_current_beast(1);

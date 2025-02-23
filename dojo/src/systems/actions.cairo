@@ -6,10 +6,11 @@ use tamagotchi::models::beast_status::BeastStatus;
 pub trait IActions<T> {
     // Player methods
     fn spawn_player(ref self: T);
+    fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
     fn add_initial_food(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u16);
+
     // Beast Methods
-    fn spawn(ref self: T, specie: u8, beast_type: u8);
     fn decrease_status(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -18,6 +19,7 @@ pub trait IActions<T> {
     fn pet(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
+
     // Other methods
     fn init_tap_counter(ref self: T);
     fn tap(ref self: T, specie: u8, beast_type: u8);
@@ -83,6 +85,18 @@ pub mod actions {
             self.add_initial_food();
             self.init_tap_counter();
         }
+        
+        fn spawn_beast(ref self: ContractState, specie: u8, beast_type: u8) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let current_beast_id = self.beast_counter.read();
+
+            store.new_beast_status(current_beast_id);
+            store.new_beast(current_beast_id, specie, beast_type);
+
+            self.beast_counter.write(current_beast_id+1);
+        }
 
         fn add_initial_food(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
@@ -100,18 +114,6 @@ pub mod actions {
             player.current_beast_id = beast_id;
 
             store.write_player(@player);
-        }
-
-        fn spawn(ref self: ContractState, specie: u8, beast_type: u8) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-            
-            let current_beast_id = self.beast_counter.read();
-
-            store.new_beast_status(current_beast_id);
-            store.new_beast(current_beast_id, specie, beast_type);
-
-            self.beast_counter.write(current_beast_id+1);
         }
 
         fn decrease_status(ref self: ContractState) {
@@ -272,7 +274,6 @@ pub mod actions {
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast_status.is_awake = false;
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
             }
@@ -353,7 +354,7 @@ pub mod actions {
             let current_tap_counter = self.tap_counter.entry(player.address).read();
 
             if current_tap_counter == constants::MAX_TAP_COUNTER {
-                self.spawn(specie, beast_type);
+                self.spawn_beast(specie, beast_type);
                 self.init_tap_counter();
             }
 

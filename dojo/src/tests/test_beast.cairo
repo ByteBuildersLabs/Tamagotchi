@@ -20,7 +20,7 @@ mod tests {
         actions_system.spawn_player();
 
         // Spawn beast with specie 1
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get beast data
@@ -46,9 +46,9 @@ mod tests {
         actions_system.spawn_player();
 
         // Spawn multiple beasts
-        actions_system.spawn(1, 1); // First beast, specie 1
-        actions_system.spawn(2 , 2); // Second beast, specie 2
-        actions_system.spawn(3, 3); // Third beast, specie 3
+        actions_system.spawn_beast(1, 1); // First beast, specie 1
+        actions_system.spawn_beast(2 , 2); // Second beast, specie 2
+        actions_system.spawn_beast(3, 3); // Third beast, specie 3
 
         // Read and verify each beast
         let beast1: Beast = world.read_model((PLAYER(), 1));
@@ -75,7 +75,7 @@ mod tests {
 
         // Setup player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get initial beast state

@@ -56,7 +56,7 @@ mod tests {
         // Create player, food, and beast
         actions_system.spawn_player();
         actions_system.add_initial_food();
-        actions_system.spawn(1, 3); // Spawn beast with specie 1
+        actions_system.spawn_beast(1, 3); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
         // Get initial status
@@ -90,7 +90,7 @@ mod tests {
         // Create player, food, and beast
         actions_system.spawn_player();
         actions_system.add_initial_food();
-        actions_system.spawn(1, 2);
+        actions_system.spawn_beast(1, 2);
         actions_system.set_current_beast(1);
 
         // Kill beast by decreasing status
@@ -130,7 +130,7 @@ mod tests {
         // Create player, food, and beast
         actions_system.spawn_player();
         actions_system.add_initial_food();
-        actions_system.spawn(1 ,1); // Spawn beast with specie 1
+        actions_system.spawn_beast(1 ,1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
         // We decrease the status to verify that they increase after feeding

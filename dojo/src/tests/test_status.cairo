@@ -19,7 +19,7 @@ mod tests {
         // Create player, food, and beast
         actions_system.spawn_player();
         actions_system.add_initial_food();
-        actions_system.spawn(1, 1); // Spawn beast with specie 1
+        actions_system.spawn_beast(1, 1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
         // Get new timestamp calculated status
@@ -51,7 +51,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Make beast sleep first
@@ -84,7 +84,7 @@ mod tests {
         // Create player, food, and beast
         actions_system.spawn_player();
         actions_system.add_initial_food();
-        actions_system.spawn(1, 1); // Spawn beast with specie 1
+        actions_system.spawn_beast(1, 1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
         // Get new timestamp calculated status
@@ -116,7 +116,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get status after decrease
@@ -147,7 +147,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get status after decrease
@@ -178,7 +178,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // -----------------------------------------------
@@ -225,7 +225,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get final status
@@ -248,7 +248,7 @@ mod tests {
 
         // Create player and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get status when dead
