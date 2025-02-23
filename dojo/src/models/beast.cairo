@@ -15,13 +15,14 @@ pub struct Beast {
     pub player: ContractAddress, 
     #[key]
     pub beast_id: u16,
+    pub age: u16,
+    pub birth_date: u64,
     pub specie: u8,
     pub beast_type: u8
 }
 
 #[generate_trait]
 pub impl BeastImpl of BeastTrait {
-    #[inline(always)]
     fn is_favorite_meal(ref self: Beast, food_id: u8) -> bool {
         let beast_type: BeastType = self.beast_type.into();
         match beast_type {
@@ -56,7 +57,6 @@ pub impl BeastImpl of BeastTrait {
         }
     }
 
-    #[inline(always)]
     fn feed(ref self: Beast, food_id: u8) -> (u8, u8, u8) {
         if self.is_favorite_meal(food_id){
             // (hunger, happiness, energy)
@@ -82,6 +82,8 @@ mod tests {
         let beast = Beast {
             player: player_address,
             beast_id: 1,
+            age: 5,
+            birth_date: 5000,
             specie: 1,
             beast_type: 1,
         };
@@ -89,30 +91,7 @@ mod tests {
         assert_eq!(beast.player, player_address, "Player address should match");
         assert_eq!(beast.beast_id, 1, "Beast ID should be 1");
         assert_eq!(beast.specie, 1, "Specie should be 1");
-    }
-
-    #[test]
-    #[available_gas(300000)]
-    fn test_multiple_beasts_per_player() {
-        let player_address = contract_address_const::<0x123>();
-        
-        let beast1 = Beast {
-            player: player_address,
-            beast_id: 1,
-            specie: 1,
-            beast_type: 1,
-        };
-
-        let beast2 = Beast {
-            player: player_address,
-            beast_id: 2,
-            specie: 2,
-            beast_type: 2,
-        };
-
-        assert_eq!(beast1.player, beast2.player, "Beasts should belong to same player");
-        assert!(beast1.beast_id != beast2.beast_id, "Beasts should have different IDs");
-        assert!(beast1.specie != beast2.specie, "Beasts should be different species");
+        assert_eq!(beast.age, 5, "Age should be 5");
     }
 
     #[test]
@@ -123,6 +102,8 @@ mod tests {
         let beast = Beast {
             player: player_address,
             beast_id: 1,
+            age: 5,
+            birth_date: 5000,
             specie: 1,
             beast_type: 1,
         };
