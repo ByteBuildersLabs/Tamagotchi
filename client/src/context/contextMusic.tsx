@@ -2,13 +2,11 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import useSound from 'use-sound';
 import backgroundMusic from '../assets/sounds/music.mp3';
 
-// Definimos la interfaz para el contexto
 interface MusicContextType {
   isMuted: boolean;
   toggleMute: () => void;
 }
 
-// Creamos el contexto con un valor inicial
 const MusicContext = createContext<MusicContextType>({
   isMuted: false,
   toggleMute: () => {},

@@ -1,8 +1,8 @@
 import music from "../../assets/img/music.svg";
-import { useMusic } from "../../context/contextMusic"; // Importamos el hook personalizado
+import { useMusic } from "../../context/contextMusic"; 
 
 function Music() {
-  // Obtenemos el estado y la función del contexto
+  // Get the state and the function to toggle the state from the custom context
   const { isMuted, toggleMute } = useMusic();
 
   return (
