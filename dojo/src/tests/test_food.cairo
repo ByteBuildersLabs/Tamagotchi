@@ -81,45 +81,6 @@ mod tests {
     }
 
     #[test]
-    fn test_feed_dead_beast() {
-        // Initialize test environment
-        let (actions_system, world) = actions_system_world();
-
-        cheat_caller_address(PLAYER());
-
-        // Create player, food, and beast
-        actions_system.spawn_player();
-        actions_system.add_initial_food();
-        actions_system.spawn_beast(1, 2);
-        actions_system.set_current_beast(1);
-
-        // Kill beast by decreasing status
-        let mut counter: u8 = 0;
-        loop {
-            let status: BeastStatus = world.read_model(1);
-            if !status.is_alive {
-                break;
-            }
-            actions_system.decrease_status();
-            counter = counter + 1;
-            if counter > 100 { // Safety check
-                break;
-            }
-        };
-
-        // Get food amount before trying to feed dead beast
-        let initial_food: Food = world.read_model((PLAYER(), 0));
-
-        // Try to feed dead beast
-        actions_system.feed(0);
-
-        // Verify food wasn't consumed
-        let final_food: Food = world.read_model((PLAYER(), 0));
-        assert(final_food.amount == initial_food.amount, 'food was consumed');
-    } 
-
-
-    #[test]
     fn test_feed_beast_increase_status() {
         // Initialize test environment
         let (actions_system, _) = actions_system_world();

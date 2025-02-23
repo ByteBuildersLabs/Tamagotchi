@@ -11,7 +11,7 @@ pub trait IActions<T> {
     fn set_current_beast(ref self: T, beast_id: u16);
 
     // ------------------------- Beast methods -------------------------
-    fn decrease_status(ref self: T);
+    fn update_beast_status(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
     fn awake(ref self: T);
@@ -121,17 +121,24 @@ pub mod actions {
         }
 
          // ------------------------- Beast methods -------------------------
-        fn decrease_status(ref self: ContractState) {
+         // This method is used to update the beast related models and write it to the world
+        fn update_beast_status(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
+
             let beast_id = player.current_beast_id;
-            let mut beast_status = store.read_beast_status(beast_id);
+            let mut beast_status: BeastStatus = store.read_beast_status(beast_id);
+            let mut beast: Beast = store.read_beast(beast_id);
             
             let current_timestamp = get_block_timestamp();
-            beast_status.calculate_timestamp_based_status(current_timestamp)
+            beast_status.calculate_timestamp_based_status(current_timestamp);
+            beast.calculate_age(current_timestamp);
+            
+            store.write_beast(@beast);
+            store.write_beast_status(@beast_status);
         }
 
         fn feed(ref self: ContractState, food_id: u8) {
