@@ -13,7 +13,6 @@ pub mod utils {
     // Game imports
     use tamagotchi::systems::actions::{actions, IActionsDispatcher};
     use tamagotchi::models::beast::{m_Beast};
-    use tamagotchi::models::beast_stats::{m_BeastStats};
     use tamagotchi::models::beast_status::{m_BeastStatus};
     use tamagotchi::models::player::{m_Player};
     use tamagotchi::models::food::{m_Food};
@@ -28,7 +27,6 @@ pub mod utils {
             namespace: "tamagotchi",
             resources: [
                 TestResource::Model(m_Beast::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
                 TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),

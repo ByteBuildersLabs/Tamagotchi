@@ -108,7 +108,6 @@ pub mod actions {
             
             let current_beast_id = self.beast_counter.read();
 
-            store.new_beast_stats(current_beast_id);
             store.new_beast_status(current_beast_id);
             store.new_beast(current_beast_id, specie, beast_type);
 
@@ -145,7 +144,7 @@ pub mod actions {
                 // Validate food is not negative
                 if food.amount > 0 {
                     food.amount = food.amount - 1;
-                    // Get stats accordingly to the beast favorite meals
+                    // Get status accordingly to the beast favorite meals
                     let (hunger, happiness, energy) = beast.feed(food_id);
                     beast_status.hunger = beast_status.hunger + hunger;
                     beast_status.happiness = beast_status.happiness + happiness;
@@ -226,8 +225,6 @@ pub mod actions {
             // Status retrieved by calculation
             let mut beast_status = self.get_timestamp_based_status();
 
-            let mut beast_stats = store.read_beast_stats(beast_id);
-
             if beast_status.is_alive == true {
                 // Increase happiness
                 beast_status.happiness = beast_status.happiness + constants::XL_UPDATE_POINTS;
@@ -249,20 +246,8 @@ pub mod actions {
                     0
                 };
 
-                beast_stats.experience = beast_stats.experience + constants::S_UPDATE_POINTS;
-                if beast_stats.experience >= beast_stats.next_level_experience {
-                    beast_stats.level = beast_stats.level + 1;
-                    // Evolution level reached
-                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
-                        beast.evolved = true;
-                        beast.vaulted = true;
-                    }
-                    beast_stats.experience = 0;
-                    beast_stats.next_level_experience = beast_stats.next_level_experience + constants::NEXT_LEVEL_EXPERIENCE;
-                }
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 
@@ -305,7 +290,6 @@ pub mod actions {
             // Status retrieved by calculation
             let mut beast_status = self.get_timestamp_based_status();
 
-            let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == true {
                 beast_status.hygiene = beast_status.hygiene + constants::XL_UPDATE_POINTS;
@@ -316,26 +300,11 @@ pub mod actions {
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast_stats.experience = beast_stats.experience + constants::L_UPDATE_POINTS;
-                if beast_stats.experience >= beast_stats.next_level_experience {
-                    beast_stats.level = beast_stats.level + 1;
-                    // Evolution level reached
-                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
-                        beast.evolved = true;
-                        beast.vaulted = true;
-                    }
-                    beast_stats.experience = 0;
-                    beast_stats.next_level_experience = beast_stats.next_level_experience + constants::NEXT_LEVEL_EXPERIENCE;
-                    beast_stats.attack = beast_stats.attack + 1;
-                    beast_stats.defense = beast_stats.defense + 1;
-                    beast_stats.speed = beast_stats.speed + 1;
-                }
                 // update beast clean status
                 beast_status.update_clean_status(beast_status.hygiene);
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 
@@ -350,8 +319,6 @@ pub mod actions {
 
             // Status retrieved by calculation
             let mut beast_status = self.get_timestamp_based_status();
-            
-            let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == false {
                 beast_status.is_alive = true;
@@ -359,32 +326,9 @@ pub mod actions {
                 beast_status.energy = 100;
                 beast_status.happiness = 100;
                 beast_status.hygiene = 100;
-                beast_stats.experience = 0;
-
-                // Reduce attack safety avoiding overflow
-                beast_stats.attack = if beast_stats.attack >= 1 {
-                    beast_stats.attack - 1
-                } else {
-                    0
-                };
-
-                // Reduce defense safety avoiding overflow
-                beast_stats.defense = if beast_stats.defense >= 1 {
-                    beast_stats.defense - 1
-                } else {
-                    0
-                };
-
-                // Reduce speed safety avoiding overflow
-                beast_stats.speed = if beast_stats.speed >= 1 {
-                    beast_stats.speed - 1
-                } else {
-                    0
-                };
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 

@@ -7,7 +7,6 @@ use dojo::model::ModelStorage;
 
 // Models imports
 use tamagotchi::models::beast::{Beast};
-use tamagotchi::models::beast_stats::{BeastStats};
 use tamagotchi::models::beast_status::{BeastStatus};
 use tamagotchi::models::player::{Player};
 use tamagotchi::models::food::{Food};
@@ -48,10 +47,6 @@ pub impl StoreImpl of StoreTrait {
         self.world.read_model((player_address, food_id))
     }
 
-    fn read_beast_stats(self: Store, beast_id: u16) -> BeastStats {
-        self.world.read_model(beast_id)
-    }
-
     fn read_beast_status(self: Store, beast_id: u16) -> BeastStatus {
         self.world.read_model(beast_id)
     }
@@ -67,10 +62,6 @@ pub impl StoreImpl of StoreTrait {
 
     fn write_beast_status(mut self: Store, mut beast_status: @BeastStatus) {
         self.world.write_model(beast_status)
-    }
-
-    fn write_beast_stats(mut self: Store, mut beast_stats: @BeastStats) {
-        self.world.write_model(beast_stats)
     }
 
     fn write_food(mut self: Store, food: @Food) {
@@ -253,20 +244,6 @@ pub impl StoreImpl of StoreTrait {
         self.new_pizzas(caller);
         self.new_corns(caller);
         self.new_potatoes(caller);
-    }
-
-    fn new_beast_stats(mut self: Store, beast_id: u16) {
-        let mut beast_stats = BeastStats {
-            beast_id: beast_id,
-            attack: 5,
-            defense: 5,
-            speed: 5,
-            level: 1,
-            experience: 0,
-            next_level_experience: 60,
-        };
-
-        self.world.write_model(@beast_stats);
     }
     
     fn new_beast_status(mut self: Store, beast_id: u16) {

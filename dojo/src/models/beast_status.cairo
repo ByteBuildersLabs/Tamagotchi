@@ -140,7 +140,7 @@ mod tests {
     #[test]
     #[available_gas(300000)]
     fn test_beast_status_boundaries() {
-        let max_stats_beast = BeastStatus {
+        let max_status_beast = BeastStatus {
             beast_id: 4,
             is_alive: true,
             is_awake: true,
@@ -152,11 +152,11 @@ mod tests {
             last_timestamp: 1,
         };
 
-        assert!(max_stats_beast.hunger <= 100, "Hunger should not exceed 100");
-        assert!(max_stats_beast.energy <= 100, "Energy should not exceed 100");
-        assert!(max_stats_beast.happiness <= 100, "Happiness should not exceed 100");
-        assert!(max_stats_beast.hygiene <= 100, "Hygiene should not exceed 100");
-        assert_eq!(max_stats_beast.clean_status, 'Clean', "Initial clean status should be Clean");
+        assert!(max_status_beast.hunger <= 100, "Hunger should not exceed 100");
+        assert!(max_status_beast.energy <= 100, "Energy should not exceed 100");
+        assert!(max_status_beast.happiness <= 100, "Happiness should not exceed 100");
+        assert!(max_status_beast.hygiene <= 100, "Hygiene should not exceed 100");
+        assert_eq!(max_status_beast.clean_status, 'Clean', "Initial clean status should be Clean");
     }
 
     #[test]
@@ -215,8 +215,8 @@ mod tests {
 
     #[test]
     #[available_gas(300000)]
-    fn test_prevent_negative_stats() {
-        let low_stats_beast = BeastStatus {
+    fn test_prevent_negative_status() {
+        let low_status_beast = BeastStatus {
             beast_id: 6,
             is_alive: true,
             is_awake: true,
@@ -228,21 +228,21 @@ mod tests {
             last_timestamp: 1,
         };
 
-        assert!(low_stats_beast.hunger >= 0, "Hunger should never be negative");
-        assert!(low_stats_beast.energy >= 0, "Energy should never be negative");
-        assert!(low_stats_beast.happiness >= 0, "Happiness should never be negative");
-        assert!(low_stats_beast.hygiene >= 0, "Hygiene should never be negative");
+        assert!(low_status_beast.hunger >= 0, "Hunger should never be negative");
+        assert!(low_status_beast.energy >= 0, "Energy should never be negative");
+        assert!(low_status_beast.happiness >= 0, "Happiness should never be negative");
+        assert!(low_status_beast.hygiene >= 0, "Hygiene should never be negative");
 
         assert_eq!(
-            low_stats_beast.energy, 1,
+            low_status_beast.energy, 1,
             "Energy should be maintainable at minimum value without going negative"
         );
     }
 
     #[test]
     #[available_gas(300000)]
-    fn test_stats_lower_bound() {
-        let zero_stats_beast = BeastStatus {
+    fn test_status_lower_bound() {
+        let zero_status_beast = BeastStatus {
             beast_id: 7,
             is_alive: true,
             is_awake: true,
@@ -254,10 +254,10 @@ mod tests {
             last_timestamp: 1,
         };
 
-        assert_eq!(zero_stats_beast.hunger, 0, "Minimum hunger should be 0");
-        assert_eq!(zero_stats_beast.energy, 0, "Minimum energy should be 0");
-        assert_eq!(zero_stats_beast.happiness, 0, "Minimum happiness should be 0");
-        assert_eq!(zero_stats_beast.hygiene, 0, "Minimum hygiene should be 0");
-        assert_eq!(zero_stats_beast.clean_status, 'Filthy', "Minimun clean status should be Filthy");
+        assert_eq!(zero_status_beast.hunger, 0, "Minimum hunger should be 0");
+        assert_eq!(zero_status_beast.energy, 0, "Minimum energy should be 0");
+        assert_eq!(zero_status_beast.happiness, 0, "Minimum happiness should be 0");
+        assert_eq!(zero_status_beast.hygiene, 0, "Minimum hygiene should be 0");
+        assert_eq!(zero_status_beast.clean_status, 'Filthy', "Minimun clean status should be Filthy");
     }
 }

@@ -46,7 +46,7 @@ mod tests {
     }
 
     #[test]
-    fn test_feed_beast_decreases_stats() {
+    fn test_feed_beast_decreases_status() {
         // Initialize test environment
         let (actions_system, _) = actions_system_world();
         
@@ -93,7 +93,7 @@ mod tests {
         actions_system.spawn(1, 2);
         actions_system.set_current_beast(1);
 
-        // Kill beast by decreasing stats
+        // Kill beast by decreasing status
         let mut counter: u8 = 0;
         loop {
             let status: BeastStatus = world.read_model(1);
@@ -120,7 +120,7 @@ mod tests {
 
 
     #[test]
-    fn test_feed_beast_increase_stats() {
+    fn test_feed_beast_increase_status() {
         // Initialize test environment
         let (actions_system, _) = actions_system_world();
 
@@ -133,7 +133,7 @@ mod tests {
         actions_system.spawn(1 ,1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
-        // We decrease the stats to verify that they increase after feeding
+        // We decrease the status to verify that they increase after feeding
         cheat_block_timestamp(7005000);
 
         // Get initial status
@@ -144,7 +144,7 @@ mod tests {
         println!("Initial Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);
 
-        // Increase stats
+        // Increase status
         actions_system.feed(3);
 
         // Get updated status
