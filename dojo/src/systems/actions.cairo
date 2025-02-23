@@ -1,3 +1,6 @@
+// Types import
+use tamagotchi::models::beast_status::BeastStatus;
+
 // Interface definition
 #[starknet::interface]
 pub trait IActions<T> {
@@ -18,13 +21,20 @@ pub trait IActions<T> {
     // Other methods
     fn init_tap_counter(ref self: T);
     fn tap(ref self: T, specie: u8, beast_type: u8);
+    fn get_timestamp_based_status(ref self: T) -> BeastStatus;
 }
 
 #[dojo::contract]
 pub mod actions {
     // Starknet imports
     use starknet::{ContractAddress};
-    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerWriteAccess, StoragePointerReadAccess};
+    use starknet::get_block_timestamp;
+    use starknet::storage::{
+        Map,   
+        StoragePointerWriteAccess, 
+        StoragePointerReadAccess, 
+        StoragePathEntry
+    };
     
     // Local import
     use super::{IActions};
@@ -32,7 +42,7 @@ pub mod actions {
     // Model imports
     #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
-    use tamagotchi::models::beast_status::{BeastStatusTrait};
+    use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
     use tamagotchi::models::player::{Player, PlayerAssert};
     use tamagotchi::models::food::{Food};
 
@@ -53,7 +63,7 @@ pub mod actions {
     #[storage]
     struct Storage {
         beast_counter: u16,
-        tap_counter: Map<ContractAddress, u8>
+        tap_counter: Map<ContractAddress, u8>,
     }
 
     // Constructor
@@ -112,57 +122,10 @@ pub mod actions {
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
-            let mut beast: Beast = store.read_beast(beast_id);
             let mut beast_status = store.read_beast_status(beast_id);
-
-            if beast_status.is_alive == true {
-                // Decrease energy based on conditions
-                if beast_status.happiness == 0 || beast_status.hygiene == 0 {
-                    beast_status.energy = if beast_status.energy >= 2 {
-                        beast_status.energy - 2
-                    } else {
-                        0
-                    };
-                } else {
-                    beast_status.energy = if beast_status.energy >= 1 {
-                        beast_status.energy - 1
-                    } else {
-                        0
-                    };
-                }
-
-                // Decrease hunger safely
-                beast_status.hunger = if beast_status.hunger >= 2 {
-                    beast_status.hunger - 2
-                } else {
-                    0
-                };
-
-                // Decrease happiness safely 
-                beast_status.happiness = if beast_status.happiness >= 1 {
-                    beast_status.happiness - 1
-                } else {
-                    0
-                };
-
-                // Decrease hygiene safely
-                beast_status.hygiene = if beast_status.hygiene >= 1 {
-                    beast_status.hygiene - 1
-                } else {
-                    0
-                };
-
-                // Check if beast dies
-                if beast_status.energy == 0 || beast_status.hunger == 0 {
-                    beast_status.is_alive = false;
-                }
-
-               // update beast clean status
-               beast_status.update_clean_status(beast_status.hygiene);
-
-                store.write_beast(@beast);
-                store.write_beast_status(@beast_status);
-            }
+            
+            let current_timestamp = get_block_timestamp();
+            beast_status.calculate_timestamp_based_status(current_timestamp)
         }
 
         fn feed(ref self: ContractState, food_id: u8) {
@@ -174,7 +137,9 @@ pub mod actions {
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
             let mut food: Food = store.read_food(food_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+           
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 // Validate food is not negative
@@ -211,7 +176,9 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.energy = beast_status.energy + constants::XL_UPDATE_POINTS;
@@ -236,7 +203,9 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+           // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.is_awake = true;
@@ -253,7 +222,10 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
+
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == true {
@@ -302,7 +274,9 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.energy = beast_status.energy + constants::S_UPDATE_POINTS;
@@ -327,7 +301,10 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
+
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == true {
@@ -370,7 +347,10 @@ pub mod actions {
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
+            
             let mut beast_stats = store.read_beast_stats(beast_id);
 
             if beast_status.is_alive == false {
@@ -415,7 +395,7 @@ pub mod actions {
             let player: Player = store.read_player();
             player.assert_exists();
 
-            self.tap_counter.write(player.address, 0);
+            self.tap_counter.entry(player.address).write(0);
         }
 
 
@@ -426,14 +406,30 @@ pub mod actions {
             let player: Player = store.read_player();
             player.assert_exists();
 
-            let current_tap_counter = self.tap_counter.read(player.address);
+            let current_tap_counter = self.tap_counter.entry(player.address).read();
 
             if current_tap_counter == constants::MAX_TAP_COUNTER {
                 self.spawn(specie, beast_type);
                 self.init_tap_counter();
             }
 
-            self.tap_counter.write(player.address, current_tap_counter+1);
+            self.tap_counter.entry(player.address).write(current_tap_counter+1);
+        }
+
+        fn get_timestamp_based_status(ref self: ContractState) -> BeastStatus {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
+
+            let beast_id = player.current_beast_id;
+            let mut beast_status = store.read_beast_status(beast_id);
+            
+            let current_timestampt = get_block_timestamp();
+            beast_status.calculate_timestamp_based_status(current_timestampt);
+
+            beast_status
         }
     }
 }

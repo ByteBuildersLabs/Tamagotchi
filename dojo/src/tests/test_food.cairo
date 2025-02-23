@@ -9,7 +9,7 @@ mod tests {
     use tamagotchi::models::food::{Food};
     use tamagotchi::models::beast_status::{BeastStatus};
     use tamagotchi::constants;
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
 
     #[test]
     #[available_gas(60000000)]
@@ -48,9 +48,10 @@ mod tests {
     #[test]
     fn test_feed_beast_decreases_stats() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let (actions_system, _) = actions_system_world();
         
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -59,22 +60,17 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // Get initial status
-        let initial_status: BeastStatus = world.read_model((1));
+        let initial_status: BeastStatus = actions_system.get_timestamp_based_status();
         let initial_hunger = initial_status.hunger;
         let initial_energy = initial_status.energy;
 
         println!("Initial Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);
 
-        let mut counter: u8 = 0;
-        while counter < 10 {
-            // Decrease stats
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
+        cheat_block_timestamp(7005000);
 
         // Get updated status
-        let updated_status: BeastStatus = world.read_model((1));
+        let updated_status: BeastStatus = actions_system.get_timestamp_based_status();
 
         println!("Updated Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);
@@ -126,9 +122,10 @@ mod tests {
     #[test]
     fn test_feed_beast_increase_stats() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let (actions_system, _) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -137,15 +134,10 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // We decrease the stats to verify that they increase after feeding
-        let mut counter: u8 = 0;
-        while counter < 20 {
-            // Decrease stats
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
+        cheat_block_timestamp(7005000);
 
         // Get initial status
-        let initial_status: BeastStatus = world.read_model((1));
+        let initial_status: BeastStatus = actions_system.get_timestamp_based_status();
         let initial_hunger = initial_status.hunger;
         let initial_energy = initial_status.energy;
 
@@ -156,7 +148,7 @@ mod tests {
         actions_system.feed(3);
 
         // Get updated status
-        let updated_status: BeastStatus = world.read_model((1));
+        let updated_status: BeastStatus = actions_system.get_timestamp_based_status();
 
         println!("Updated Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);

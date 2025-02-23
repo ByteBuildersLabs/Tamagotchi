@@ -1,5 +1,5 @@
 // Starknet imports
-use starknet::{ContractAddress, get_caller_address};
+use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 
 // Dojo imports
 use dojo::world::WorldStorage;
@@ -270,6 +270,7 @@ pub impl StoreImpl of StoreTrait {
     }
     
     fn new_beast_status(mut self: Store, beast_id: u16) {
+        let current_timestamp = get_block_timestamp();
         let mut beast_status = BeastStatus {
             beast_id: beast_id,
             is_alive: true,
@@ -279,6 +280,7 @@ pub impl StoreImpl of StoreTrait {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
+            last_timestamp: current_timestamp,
         };
 
         self.world.write_model(@beast_status);

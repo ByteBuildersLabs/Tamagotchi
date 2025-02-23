@@ -7,13 +7,14 @@ mod tests {
 
     // Import models and types
     use tamagotchi::models::beast_status::{BeastStatus};
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
 
     #[test]
     fn test_beast_sleep() {
         let (actions_system, world) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player, food, and beast
         actions_system.spawn_player();
@@ -21,15 +22,9 @@ mod tests {
         actions_system.spawn(1, 1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
-        let mut counter: u8 = 0;
-        while counter < 20 {
-            // Decrease stats
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
-
-        // Get status after decrease
-        let decreased_status: BeastStatus = world.read_model((1));
+        // Get new timestamp calculated status
+        cheat_block_timestamp(7005000);
+        let decreased_status: BeastStatus = actions_system.get_timestamp_based_status();
         println!("Initial Status - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
         decreased_status.happiness, decreased_status.energy,decreased_status.is_awake, decreased_status.is_alive);
 
@@ -84,22 +79,19 @@ mod tests {
         let (actions_system, world) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
-        // Create player and beast
+        // Create player, food, and beast
         actions_system.spawn_player();
-        actions_system.spawn(1, 1);
+        actions_system.add_initial_food();
+        actions_system.spawn(1, 1); // Spawn beast with specie 1
         actions_system.set_current_beast(1);
 
-        let mut counter: u8 = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
-
-        // Get status after decrease
-        let decreased_status: BeastStatus = world.read_model(1);
-        println!("Status After Decrease - Happiness: {}, Energy: {}, Hunger: {}, Is Alive: {}", 
-            decreased_status.happiness, decreased_status.energy, decreased_status.hunger, decreased_status.is_alive);
+        // Get new timestamp calculated status
+        cheat_block_timestamp(7005000);
+        let decreased_status: BeastStatus = actions_system.get_timestamp_based_status();
+        println!("Initial Status - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
+        decreased_status.happiness, decreased_status.energy,decreased_status.is_awake, decreased_status.is_alive);
 
         // Play with beast
         actions_system.play();
@@ -120,20 +112,16 @@ mod tests {
         let (actions_system, world) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player and beast
         actions_system.spawn_player();
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        let mut counter: u8 = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
-
         // Get status after decrease
-        let decreased_status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7005000);
+        let decreased_status: BeastStatus = actions_system.get_timestamp_based_status();
         println!("Status After Decrease - Happiness: {}, Energy: {}", 
             decreased_status.happiness, decreased_status.energy);
 
@@ -155,20 +143,16 @@ mod tests {
         let (actions_system, world) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player and beast
         actions_system.spawn_player();
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        let mut counter: u8 = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
-
         // Get status after decrease
-        let decreased_status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7005000);
+        let decreased_status: BeastStatus = actions_system.get_timestamp_based_status();
         println!("Status After Decrease - Hygiene: {}, Happiness: {}, Is Alive: {}", 
             decreased_status.hygiene, decreased_status.happiness, decreased_status.is_alive);
 
@@ -187,9 +171,10 @@ mod tests {
     #[test]
     fn test_beast_clean_status() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let (actions_system, _) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player and beast
         actions_system.spawn_player();
@@ -197,91 +182,55 @@ mod tests {
         actions_system.set_current_beast(1);
 
         // -----------------------------------------------
-        let mut counter: u8 = 0;
-        while counter < 15 {
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
         // HYGIENE: 85
-        let status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7009000);
+        let status: BeastStatus = actions_system.get_timestamp_based_status();
         assert_eq!(status.clean_status, 'SlightlyDirty', "Clean status not changed");
 
-
         // -----------------------------------------------
-        counter = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            counter = counter + 1;
-        };
         // HYGIENE: 65
-        let status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7021000);
+        let status: BeastStatus = actions_system.get_timestamp_based_status();
         assert_eq!(status.clean_status, 'Dirty', "Clean status not changed");
         
 
-        // -----------------------------------------------
-        counter = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            actions_system.feed(1); // feed beast to avoid dead
-            counter = counter + 1;
-        };
+        // // -----------------------------------------------
         // HYGIENE: 45
-        let status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7033000);
+        let status: BeastStatus = actions_system.get_timestamp_based_status();
         assert_eq!(status.clean_status, 'VeryDirty', "Clean status not changed");
     
 
         // -----------------------------------------------
-        counter = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            actions_system.feed(2); // feed beast to avoid dead
-            counter = counter + 1;
-        };
         // HYGIENE: 25
-        let status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7045000);
+        let status: BeastStatus = actions_system.get_timestamp_based_status();
         assert_eq!(status.clean_status, 'SuperDirty', "Clean status not changed");
         
 
         // -----------------------------------------------
-        counter = 0;
-        while counter < 20 {
-            actions_system.decrease_status();
-            actions_system.feed(2); // feed beast to avoid dead
-            counter = counter + 1;
-        };
         // HYGIENE: 5
-        let status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(7057000);
+        let status: BeastStatus = actions_system.get_timestamp_based_status();
         assert_eq!(status.clean_status, 'Filthy', "Clean status not changed");
     }
 
     #[test]
     fn test_beast_death() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let (actions_system, _) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player and beast
         actions_system.spawn_player();
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        // Decrease stats until death
-        let mut counter: u8 = 0;
-        loop {
-            let status: BeastStatus = world.read_model(1);
-            if !status.is_alive {
-                break;
-            }
-            actions_system.decrease_status();
-            counter = counter + 1;
-            if counter > 100 { // Safety check
-                break;
-            }
-        };
-
         // Get final status
-        let final_status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(8000000);
+        let final_status: BeastStatus = actions_system.get_timestamp_based_status();
         println!("Final Death Status - Energy: {}, Hunger: {}, Is Alive: {}", 
             final_status.energy, final_status.hunger, final_status.is_alive);
 
@@ -289,38 +238,31 @@ mod tests {
         assert(final_status.energy == 0 || final_status.hunger == 0, 'wrong death condition');
     }
 
-
     #[test]
     fn test_beast_revive() {
         // Initialize test environment
         let (actions_system, world) = actions_system_world();
 
         cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
 
         // Create player and beast
         actions_system.spawn_player();
         actions_system.spawn(1, 1);
         actions_system.set_current_beast(1);
 
-        // Kill beast first
-        let mut counter: u8 = 0;
-        loop {
-            let status: BeastStatus = world.read_model(1);
-            if !status.is_alive {
-                break;
-            }
-            actions_system.decrease_status();
-            counter = counter + 1;
-            if counter > 100 {
-                break;
-            }
-        };
-
         // Get status when dead
-        let dead_status: BeastStatus = world.read_model(1);
+        cheat_block_timestamp(8000000); // Kill beast
+        let dead_status: BeastStatus = actions_system.get_timestamp_based_status();
         println!("Dead Status - Energy: {}, Hunger: {}, Happiness: {}, Hygiene: {}, Is Alive: {}", 
             dead_status.energy, dead_status.hunger, dead_status.happiness, dead_status.hygiene, 
             dead_status.is_alive);
+
+        assert(!dead_status.is_alive, 'beast should be death');
+        assert(dead_status.energy == 0, 'wrong energy value');
+        assert(dead_status.hunger == 0, 'wrong hunger value');
+        assert(dead_status.happiness == 0, 'wrong happiness value');
+        assert(dead_status.hygiene == 0, 'wrong hygiene value');
 
         // Revive beast
         actions_system.revive();
