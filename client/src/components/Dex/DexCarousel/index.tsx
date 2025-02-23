@@ -2,14 +2,12 @@ import { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import beastsDex, { iBeastDex } from '../../../data/beastDex.tsx';
+import beastsDex from '../../../data/beastDex.tsx';
 import goBackIcon from '../../../assets/img/GoBack.svg';
-import textToSpeechIcon from '../../../assets/img/text-to-speech.svg';
 import StatsCarousel from '../BaseStats/baseStats.tsx';
 import RadarStats from '../Radar';
-import { generateSpeech } from '../../../services/text-to-speech.ts';
-import { findMatchingVoice } from '../../../utils/voiceUtils.ts';
 import './main.css';
+import { TextToSpeech } from '../../TextToSpeech/TextToSpeech.tsx';
 
 
 interface DexCarouselProps {
@@ -20,8 +18,6 @@ interface DexCarouselProps {
 function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Element {
   // State for holding dynamically loaded beast images
   const [beastImages, setBeastImages] = useState<string[]>([]);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   // Load beast images on component mount
   useEffect(() => {
@@ -40,47 +36,6 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
 
     loadBeastImages();
   }, []);
-
-  const handlePlay = async (beastsDex: iBeastDex) => {
-    try {
-      if (currentAudio) {
-        currentAudio.pause();
-        setIsPlaying(false);
-      }
-
-      // Find the corresponding voice for the current beast
-      const beastVoice = findMatchingVoice(beastsDex.name);
-      console.log(`Using voice ${beastVoice.name} (${beastVoice.id}) for ${beastsDex.name}`);
-
-      // We use the bio or description, whichever is available
-      const textToSpeak = beastsDex.Bio ? beastsDex.Bio.join('. ') : beastsDex.description;
-      
-      const data = await generateSpeech(textToSpeak, beastVoice.id);
-      
-      if (data.audio) {
-        const audio = new Audio(`data:audio/mpeg;base64,${data.audio}`);
-        setCurrentAudio(audio);
-        
-        audio.onended = () => {
-          setIsPlaying(false);
-          setCurrentAudio(null);
-        };
-
-        audio.play();
-        setIsPlaying(true);
-      }
-    } catch (error) {
-      console.error('Error playing audio:', error);
-    }
-  };
-
-  const handleStop = () => {
-    if (currentAudio) {
-      currentAudio.pause();
-      setCurrentAudio(null);
-      setIsPlaying(false);
-    }
-  };
 
   const settings = {
     dots: false,
@@ -125,15 +80,10 @@ function DexCarousel({ initialSlide = 0, onClose }: DexCarouselProps): JSX.Eleme
                   <h2 className="beast-name-carrousel">{beast.name}</h2>
                   <h3 className="beast-type-badge-carrousel">{beast.BeastsType}</h3>
                 </div>
-                <button
-                    className="sound-button-carrousel"
-                    onClick={() => isPlaying ? handleStop() : handlePlay(beast)}
-                    title={`Listen to ${beast.name}'s description`}
-                  >
-                    <div className="sound-button-carrousel__icon">
-                      <img src={textToSpeechIcon} alt="text to speech" />
-                    </div>
-                  </button>
+                <TextToSpeech 
+                  beastName={beast.name}
+                  text={beast.Bio ? beast.Bio.join('. ') : beast.description}
+                />
                 {onClose && (
                   <button
                     className="back-button-carrousel"

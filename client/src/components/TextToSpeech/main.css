@@ -1,0 +1,15 @@
+.audio-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .audio-button img {
+    width: 24px;
+    height: 24px;
+  }
