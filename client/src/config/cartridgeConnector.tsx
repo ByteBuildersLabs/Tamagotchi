@@ -1,10 +1,16 @@
-import { ControllerConnector}  from "@cartridge/connector";
-import { SessionPolicies } from "@cartridge/controller";
 import { Connector } from "@starknet-react/core";
+import ControllerConnector from "@cartridge/connector/controller";
+import {
+  ControllerOptions,
+  SessionPolicies,
+} from "@cartridge/controller";
+import { constants } from "starknet";
+
+const CONTRACT_ADDRESS = '0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da'
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da']: {
+    [CONTRACT_ADDRESS]: {
       methods: [
         {
           name: "spawn_player",
@@ -67,10 +73,24 @@ const policies: SessionPolicies = {
   },
 }
 
-// Configuración básica del conector
-const cartridgeConnector = new ControllerConnector({
+const options: ControllerOptions = {
+  chains: [
+    {
+      rpcUrl: "https://api.cartridge.gg/x/starknet/sepolia",
+    },
+    {
+      rpcUrl: "https://api.cartridge.gg/x/starknet/mainnet",
+    },
+    {
+      rpcUrl: "https://api.cartridge.gg/x/hhbb/katana",
+    }
+  ],
+  defaultChainId: constants.StarknetChainId.SN_SEPOLIA,
   policies,
-  rpc: 'https://api.cartridge.gg/x/hhbb/katana'
-}) as never as Connector;
+};
+
+const cartridgeConnector = new ControllerConnector(
+  options,
+) as never as Connector;
 
 export default cartridgeConnector;
