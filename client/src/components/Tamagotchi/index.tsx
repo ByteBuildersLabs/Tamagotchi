@@ -17,11 +17,13 @@ import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
+import share from '../../assets/img/share.svg';
 import Header from '../../components/Header';
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { useBeastsStatus } from "../../hooks/useBeastsStatus.tsx";
+import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import './main.css';
 
 function Tamagotchi() {
@@ -57,6 +59,28 @@ function Tamagotchi() {
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const age = 10;
+
+  // Extract stats for sharing
+  const getShareableStats = () => {
+    if (!status) return undefined;
+    
+    return {
+      age: age || 0,
+      energy: Math.round(status.energy) || 0,
+      hunger: Math.round(status.hunger) || 0,
+      happiness: Math.round(status.happiness) || 0,
+      clean: Math.round(status.hygiene) || 0
+    };
+  };
+
+  // Handler for share button
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
 
   useEffect(() => {
     const updateBackground = () => {
@@ -173,6 +197,11 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
+                  <img 
+                    className="actions-icon" 
+                    src={share} 
+                    onClick={handleShareClick}
+                  />
                 </div>
               </div>
               {
@@ -212,6 +241,13 @@ function Tamagotchi() {
           </Card>
         }</>
       </div>
+
+      <ShareProgress
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        type="beast"
+        stats={getShareableStats()}
+      />
     </>
   );
 }

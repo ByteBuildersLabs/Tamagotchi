@@ -195,8 +195,21 @@ const Play = ({
             </div>
             
         );
+    } else if (isShareModalOpen) {
+      // Mostrar primero el ShareProgress antes del modal de resultados
+      return (
+        <ShareProgress
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          type="minigame"
+          minigameData={{
+            name: "Sky Jump",
+            score: currentScore
+          }}
+        />
+      );
     } else {
-      // Show the game result screen
+      // Una vez cerrado el ShareProgress, mostrar el modal de resultados del juego
       return (
         <div className="game-result-container">
           <h2 className="game-result-title">¡Game over!</h2>
@@ -220,17 +233,6 @@ const Play = ({
             </button>
           </div>
           <Toaster position="bottom-center" />
-
-          {/* Agregamos el Modal de compartir */}
-          <ShareProgress
-            isOpen={isShareModalOpen}
-            onClose={() => setIsShareModalOpen(false)}
-            type="minigame"
-            minigameData={{
-              name: "Sky Jump",
-              score: currentScore
-            }}
-          />
         </div>
       );
     }

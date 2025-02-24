@@ -1,16 +1,18 @@
 // ShareModal.tsx
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import './main.css';
+import '../../index.css';
 
 interface ShareModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: 'beast' | 'minigame';
   stats?: {
-    level: number;
-    strength: number;
-    defense: number;
-    speed: number;
+    age: number;
+    energy: number;
+    hunger: number;
+    happiness: number;
+    clean: number;
   };
   minigameData?: {
     name: string;
@@ -30,12 +32,13 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
   useEffect(() => {
     if (type === 'beast' && stats) {
       setTweetMsg(
-        `🎮 Playing ByteBeasts Tamagotchi, and here is my Beasts progress:\n\n` +
-        `Level ${stats.level} 🆙\n` +
-        `Strength: ${stats.strength} 💪\n` +
-        `Defense: ${stats.defense} 🛡️\n` +
-        `Speed: ${stats.speed} ⚡\n\n` +
-        `Every stat depends entirely on how I feed and care for it! 🌟\n\n` +
+        `🎮 Playing ByteBeasts Tamagotchi, and here is my Beast's progress:\n\n` +
+        `🕰️ Age: ${stats.age} \n` +
+        `⚡ Energy: ${stats.energy} \n` +
+        `🍖 Hunger: ${stats.hunger} \n` +
+        `😊 Happiness: ${stats.happiness} \n` +
+        `🛁 Cleanliness: ${stats.clean} \n\n` +
+        `These are my current values! 🌟\n\n` +
         `Ready to raise your own Beast? 🚀\n` +
         `👉 https://www.babybeasts.games`
       );
@@ -70,7 +73,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             value={tweetMsg}
             onChange={handleChange}
             rows={6}
-            className="tweet-textarea"
+            className="tweet-textarea p"
           />
         </div>
         
