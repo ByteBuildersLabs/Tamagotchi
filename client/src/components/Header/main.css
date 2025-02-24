@@ -58,6 +58,7 @@
 }
 
 .dex-icon,
+.leader-icon,
 .bag-icon,
 .lore-icon,
 .music-icon {
@@ -74,16 +75,8 @@
   border-radius: 50%;
 }
 
-.dex-icon img,
-.bag-icon img,
-.music-icon img {
-  width: 25px;
-  height: 25px;
-  border-radius: unset;
-  object-fit: contain;
-}
-
-.lore-icon img {
+.lore-icon img,
+.leader-icon img {
   width: 30px;
   height: 30px;
   border-radius: unset;
@@ -134,9 +127,10 @@
   position: absolute;
   right: -10px;
   top: 50px;
+  width: 200px;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 10px;
-  padding: 20px 10px;
+  padding: 30px 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -149,6 +143,7 @@
 .side-menu .item {
   display: flex;
   align-items: center;
+  padding: 7px 0;
 }
 
 .side-menu span {

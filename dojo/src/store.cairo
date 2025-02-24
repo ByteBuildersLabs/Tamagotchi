@@ -265,14 +265,15 @@ pub impl StoreImpl of StoreTrait {
     
     fn new_beast(mut self: Store, beast_id: u16, specie: u8, beast_type: u8) {
         let player = get_caller_address();
+        let current_timestamp = get_block_timestamp();
 
         let mut new_beast = Beast {
             player: player,
             beast_id: beast_id,
+            age: 0,
+            birth_date: current_timestamp,
             specie: specie,
             beast_type: beast_type,
-            evolved: false,
-            vaulted: false
         };
 
         self.world.write_model(@new_beast);

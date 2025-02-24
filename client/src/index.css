@@ -121,7 +121,7 @@ p, span {
 
 .disconnect-button {
   width: 35%;
-  padding: 12px 10px;
+  padding: 0 10px;
   margin: 0;
   background-color: #370001;
   border-radius: 15px;

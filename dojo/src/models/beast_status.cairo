@@ -12,7 +12,7 @@ pub struct BeastStatus {
     pub energy: u8,
     pub happiness: u8,
     pub hygiene: u8,
-    pub clean_status: felt252,
+    pub clean_status: u8,
     pub last_timestamp: u64,
 }
 
@@ -85,7 +85,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                 } else {
                     0
                 };
-
+                
                 self.update_clean_status(self.hygiene);
 
                 // Check if beast dies
@@ -134,7 +134,7 @@ mod tests {
         assert_eq!(beast_status.energy, 100, "Initial energy should be 100");
         assert_eq!(beast_status.happiness, 100, "Initial happiness should be 100");
         assert_eq!(beast_status.hygiene, 100, "Initial hygiene should be 100");
-        assert_eq!(beast_status.clean_status, 'Clean', "Initial clean status should be Clean");
+        assert_eq!(beast_status.clean_status, 1, "Initial clean status should be Clean");
     }
 
     #[test]
@@ -156,7 +156,7 @@ mod tests {
         assert!(max_status_beast.energy <= 100, "Energy should not exceed 100");
         assert!(max_status_beast.happiness <= 100, "Happiness should not exceed 100");
         assert!(max_status_beast.hygiene <= 100, "Hygiene should not exceed 100");
-        assert_eq!(max_status_beast.clean_status, 'Clean', "Initial clean status should be Clean");
+        assert_eq!(max_status_beast.clean_status, 1, "Initial clean status should be Clean");
     }
 
     #[test]
@@ -258,6 +258,6 @@ mod tests {
         assert_eq!(zero_status_beast.energy, 0, "Minimum energy should be 0");
         assert_eq!(zero_status_beast.happiness, 0, "Minimum happiness should be 0");
         assert_eq!(zero_status_beast.hygiene, 0, "Minimum hygiene should be 0");
-        assert_eq!(zero_status_beast.clean_status, 'Filthy', "Minimun clean status should be Filthy");
+        assert_eq!(zero_status_beast.clean_status, 6, "Minimun clean status should be Filthy");
     }
 }

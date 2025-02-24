@@ -2,31 +2,26 @@
 .status {
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   padding: 13px;
   border-radius: 25px;
   color: #ECECDA;
 }
 
 .status .item {
-  width: 25%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  margin: auto;
 }
 
 .status .item .pic {
-  background-image: url('../../../assets/img/back.png');
-  background-size: cover;
-  width: 40px;
-  height: 40px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  height: 75px;
+  width: 75px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 13px;
+  justify-content: center;
 }
 
 .status .item p {

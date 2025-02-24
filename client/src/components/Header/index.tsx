@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Music from "../Music";
 import monster from "../../assets/img/logo.jpg";
 import book from "../../assets/img/book.svg";
-import game from "../../assets/img/game.svg";
+import trophy from "../../assets/img/trophy.svg";
+import logout from "../../assets/img/logout.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
-import "./main.css";
-import Music from "../Music";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
+import "./main.css";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,25 +34,27 @@ function Header() {
             className="toggle-icon"
           />
         </button>
-        
         <div className={`side-menu ${isOpen ? 'expanded' : ''}`}>
-          <div className="item">
-            <Link to={'/lore'} className="lore-icon">
+          <Link className="item" to={'/lore'} >
+            <div className="lore-icon">
               <img src={book} alt="Beast Lore" />
-            </Link>
+            </div>
             <span>Lore</span>
-          </div>
-          <div className="item">
-            <Link to={'/dex'} className="dex-icon">
-              <img src={game} alt="Beast Dex" />
-            </Link>
-            <span>Collection</span>
-          </div>
+          </Link>
+          <Link className="item" to={'/leaderboard'} >
+            <div className="leader-icon">
+              <img src={trophy} alt="Leaderboard" />
+            </div>
+            <span>Leaderboard</span>
+          </Link>
           <div className="item">
             <Music />
             <span>Music</span>
           </div>
           <div className="item">
+            <div className="lore-icon">
+              <img src={logout} alt="Beast Lore" />
+            </div>
             <ControllerConnectButton />
           </div>
         </div>

@@ -11,24 +11,9 @@ pub enum CleanStatus {
     None,
 }
 
-pub impl IntoCleanStatusFelt252 of Into<CleanStatus, felt252> {
+pub impl IntoCleanStatusU8 of Into<CleanStatus, u8> {
     #[inline(always)]
-    fn into(self: CleanStatus) -> felt252 {
-        match self {
-            CleanStatus::None => '',
-            CleanStatus::Clean => 'Clean',
-            CleanStatus::SlightlyDirty => 'SlightlyDirty',
-            CleanStatus::Dirty => 'Dirty',
-            CleanStatus::VeryDirty => 'VeryDirty',
-            CleanStatus::SuperDirty => 'SuperDirty',
-            CleanStatus::Filthy => 'Filthy',
-        }
-    }
-}
-
-pub impl IntoCleanStatusU32 of Into<CleanStatus, u32> {
-    #[inline(always)]
-    fn into(self: CleanStatus) -> u32 {
+    fn into(self: CleanStatus) -> u8 {
         match self {
             CleanStatus::None => 0,
             CleanStatus::Clean => 1,
@@ -41,10 +26,10 @@ pub impl IntoCleanStatusU32 of Into<CleanStatus, u32> {
     }
 }
 
-pub impl IntoU32CleanStatus of Into<u32, CleanStatus> {
+pub impl IntoU8CleanStatus of Into<u8, CleanStatus> {
     #[inline]
-    fn into(self: u32) -> CleanStatus {
-        let clean_status: u32 = self.into();
+    fn into(self: u8) -> CleanStatus {
+        let clean_status: u8 = self.into();
         match clean_status {
             0 =>  CleanStatus::None,
             1 => CleanStatus::Clean,

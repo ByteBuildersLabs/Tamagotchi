@@ -185,34 +185,34 @@ mod tests {
         // HYGIENE: 85
         cheat_block_timestamp(7009000);
         let status: BeastStatus = actions_system.get_timestamp_based_status();
-        assert_eq!(status.clean_status, 'SlightlyDirty', "Clean status not changed");
+        assert_eq!(status.clean_status, 2, "Clean status not changed");
 
         // -----------------------------------------------
         // HYGIENE: 65
         cheat_block_timestamp(7021000);
         let status: BeastStatus = actions_system.get_timestamp_based_status();
-        assert_eq!(status.clean_status, 'Dirty', "Clean status not changed");
+        assert_eq!(status.clean_status, 3, "Clean status not changed");
         
 
         // // -----------------------------------------------
         // HYGIENE: 45
         cheat_block_timestamp(7033000);
         let status: BeastStatus = actions_system.get_timestamp_based_status();
-        assert_eq!(status.clean_status, 'VeryDirty', "Clean status not changed");
+        assert_eq!(status.clean_status, 4, "Clean status not changed");
     
 
         // -----------------------------------------------
         // HYGIENE: 25
         cheat_block_timestamp(7045000);
         let status: BeastStatus = actions_system.get_timestamp_based_status();
-        assert_eq!(status.clean_status, 'SuperDirty', "Clean status not changed");
+        assert_eq!(status.clean_status, 5, "Clean status not changed");
         
 
         // -----------------------------------------------
         // HYGIENE: 5
         cheat_block_timestamp(7057000);
         let status: BeastStatus = actions_system.get_timestamp_based_status();
-        assert_eq!(status.clean_status, 'Filthy', "Clean status not changed");
+        assert_eq!(status.clean_status, 6, "Clean status not changed");
     }
 
     #[test]
