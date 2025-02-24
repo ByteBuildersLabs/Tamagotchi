@@ -15,7 +15,6 @@ pub struct Beast {
     pub player: ContractAddress, 
     #[key]
     pub beast_id: u16,
-    pub age: u16,
     pub birth_date: u64,
     pub specie: u8,
     pub beast_type: u8
@@ -23,14 +22,6 @@ pub struct Beast {
 
 #[generate_trait]
 pub impl BeastImpl of BeastTrait {
-    fn calculate_age(ref self: Beast, current_timestamp: u64){
-        let total_seconds: u64 =  current_timestamp - self.birth_date;
-
-        let total_days: u64 = total_seconds / 86400; // 86400: total seconds in a day
-
-        self.age = total_days.try_into().unwrap();
-    }
-
     fn is_favorite_meal(ref self: Beast, food_id: u8) -> bool {
         let beast_type: BeastType = self.beast_type.into();
         match beast_type {
@@ -90,7 +81,6 @@ mod tests {
         let beast = Beast {
             player: player_address,
             beast_id: 1,
-            age: 5,
             birth_date: 5000,
             specie: 1,
             beast_type: 1,
@@ -99,7 +89,6 @@ mod tests {
         assert_eq!(beast.player, player_address, "Player address should match");
         assert_eq!(beast.beast_id, 1, "Beast ID should be 1");
         assert_eq!(beast.specie, 1, "Specie should be 1");
-        assert_eq!(beast.age, 5, "Age should be 5");
     }
 
     #[test]
@@ -110,7 +99,6 @@ mod tests {
         let beast = Beast {
             player: player_address,
             beast_id: 1,
-            age: 5,
             birth_date: 5000,
             specie: 1,
             beast_type: 1,
