@@ -80,6 +80,9 @@ const options: ControllerOptions = {
     },
     {
       rpcUrl: "https://api.cartridge.gg/x/starknet/mainnet",
+    },
+    {
+      rpcUrl: "https://api.cartridge.gg/x/ttttt/katana",
     }
   ],
   defaultChainId: constants.StarknetChainId.SN_SEPOLIA,
