@@ -33,21 +33,23 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
     if (type === 'beast' && stats) {
       setTweetMsg(
         `🎮 Playing ByteBeasts Tamagotchi, and here is my Beast's progress:\n\n` +
-        `🕰️ Age: ${stats.age} \n` +
+        `🕰️ Age: ${stats.age}` + ` days\n` +
         `⚡ Energy: ${stats.energy} \n` +
         `🍖 Hunger: ${stats.hunger} \n` +
         `😊 Happiness: ${stats.happiness} \n` +
         `🛁 Cleanliness: ${stats.clean} \n\n` +
         `These are my current values! 🌟\n\n` +
         `Ready to raise your own Beast? 🚀\n` +
-        `👉 https://www.babybeasts.games`
+        `👉 https://www.babybeasts.games \n` +
+        `@0xByteBeasts`
       );
     } else if (type === 'minigame' && minigameData) {
       setTweetMsg(
         `🎮 I just played ${minigameData.name} mini-game in ByteBeasts Tamagotchi\n\n` +
         `My score: ${minigameData.score} 🏆\n\n` +
         `Think you can beat it? Bring it on!🔥\n` +
-        `👉 https://www.babybeasts.games`
+        `👉 https://www.babybeasts.games \n` +
+        `@0xByteBeasts`
       );
     }
   }, [type, stats, minigameData]);
