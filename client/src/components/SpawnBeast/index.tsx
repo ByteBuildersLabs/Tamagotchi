@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
 import toast, { Toaster } from 'react-hot-toast';
-import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
-import HatchJR from "../Joyride/HatchJR.tsx";
 import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";

@@ -1,6 +1,5 @@
 import { useBeasts } from '../../hooks/useBeasts.tsx';
 import Header from '../Header/index.tsx';
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import dojologo from '../../assets/img/dojo-icon.svg';
 import starknet from '../../assets/img/stark.png'
 import { useEffect, useState } from 'react';

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DexCarousel from '../Dex/DexCarousel/index.tsx';
 import beastsDex, { iBeastDex, } from '../../data/beastDex.tsx';
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import './main.css';
 import Header from '../Header/index.tsx';
 

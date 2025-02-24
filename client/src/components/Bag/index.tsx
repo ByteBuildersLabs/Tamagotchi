@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Beast } from "../../dojo/bindings.ts";
 import { useBeasts } from '../../hooks/useBeasts.tsx';
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import beastsDex from "../../data/beastDex.tsx";
 import Header from '../Header/index.tsx';
 import Slider from 'react-slick';

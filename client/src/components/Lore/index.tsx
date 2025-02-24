@@ -1,7 +1,6 @@
 import './main.css';
 import Header from '../Header/index.tsx';
 import banner from '../../assets/img/bannerlogo.jpeg'
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import Footer from '../Footer/index.tsx';
 import dojologo from '../../assets/img/dojo-icon.svg';
 import starknet from '../../assets/img/stark.png'
