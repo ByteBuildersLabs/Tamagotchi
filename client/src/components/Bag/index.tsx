@@ -2,9 +2,6 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Beast } from "../../dojo/bindings.ts";
 import { useBeasts } from '../../hooks/useBeasts.tsx';
-import { useDojoSDK } from '@dojoengine/sdk/react';
-import { Account } from 'starknet';
-import { useGlobalContext } from '../../hooks/appContext.tsx';
 import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import beastsDex from "../../data/beastDex.tsx";
 import Header from '../Header/index.tsx';
@@ -14,9 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
 
 function Bag() {
-  const { userAccount } = useGlobalContext();
   const { beasts } = useBeasts();
-  const { client } = useDojoSDK();
 
   const settings = {
     dots: beasts.length > 1,
@@ -50,9 +45,6 @@ function Bag() {
         <Link
           to={`/`}
           className="button"
-          onClick={async () => {
-            await client.actions.setCurrentBeast(userAccount as Account, beast?.beast_id)
-          }}
         >
           PLAY
         </Link>

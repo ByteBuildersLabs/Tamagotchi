@@ -1,5 +1,5 @@
 import { DojoProvider, DojoCall } from "@dojoengine/core";
-import { Account, AccountInterface, BigNumberish } from "starknet";
+import { Account, AccountInterface } from "starknet";
 
 export function setupWorld(provider: DojoProvider) {
 
@@ -66,7 +66,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_feed_calldata = (foodId: BigNumberish): DojoCall => {
+	const build_actions_feed_calldata = (foodId: number): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "feed",
@@ -74,7 +74,7 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_feed = async (snAccount: Account | AccountInterface, foodId: BigNumberish) => {
+	const actions_feed = async (snAccount: Account | AccountInterface, foodId: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
@@ -213,7 +213,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_setCurrentBeast_calldata = (beastId: BigNumberish): DojoCall => {
+	const build_actions_setCurrentBeast_calldata = (beastId: number): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "set_current_beast",
@@ -221,7 +221,7 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_setCurrentBeast = async (snAccount: Account | AccountInterface, beastId: BigNumberish) => {
+	const actions_setCurrentBeast = async (snAccount: Account | AccountInterface, beastId: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
@@ -255,7 +255,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_spawnBeast_calldata = (specie: BigNumberish, beastType: BigNumberish): DojoCall => {
+	const build_actions_spawnBeast_calldata = (specie: number, beastType: number): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "spawn_beast",
@@ -263,7 +263,7 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_spawnBeast = async (snAccount: Account | AccountInterface, specie: BigNumberish, beastType: BigNumberish) => {
+	const actions_spawnBeast = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
@@ -297,7 +297,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_tap_calldata = (specie: BigNumberish, beastType: BigNumberish): DojoCall => {
+	const build_actions_tap_calldata = (specie: number, beastType: number): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "tap",
@@ -305,7 +305,7 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_tap = async (snAccount: Account | AccountInterface, specie: BigNumberish, beastType: BigNumberish) => {
+	const actions_tap = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
