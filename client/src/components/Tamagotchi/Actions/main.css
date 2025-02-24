@@ -3,9 +3,9 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  height: 153px;
+  height: 120px;
   width: 100%;
-  background-color: #85002A;
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 15px 10px;
   border-radius: 20px;
 }
@@ -32,8 +32,9 @@
 }
 
 .actions button:hover {
-  background-color: #85002A;
+  background-color: #ececdadf;
 }
+
 
 .actions button:disabled {
   opacity: 0.4;

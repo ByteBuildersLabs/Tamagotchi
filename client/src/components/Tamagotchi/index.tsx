@@ -5,13 +5,11 @@ import { useGlobalContext } from "../../hooks/appContext.tsx";
 import { Card } from '../../components/ui/card';
 import toast from 'react-hot-toast';
 import beastsDex from "../../data/beastDex.tsx";
-import message from '../../assets/img/message.svg';
 import dead from '../../assets/img/dead.gif';
 import Actions from "./Actions/index.tsx";
 import Status from "./Status/index.tsx";
 import Food from "./Food/index.tsx";
 import Play from "./Play/index.tsx";
-import TamagotchiJR from "../Joyride/TamagotchiJR.tsx";
 import Whispers from "./Whispers/index.tsx";
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
@@ -94,15 +92,6 @@ function Tamagotchi() {
     setCurrentImage(dead);
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     if (status?.is_alive && userAccount) {
-  //       await client.actions.decreaseStatus(userAccount as Account);
-  //     }
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, [status?.is_alive]);
-
   useEffect(() => {
     if (status?.is_alive == false) {
       showDeathAnimation();
@@ -170,6 +159,11 @@ function Tamagotchi() {
               beastStatus={status}
             />
             <div className="game">
+              <Whispers
+                beast={beast}
+                expanded={currentView === 'chat'}
+                beastStatus={status}
+              />
               <div className="scenario flex justify-center items-column">
                 <img
                   src={currentImage}
@@ -178,55 +172,48 @@ function Tamagotchi() {
                   onClick={handleCuddle} style={{ cursor: 'pointer' }}
                 />
               </div>
-              <Whispers
-                beast={beast}
-                expanded={currentView === 'chat'}
-                beastStatus={status}
-              />
-              {
-                  currentView === 'actions' ?
-                    <Actions
-                      handleAction={handleAction}
-                      isLoading={isLoading}
-                      beast={beast}
-                      beastStatus={status}
-                      account={userAccount}
-                      client={client}
-                      setCurrentView={setCurrentView}
-                    />
-                    :
-                    currentView === 'chat' ? (
-                      <></>
-                    ) : currentView === 'food' ? (
-                      <Food
-                        handleAction={handleAction}
-                        beast={beast}
-                        account={userAccount}
-                        client={client}
-                        showAnimation={showAnimation}
-                      />
-                    ) : currentView === 'play' ? (
-                      <Play
-                        handleAction={handleAction}
-                        beast={beast}
-                        account={userAccount}
-                        client={client}
-                      />
-                    ) : (
-                      <></>
-                    )
-              }
               <div className="beast-interaction">
-                <div>
+                <div className="beast-buttons">
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
-                  <img className="message-icon" src={message} onClick={() => setCurrentView('chat')} />
                 </div>
               </div>
+              {
+                currentView === 'actions' ?
+                  <Actions
+                    handleAction={handleAction}
+                    isLoading={isLoading}
+                    beast={beast}
+                    beastStatus={status}
+                    account={userAccount}
+                    client={client}
+                    setCurrentView={setCurrentView}
+                  />
+                  :
+                  currentView === 'chat' ? (
+                    <></>
+                  ) : currentView === 'food' ? (
+                    <Food
+                      handleAction={handleAction}
+                      beast={beast}
+                      account={userAccount}
+                      client={client}
+                      showAnimation={showAnimation}
+                    />
+                  ) : currentView === 'play' ? (
+                    <Play
+                      handleAction={handleAction}
+                      beast={beast}
+                      account={userAccount}
+                      client={client}
+                    />
+                  ) : (
+                    <></>
+                  )
+              }
             </div>
           </Card>
         }</>
       </div>
-      <TamagotchiJR />
     </>
   );
 }
