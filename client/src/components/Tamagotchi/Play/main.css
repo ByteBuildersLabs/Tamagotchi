@@ -55,7 +55,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
-  /* Puedes usar align-items: center si quieres centrar el texto verticalmente */
 }
 
 .game-name {
