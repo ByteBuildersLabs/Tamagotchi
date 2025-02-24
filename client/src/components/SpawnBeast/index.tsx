@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
-import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import Egg from "../../assets/img/egg.gif";
