@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-import { SDK } from "@dojoengine/sdk";
-import { SchemaType } from "../../dojo/bindings";
 import { useAccount } from "@starknet-react/core";
-import { usePlayer } from "../../hooks/usePlayers";
+import { useBeasts } from "../../hooks/useBeasts";
 import Tamagotchi from "../Tamagotchi";
 import SpawnBeast from "../SpawnBeast";
 import NewCover from "../NewCover";
+import { usePlayer } from "../../hooks/usePlayers";
 
-
-function Main({ sdk }: { sdk: SDK<SchemaType> }) {
+function Main() {
   const { account } = useAccount();
-  const { player } = usePlayer(sdk);
-  const [view, setView] = useState<any>('')
+  const { beasts } = useBeasts();
+  const { player } = usePlayer();
+  const [view, setView] = useState<any>('');
+
   useEffect(() => {
-    setView(account && player?.current_beast_id ? <Tamagotchi sdk={sdk} /> : account ? <SpawnBeast sdk={sdk} /> : <NewCover />);
-  }, [player, account])
+    const beast = beasts.find(beast => beast?.player === player?.address);
+    console.info('player', player);
+    console.info('beast', beast);
+    setView(account && player && beast ? <Tamagotchi /> : account ? <SpawnBeast /> : <NewCover />);
+  }, [account, beasts])
   
   return view;
 }

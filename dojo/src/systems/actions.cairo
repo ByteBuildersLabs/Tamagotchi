@@ -1,13 +1,17 @@
+// Types import
+use tamagotchi::models::beast_status::BeastStatus;
+
 // Interface definition
 #[starknet::interface]
-trait IActions<T> {
-    // Player methods
+pub trait IActions<T> {
+    // ------------------------- Init methods -------------------------
     fn spawn_player(ref self: T);
+    fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
     fn add_initial_food(ref self: T);
-    fn set_current_beast(ref self: T, beast_id: u32);
-    // Beast Methods
-    fn spawn(ref self: T, specie: u32, beast_type: u32);
-    fn decrease_status(ref self: T);
+    fn set_current_beast(ref self: T, beast_id: u16);
+
+    // ------------------------- Beast methods -------------------------
+    fn update_beast_status(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
     fn awake(ref self: T);
@@ -15,45 +19,56 @@ trait IActions<T> {
     fn pet(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
-    // Other methods
+
+    // ------------------------- Other methods -------------------------
     fn init_tap_counter(ref self: T);
-    fn tap(ref self: T, specie: u32, beast_type: u32);
+    fn tap(ref self: T, specie: u8, beast_type: u8);
+
+    // ------------------------- Read Calls -------------------------
+    fn get_timestamp_based_status(ref self: T) -> BeastStatus;
+    fn get_beast_age(ref self: T) -> u16;
 }
 
 #[dojo::contract]
 pub mod actions {
     // Starknet imports
-    use starknet::{ContractAddress, get_caller_address};
-    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::{ContractAddress};
+    use starknet::get_block_timestamp;
+    use starknet::storage::{
+        Map,   
+        StoragePointerWriteAccess, 
+        StoragePointerReadAccess, 
+        StoragePathEntry
+    };
     
     // Local import
     use super::{IActions};
     
     // Model imports
-    use babybeasts::models::beast::{Beast, BeastTrait};
-    use babybeasts::models::beast_stats::{BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus, BeastStatusTrait};
-    use babybeasts::models::player::{Player, PlayerAssert};
-    use babybeasts::models::food::{Food};
-    
-    // types import
-    use babybeasts::types::food::{FoodType};
+    #[allow(unused_imports)]
+    use tamagotchi::models::beast::{Beast, BeastTrait};
+    use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
+    use tamagotchi::models::player::{Player, PlayerAssert};
+    use tamagotchi::models::food::{Food};
 
     // Constants import
-    use babybeasts::constants;
+    use tamagotchi::constants;
 
     // Store import
-    use babybeasts::store::{Store, StoreTrait};
+    use tamagotchi::store::{StoreTrait};
 
     // Dojo Imports
-    use dojo::model::{ModelStorage, ModelValueStorage};
+    #[allow(unused_imports)]
+    use dojo::model::{ModelStorage};
+
+    #[allow(unused_imports)]
     use dojo::event::EventStorage;
 
     // Storage
     #[storage]
     struct Storage {
-        beast_counter: u32,
-        tap_counter: Map<ContractAddress, u32>
+        beast_counter: u16,
+        tap_counter: Map<ContractAddress, u8>,
     }
 
     // Constructor
@@ -64,8 +79,9 @@ pub mod actions {
     // Implementation of the interface methods
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
+        // ------------------------- Init methods -------------------------
         fn spawn_player(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             store.new_player();
@@ -73,16 +89,28 @@ pub mod actions {
             self.add_initial_food();
             self.init_tap_counter();
         }
+        
+        fn spawn_beast(ref self: ContractState, specie: u8, beast_type: u8) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let current_beast_id = self.beast_counter.read();
+
+            store.new_beast_status(current_beast_id);
+            store.new_beast(current_beast_id, specie, beast_type);
+
+            self.beast_counter.write(current_beast_id+1);
+        }
 
         fn add_initial_food(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             store.init_player_food();
         }
         
-        fn set_current_beast(ref self: ContractState, beast_id: u32) {
-            let mut world = self.world(@"babybeasts");
+        fn set_current_beast(ref self: ContractState, beast_id: u16) {
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             let mut player: Player = store.read_player();
@@ -92,81 +120,29 @@ pub mod actions {
             store.write_player(@player);
         }
 
-        fn spawn(ref self: ContractState, specie: u32, beast_type: u32) {
-            let mut world = self.world(@"babybeasts");
-            let store = StoreTrait::new(world);
-            
-            let current_beast_id = self.beast_counter.read();
-
-            store.new_beast_stats(current_beast_id);
-            store.new_beast_status(current_beast_id);
-            store.new_beast(current_beast_id, specie, beast_type);
-
-            self.beast_counter.write(current_beast_id+1);
-        }
-
-        fn decrease_status(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+         // ------------------------- Beast methods -------------------------
+         // This method is used to update the beast related models and write it to the world
+        fn update_beast_status(ref self: ContractState) {
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
+
             let beast_id = player.current_beast_id;
+            let mut beast_status: BeastStatus = store.read_beast_status(beast_id);
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
-
-            if beast_status.is_alive == true {
-                // Decrease energy based on conditions
-                if beast_status.happiness == 0 || beast_status.hygiene == 0 {
-                    beast_status.energy = if beast_status.energy >= 2 {
-                        beast_status.energy - 2
-                    } else {
-                        0
-                    };
-                } else {
-                    beast_status.energy = if beast_status.energy >= 1 {
-                        beast_status.energy - 1
-                    } else {
-                        0
-                    };
-                }
-
-                // Decrease hunger safely
-                beast_status.hunger = if beast_status.hunger >= 2 {
-                    beast_status.hunger - 2
-                } else {
-                    0
-                };
-
-                // Decrease happiness safely 
-                beast_status.happiness = if beast_status.happiness >= 1 {
-                    beast_status.happiness - 1
-                } else {
-                    0
-                };
-
-                // Decrease hygiene safely
-                beast_status.hygiene = if beast_status.hygiene >= 1 {
-                    beast_status.hygiene - 1
-                } else {
-                    0
-                };
-
-                // Check if beast dies
-                if beast_status.energy == 0 || beast_status.hunger == 0 {
-                    beast_status.is_alive = false;
-                }
-
-               // update beast clean status
-               beast_status.update_clean_status(beast_status.hygiene);
-
-                store.write_beast(@beast);
-                store.write_beast_status(@beast_status);
-            }
+            
+            let current_timestamp = get_block_timestamp();
+            beast_status.calculate_timestamp_based_status(current_timestamp);
+            beast.calculate_age(current_timestamp);
+            
+            store.write_beast(@beast);
+            store.write_beast_status(@beast_status);
         }
 
         fn feed(ref self: ContractState, food_id: u8) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
@@ -174,13 +150,15 @@ pub mod actions {
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
             let mut food: Food = store.read_food(food_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+           
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 // Validate food is not negative
                 if food.amount > 0 {
                     food.amount = food.amount - 1;
-                    // Get stats accordingly to the beast favorite meals
+                    // Get status accordingly to the beast favorite meals
                     let (hunger, happiness, energy) = beast.feed(food_id);
                     beast_status.hunger = beast_status.hunger + hunger;
                     beast_status.happiness = beast_status.happiness + happiness;
@@ -204,14 +182,16 @@ pub mod actions {
         }
 
         fn sleep(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.energy = beast_status.energy + constants::XL_UPDATE_POINTS;
@@ -229,14 +209,16 @@ pub mod actions {
         }
 
         fn awake(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+           // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.is_awake = true;
@@ -246,15 +228,16 @@ pub mod actions {
         }
 
         fn play(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
-            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 // Increase happiness
@@ -277,32 +260,22 @@ pub mod actions {
                     0
                 };
 
-                beast_stats.experience = beast_stats.experience + constants::S_UPDATE_POINTS;
-                if beast_stats.experience >= beast_stats.next_level_experience {
-                    beast_stats.level = beast_stats.level + 1;
-                    // Evolution level reached
-                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
-                        beast.evolved = true;
-                        beast.vaulted = true;
-                    }
-                    beast_stats.experience = 0;
-                    beast_stats.next_level_experience = beast_stats.next_level_experience + constants::NEXT_LEVEL_EXPERIENCE;
-                }
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 
         fn pet(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == true {
                 beast_status.energy = beast_status.energy + constants::S_UPDATE_POINTS;
@@ -313,22 +286,23 @@ pub mod actions {
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast_status.is_awake = false;
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
             }
         }
 
         fn clean(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
-            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
+
 
             if beast_status.is_alive == true {
                 beast_status.hygiene = beast_status.hygiene + constants::XL_UPDATE_POINTS;
@@ -339,39 +313,25 @@ pub mod actions {
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
-                beast_stats.experience = beast_stats.experience + constants::L_UPDATE_POINTS;
-                if beast_stats.experience >= beast_stats.next_level_experience {
-                    beast_stats.level = beast_stats.level + 1;
-                    // Evolution level reached
-                    if beast_stats.level >= constants::MAX_BABY_LEVEL {
-                        beast.evolved = true;
-                        beast.vaulted = true;
-                    }
-                    beast_stats.experience = 0;
-                    beast_stats.next_level_experience = beast_stats.next_level_experience + constants::NEXT_LEVEL_EXPERIENCE;
-                    beast_stats.attack = beast_stats.attack + 1;
-                    beast_stats.defense = beast_stats.defense + 1;
-                    beast_stats.speed = beast_stats.speed + 1;
-                }
                 // update beast clean status
                 beast_status.update_clean_status(beast_status.hygiene);
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 
         fn revive(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
-            let mut beast_status = store.read_beast_status(beast_id);
-            let mut beast_stats = store.read_beast_stats(beast_id);
+
+            // Status retrieved by calculation
+            let mut beast_status = self.get_timestamp_based_status();
 
             if beast_status.is_alive == false {
                 beast_status.is_alive = true;
@@ -379,61 +339,72 @@ pub mod actions {
                 beast_status.energy = 100;
                 beast_status.happiness = 100;
                 beast_status.hygiene = 100;
-                beast_stats.experience = 0;
-
-                // Reduce attack safety avoiding overflow
-                beast_stats.attack = if beast_stats.attack >= 1 {
-                    beast_stats.attack - 1
-                } else {
-                    0
-                };
-
-                // Reduce defense safety avoiding overflow
-                beast_stats.defense = if beast_stats.defense >= 1 {
-                    beast_stats.defense - 1
-                } else {
-                    0
-                };
-
-                // Reduce speed safety avoiding overflow
-                beast_stats.speed = if beast_stats.speed >= 1 {
-                    beast_stats.speed - 1
-                } else {
-                    0
-                };
 
                 store.write_beast(@beast);
                 store.write_beast_status(@beast_status);
-                store.write_beast_stats(@beast_stats);
             }
         }
 
+        // ------------------------- Other methods -------------------------
         fn init_tap_counter(ref self: ContractState) {
-            let mut world = self.world(@"babybeasts");
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
 
-            self.tap_counter.write(player.address, 0);
+            self.tap_counter.entry(player.address).write(0);
         }
 
 
-        fn tap(ref self: ContractState, specie: u32, beast_type: u32) {
-            let mut world = self.world(@"babybeasts");
+        fn tap(ref self: ContractState, specie: u8, beast_type: u8) {
+            let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             
             let player: Player = store.read_player();
             player.assert_exists();
 
-            let current_tap_counter = self.tap_counter.read(player.address);
+            let current_tap_counter = self.tap_counter.entry(player.address).read();
 
             if current_tap_counter == constants::MAX_TAP_COUNTER {
-                self.spawn(specie, beast_type);
+                self.spawn_beast(specie, beast_type);
                 self.init_tap_counter();
             }
 
-            self.tap_counter.write(player.address, current_tap_counter+1);
+            self.tap_counter.entry(player.address).write(current_tap_counter+1);
+        }
+
+        // ------------------------- Read Calls -------------------------
+        fn get_timestamp_based_status(ref self: ContractState) -> BeastStatus {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
+
+            let beast_id = player.current_beast_id;
+            let mut beast_status = store.read_beast_status(beast_id);
+            
+            let current_timestampt = get_block_timestamp();
+            beast_status.calculate_timestamp_based_status(current_timestampt);
+
+            beast_status
+        }
+
+        fn get_beast_age(ref self: ContractState) -> u16 {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
+
+            let beast_id = player.current_beast_id;
+            let mut beast: Beast = store.read_beast(beast_id);
+
+            let current_timestampt = get_block_timestamp();
+            beast.calculate_age(current_timestampt);
+            
+            beast.age
         }
     }
 }

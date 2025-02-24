@@ -1,11 +1,10 @@
 import toast, { Toaster } from 'react-hot-toast';
 import { Account } from '@dojoengine/torii-wasm';
 import { Button } from '../../../components/ui/button';
-import Food from '../../../assets/img/food.png';
-import Sleep from '../../../assets/img/sleep.png';
-import Clean from '../../../assets/img/clean.png';
-import Play from '../../../assets/img/play.png';
-import WakeUp from '../../../assets/img/wakeup.png';
+import Food from '../../../assets/img/Feed.svg';
+import Sleep from '../../../assets/img/Sleep.svg';
+import Clean from '../../../assets/img/Clean.svg';
+import Play from '../../../assets/img/Play.svg';
 import beastsDex from '../../../data/beastDex';
 import './main.css';
 
@@ -16,8 +15,6 @@ const actionButtons: { label: string, img: string | null, action: string, pictur
   { label: "Sleep", img: Sleep, action: "sleep", pictureKey: "sleepPicture" },
   { label: "Clean", img: Clean, action: "clean", pictureKey: "cleanPicture" },
   { label: "Play", img: Play, action: "play", pictureKey: "playPicture" },
-  { label: "Wake up", img: WakeUp, action: "wa", pictureKey: "idlePicture" },
-  { label: "Revive", img: null, action: "revive", pictureKey: "idlePicture", isRevive: true }
 ];
 
 const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client, setCurrentView }: { 

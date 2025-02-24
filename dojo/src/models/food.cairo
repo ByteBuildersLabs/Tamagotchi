@@ -1,15 +1,14 @@
 // Starknet import
 use starknet::ContractAddress;
 
-#[derive(Drop, Serde, Debug)]
+#[derive(Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct Food {
     #[key]
     pub player: ContractAddress, 
     #[key]
     pub id: u8,
-    pub name: felt252,
-    pub amount: u32,
+    pub amount: u8,
 }
 
 
@@ -26,14 +25,12 @@ mod tests {
         let food = Food {
             player: player_address,
             id: 1_u8,
-            name: 'Apple',
-            amount: 5_u32,
+            amount: 5_u8,
         };
 
         assert_eq!(food.player, player_address, "Player address should match");
         assert_eq!(food.id, 1_u8, "Food ID should be 1");
-        assert_eq!(food.name, 'Apple', "Food name should be 'Apple'");
-        assert_eq!(food.amount, 5_u32, "Food amount should be 5");
+        assert_eq!(food.amount, 5_u8, "Food amount should be 5");
     }
 
     #[test]
@@ -44,20 +41,17 @@ mod tests {
         let apple = Food {
             player: player_address,
             id: 1_u8,
-            name: 'Apple',
-            amount: 5_u32,
+            amount: 5_u8,
         };
 
         let banana = Food {
             player: player_address,
             id: 2_u8,
-            name: 'Banana',
-            amount: 3_u32,
+            amount: 3_u8,
         };
 
         assert_eq!(apple.player, banana.player, "Both foods should belong to same player");
         assert!(apple.id != banana.id, "Food items should have different IDs");
-        assert!(apple.name != banana.name, "Food items should have different names");
     }
 
     #[test]
@@ -69,20 +63,17 @@ mod tests {
         let player1_food = Food {
             player: player1_address,
             id: 1_u8,
-            name: 'Apple',
-            amount: 5_u32,
+            amount: 5_u8,
         };
 
         let player2_food = Food {
             player: player2_address,
             id: 1_u8,
-            name: 'Apple',
-            amount: 3_u32,
+            amount: 3_u8,
         };
 
         assert!(player1_food.player != player2_food.player, "Foods should belong to different players");
         assert_eq!(player1_food.id, player2_food.id, "Foods can have same ID for different players");
-        assert_eq!(player1_food.name, player2_food.name, "Foods should have same name");
     }
 
     #[test]
@@ -93,10 +84,9 @@ mod tests {
         let food = Food {
             player: player_address,
             id: 1_u8,
-            name: 'Apple',
-            amount: 0_u32,
+            amount: 0_u8,
         };
 
-        assert_eq!(food.amount, 0_u32, "Food amount should be 0");
+        assert_eq!(food.amount, 0_u8, "Food amount should be 0");
     }
 }

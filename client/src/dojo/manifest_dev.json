@@ -1,9 +1,9 @@
 {
   "world": {
-    "class_hash": "0x45575a88cc5cef1e444c77ce60b7b4c9e73a01cbbe20926d5a4c72a94011410",
-    "address": "0x7ec5e441bcf6b4f575d7c5d1169713f1ecd48d7a8b8c0ef40c188ff0a20a99c",
-    "seed": "babybeasts",
-    "name": "Dojo starter",
+    "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
+    "address": "0x6ab051c6e8ddf7fd3481b7e09f681116948dc7e9a960023c985484c85630302",
+    "seed": "tamagotchi",
+    "name": "ByteBeasts Tamagotchi",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -11,6 +11,7 @@
       "register_event",
       "register_model",
       "register_contract",
+      "register_library",
       "init_contract",
       "upgrade_event",
       "upgrade_model",
@@ -78,6 +79,10 @@
           {
             "name": "Unregistered",
             "type": "()"
+          },
+          {
+            "name": "Library",
+            "type": "(core::starknet::class_hash::ClassHash, core::felt252)"
           }
         ]
       },
@@ -358,6 +363,34 @@
             "outputs": [
               {
                 "type": "core::starknet::contract_address::ContractAddress"
+              }
+            ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "register_library",
+            "inputs": [
+              {
+                "name": "namespace",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "class_hash",
+                "type": "core::starknet::class_hash::ClassHash"
+              },
+              {
+                "name": "name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "version",
+                "type": "core::byte_array::ByteArray"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::starknet::class_hash::ClassHash"
               }
             ],
             "state_mutability": "external"
@@ -967,6 +1000,28 @@
       },
       {
         "type": "event",
+        "name": "dojo::world::world_contract::world::LibraryRegistered",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "namespace",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "class_hash",
+            "type": "core::starknet::class_hash::ClassHash",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
         "name": "dojo::world::world_contract::world::EventEmitted",
         "kind": "struct",
         "members": [
@@ -1207,6 +1262,11 @@
             "kind": "nested"
           },
           {
+            "name": "LibraryRegistered",
+            "type": "dojo::world::world_contract::world::LibraryRegistered",
+            "kind": "nested"
+          },
+          {
             "name": "EventEmitted",
             "type": "dojo::world::world_contract::world::EventEmitted",
             "kind": "nested"
@@ -1252,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x76c919037528de22722814b53b5ba81984995da0bbca2c092946bd82ef57b82",
-      "class_hash": "0x3ee6d65dc58393b5ca77599837e8b8f15092c3af661eba356aeb7528c436fc7",
+      "address": "0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da",
+      "class_hash": "0xe7feb188bdbd10f6ec3055417803f09009073e74a65baa48ec36c339a1e672",
       "abi": [
         {
           "type": "impl",
@@ -1315,11 +1375,11 @@
         {
           "type": "impl",
           "name": "ActionsImpl",
-          "interface_name": "babybeasts::systems::actions::IActions"
+          "interface_name": "tamagotchi::systems::actions::IActions"
         },
         {
           "type": "interface",
-          "name": "babybeasts::systems::actions::IActions",
+          "name": "tamagotchi::systems::actions::IActions",
           "items": [
             {
               "type": "function",
@@ -1341,7 +1401,7 @@
               "inputs": [
                 {
                   "name": "beast_id",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u16"
                 }
               ],
               "outputs": [],
@@ -1353,11 +1413,11 @@
               "inputs": [
                 {
                   "name": "specie",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u8"
                 },
                 {
                   "name": "beast_type",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u8"
                 }
               ],
               "outputs": [],
@@ -1437,11 +1497,11 @@
               "inputs": [
                 {
                   "name": "specie",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u8"
                 },
                 {
                   "name": "beast_type",
-                  "type": "core::integer::u32"
+                  "type": "core::integer::u8"
                 }
               ],
               "outputs": [],
@@ -1541,7 +1601,7 @@
         },
         {
           "type": "event",
-          "name": "babybeasts::systems::actions::actions::Event",
+          "name": "tamagotchi::systems::actions::actions::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1558,8 +1618,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "babybeasts-actions",
-      "selector": "0x7886698fbdc0e5f1e0bf58171ec906ef1550f3c501a0dcf3233ef94f85d5552",
+      "tag": "tamagotchi-actions",
+      "selector": "0x6a3f87b1bc5ef116efb19b582b8cb03ae569dd55e62065c6d6213c352191f97",
       "systems": [
         "dojo_init",
         "spawn_player",
@@ -1580,37 +1640,39 @@
       ]
     }
   ],
+  "libraries": [],
   "models": [
     {
       "members": [],
-      "class_hash": "0x2d49a63a2ce64dd2c3d701d94a22d58b1b296a280d821401bd350097b1c14c8",
-      "tag": "babybeasts-Beast",
-      "selector": "0x732389d6015adc6fe9f89178baa6ca00bedabbf5112ada86e346b35dc00f52d"
+      "class_hash": "0x64d2232e0abce090758d072b3ebd34867cfa3423a7e92360098fc53c040782",
+      "tag": "tamagotchi-Beast",
+      "selector": "0x797d07b8fd13e637ef738a275f2e895655f27905cdd62f75d82d68f239479f8"
     },
     {
       "members": [],
-      "class_hash": "0x46bde90e9ba171fad882c475baf11601276b428ca6fbe986106dc0cc40d0b51",
-      "tag": "babybeasts-BeastStats",
-      "selector": "0x60ca89d7ca2b67cc313a6c1bd0c378db32413648e60ba5a4bcdc9293e6c106b"
+      "class_hash": "0x61cc3c3327a28f69c8663288aae37271bd0de51f088d6a08baed046feb81aa",
+      "tag": "tamagotchi-BeastStats",
+      "selector": "0x1cf27e114d3402508bb9faec2f88010f024e88697a28e871c2f5e2382f2b7f5"
     },
     {
       "members": [],
-      "class_hash": "0x682549cc5fe9830c5712b09563467f79321f66a2d56f907cfbd1f6efd7d030a",
-      "tag": "babybeasts-BeastStatus",
-      "selector": "0x486637d8e901f62d33ea32ba9d422da47215bab88fbfc17600f374b67ef5cf7"
+      "class_hash": "0x3787a94cf26de59fe626092c11bc6ad7fcacc7bdcee32c6fe2deda0207741a5",
+      "tag": "tamagotchi-BeastStatus",
+      "selector": "0x7dd28052791e63bdc06d6ba2a8eca548b4580c2e83bb96c03ef0a2d84f8ffde"
     },
     {
       "members": [],
-      "class_hash": "0x65e8a1b6321df9692170741c5929ee97c710e96b56eb02f866fdcf1f4e38cb6",
-      "tag": "babybeasts-Food",
-      "selector": "0x10460a3553cf7bff6e420a03fac2201ca0ee9a8a53a3e341778312aed149cea"
+      "class_hash": "0x5ddefda5a5873f3195172aa809b35954af1c6e36f393d359ca01b031522ff45",
+      "tag": "tamagotchi-Food",
+      "selector": "0x515fa0d107ea8c7ab17045bdd20faae7193cc1ea09750d35f74ebb0a94da3cc"
     },
     {
       "members": [],
-      "class_hash": "0x73c68ca518f44c9b8dc248b67b3ded9ff091f36ec4fd48d862c5adfb3790622",
-      "tag": "babybeasts-Player",
-      "selector": "0x5b8675237fd08b102b4cee4597247100c7520fe0a70a8322c1971e7b0b9eb8a"
+      "class_hash": "0x10ab169ff73e2388744e47dc584e013bdcd39dab819979ad838ac2bd39e10ab",
+      "tag": "tamagotchi-Player",
+      "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
   ],
-  "events": []
+  "events": [],
+  "external_contracts": []
 }

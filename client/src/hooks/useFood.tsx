@@ -1,55 +1,67 @@
-import { useEffect, useState } from "react";
-import { SDK } from "@dojoengine/sdk";
-import { SchemaType } from "../dojo/bindings.ts";
+import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
+import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useAccount } from "@starknet-react/core";
-import { useDojoStore } from "../main.tsx";
-import { addAddressPadding } from "starknet";
+import { useEffect, useMemo } from "react";
+import { AccountInterface, addAddressPadding } from "starknet";
+import { ModelsMapping } from "../dojo/bindings";
 
-export const useFood = (sdk: SDK<SchemaType>) => {
+export const useFood = () => {
+  const { useDojoStore, sdk } = useDojoSDK();
   const { account } = useAccount();
   const state = useDojoStore((state) => state);
+  // const entities = useDojoStore((state) => state.entities);
 
-  const [foods, setFoods] = useState<any>([]);
+  const entityId = useMemo(() => {
+    if (account) {
+      return getEntityIdFromKeys([BigInt(account.address)]);
+    }
+    return BigInt(0);
+  }, [account]);
 
   useEffect(() => {
-    if (!account) return;
-    const fetchEntities = async () => {
-      try {
-        await sdk.getEntities(
-          {
-            babybeasts: {
-              Food: {
-                $: {
-                  where: {
-                    player: {
-                      $eq: addAddressPadding(account.address),
-                    },
-                  },
-                },
-              },
-            },
-          },
-          (resp) => {
-            if (resp.error) {
-              console.error("resp.error.message:", resp.error.message);
-              return;
-            }
-            if (resp.data) {
-              const foodsData = resp.data.map((entity) => entity.models.babybeasts.Food);
-              setFoods(foodsData);
-              state.setEntities(resp.data);
-            }
+    let unsubscribe: (() => void) | undefined;
+
+    const subscribe = async (account: AccountInterface) => {
+      const [initialData, subscription] = await sdk.subscribeEntityQuery({
+        query: new ToriiQueryBuilder()
+          .withClause(
+            // Querying Moves and Position models that has at least [account.address] as key
+            KeysClause(
+              [ModelsMapping.Food],
+              [addAddressPadding(account.address)],
+              "VariableLen"
+            ).build()
+          )
+          .includeHashedKeys(),
+        callback: ({ error, data }) => {
+          if (error) {
+            console.error("Error setting up entity sync:", error);
+          } else if (data && data[0].entityId !== "0x0") {
+            state.updateEntity(data[0]);
           }
-        );
-      } catch (error) {
-        console.error("Error querying entities:", error);
-      }
+        },
+      });
+
+      state.setEntities(initialData);
+
+      unsubscribe = () => subscription.cancel();
     };
 
-    fetchEntities();
-  }, [sdk, account]);
+    if (account) {
+      subscribe(account);
+    }
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [sdk, account, state]);
+
+  const food = useModel(entityId as string, ModelsMapping.Food);
 
   return {
-    foods,
+    food,
   };
 };

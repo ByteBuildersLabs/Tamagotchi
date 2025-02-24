@@ -33,11 +33,7 @@
 }
 
 .body.day {
-  background-image: url('./assets/img/daybackground.jpg');
-}
-
-.body.night {
-  background-image: url('./assets/img/nightbackground.png');
+  background-image: url('./assets/img/daybackground.png');
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -125,7 +121,7 @@ p, span {
 
 .disconnect-button {
   width: 35%;
-  padding: 12px 10px;
+  padding: 0 10px;
   margin: 0;
   background-color: #370001;
   border-radius: 15px;

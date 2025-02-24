@@ -1,36 +1,32 @@
-mod utils {
+pub mod utils {
     // Starknet imports
-    use starknet::testing::{set_contract_address, set_account_contract_address};
-    use starknet::{ContractAddress, contract_address_const};
+    use starknet::testing::{set_contract_address, set_account_contract_address, set_block_timestamp};
+    use starknet::{ContractAddress};
     
     // Dojo imports
     use dojo_cairo_test::WorldStorageTestTrait;
-    use dojo::model::{ModelStorage, ModelStorageTest};
     use dojo::world::{WorldStorageTrait, WorldStorage};
     use dojo_cairo_test::{
         spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
     };
 
     // Game imports
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use babybeasts::models::beast::{Beast, m_Beast};
-    use babybeasts::models::beast_stats::{BeastStats, m_BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus, m_BeastStatus};
-    use babybeasts::models::player::{Player, m_Player};
-    use babybeasts::models::food::{Food, m_Food};
-    use babybeasts::constants;
+    use tamagotchi::systems::actions::{actions, IActionsDispatcher};
+    use tamagotchi::models::beast::{m_Beast};
+    use tamagotchi::models::beast_status::{m_BeastStatus};
+    use tamagotchi::models::player::{m_Player};
+    use tamagotchi::models::food::{m_Food};
 
     // Constants
-    fn PLAYER() -> ContractAddress {
+    pub fn PLAYER() -> ContractAddress {
         starknet::contract_address_const::<'PLAYER'>()
     }
 
-    fn namespace_def() -> NamespaceDef {
+    pub fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
-            namespace: "babybeasts",
+            namespace: "tamagotchi",
             resources: [
                 TestResource::Model(m_Beast::TEST_CLASS_HASH),
-                TestResource::Model(m_BeastStats::TEST_CLASS_HASH),
                 TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),
@@ -41,16 +37,16 @@ mod utils {
         ndef
     }
 
-    fn contract_defs() -> Span<ContractDef> {
+    pub fn contract_defs() -> Span<ContractDef> {
         [
-            ContractDefTrait::new(@"babybeasts", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"babybeasts")].span())
+            ContractDefTrait::new(@"tamagotchi", @"actions")
+                .with_writer_of([dojo::utils::bytearray_hash(@"tamagotchi")].span())
         ]
             .span()
     }
 
 
-    fn actions_system_world() -> (IActionsDispatcher, WorldStorage){
+    pub fn actions_system_world() -> (IActionsDispatcher, WorldStorage){
          // Initialize test environment
          let ndef = namespace_def();
 
@@ -68,9 +64,13 @@ mod utils {
     // set_contract_address: used to define the address of the calling contract,
     // set_account_contract_address: used to define the address of the account used for the current
     // transaction.
-    fn cheat_caller_address(address: ContractAddress) {
+    pub fn cheat_caller_address(address: ContractAddress) {
         set_contract_address(address);
         set_account_contract_address(address);
+    }
+
+    pub fn cheat_block_timestamp(timestamp: u64) {
+        set_block_timestamp(timestamp);
     }
 
 }

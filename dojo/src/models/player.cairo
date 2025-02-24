@@ -1,24 +1,22 @@
 // Starknet import
 use starknet::ContractAddress;
+use core::num::traits::zero::Zero;
 
 // Constants imports
-use babybeasts::constants;
-
-// Model imports
-use babybeasts::models::beast::{Beast};
+use tamagotchi::constants;
 
 // Model
-#[derive(Copy, Drop, Serde, Debug)]
+#[derive(Copy, Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct Player {
     #[key]
     pub address: ContractAddress, 
-    pub current_beast_id: u32
+    pub current_beast_id: u16
 }
 
 // Traits Implementations
 #[generate_trait]
-impl PlayerAssert of AssertTrait {
+pub impl PlayerAssert of AssertTrait {
     #[inline(always)]
     fn assert_exists(self: Player) {
         assert(self.is_non_zero(), 'Player: Does not exist');
@@ -30,7 +28,7 @@ impl PlayerAssert of AssertTrait {
     }
 }
 
-impl ZeroablePlayerTrait of core::Zeroable<Player> {
+pub impl ZeroablePlayerTrait of Zero<Player> {
     #[inline(always)]
     fn zero() -> Player {
         Player {
@@ -40,12 +38,12 @@ impl ZeroablePlayerTrait of core::Zeroable<Player> {
     }
 
     #[inline(always)]
-    fn is_zero(self: Player) -> bool {
-        self.address == constants::ZERO_ADDRESS()
+    fn is_zero(self: @Player) -> bool {
+       *self.address == constants::ZERO_ADDRESS()
     }
 
     #[inline(always)]
-    fn is_non_zero(self: Player) -> bool {
+    fn is_non_zero(self: @Player) -> bool {
         !self.is_zero()
     }
 }
@@ -54,7 +52,7 @@ impl ZeroablePlayerTrait of core::Zeroable<Player> {
 #[cfg(test)]
 mod tests {
     use super::{Player, ZeroablePlayerTrait};
-    use babybeasts::constants;
+    use tamagotchi::constants;
     use starknet::{ContractAddress, contract_address_const};
 
     #[test]
@@ -62,7 +60,7 @@ mod tests {
     fn test_player_initialization() {
         // Use contract_address_const to create a mock address
         let mock_address: ContractAddress = contract_address_const::<0x123>();
-        let initial_beast_id: u32 = 1;
+        let initial_beast_id: u16 = 1;
 
         let player = Player {
             address: mock_address,

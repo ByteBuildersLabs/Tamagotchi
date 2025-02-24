@@ -1,5 +1,7 @@
+use core::traits::Into;
+
 #[derive(Copy, Drop, Serde)]
-enum FoodType {
+pub enum FoodType {
     Apple,
     Banana,
     Cherry,
@@ -19,7 +21,7 @@ enum FoodType {
     None
 }
 
-impl IntoFoodTypeFelt252 of core::Into<FoodType, felt252> {
+pub impl IntoFoodTypeFelt252 of Into<FoodType, felt252> {
     #[inline(always)]
     fn into(self: FoodType) -> felt252 {
         match self {
@@ -44,7 +46,7 @@ impl IntoFoodTypeFelt252 of core::Into<FoodType, felt252> {
     }
 }
 
-impl IntoFoodTypeU8 of core::Into<FoodType, u8> {
+pub impl IntoFoodTypeU8 of Into<FoodType, u8> {
     #[inline(always)]
     fn into(self: FoodType) -> u8 {
         match self {
@@ -69,7 +71,7 @@ impl IntoFoodTypeU8 of core::Into<FoodType, u8> {
     }
 }
 
-impl IntoU8FoodType of core::Into<u8, FoodType> {
+pub impl IntoU8FoodType of Into<u8, FoodType> {
     #[inline(always)]
     fn into(self: u8) -> FoodType {
         let food_type: u8 = self.into();

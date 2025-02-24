@@ -1,34 +1,15 @@
-import React, { useState } from "react";
-import useSound from "use-sound";
-import backgroundMusic from "../../assets/sounds/music.mp3";
 import music from "../../assets/img/music.svg";
-import './main.css';
+import { useMusic } from "../../context/contextMusic"; 
 
 function Music() {
-  const [isMuted, setIsMuted] = useState(false);
-  const [play, { stop, sound }] = useSound(backgroundMusic, {
-    loop: true,
-    volume: isMuted ? 0 : 0.3,
-  });
-
-  React.useEffect(() => {
-    play();
-    return () => stop();
-  }, [play, stop]);
-
-  const toggleMute = () => {
-    if (sound) {
-      setIsMuted((prev) => !prev);
-    }
-  };
+  // Get the state and the function to toggle the state from the custom context
+  const { isMuted, toggleMute } = useMusic();
 
   return (
-    <>
-      <button onClick={toggleMute} className="sound-button">
-        <img src={music} className={isMuted ? 'muted' : ''} />
-      </button>
-    </>
-  )
+    <button onClick={toggleMute} className="music-icon">
+      <img src={music} className={isMuted ? 'muted' : ''} alt="Music control" />
+    </button>
+  );
 }
 
 export default Music;

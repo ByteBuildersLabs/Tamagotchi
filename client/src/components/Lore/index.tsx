@@ -38,13 +38,13 @@ const Team: React.FC = () => {
               Byte Beasts - Welcome to Etheria
             </h4>
             <p className='mb-4'>
-              In a distant future, humanity left behind the cities of metal and concrete to inhabit a reborn world: Etheria, a planet where primordial energy flows like an invisible river, giving life to ancient creatures that emerge from mystical eggs
+              In a distant future, humanity left behind the cities of metal and concrete to inhabit a reborn world: Etheria, a land where primordial energy flows like an invisible river, giving life to ancient creatures that emerge from mystical eggs
             </p>
             <p className='mb-4'>
               These beings, known as Byte Beasts, are the embodiment of the elements and the Earth's very emotions. Among them, Celestial Dragons soar through the skies with wings of fire and lightning, while Umbral Wolves roam the forests, shrouded in magical mist and living shadows.
             </p>
             <p className='mb-4'>
-              Humans (us), now divided into clans, compete for dominance over these beings, seeking to forge bonds with the beasts or subjugate them for war. In this world where technology and magic intertwine, the key to power lies with those who can truly understand the spirit of the Byte Beasts.
+              Humans, now divided into clans, compete for dominance over these beings, seeking to forge bonds with the beasts or subjugate them for war. In this world where technology and magic intertwine, the key to power lies with those who can truly understand the spirit of the Byte Beasts.
             </p>
             <p className='mb-4'>
               But deep within Etheria, an ancient egg pulses with dark energy, waiting for the moment to awaken...

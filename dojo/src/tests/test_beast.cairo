@@ -1,25 +1,13 @@
 #[cfg(test)]
 mod tests {
-    use starknet::{ContractAddress, get_caller_address};
-    use dojo_cairo_test::WorldStorageTestTrait;
-    use dojo::model::{ModelStorage, ModelStorageTest};
-    use dojo::world::WorldStorageTrait;
-    use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
-    };
+    use dojo::model::{ModelStorage};
 
     // Import the interface and implementations
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
+    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
 
     // Import models and types
-    use babybeasts::models::food::{Food, m_Food};
-    use babybeasts::models::beast::{Beast, m_Beast};
-    use babybeasts::models::beast_status::{BeastStatus, m_BeastStatus};
-    use babybeasts::models::beast_stats::{BeastStats, m_BeastStats};
-    use babybeasts::models::player::{Player, m_Player};
-    use babybeasts::types::food::{FoodType};
-    use babybeasts::constants;
-    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::models::beast::{Beast};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
 
     #[test]
     fn test_spawn_beast() {
@@ -32,19 +20,45 @@ mod tests {
         actions_system.spawn_player();
 
         // Spawn beast with specie 1
-        actions_system.spawn(1, 1);
+        actions_system.spawn_beast(1, 1);
         actions_system.set_current_beast(1);
 
         // Get beast data
         let beast: Beast = world.read_model((PLAYER(), 1));
-        println!("Beast Data - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
-            beast.beast_id, beast.specie, beast.evolved, beast.vaulted);
+        println!("Beast Data - ID: {}, Specie: {}", 
+            beast.beast_id, beast.specie);
 
         // Verify initial beast state
         assert(beast.beast_id == 1, 'wrong beast id');
         assert(beast.specie == 1, 'wrong specie');
-        assert(!beast.evolved, 'should not be evolved');
-        assert(!beast.vaulted, 'should not be vaulted');
+    }
+
+    #[test]
+    fn test_beast_age() {
+        // Initialize test environment
+        let (actions_system, _) = actions_system_world();
+
+        cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
+
+        actions_system.spawn_player();
+        actions_system.spawn_beast(1, 1);
+        actions_system.set_current_beast(1);
+
+        // Get beast age
+        cheat_block_timestamp(7172000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 1, 'wrong beast age');
+
+        // Get beast age
+        cheat_block_timestamp(7173000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 2, 'wrong beast age');
+
+        // Get beast age
+        cheat_block_timestamp(7260000);
+        let age: u16 = actions_system.get_beast_age();
+        assert(age == 3, 'wrong beast age');
     }
 
     #[test]
@@ -58,9 +72,9 @@ mod tests {
         actions_system.spawn_player();
 
         // Spawn multiple beasts
-        actions_system.spawn(1, 1); // First beast, specie 1
-        actions_system.spawn(2 , 2); // Second beast, specie 2
-        actions_system.spawn(3, 3); // Third beast, specie 3
+        actions_system.spawn_beast(1, 1); // First beast, specie 1
+        actions_system.spawn_beast(2 , 2); // Second beast, specie 2
+        actions_system.spawn_beast(3, 3); // Third beast, specie 3
 
         // Read and verify each beast
         let beast1: Beast = world.read_model((PLAYER(), 1));
@@ -76,42 +90,4 @@ mod tests {
         assert(beast2.beast_id == 2 && beast2.specie == 2, 'wrong beast 2 data');
         assert(beast3.beast_id == 3 && beast3.specie == 3, 'wrong beast 3 data');
     }
-
-
-    #[test]
-    fn test_beast_evolution() {
-        // Initialize test environment
-        let (actions_system, world) = actions_system_world();
-
-        cheat_caller_address(PLAYER());
-
-        // Setup player and beast
-        actions_system.spawn_player();
-        actions_system.spawn(1, 1);
-        actions_system.set_current_beast(1);
-
-        // Get initial beast state
-        let initial_beast: Beast = world.read_model((PLAYER(), 1));
-        println!("Initial Beast State - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
-            initial_beast.beast_id, initial_beast.specie, initial_beast.evolved, initial_beast.vaulted);
-
-        // Play many times to trigger evolution
-        let mut counter: u32 = 0;
-        while counter < 20 {
-            actions_system.play();
-            counter = counter + 1;
-        };
-
-        // Get final beast state
-        let final_beast: Beast = world.read_model((PLAYER(), 1));
-        println!("Final Beast State - ID: {}, Specie: {}, Evolved: {}, Vaulted: {}", 
-            final_beast.beast_id, final_beast.specie, final_beast.evolved, final_beast.vaulted);
-
-        // Verify evolution occurred
-        if final_beast.evolved {
-            assert(final_beast.vaulted, 'evolved beast should be vaulted');
-        }
-    }
-
-
 }

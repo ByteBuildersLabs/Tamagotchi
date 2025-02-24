@@ -1,11 +1,11 @@
 
-# BabyBeast Tamagotchi Game
-![HORIZONTAL 1](https://github.com/user-attachments/assets/23cf4504-95b4-492a-ab0d-1e98ffd79154)
+# ByteBeasts Tamagotchi
+![HORIZONTAL 1](client/src/assets/img/Branding/original-dark.png)
 
 
 
 ## 🌟 Overview
-Welcome to the ByteBeast Tamagotchi Game! 🎮 This interactive web-based game brings to life the magical creatures of Etheria known as Baby Beasts. 🐾 Players act as guardians responsible for nurturing and caring for their BabyBeast, building a unique bond and ensuring their companion grows strong and healthy. 💖
+Welcome to ByteBeasts Tamagotchi Game! 🎮 This interactive web-based game brings to life the magical creatures of Etheria known as ByteBeast. 🐾 Players act as guardians responsible for nurturing and caring for their BabyBeast, building a unique bond and ensuring their companion grows strong and healthy. 💖
 
 ## ✨ Features
 - **Interactive Gameplay** 🎭: Perform actions such as feeding, playing, cleaning, and ensuring rest to maintain your BabyBeast’s status.
@@ -16,7 +16,6 @@ Welcome to the ByteBeast Tamagotchi Game! 🎮 This interactive web-based game b
 ## 🎮 How to Play
 **Spawn Your Beast** 🐣:
 When you start the game, you need to spawn your beast. This initializes your pet with default stats.
-Command: `spawn()`
 
 **Understanding Your Beast's Stats** 📋:
 - **Hunger** 🍗: Indicates how hungry your beast is. Keep it fed to maintain its health.
@@ -36,7 +35,7 @@ Command: `spawn()`
 
 ### 📈 Managing Stats
 **Decreasing Stats** 🔻:
-Over time, your beast's stats will decrease. Hunger, energy, happiness, and hygiene will drop, so you need to regularly feed, play, clean, and let your beast sleep.
+Over time, your beast stats will decrease. Hunger, energy, happiness, and hygiene will drop, so you need to regularly feed, play, clean, and let your beast sleep.
 
 **Leveling Up** 🆙:
 As your beast gains experience from playing and being cleaned, it will level up. Each level increases its attack, defense, and speed stats. Experience needed for the next level increases with each level up.
@@ -46,33 +45,7 @@ Ensure that hunger and energy do not drop to 0, as this will cause your beast to
 
 Remember to regularly check and manage your beast's stats to keep it happy and healthy. Enjoy playing the Tamagotchi game! 🎉
 
-## 📷 Proof of Example:
-
-<div align="center">
-  <img src="client/src/assets/img/page1.png" style="max-width: 80%; height: auto;" alt="Example Page 1" />
-  <br />
-  <p><strong>Home</strong></p>
-  
-  <img src="client/src/assets/img/page2.png" style="max-width: 80%; height: auto;" alt="Example Page 2" />
-  <br />
-  <p><strong>Choose your BabyBeast 2</strong></p>
-  
-  <img src="client/src/assets/img/page3.png" style="max-width: 80%; height: auto;" alt="Example Page 3" />
-  <br />
-  <p><strong>Tamagotchi</strong></p>
-</div>
-
-
-
-Raise your BabyBeast, unlock its potential, and dive into the magical world of Etheria! 🌌
-
-### Next Steps - BabyBeast
-- Tamagotchi: Level up your babybeast and take care of it
-- Mintelo once it is at level 5 (compatibility for our next games)
-- 5 different Beasts with all their animations.
-- Professor Oak: Who has the lore of the game and all the knowledge of the beasts
-
-## Maintainers
+## Core Devs
 
 <table>
   <tr>
@@ -92,12 +65,6 @@ Raise your BabyBeast, unlock its potential, and dive into the magical world of E
       <img src="client/src/assets/img/marco.jpeg" width="100px;" alt="Maintainer: Marco"/>
       <br />
       <a href="https://t.me/coxmar23">Marco</a>
-      <br />
-    </td>
-    <td align="center">
-      <img src="client/src/assets/img/juan.jpeg" width="100px;" alt="Maintainer: Juan"/>
-      <br />
-      <a href="https://t.me/juandixcode">Juan</a>
       <br />
     </td>
     <td align="center">

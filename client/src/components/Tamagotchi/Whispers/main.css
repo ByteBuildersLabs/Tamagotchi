@@ -1,5 +1,5 @@
 .whispers {
-  height: 85px;
+  height: 70px;
   margin: 0 0 10px;
 }
 
@@ -21,6 +21,7 @@
   font-weight: bold;
   background: unset;
   background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
   color: #ECECDA;
   margin: 0;
 }
@@ -29,7 +30,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 247px;
+  height: 232px;
 }
 
 .whispers-chat .messages {
@@ -42,17 +43,47 @@
 }
 
 .whispers-chat .chat-input {
-  padding-right: 0;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.whispers-chat .chat-input .button {
-  width: 30%;
+.whispers-chat .chat-input input {
+  font-family: 'Kallisto';
+  padding: 10px;
+  margin: 0;
+  width: 100%;
+  height: 60px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #ECECDA;
+  border: 0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
+}
+
+.whispers-chat .chat-input input:focus {
+  outline: none;
+}
+
+.whispers-chat .chat-input input::placeholder {
+  color: #ECECDA;
+  transition: all 0.25s ease;
+}
+
+.whispers-chat .chat-input input:focus::placeholder {
+  opacity: 0.5;
 }
 
 .whispers-chat .message .user {
   color: #ECECDA;
+}
+
+.whispers-chat .button {
+  width: 30%;
 }
 
 .whispers-chat .message p {
@@ -63,6 +94,7 @@
   color: #ECECDA;
   margin-bottom: 5px;
   padding: 15px 10px;
+  border-radius: 15px;
 }
 
 .whispers-chat .Me p {

@@ -18,7 +18,7 @@ const BeastsDexGrid: React.FC = () => {
 
   useEffect(() => {
     const pics = beastsDex.reduce((acc, beast) => {
-      acc[beast.name] = beast.idlePicture;
+      acc[beast.name] = beast?.idlePicture;
       return acc;
     }, {} as Record<string, string>);
     setBeastImages(pics);

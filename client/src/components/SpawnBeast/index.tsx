@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
-import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
-import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
 import HatchJR from "../Joyride/HatchJR.tsx";
-import { useDojo } from "../../dojo/useDojo.tsx";
-import { SchemaType } from "../../dojo/bindings.ts";
-import { SDK } from "@dojoengine/sdk";
 import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
+import { useDojoSDK } from "@dojoengine/sdk/react";
+import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import './main.css';
 
-function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
+
+function SpawnBeast() {
   const { userAccount } = useGlobalContext();
+  const { client } = useDojoSDK();
+  const { player } = usePlayer();
   const { spawn } = useSystemCalls();
   const [loading, setLoading] = useState(false);
 
@@ -29,8 +29,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
     }
   }, []);
 
-  const navigate = useNavigate();
-
   const getRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -40,12 +38,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
   const notify = () => {
     toast("Your egg is hatching!", { duration: 5000 });
   }
-
-  const {
-    setup: { client }
-  } = useDojo();
-
-  const { player } = usePlayer(sdk);
 
   const spawnPlayer = async () => {
     if (!userAccount) return
@@ -90,8 +82,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
                 await spawnPlayer();
                 await new Promise(resolve => setTimeout(resolve, 5500));
                 setLoading(false);
-                navigate("/bag");
-                navigate("/hatch");
               }}>
                 {
                   loading ? loadingAnimation() : 'Create player'
@@ -106,7 +96,6 @@ function SpawnBeast({ sdk }: { sdk: SDK<SchemaType> }) {
                 await spawn(randomNumber);
                 await new Promise(resolve => setTimeout(resolve, 5500));
                 setLoading(false);
-                navigate("/bag");
               }}>
                 {
                   loading ? loadingAnimation() : 'Hatch your egg'

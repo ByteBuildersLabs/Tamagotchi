@@ -1,111 +1,67 @@
-import { useEffect, useMemo, useState } from "react";
-import { SDK } from "@dojoengine/sdk";
+import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
+import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { addAddressPadding } from "starknet";
-import { Models, SchemaType } from "../dojo/bindings.ts";
 import { useAccount } from "@starknet-react/core";
-import useModel from "../dojo/useModel.tsx";
-import { useDojoStore } from "../main.tsx";
+import { useEffect, useMemo } from "react";
+import { AccountInterface, addAddressPadding } from "starknet";
+import { ModelsMapping } from "../dojo/bindings";
 
-export const usePlayer = (sdk: SDK<SchemaType>) => {
+export const usePlayer = () => {
+  const { useDojoStore, sdk } = useDojoSDK();
   const { account } = useAccount();
   const state = useDojoStore((state) => state);
+  // const entities = useDojoStore((state) => state.entities);
 
-  const entityId = useMemo(
-    () => account?.address ? getEntityIdFromKeys([BigInt(account.address)]) : null,
-    [account?.address]
-  );
-
-  const playerData = useModel(entityId ?? "", Models.Player);
-  const [player, setPlayer] = useState(playerData);
-
-  const [players, setPlayers] = useState<any>([]);
+  const entityId = useMemo(() => {
+    if (account) {
+      return getEntityIdFromKeys([BigInt(account.address)]);
+    }
+    return BigInt(0);
+  }, [account]);
 
   useEffect(() => {
-    setPlayer(playerData);
-  }, [playerData]);
-
-  useEffect(() => {
-    if (!account) return;
     let unsubscribe: (() => void) | undefined;
 
-    const subscribe = async () => {
-      const subscription = await sdk.subscribeEntityQuery(
-        {
-          babybeasts: {
-            Player: {
-              $: {
-                where: {
-                  address: {
-                    $is: addAddressPadding(account.address),
-                  },
-                },
-              },
-            },
-          },
-        },
-        (response) => {
-          if (response.error) {
-            console.error("Error setting up entity sync:", response.error);
-          } else if (response.data && response.data[0].entityId !== "0x0") {
-            state.updateEntity(response.data[0]);
+    const subscribe = async (account: AccountInterface) => {
+      const [initialData, subscription] = await sdk.subscribeEntityQuery({
+        query: new ToriiQueryBuilder()
+          .withClause(
+            // Querying Moves and Position models that has at least [account.address] as key
+            KeysClause(
+              [ModelsMapping.Player ],
+              [addAddressPadding(account.address)],
+              "VariableLen"
+            ).build()
+          )
+          .includeHashedKeys(),
+        callback: ({ error, data }) => {
+          if (error) {
+            console.error("Error setting up entity sync:", error);
+          } else if (data && data[0].entityId !== "0x0") {
+            state.updateEntity(data[0]);
           }
         },
-        { logging: true }
-      );
+      });
+
+      state.setEntities(initialData);
 
       unsubscribe = () => subscription.cancel();
     };
 
-    subscribe();
+    if (account) {
+      subscribe(account);
+    }
 
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-  }, [sdk, account]);
+  }, [sdk, account, state]);
 
-  useEffect(() => {
-    if (!account) return;
-    const fetchEntities = async () => {
-      try {
-        await sdk.getEntities(
-          {
-            babybeasts: {
-              Player: {
-                $: {
-                  where: {
-                    // player: {
-                    //   $eq: addAddressPadding(account.address),
-                    // },
-                  },
-                },
-              },
-            },
-          },
-          (resp) => {
-            if (resp.error) {
-              console.error("resp.error.message:", resp.error.message);
-              return;
-            }
-            if (resp.data) {
-              const playersData = resp.data.map((entity) => entity.models.babybeasts.Player);
-              setPlayers(playersData);
-              state.setEntities(resp.data);
-            }
-          }
-        );
-      } catch (error) {
-        console.error("Error querying entities:", error);
-      }
-    };
-
-    fetchEntities();
-  }, [sdk, account]);
-
+  const player = useModel(entityId as string, ModelsMapping.Player);
+  
   return {
     player,
-    players,
   };
 };

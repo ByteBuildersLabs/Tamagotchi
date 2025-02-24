@@ -1,24 +1,28 @@
-import { useGlobalContext } from "../hooks/appContext.tsx";
 // import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useDojoStore } from "../main";
-import { useDojo } from "./useDojo";
 import { v4 as uuidv4 } from "uuid";
-import { Account } from "starknet";
+import { useAccount } from "@starknet-react/core";
+import { useDojoSDK } from "@dojoengine/sdk/react";
 
 export const useSystemCalls = () => {
-    const { userAccount } = useGlobalContext();
-
+    const { useDojoStore, client } = useDojoSDK();
     const state = useDojoStore((state) => state);
 
-    const {
-        setup: { client },
-    } = useDojo();
+    const { account } = useAccount();
 
+    /**
+     * Generates a unique entity ID based on the current account address.
+     * @returns {string} The generated entity ID
+     */
     // const generateEntityId = () => {
-    //     return account?.address ? getEntityIdFromKeys([BigInt(account.address)]) : null;
+    //     return getEntityIdFromKeys([BigInt(account!.address)]);
     // };
 
-    const spawn = async (specie:number) => {
+    /**
+     * Spawns a new entity with initial moves and handles optimistic updates.
+     * @returns {Promise<void>}
+     * @throws {Error} If the spawn action fails
+     */
+    const spawn = async (randomNumber:number) => {
         // Generate a unique entity ID
         // const entityId = generateEntityId();
 
@@ -26,32 +30,33 @@ export const useSystemCalls = () => {
         const transactionId = uuidv4();
 
         // The value to update the Moves model with
+        // const remainingMoves = 100;
+
         // Apply an optimistic update to the state
         // this uses immer drafts to update the state
         // state.applyOptimisticUpdate(transactionId, (draft) => {
-        //     if (draft.entities[entityId]?.models?.babybeasts?.Beast) {
-        //         draft.entities[entityId].models.babybeasts.Beast
+        //     if (draft.entities[entityId]?.models?.tamagotchi?.Moves) {
+        //         draft.entities[entityId].models.tamagotchi.Moves.remaining =
+        //             remainingMoves;
         //     }
         // });
 
         try {
             // Execute the spawn action from the client
-            if (userAccount) {
-                await client.actions.spawn(userAccount as Account, specie, specie);
-            } else {
-                throw new Error("Account is undefined");
-            }
-            return true;
+            await client.actions.spawn(account!, randomNumber, randomNumber);
 
             // Wait for the entity to be updated with the new state
             // await state.waitForEntityChange(entityId, (entity) => {
-            //     return !!entity?.models?.babybeasts?.Beast;
+            //     return (
+            //         entity?.models?.tamagotchi?.Moves?.remaining ===
+            //         remainingMoves
+            //     );
             // });
         } catch (error) {
             // Revert the optimistic update if an error occurs
             state.revertOptimisticUpdate(transactionId);
             console.error("Error executing spawn:", error);
-            return false
+            throw error;
         } finally {
             // Confirm the transaction if successful
             state.confirmTransaction(transactionId);

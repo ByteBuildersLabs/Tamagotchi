@@ -1,23 +1,12 @@
 #[cfg(test)]
 mod tests {
-    // Starknet import
-    use starknet::get_caller_address;
-
     // Dojo imports
-    use dojo_cairo_test::WorldStorageTestTrait;
-    use dojo::model::{ModelStorage, ModelStorageTest};
-    use dojo::world::WorldStorageTrait;
-    use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
-    };
+    use dojo::model::{ModelStorage};
 
     // Game imports
-    use babybeasts::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use babybeasts::models::beast::{Beast};
-    use babybeasts::models::beast_stats::{BeastStats};
-    use babybeasts::models::beast_status::{BeastStatus};
-    use babybeasts::models::player::{Player};
-    use babybeasts::tests::utils::{utils, utils::{PLAYER, cheat_caller_address, namespace_def, contract_defs, actions_system_world}};
+    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
+    use tamagotchi::models::player::{Player};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world}};
 
     #[test]
     #[available_gas(40000000)]
@@ -45,10 +34,10 @@ mod tests {
         actions_system.spawn_player();
         
         // Spawn a beast first
-        actions_system.spawn(1, 1); // Spawn beast with specie 1
+        actions_system.spawn_beast(1, 1); // Spawn beast with specie 1
 
         // Set current beast
-        let beast_id: u32 = 1;
+        let beast_id: u16 = 1;
         actions_system.set_current_beast(beast_id);
 
         // Verify current beast was set correctly
@@ -67,8 +56,8 @@ mod tests {
         actions_system.spawn_player();
         
         // Spawn multiple beasts
-        actions_system.spawn(1 ,2); // First beast
-        actions_system.spawn(2, 3); // Second beast
+        actions_system.spawn_beast(1 ,2); // First beast
+        actions_system.spawn_beast(2, 3); // Second beast
         
         // Set and verify we can switch between beasts
         actions_system.set_current_beast(1);

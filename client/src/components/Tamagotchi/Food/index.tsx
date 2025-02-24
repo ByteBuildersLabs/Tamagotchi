@@ -23,9 +23,7 @@ import Corn from '../../../assets/img/food/vegetable_corn.png';
 import Potato from '../../../assets/img/food/vegetable_potato.png';
 
 import beastsDex from '../../../data/beastDex.tsx';
-import { useFood } from '../../../hooks/useFood.tsx';
-import { SchemaType } from '../../../dojo/bindings.ts';
-import { SDK } from '@dojoengine/sdk';
+// import { useFood } from '../../../hooks/useFood.tsx';
 
 const initialFoodItems = [
   { name: 'Apple', img: Apple, count: 5, id: 1 },
@@ -46,16 +44,13 @@ const initialFoodItems = [
   { name: 'Potato', img: Potato, count: 7, id: 15 }
 ];
 
-const Food = ({ handleAction, beast, account, client, showAnimation, sdk }: { 
+const Food = ({ handleAction, beast, account, client, showAnimation }: { 
   handleAction: any, 
   beast: any, 
   account: any, 
   client: any,
   showAnimation: (gifPath: string) => void,
-  sdk: SDK<SchemaType>
 }) => {
-  const { foods } = useFood(sdk);
-  console.log(foods);
 
   const [foodItems, setFoodItems] = useState(initialFoodItems);
 
@@ -111,8 +106,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation, sdk }: {
             <div className="food-label">
               <img src={img} alt={name} />
               <div className="food-text">
-                <span className="food-name">{name}</span>
-                <span className="food-value">Remaining: {count}</span>
+                <span className="food-name">{name} {count}</span>
                 <button 
                   className="button" 
                   onClick={() => feedTamagotchi(name)}
