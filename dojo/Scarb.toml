@@ -8,9 +8,7 @@ edition = "2024_07"
 sierra-replace-ids = true
 
 [scripts]
-migrate = "sozo build && sozo migrate"                      # scarb run migrate
-spawn = "sozo execute tamagotchi-actions spawn --wait"    # scarb run spawn
-move = "sozo execute tamagotchi-actions move -c 1 --wait" # scarb run move
+sepolia = "sozo --profile sepolia clean && sozo --profile sepolia build && sozo --profile sepolia migrate --account-address $DOJO_ACCOUNT_ADDRESS --private-key $DOJO_PRIVATE_KEY --fee strk"
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }
@@ -21,3 +19,6 @@ build-external-contracts = ["dojo::world::world_contract::world"]
 [dev-dependencies]
 cairo_test = "=2.9.2"
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }
+
+[profile.sepolia]
+[profile.slot]
