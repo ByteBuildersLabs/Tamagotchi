@@ -33,12 +33,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  display: flex;
-  flex-direction: row;
+
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  column-gap: 10px;
   align-items: center;
-  text-align: center;
-  width: 100%;
-  max-width: 300px;
 }
 
 .game-card:hover {
@@ -50,20 +49,34 @@
   width: 64px;
   height: 64px;
   object-fit: contain;
-  margin-bottom: 5px;
+}
+
+.game-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  /* Puedes usar align-items: center si quieres centrar el texto verticalmente */
 }
 
 .game-name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin: 0 0 5px 0;
   color: #ECECDA;
 }
 
 .game-description {
-  font-size: 24px;
+  font-size: 16px;
   color: #ECECDA;
+  margin: 0 0 5px 0;
   line-height: 1.2;
+}
+
+.game-high-score {
+  font-size: 14px;
+  font-family: 'Kallisto', sans-serif;
+  color: #ECECDA;
+  margin: 0;
 }
 
 /* Style to put the game in full screen */
@@ -138,7 +151,6 @@ canvas {
   transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   font-weight: bold;
-  text-transform: uppercase;
   position: absolute;
   top: 5px;
   right: 5px;
@@ -185,7 +197,7 @@ body.game-active {
 }
 
 .game-result-container {
-  padding: 20px;
+  padding: 5px;
   height: 120px;
   background-color: rgba(0,0,0, 0.6); 
   border-radius: 12px;
@@ -198,32 +210,28 @@ body.game-active {
 
 .game-result-title {
   font-family: 'Kallisto', sans-serif;
-  font-size: 30px;
-  margin-bottom: 15px;
+  font-size: 18px;
   color: #ECECDA;
   font-weight: bold;
 }
 
 .game-result-score {
   font-family: 'Montserrat', serif;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
-  margin-bottom: 20px;
   color: #ECECDA;
 }
 
 .game-result-record {
   font-family: 'Montserrat', serif;
-  font-size: 16px;
+  font-size: 14px;
   color: #ECECDA; 
-  margin-bottom: 0px;
 }
 
 .game-result-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-top: 20px;
 }
 
 .play-again-button {
@@ -231,10 +239,9 @@ body.game-active {
   color: #ECECDA;
   border: none;
   border-radius: 25px;
-  padding: 12px 25px;
+  padding: 5px 10px;
   font-size: 16px;
   font-family: 'Kallisto', sans-serif;
-  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
