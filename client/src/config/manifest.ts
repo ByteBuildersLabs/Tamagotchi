@@ -1,5 +1,5 @@
 import slot from "../../../dojo/manifest_dev.json";
-import sepolia from "../../../dojo/manifest_dev.json";
+import sepolia from "../../../dojo/manifest_sepolia.json";
 import mainnet from "../../../dojo/manifest_dev.json";
 
 // Defines a type for the valid keys of manifests
