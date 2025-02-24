@@ -72,7 +72,6 @@ function Bag() {
               There are not Beasts
               <span className='d-block'>Go hatch an egg!</span>
             </p>
-            <ControllerConnectButton />
           </div>
           <div className="initial-info">
             <h4>
@@ -97,7 +96,6 @@ function Bag() {
             Here are your Beasts
             <span className='d-block'>Each Baby is unique!</span>
           </p>
-          <ControllerConnectButton />
         </div>
         <div className="carousel">
           {beasts.length === 1 ? (

@@ -27,7 +27,6 @@ const Team: React.FC = () => {
             Lore Book
             <span className='d-block'>This is the beginning</span>
           </p>
-          <ControllerConnectButton />
         </div>
         <div className='lore-container'>
           <a href='https://x.com/0xByteBeasts/status/1889061717218673118' target='_blank'>

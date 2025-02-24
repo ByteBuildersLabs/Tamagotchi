@@ -62,7 +62,6 @@ function SpawnBeast() {
             Hacth the egg
             <span className='d-block'>Collect them all!</span>
           </p>
-          <ControllerConnectButton />
         </div>
         <div className="initial-beast">
           <img src={Egg} alt="beast" />
@@ -105,7 +104,6 @@ function SpawnBeast() {
           <Toaster position="bottom-center" />
         </div>
       </div>
-      <HatchJR />
     </>
 
   );

@@ -69,7 +69,6 @@ const BeastsDexGrid: React.FC = () => {
                 Beast DEX
                 <span className='d-block'>Knowledge source</span>
               </p>
-              <ControllerConnectButton />
             </div>
             <div className="scrollable-container">
               <div className="beast-grid">
