@@ -19,7 +19,6 @@ import Dex from "./components/BeastsDexGrid/index.tsx";
 
 // Import the layout component
 import AppLayout from "./components/Layouts/AppLayout.tsx";
-import SpawnBeast from "./components/SpawnBeast/index.tsx";
 import Lore from "./components/Lore/index.tsx";
 import Leaderboard from "./components/Leadeboard/index.tsx";
 import "./index.css";
