@@ -38,7 +38,6 @@ function Tamagotchi() {
     if (player && beasts.length > 0) {
       const foundBeast = beasts[0];
       setBeast(foundBeast);
-      console.log(foundBeast);
     }
   }, [player, beasts]);
 

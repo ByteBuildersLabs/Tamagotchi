@@ -85,7 +85,6 @@ function SpawnBeast() {
                 await spawnPlayer();
                 await new Promise(resolve => setTimeout(resolve, 5500));
                 setLoading(false);
-                navigate("/hatch");
               }}>
                 {
                   loading ? loadingAnimation() : 'Create player'

@@ -55,7 +55,6 @@ async function main() {
                     <Routes>
                       <Route element={<AppLayout />}>
                         <Route path="/" element={<Main />} />
-                        <Route path="/hatch" element={<SpawnBeast />} />
                         <Route path="/dex" element={<Dex />} />
                         <Route path="/lore" element={<Lore />} />
                         <Route path="/leaderboard" element={<Leaderboard />} />
