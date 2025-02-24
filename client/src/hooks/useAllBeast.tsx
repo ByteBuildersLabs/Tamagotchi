@@ -1,29 +1,22 @@
 import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
-import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useAccount } from "@starknet-react/core";
 import { useEffect, useMemo } from "react";
-import { AccountInterface, addAddressPadding } from "starknet";
 import { ModelsMapping } from "../dojo/bindings";
+import { AccountInterface, addAddressPadding } from "starknet";
 
-export const useBeastsStats = () => {
+export const useBeasts = () => {
   const { useDojoStore, sdk } = useDojoSDK();
   const { account } = useAccount();
   const state = useDojoStore((state) => state);
   const entities = useDojoStore((state) => state.entities);
 
-  const beastsStats = useMemo(() => {
+  const beasts = useMemo(() => {
     return Object.values(entities)
-      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.BeastStats)
-      .map(entity => entity.models.tamagotchi.BeastStats);
+      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.Beast)
+      .map(entity => entity.models.tamagotchi.Beast);
   }, [entities]);
 
-  const entityId = useMemo(() => {
-    if (account) {
-      return getEntityIdFromKeys([BigInt(account.address)]);
-    }
-    return BigInt(0);
-  }, [account]);
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
@@ -34,7 +27,7 @@ export const useBeastsStats = () => {
           .withClause(
             // Querying Moves and Position models that has at least [account.address] as key
             KeysClause(
-              [ModelsMapping.BeastStats],
+              [ModelsMapping.Beast ],
               [addAddressPadding(account.address)],
               "VariableLen"
             ).build()
@@ -44,6 +37,7 @@ export const useBeastsStats = () => {
           if (error) {
             console.error("Error setting up entity sync:", error);
           } else if (data && data[0].entityId !== "0x0") {
+            console.log('Rolitoooo')
             state.updateEntity(data[0]);
           }
         },
@@ -65,10 +59,7 @@ export const useBeastsStats = () => {
     };
   }, [sdk, account, state]);
 
-  const beastStats = useModel(entityId as string, ModelsMapping.BeastStats);
-
   return {
-    beastStats,
-    beastsStats
+    beasts
   };
 };

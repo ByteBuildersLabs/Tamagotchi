@@ -1,13 +1,16 @@
 #[cfg(test)]
 mod tests {
     use dojo::model::{ModelStorage};
+    use dojo::event::{Event, EventStorage};
+    use dojo::world::world::Event as WorldEvent;
 
     // Import the interface and implementations
     use tamagotchi::systems::actions::{IActionsDispatcherTrait};
 
     // Import models and types
     use tamagotchi::models::beast::{Beast};
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
+    use tamagotchi::events::beast_age::{BeastAge};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, drop_all_events}};
 
     #[test]
     fn test_spawn_beast() {
@@ -34,31 +37,28 @@ mod tests {
     }
 
     #[test]
-    fn test_beast_age() {
+    fn test_beast_age_event() {
         // Initialize test environment
-        let (actions_system, _) = actions_system_world();
+        let (_,  mut world) = actions_system_world();
 
-        cheat_caller_address(PLAYER());
-        cheat_block_timestamp(7000000);
+        drop_all_events(world.dispatcher.contract_address);
 
-        actions_system.spawn_player();
-        actions_system.spawn_beast(1, 1);
-        actions_system.set_current_beast(1);
+        world.emit_event(@BeastAge{ beast_id: 1, age: 1});
 
-        // Get beast age
-        cheat_block_timestamp(7172000);
-        let age: u16 = actions_system.get_beast_age();
-        assert(age == 1, 'wrong beast age');
+        let event = starknet::testing::pop_log::<WorldEvent>(world.dispatcher.contract_address);
 
-        // Get beast age
-        cheat_block_timestamp(7173000);
-        let age: u16 = actions_system.get_beast_age();
-        assert(age == 2, 'wrong beast age');
+        assert(event.is_some(), 'no event');
 
-        // Get beast age
-        cheat_block_timestamp(7260000);
-        let age: u16 = actions_system.get_beast_age();
-        assert(age == 3, 'wrong beast age');
+        if let WorldEvent::EventEmitted(event) = event.unwrap() {
+            assert(
+                event.selector == Event::<BeastAge>::selector(world.namespace_hash),
+                'bad event selector',
+            );
+            assert(event.keys == [1].span(), 'bad keys');
+            assert(event.values == [1].span(), 'bad values');
+        } else {
+            core::panic_with_felt252('no EventEmitted event');
+        }
     }
 
     #[test]

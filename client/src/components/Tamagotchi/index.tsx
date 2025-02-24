@@ -186,10 +186,7 @@ function Tamagotchi() {
                     client={client}
                     setCurrentView={setCurrentView}
                   />
-                  :
-                  currentView === 'chat' ? (
-                    <></>
-                  ) : currentView === 'food' ? (
+                  : currentView === 'food' ? (
                     <Food
                       handleAction={handleAction}
                       beast={beast}

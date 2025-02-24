@@ -149,92 +149,92 @@ const Play = ({
         };
     }, [isPlaying]);
 
-    if (showGameSelection) {
-      return (
-        <div className="game-selection-container">
-          <div className="game-selection-grid">
-            {availableGames.map((game) => (
-              <div 
-                key={game.id} 
-                className="game-card"
-                onClick={() => startGame(game.id)}
-              >
-                <img src={game.icon} alt={game.name} className="game-icon" />
-                <div className="game-card-content">
-                  <h3 className="game-name">{game.name}</h3>
-                  <p className="game-description">{game.description}</p>
-                  <div className="game-high-score">
-                    Record: {getHighScore(game.id, beast?.beast_id || 0)}
-                  </div>
-                </div>
+  if (showGameSelection) {
+    // Render the game selection screen
+    return (
+      <div className="game-selection-container">
+        <div className="game-selection-grid">
+          {availableGames.map((game) => (
+            <div 
+              key={game.id} 
+              className="game-card"
+              onClick={() => startGame(game.id)}
+            >
+              <img src={game.icon} alt={game.name} className="game-icon" />
+              <h3 className="game-name" style={{fontSize: '18px'}}>{game.name}</h3>
+              <div className="game-high-score" style={{color: '#ECECDA', fontFamily: 'Kallisto', fontSize: '14px'}}>
+                Record: {getHighScore(game.id, beast?.beast_id || 0)}
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+        <Toaster position="bottom-center" />
+      </div>
+    );
+  }
+
+  // Render the selected game
+  if (selectedGame === 'doodleGame') {
+    if (isPlaying) {
+        return (
+            <div className="game-container">
+              <div className="game-score-display">
+              </div>
+              <DoodleGame 
+                className="fullscreen-doodle"
+                onScoreUpdate={setCurrentScore} 
+                onGameEnd={handleGameEnd}
+                beastImageRight={beastsDex[beast.specie - 1]?.idlePicture}
+                beastImageLeft={beastsDex[beast.specie - 1]?.idlePicture}
+                onExitGame={returnToGameSelection}
+              />
+              <Toaster position="bottom-center" />
+            </div>
+            
+        );
+    } else {
+      // Show the game result screen
+      return (
+        <div className="game-result-container">
+          <h2 className="game-result-title">¡Game over!</h2>
+          <p className="game-result-score">Score: {currentScore}</p>
+          {currentScore >= highScore && (
+            <p className="game-result-record">New record! 🏆</p>
+          )}
+          <p className="game-result-record">Best Score: {highScore}</p>
+          <div className="game-result-buttons">
+            <button 
+              className="play-again-button"
+              onClick={() => startGame('doodleGame')}
+            >
+              Play again
+            </button>
+            <button 
+              className="play-again-button"
+              onClick={returnToGameSelection}
+            >
+              Exit
+            </button>
           </div>
           <Toaster position="bottom-center" />
         </div>
       );
-    }    
-  
-    // Render the selected game
-    if (selectedGame === 'doodleGame') {
-      if (isPlaying) {
-          return (
-              <div className="game-container">
-                <div className="game-score-display">
-                </div>
-                <DoodleGame 
-                  className="fullscreen-doodle"
-                  onScoreUpdate={setCurrentScore} 
-                  onGameEnd={handleGameEnd}
-                  beastImageRight={beastsDex[beast.specie - 1].idlePicture}
-                  beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
-                  onExitGame={returnToGameSelection}
-                />
-                <Toaster position="bottom-center" />
-              </div>
-  
-          );
-      } else {
-        // Show the game result screen
-        return (
-          <div className="game-result-container">
-            <h2 className="game-result-title">¡Game over!</h2>
-            <p className="game-result-score">
-            Score: {currentScore}
-            </p>
-            <div className="game-result-buttons">
-              <button 
-                className="play-again-button"
-                onClick={() => startGame('doodleGame')}
-              >
-                Play again
-              </button>
-              <button 
-                className="play-again-button"
-                onClick={returnToGameSelection}
-              >
-                Exit
-              </button>
-            </div>
-            <Toaster position="bottom-center" />
-          </div>
-        );
-      }
     }
-  
-    // By default, show an error message if the game is not found
-    return (
-      <div className="game-error-container">
-        <p>Something were wrong. Please, try again.</p>
-        <button 
-          className="return-button"
-          onClick={returnToGameSelection}
-        >
-          Exit
-        </button>
-        <Toaster position="bottom-center" />
-      </div>
-    );
-  };
-  
-  export default Play;
+  }
+
+  // By default, show an error message if the game is not found
+  return (
+    <div className="game-error-container">
+      <p>Something were wrong. Please, try again.</p>
+      <button 
+        className="return-button"
+        onClick={returnToGameSelection}
+      >
+        Exit
+      </button>
+      <Toaster position="bottom-center" />
+    </div>
+  );
+};
+
+export default Play;
