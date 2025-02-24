@@ -1,8 +1,6 @@
 import './main.css';
 import Header from '../Header/index.tsx';
-import banner from '../../assets/img/bannerlogo.jpeg'
 import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
-import Footer from '../Footer/index.tsx';
 import dojologo from '../../assets/img/dojo-icon.svg';
 import starknet from '../../assets/img/stark.png'
 import { useEffect } from 'react';
@@ -30,9 +28,6 @@ const Leaderboard: React.FC = () => {
           <ControllerConnectButton />
         </div>
         <div className='lore-container'>
-          <a href='https://x.com/0xByteBeasts/status/1889061717218673118' target='_blank'>
-            <img className="banner" src={banner} alt="" />
-          </a>
           <div className="initial-info">
             <h4>
               Byte Beasts - Welcome to Etheria
@@ -50,7 +45,6 @@ const Leaderboard: React.FC = () => {
               But deep within Etheria, an ancient egg pulses with dark energy, waiting for the moment to awaken...
             </p>
           </div>
-          <Footer />
         </div>
         <p className='bottom-footer'>
           <span>Powered by Dojo</span>

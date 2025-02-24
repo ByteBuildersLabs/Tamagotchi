@@ -17,9 +17,6 @@ function Header() {
     <nav className="navbar">
       <Link to={'/'} className="logo">
         <img src={monster} alt="Logo" />
-        <h2>
-          Byte <span>Beasts</span>
-        </h2>
       </Link>
       
       <div className="side-menu-container">

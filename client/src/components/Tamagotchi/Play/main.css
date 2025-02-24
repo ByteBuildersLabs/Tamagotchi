@@ -2,7 +2,7 @@
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 12px;
-  height: 230px;
+  height: 120px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
@@ -34,7 +34,7 @@
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   text-align: center;
   width: 100%;
@@ -186,7 +186,7 @@ body.game-active {
 
 .game-result-container {
   padding: 20px;
-  height: 230px;
+  height: 120px;
   background-color: rgba(0,0,0, 0.6); 
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);

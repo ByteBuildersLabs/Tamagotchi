@@ -125,12 +125,12 @@
 
 .side-menu {
   position: absolute;
-  right: -10px;
+  right: -15px;
   top: 50px;
   width: 200px;
   background: rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  padding: 30px 15px;
+  border-radius: 15px;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;

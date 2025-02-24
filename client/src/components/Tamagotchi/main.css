@@ -4,7 +4,7 @@
   margin: auto;
   width: 100%;
   max-width: 400px;
-  height: 85vh;
+  height: 87vh;
   transform: translateY(50px);
   animation: fade-in-up 1s ease-out forwards;
 }
@@ -13,7 +13,7 @@
   height: 17vh;
   background-size: cover;
   position: relative;
-  margin-bottom: 10px;
+  margin: 30px 0;
 }
 
 .scenario img {
@@ -26,8 +26,14 @@
 }
 
 .beast-interaction {
+  position: relative;
   display: flex;
   justify-content: space-between;
+}
+
+.beast-buttons {
+  position: absolute;
+  top: -60px;
 }
 
 .beast-interaction img {

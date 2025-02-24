@@ -1,9 +1,7 @@
-import { useState } from "react";
-import Joyride, { CallBackProps, STATUS } from "react-joyride";
+import Joyride from "react-joyride";
 import './main.css';
 
-const TamagotchiJR = () => {
-  const [run, setRun] = useState(true);
+const TamagotchiJR = ({ run = false }: { run:boolean }) => {
 
   const steps = [
     {
@@ -48,18 +46,11 @@ const TamagotchiJR = () => {
     },
   ];
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data;
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status as "finished" | "skipped")) {
-      setRun(false);
-    }
-  };
-
   return (
     <Joyride
       steps={steps}
       run={run}
-      callback={handleJoyrideCallback}
+      callback={() => {}}
       continuous
       showProgress
       showSkipButton
