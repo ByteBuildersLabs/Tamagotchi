@@ -37,7 +37,7 @@
   flex-direction: column;
   background-color: rgba(55, 0, 1, 0.5);
   padding: 20px 15px;
-  margin: 13px 0;
+  margin: 0 0 13px;
   text-align: center;
   border-radius: 15px;
 }

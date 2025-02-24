@@ -10,7 +10,6 @@ const availableGames = [
   { 
     id: 'doodleGame',
     name: 'Sky Jump',
-    description: 'Help your beast to jump as high as possible!',
     icon: doodleGameIcon 
   },
 ];
@@ -153,7 +152,6 @@ const Play = ({
     // Render the game selection screen
     return (
       <div className="game-selection-container">
-        <h2 className="game-selection-title">Choose a game</h2>
         <div className="game-selection-grid">
           {availableGames.map((game) => (
             <div 
@@ -163,7 +161,6 @@ const Play = ({
             >
               <img src={game.icon} alt={game.name} className="game-icon" />
               <h3 className="game-name" style={{fontSize: '18px'}}>{game.name}</h3>
-              <p className="game-description" style={{fontSize: '16px'}}>{game.description}</p>
               <div className="game-high-score" style={{color: '#ECECDA', fontFamily: 'Kallisto', fontSize: '14px'}}>
                 Record: {getHighScore(game.id, beast?.beast_id || 0)}
               </div>
@@ -186,8 +183,8 @@ const Play = ({
                 className="fullscreen-doodle"
                 onScoreUpdate={setCurrentScore} 
                 onGameEnd={handleGameEnd}
-                beastImageRight={beastsDex[beast.specie - 1].idlePicture}
-                beastImageLeft={beastsDex[beast.specie - 1].idlePicture}
+                beastImageRight={beastsDex[beast.specie - 1]?.idlePicture}
+                beastImageLeft={beastsDex[beast.specie - 1]?.idlePicture}
                 onExitGame={returnToGameSelection}
               />
               <Toaster position="bottom-center" />

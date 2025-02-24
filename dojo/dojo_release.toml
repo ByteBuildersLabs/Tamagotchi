@@ -15,7 +15,7 @@ telegram = "https://t.me/+-84e2pqLtqNkZDAx"
 default = "tamagotchi"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/hhbb/katana"
+rpc_url = "https://api.cartridge.gg/x/ttttt/katana"
 # Default account for katana with seed = 0
 account_address = "0x5b6b8189bb580f0df1e6d6bec509ff0d6c9be7365d10627e0cf222ec1b47a71"
 private_key = "0x33003003001800009900180300d206308b0070db00121318d17b5e6262150b"

@@ -106,8 +106,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
             <div className="food-label">
               <img src={img} alt={name} />
               <div className="food-text">
-                <span className="food-name">{name}</span>
-                <span className="food-value">Remaining: {count}</span>
+                <span className="food-name">{name} {count}</span>
                 <button 
                   className="button" 
                   onClick={() => feedTamagotchi(name)}

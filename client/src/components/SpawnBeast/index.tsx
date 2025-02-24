@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
-import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
-import ControllerConnectButton from "../CartridgeController/ControllerConnectButton.tsx";
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
-import HatchJR from "../Joyride/HatchJR.tsx";
 import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -29,8 +26,6 @@ function SpawnBeast() {
       bodyElement.style.padding = '22px 15px';
     }
   }, []);
-
-  const navigate = useNavigate();
 
   const getRandomNumber = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -65,7 +60,6 @@ function SpawnBeast() {
             Hacth the egg
             <span className='d-block'>Collect them all!</span>
           </p>
-          <ControllerConnectButton />
         </div>
         <div className="initial-beast">
           <img src={Egg} alt="beast" />
@@ -85,7 +79,6 @@ function SpawnBeast() {
                 await spawnPlayer();
                 await new Promise(resolve => setTimeout(resolve, 5500));
                 setLoading(false);
-                navigate("/hatch");
               }}>
                 {
                   loading ? loadingAnimation() : 'Create player'
@@ -109,7 +102,6 @@ function SpawnBeast() {
           <Toaster position="bottom-center" />
         </div>
       </div>
-      <HatchJR />
     </>
 
   );

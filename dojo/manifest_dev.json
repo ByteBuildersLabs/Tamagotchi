@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da",
-      "class_hash": "0xe7feb188bdbd10f6ec3055417803f09009073e74a65baa48ec36c339a1e672",
+      "address": "0x2774b0e065dc5ca9851cac016b8b75ab33bdbc2c77c11bad9766c5da99b227d",
+      "class_hash": "0x76a2c191d0ce687c96e9c5468854a769d946d4c74e5686aa61964722217e945",
       "abi": [
         {
           "type": "impl",
@@ -1378,6 +1378,62 @@
           "interface_name": "tamagotchi::systems::actions::IActions"
         },
         {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "tamagotchi::models::beast_status::BeastStatus",
+          "members": [
+            {
+              "name": "beast_id",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "is_alive",
+              "type": "core::bool"
+            },
+            {
+              "name": "is_awake",
+              "type": "core::bool"
+            },
+            {
+              "name": "hunger",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "energy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "happiness",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hygiene",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "clean_status",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "last_timestamp",
+              "type": "core::integer::u64"
+            }
+          ]
+        },
+        {
           "type": "interface",
           "name": "tamagotchi::systems::actions::IActions",
           "items": [
@@ -1385,6 +1441,22 @@
               "type": "function",
               "name": "spawn_player",
               "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "spawn_beast",
+              "inputs": [
+                {
+                  "name": "specie",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "beast_type",
+                  "type": "core::integer::u8"
+                }
+              ],
               "outputs": [],
               "state_mutability": "external"
             },
@@ -1409,23 +1481,7 @@
             },
             {
               "type": "function",
-              "name": "spawn",
-              "inputs": [
-                {
-                  "name": "specie",
-                  "type": "core::integer::u8"
-                },
-                {
-                  "name": "beast_type",
-                  "type": "core::integer::u8"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "decrease_status",
+              "name": "update_beast_status",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
@@ -1505,6 +1561,28 @@
                 }
               ],
               "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_timestamp_based_status",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "tamagotchi::models::beast_status::BeastStatus"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_beast_age",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u16"
+                }
+              ],
               "state_mutability": "external"
             }
           ]
@@ -1623,10 +1701,10 @@
       "systems": [
         "dojo_init",
         "spawn_player",
+        "spawn_beast",
         "add_initial_food",
         "set_current_beast",
-        "spawn",
-        "decrease_status",
+        "update_beast_status",
         "feed",
         "sleep",
         "awake",
@@ -1636,6 +1714,8 @@
         "revive",
         "init_tap_counter",
         "tap",
+        "get_timestamp_based_status",
+        "get_beast_age",
         "upgrade"
       ]
     }
@@ -1644,19 +1724,13 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x64d2232e0abce090758d072b3ebd34867cfa3423a7e92360098fc53c040782",
+      "class_hash": "0x601cb51b014d478f67e793e2c65fb545ca9c3691cd30be236dea0866e72ee86",
       "tag": "tamagotchi-Beast",
       "selector": "0x797d07b8fd13e637ef738a275f2e895655f27905cdd62f75d82d68f239479f8"
     },
     {
       "members": [],
-      "class_hash": "0x61cc3c3327a28f69c8663288aae37271bd0de51f088d6a08baed046feb81aa",
-      "tag": "tamagotchi-BeastStats",
-      "selector": "0x1cf27e114d3402508bb9faec2f88010f024e88697a28e871c2f5e2382f2b7f5"
-    },
-    {
-      "members": [],
-      "class_hash": "0x3787a94cf26de59fe626092c11bc6ad7fcacc7bdcee32c6fe2deda0207741a5",
+      "class_hash": "0x2d33cad545c3e9b01b8a328418c0bc5dc529ec0abb1f3f4efa18f10c3bfb837",
       "tag": "tamagotchi-BeastStatus",
       "selector": "0x7dd28052791e63bdc06d6ba2a8eca548b4580c2e83bb96c03ef0a2d84f8ffde"
     },

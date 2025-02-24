@@ -16,6 +16,7 @@ pub mod utils {
     use tamagotchi::models::beast_status::{m_BeastStatus};
     use tamagotchi::models::player::{m_Player};
     use tamagotchi::models::food::{m_Food};
+    use tamagotchi::events::beast_age::{e_BeastAge};
 
     // Constants
     pub fn PLAYER() -> ContractAddress {
@@ -30,6 +31,7 @@ pub mod utils {
                 TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),
+                TestResource::Event(e_BeastAge::TEST_CLASS_HASH),
                 TestResource::Contract(actions::TEST_CLASS_HASH),
             ].span(),
         };
@@ -73,4 +75,12 @@ pub mod utils {
         set_block_timestamp(timestamp);
     }
 
+    pub fn drop_all_events(address: ContractAddress) {
+        loop {
+            match starknet::testing::pop_log_raw(address) {
+                core::option::Option::Some(_) => {},
+                core::option::Option::None => { break; },
+            };
+        }
+    }
 }
