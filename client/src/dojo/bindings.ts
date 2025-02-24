@@ -1,44 +1,22 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
-// import { BigNumberish } from 'starknet';
 
 // Type definition for `tamagotchi::models::beast::Beast` struct
 export interface Beast {
 	player: string;
 	beast_id: number;
+	age: number;
+	birth_date: number;
 	specie: number;
 	beast_type: number;
-	evolved: boolean;
-	vaulted: boolean;
 }
 
 // Type definition for `tamagotchi::models::beast::BeastValue` struct
 export interface BeastValue {
+	age: number;
+	birth_date: number;
 	specie: number;
 	beast_type: number;
-	evolved: boolean;
-	vaulted: boolean;
-}
-
-// Type definition for `tamagotchi::models::beast_stats::BeastStats` struct
-export interface BeastStats {
-	beast_id: number;
-	attack: number;
-	defense: number;
-	speed: number;
-	level: number;
-	experience: number;
-	next_level_experience: number;
-}
-
-// Type definition for `tamagotchi::models::beast_stats::BeastStatsValue` struct
-export interface BeastStatsValue {
-	attack: number;
-	defense: number;
-	speed: number;
-	level: number;
-	experience: number;
-	next_level_experience: number;
 }
 
 // Type definition for `tamagotchi::models::beast_status::BeastStatus` struct
@@ -51,6 +29,7 @@ export interface BeastStatus {
 	happiness: number;
 	hygiene: number;
 	clean_status: number;
+	last_timestamp: number;
 }
 
 // Type definition for `tamagotchi::models::beast_status::BeastStatusValue` struct
@@ -62,6 +41,7 @@ export interface BeastStatusValue {
 	happiness: number;
 	hygiene: number;
 	clean_status: number;
+	last_timestamp: number;
 }
 
 // Type definition for `tamagotchi::models::food::Food` struct
@@ -91,8 +71,6 @@ export interface SchemaType extends ISchemaType {
 	tamagotchi: {
 		Beast: Beast,
 		BeastValue: BeastValue,
-		BeastStats: BeastStats,
-		BeastStatsValue: BeastStatsValue,
 		BeastStatus: BeastStatus,
 		BeastStatusValue: BeastStatusValue,
 		Food: Food,
@@ -106,33 +84,16 @@ export const schema: SchemaType = {
 		Beast: {
 			player: "",
 			beast_id: 0,
+			age: 0,
+			birth_date: 0,
 			specie: 0,
 			beast_type: 0,
-			evolved: false,
-			vaulted: false,
 		},
 		BeastValue: {
+			age: 0,
+			birth_date: 0,
 			specie: 0,
 			beast_type: 0,
-			evolved: false,
-			vaulted: false,
-		},
-		BeastStats: {
-			beast_id: 0,
-			attack: 0,
-			defense: 0,
-			speed: 0,
-			level: 0,
-			experience: 0,
-			next_level_experience: 0,
-		},
-		BeastStatsValue: {
-			attack: 0,
-			defense: 0,
-			speed: 0,
-			level: 0,
-			experience: 0,
-			next_level_experience: 0,
 		},
 		BeastStatus: {
 			beast_id: 0,
@@ -143,6 +104,7 @@ export const schema: SchemaType = {
 			happiness: 0,
 			hygiene: 0,
 			clean_status: 0,
+			last_timestamp: 0,
 		},
 		BeastStatusValue: {
 			is_alive: false,
@@ -152,6 +114,7 @@ export const schema: SchemaType = {
 			happiness: 0,
 			hygiene: 0,
 			clean_status: 0,
+			last_timestamp: 0,
 		},
 		Food: {
 			player: "",
@@ -173,8 +136,6 @@ export const schema: SchemaType = {
 export enum ModelsMapping {
 	Beast = 'tamagotchi-Beast',
 	BeastValue = 'tamagotchi-BeastValue',
-	BeastStats = 'tamagotchi-BeastStats',
-	BeastStatsValue = 'tamagotchi-BeastStatsValue',
 	BeastStatus = 'tamagotchi-BeastStatus',
 	BeastStatusValue = 'tamagotchi-BeastStatusValue',
 	Food = 'tamagotchi-Food',
