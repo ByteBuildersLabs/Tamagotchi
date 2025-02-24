@@ -167,9 +167,10 @@ p, span {
   text-align: left;
   font-weight: 800;
   font-size: 18px;
-  margin: 0;
+  margin: 0 auto;
   padding-right: 5px;
   color: #ECECDA;
+  text-align: center;
 }
 
 .title span {

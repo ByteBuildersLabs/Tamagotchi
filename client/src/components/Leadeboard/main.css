@@ -1,7 +1,7 @@
-.team {
+.leaderboard {
   width: 100%;
   max-width: 400px;
-  margin: auto;
+  margin: 0;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -10,30 +10,23 @@
   animation: fade-in-up 1s ease-out forwards;
 }
 
-.team .banner {
-  height: 200px;
-  width: 100%;
-  margin: auto;
-  border: 2px solid #ECECDA;
-  border-radius: 24px;
-  object-fit: cover;
-  margin-bottom: 15px;
-}
-
-.lore-container {
-  padding-top: 30px;
+.leaderboard-container {
   text-align: center;
+  min-height: 60vh;
 }
 
-.bottom-footer {
-  color: #ECECDA;
-  font-weight: bold;
+.leaderboard-container .beast {
+  width: 40px;
+  height: 40px;
+}
+
+.leaderboard-container h4 {
+  margin-bottom: 20px;
+}
+
+.leaderboard-container .col-3 {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.bottom-footer img {
-  width: 30px;
-  margin-left: 4px;
+  color: #ECECDA;
 }

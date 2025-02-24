@@ -197,11 +197,6 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
-                  <img 
-                    className="actions-icon" 
-                    src={share} 
-                    onClick={handleShareClick}
-                  />
                 </div>
               </div>
               {
@@ -215,10 +210,7 @@ function Tamagotchi() {
                     client={client}
                     setCurrentView={setCurrentView}
                   />
-                  :
-                  currentView === 'chat' ? (
-                    <></>
-                  ) : currentView === 'food' ? (
+                  : currentView === 'food' ? (
                     <Food
                       handleAction={handleAction}
                       beast={beast}
@@ -241,13 +233,6 @@ function Tamagotchi() {
           </Card>
         }</>
       </div>
-
-      <ShareProgress
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        type="beast"
-        stats={getShareableStats()}
-      />
     </>
   );
 }

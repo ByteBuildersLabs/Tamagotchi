@@ -8,11 +8,11 @@ import babyFoxEat from "../assets/beasts/BabyFox-Eat.gif"
 import babyFoxPlay from "../assets/beasts/BabyFox-idle.gif"
 import babyFoxSleep from "../assets/beasts/BabyFox-Sleep.gif"
 import babyFoxClean from "../assets/beasts/BabyFox-Shower.gif"
-import babyBirdIdle from "../assets/beasts/BabyEagle-idle.gif"
-import babyBirdEat from "../assets/beasts/BabyEagle-eat.gif"
-import babyBirdPlay from "../assets/beasts/BabyEagle-happy.gif"
-import babyBirdSleep from "../assets/beasts/BabyEagle-sleep.gif"
-import babyBirdClean from "../assets/beasts/BabyEagle-bath.gif"
+import babyDragonIdle from "../assets/beasts/Dragon-Flame-Idle.gif"
+import babyDragonEat from "../assets/beasts/Dragon-Flame-Idle.gif"
+import babyDragonPlay from "../assets/beasts/Dragon-Flame-Play.gif"
+import babyDragoSleep from "../assets/beasts/Dragon-Flame-Sleep.gif"
+import babyDragonClean from "../assets/beasts/Dragon-Flame-Shower.gif"
 
 export interface iBeastDex {
   name: string;
@@ -98,32 +98,32 @@ const beastsDex: iBeastDex[]= [
     ]
   },
   { 
-    name: "YoungEagle",
-    description: "The eagle is a large bird of prey that is found in many parts of the world",
+    name: "Solarius",
+    description: "Solarius is a celestial dragon that radiates light and warmth, guiding lost souls through the skies.",
     specie: 2,
-    idlePicture: babyBirdIdle,
-    eatPicture: babyBirdEat,
-    playPicture: babyBirdPlay,
-    sleepPicture: babyBirdSleep,
-    cleanPicture: babyBirdClean,
-    cuddlePicture: babyBirdPlay,
-    BeastsType: "Crystal",
+    idlePicture: babyDragonIdle,
+    eatPicture: babyDragonEat,
+    playPicture: babyDragonPlay,
+    sleepPicture: babyDragoSleep,
+    cleanPicture: babyDragonClean,
+    cuddlePicture: babyDragonPlay,
+    BeastsType: "Draconic",
     Height: "0.2m",
     Weight: "800g",
     Attack: "5",
     Defense: "3",
     Speed: "6",
-    EffectiveAgainst: ["Draconic", "Shadow"],
-    WeakAgainst: ["Magic", "Light"],
-    BeastsEvolutions: ["YoungEagle", "MajesticEagle"],
+    EffectiveAgainst: ["Ice", "Shadow"],
+    WeakAgainst: ["Magic"],
+    BeastsEvolutions: ["Helionis", "Aetherion"],
     FavoriteFood: ["Fish", "Cherry", "Corn"],
     BeastsCharacteristics: [
-      "Graceful and free-spirited",
-      "Loves soaring through the skies",
-      "Possesses keen observation skills"
+      "Radiates warmth and celestial energy",
+      "Soars through the skies, leaving a trail of light",
+      "A protector of lost souls and guardian of the dawn"
     ],
     Bio: [
-      "Born with the spirit of freedom and grace, BabyEagle is always ready to soar to new heights and share the wonders of the sky."
+      "Born from the first rays of the sun, Solarius carries the essence of light and renewal, guiding those in darkness toward hope and illumination."
     ]
   },
 ]

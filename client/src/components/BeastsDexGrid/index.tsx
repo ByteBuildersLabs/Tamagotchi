@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DexCarousel from '../Dex/DexCarousel/index.tsx';
 import beastsDex, { iBeastDex, } from '../../data/beastDex.tsx';
-import ControllerConnectButton from '../CartridgeController/ControllerConnectButton.tsx';
 import './main.css';
 import Header from '../Header/index.tsx';
 
@@ -69,7 +68,6 @@ const BeastsDexGrid: React.FC = () => {
                 Beast DEX
                 <span className='d-block'>Knowledge source</span>
               </p>
-              <ControllerConnectButton />
             </div>
             <div className="scrollable-container">
               <div className="beast-grid">

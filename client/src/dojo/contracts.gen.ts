@@ -66,27 +66,6 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_decreaseStatus_calldata = (): DojoCall => {
-		return {
-			contractName: "actions",
-			entrypoint: "decrease_status",
-			calldata: [],
-		};
-	};
-
-	const actions_decreaseStatus = async (snAccount: Account | AccountInterface) => {
-		try {
-			return await provider.execute(
-				snAccount as any,
-				build_actions_decreaseStatus_calldata(),
-				"tamagotchi",
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
 	const build_actions_feed_calldata = (foodId: number): DojoCall => {
 		return {
 			contractName: "actions",
@@ -100,6 +79,48 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount as any,
 				build_actions_feed_calldata(foodId),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_actions_getBeastAge_calldata = (): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "get_beast_age",
+			calldata: [],
+		};
+	};
+
+	const actions_getBeastAge = async (snAccount: Account | AccountInterface) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_actions_getBeastAge_calldata(),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_actions_getTimestampBasedStatus_calldata = (): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "get_timestamp_based_status",
+			calldata: [],
+		};
+	};
+
+	const actions_getTimestampBasedStatus = async (snAccount: Account | AccountInterface) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_actions_getTimestampBasedStatus_calldata(),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -234,19 +255,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_spawn_calldata = (specie: number, beastType: number): DojoCall => {
+	const build_actions_spawnBeast_calldata = (specie: number, beastType: number): DojoCall => {
 		return {
 			contractName: "actions",
-			entrypoint: "spawn",
+			entrypoint: "spawn_beast",
 			calldata: [specie, beastType],
 		};
 	};
 
-	const actions_spawn = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
+	const actions_spawnBeast = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_actions_spawn_calldata(specie, beastType),
+				build_actions_spawnBeast_calldata(specie, beastType),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -297,6 +318,26 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_actions_updateBeastStatus_calldata = (): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "update_beast_status",
+			calldata: [],
+		};
+	};
+
+	const actions_updateBeastStatus = async (snAccount: Account | AccountInterface) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_actions_updateBeastStatus_calldata(),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
 
 
 	return {
@@ -307,10 +348,12 @@ export function setupWorld(provider: DojoProvider) {
 			buildAwakeCalldata: build_actions_awake_calldata,
 			clean: actions_clean,
 			buildCleanCalldata: build_actions_clean_calldata,
-			decreaseStatus: actions_decreaseStatus,
-			buildDecreaseStatusCalldata: build_actions_decreaseStatus_calldata,
 			feed: actions_feed,
 			buildFeedCalldata: build_actions_feed_calldata,
+			getBeastAge: actions_getBeastAge,
+			buildGetBeastAgeCalldata: build_actions_getBeastAge_calldata,
+			getTimestampBasedStatus: actions_getTimestampBasedStatus,
+			buildGetTimestampBasedStatusCalldata: build_actions_getTimestampBasedStatus_calldata,
 			initTapCounter: actions_initTapCounter,
 			buildInitTapCounterCalldata: build_actions_initTapCounter_calldata,
 			pet: actions_pet,
@@ -323,12 +366,14 @@ export function setupWorld(provider: DojoProvider) {
 			buildSetCurrentBeastCalldata: build_actions_setCurrentBeast_calldata,
 			sleep: actions_sleep,
 			buildSleepCalldata: build_actions_sleep_calldata,
-			spawn: actions_spawn,
-			buildSpawnCalldata: build_actions_spawn_calldata,
+			spawnBeast: actions_spawnBeast,
+			buildSpawnBeastCalldata: build_actions_spawnBeast_calldata,
 			spawnPlayer: actions_spawnPlayer,
 			buildSpawnPlayerCalldata: build_actions_spawnPlayer_calldata,
 			tap: actions_tap,
 			buildTapCalldata: build_actions_tap_calldata,
+			updateBeastStatus: actions_updateBeastStatus,
+			buildUpdateBeastStatusCalldata: build_actions_updateBeastStatus_calldata,
 		},
 	};
 }
