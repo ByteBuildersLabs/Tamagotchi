@@ -173,6 +173,9 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
+                  <div className="age-icon">
+                    {beast.age}
+                  </div>
                 </div>
               </div>
               {

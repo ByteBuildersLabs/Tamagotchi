@@ -1,7 +1,7 @@
 .leaderboard {
   width: 100%;
   max-width: 400px;
-  margin: 0;
+  margin: 0 auto;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -21,7 +21,11 @@
 }
 
 .leaderboard-container h4 {
-  margin-bottom: 20px;
+  margin: 20px;
+}
+
+.leaderboard-container span {
+  font-weight: bold;
 }
 
 .leaderboard-container .col-3 {
@@ -29,4 +33,17 @@
   align-items: center;
   justify-content: center;
   color: #ECECDA;
+}
+
+.leaderboard .bottom-footer {
+  color: #ECECDA;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard .bottom-footer img {
+  width: 30px;
+  margin-left: 4px;
 }

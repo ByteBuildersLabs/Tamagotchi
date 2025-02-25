@@ -33,13 +33,31 @@
 
 .beast-buttons {
   position: absolute;
-  top: -60px;
+  top: -50px;
+  display: flex;
+  width: 100%;
+}
+
+.age-icon {
+  background-image: url('../../assets/img/back.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 22px;
 }
 
 .beast-interaction img {
   width: 35px;
-  margin: 15px 15px 0 0;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 /* Styles for goBack container*/

@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x535446c53848f4d19ea9b71d4d9215f646b0696c7fb75dd055533bbfc3bc579",
-      "class_hash": "0x13630f84882e2a9670cd8834f769fbeac9a7a88738521b96d7bbc6e8cda8716",
+      "address": "0x5cf29179a92cf0e5b15cf30b988de6f868c845cfe9305aa994169d2e76087fd",
+      "class_hash": "0x19e9338192fe2c623b6dd0e5e4854b064d357fa465cab2be7adc48fa29dcdd8",
       "abi": [
         {
           "type": "impl",
@@ -1481,7 +1481,7 @@
             },
             {
               "type": "function",
-              "name": "update_beast",
+              "name": "update_beast_status",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
@@ -1570,49 +1570,6 @@
               "outputs": [
                 {
                   "type": "tamagotchi::models::beast_status::BeastStatus"
-                }
-              ],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_timestamp_based_status_with_address",
-              "inputs": [
-                {
-                  "name": "address",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "tamagotchi::models::beast_status::BeastStatus"
-                }
-              ],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_beast_age",
-              "inputs": [],
-              "outputs": [
-                {
-                  "type": "core::integer::u16"
-                }
-              ],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "get_beast_age_with_address",
-              "inputs": [
-                {
-                  "name": "address",
-                  "type": "core::starknet::contract_address::ContractAddress"
-                }
-              ],
-              "outputs": [
-                {
-                  "type": "core::integer::u16"
                 }
               ],
               "state_mutability": "external"
@@ -1736,7 +1693,7 @@
         "spawn_beast",
         "add_initial_food",
         "set_current_beast",
-        "update_beast",
+        "update_beast_status",
         "feed",
         "sleep",
         "awake",
@@ -1747,9 +1704,6 @@
         "init_tap_counter",
         "tap",
         "get_timestamp_based_status",
-        "get_timestamp_based_status_with_address",
-        "get_beast_age",
-        "get_beast_age_with_address",
         "upgrade"
       ]
     }
@@ -1758,7 +1712,7 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x601cb51b014d478f67e793e2c65fb545ca9c3691cd30be236dea0866e72ee86",
+      "class_hash": "0x5db4b46756390ec76f3616badf1d5f12f39917fd16a5b224e2de3dd1f03c0a0",
       "tag": "tamagotchi-Beast",
       "selector": "0x797d07b8fd13e637ef738a275f2e895655f27905cdd62f75d82d68f239479f8"
     },
@@ -1781,6 +1735,13 @@
       "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "members": [],
+      "class_hash": "0x56701ebf4ae3eafc3a373fe9c67cbd5927bd31872457624923a3b62457fce74",
+      "tag": "tamagotchi-BeastAge",
+      "selector": "0x5692401f5cde9d276697565621a376eb99d5b61a15b5095a4a3b43f1aaeede8"
+    }
+  ],
   "external_contracts": []
 }

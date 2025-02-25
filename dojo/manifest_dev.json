@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x2774b0e065dc5ca9851cac016b8b75ab33bdbc2c77c11bad9766c5da99b227d",
-      "class_hash": "0x76a2c191d0ce687c96e9c5468854a769d946d4c74e5686aa61964722217e945",
+      "address": "0x535446c53848f4d19ea9b71d4d9215f646b0696c7fb75dd055533bbfc3bc579",
+      "class_hash": "0x13630f84882e2a9670cd8834f769fbeac9a7a88738521b96d7bbc6e8cda8716",
       "abi": [
         {
           "type": "impl",
@@ -1481,7 +1481,7 @@
             },
             {
               "type": "function",
-              "name": "update_beast_status",
+              "name": "update_beast",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
@@ -1576,8 +1576,40 @@
             },
             {
               "type": "function",
+              "name": "get_timestamp_based_status_with_address",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "tamagotchi::models::beast_status::BeastStatus"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "get_beast_age",
               "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u16"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_beast_age_with_address",
+              "inputs": [
+                {
+                  "name": "address",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
               "outputs": [
                 {
                   "type": "core::integer::u16"
@@ -1704,7 +1736,7 @@
         "spawn_beast",
         "add_initial_food",
         "set_current_beast",
-        "update_beast_status",
+        "update_beast",
         "feed",
         "sleep",
         "awake",
@@ -1715,7 +1747,9 @@
         "init_tap_counter",
         "tap",
         "get_timestamp_based_status",
+        "get_timestamp_based_status_with_address",
         "get_beast_age",
+        "get_beast_age_with_address",
         "upgrade"
       ]
     }

@@ -109,6 +109,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_actions_getBeastAgeWithAddress_calldata = (address: string): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "get_beast_age_with_address",
+			calldata: [address],
+		};
+	};
+
+	const actions_getBeastAgeWithAddress = async (snAccount: Account | AccountInterface, address: string) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_actions_getBeastAgeWithAddress_calldata(address),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_actions_getTimestampBasedStatus_calldata = (): DojoCall => {
 		return {
 			contractName: "actions",
@@ -122,6 +143,27 @@ export function setupWorld(provider: DojoProvider) {
 			return await provider.execute(
 				snAccount,
 				build_actions_getTimestampBasedStatus_calldata(),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_actions_getTimestampBasedStatusWithAddress_calldata = (address: string): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "get_timestamp_based_status_with_address",
+			calldata: [address],
+		};
+	};
+
+	const actions_getTimestampBasedStatusWithAddress = async (snAccount: Account | AccountInterface, address: string) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_actions_getTimestampBasedStatusWithAddress_calldata(address),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -319,19 +361,19 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_updateBeastStatus_calldata = (): DojoCall => {
+	const build_actions_updateBeast_calldata = (): DojoCall => {
 		return {
 			contractName: "actions",
-			entrypoint: "update_beast_status",
+			entrypoint: "update_beast",
 			calldata: [],
 		};
 	};
 
-	const actions_updateBeastStatus = async (snAccount: Account | AccountInterface) => {
+	const actions_updateBeast = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
 				snAccount,
-				build_actions_updateBeastStatus_calldata(),
+				build_actions_updateBeast_calldata(),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -354,8 +396,12 @@ export function setupWorld(provider: DojoProvider) {
 			buildFeedCalldata: build_actions_feed_calldata,
 			getBeastAge: actions_getBeastAge,
 			buildGetBeastAgeCalldata: build_actions_getBeastAge_calldata,
+			getBeastAgeWithAddress: actions_getBeastAgeWithAddress,
+			buildGetBeastAgeWithAddressCalldata: build_actions_getBeastAgeWithAddress_calldata,
 			getTimestampBasedStatus: actions_getTimestampBasedStatus,
 			buildGetTimestampBasedStatusCalldata: build_actions_getTimestampBasedStatus_calldata,
+			getTimestampBasedStatusWithAddress: actions_getTimestampBasedStatusWithAddress,
+			buildGetTimestampBasedStatusWithAddressCalldata: build_actions_getTimestampBasedStatusWithAddress_calldata,
 			initTapCounter: actions_initTapCounter,
 			buildInitTapCounterCalldata: build_actions_initTapCounter_calldata,
 			pet: actions_pet,
@@ -374,8 +420,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildSpawnPlayerCalldata: build_actions_spawnPlayer_calldata,
 			tap: actions_tap,
 			buildTapCalldata: build_actions_tap_calldata,
-			updateBeastStatus: actions_updateBeastStatus,
-			buildUpdateBeastStatusCalldata: build_actions_updateBeastStatus_calldata,
+			updateBeast: actions_updateBeast,
+			buildUpdateBeastCalldata: build_actions_updateBeast_calldata,
 		},
 	};
 }

@@ -17,7 +17,6 @@ export const useBeasts = () => {
       .map(entity => entity.models.tamagotchi.Beast);
   }, [entities]);
 
-
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
 

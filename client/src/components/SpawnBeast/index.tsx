@@ -8,6 +8,8 @@ import { Account } from "starknet";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
+import { useBeasts } from "../../hooks/useBeasts.tsx";
+import { useNavigate } from 'react-router-dom';
 import './main.css';
 
 
@@ -15,8 +17,28 @@ function SpawnBeast() {
   const { userAccount } = useGlobalContext();
   const { client } = useDojoSDK();
   const { player } = usePlayer();
+  const { beasts } = useBeasts();
   const { spawn } = useSystemCalls();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Make sure the flow goes properly
+  useEffect(() => {
+    if (!player) return
+    const currentBeast = beasts.find(beast => beast?.beast_id === player.current_beast_id);
+    if (currentBeast) navigate('/play');
+  }, [beasts, player]);
+  // Make sure the flow goes properly
+
+  useEffect(() => {
+    const spawnPlayerAndAddFood = async () => {
+      if (!player) {
+        await client.actions.spawnPlayer(userAccount as Account);
+        await client.actions.addInitialFood(userAccount as Account);
+      }
+    };
+    spawnPlayerAndAddFood();
+  }, [player]);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
@@ -39,8 +61,17 @@ function SpawnBeast() {
 
   const spawnPlayer = async () => {
     if (!userAccount) return
-    await client.actions.spawnPlayer(userAccount as Account);
-    await client.actions.addInitialFood(userAccount as Account);
+    notify();
+    setLoading(true);
+    await spawn(randomNumber);
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    if (!player) {
+      await client.actions.spawnPlayer(userAccount as Account);
+      await client.actions.addInitialFood(userAccount as Account);
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      setLoading(false);
+    }
+    navigate('/play');
   };
 
   const loadingAnimation = () => {
@@ -71,28 +102,11 @@ function SpawnBeast() {
               Hatch your own Baby Beast and <br />take care of him!
             </p>
           </div>
-          { userAccount && !player && 
+          { userAccount && 
             <button
               className="button"
               onClick={async () => {
-                setLoading(true);
-                await spawnPlayer();
-                await new Promise(resolve => setTimeout(resolve, 5500));
-                setLoading(false);
-              }}>
-                {
-                  loading ? loadingAnimation() : 'Create player'
-                }
-            </button>}
-          { userAccount && player && 
-            <button
-              className="button"
-              onClick={async () => {
-                notify();
-                setLoading(true);
-                await spawn(randomNumber);
-                await new Promise(resolve => setTimeout(resolve, 5500));
-                setLoading(false);
+                spawnPlayer();
               }}>
                 {
                   loading ? loadingAnimation() : 'Hatch your egg'
