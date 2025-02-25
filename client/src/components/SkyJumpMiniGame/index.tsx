@@ -75,6 +75,14 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     boardWidth: 360, // Canvas width
     boardHeight: 576, // Canvas height
     cameraY: 0, // Camera vertical position
+    
+    // Visual beasts size 
+    doodlerVisualWidth: 65, 
+    doodlerVisualHeight: 65, 
+
+    // Ajustes para centrar visualmente (offset visual)
+    doodlerVisualOffsetX: -13, // Adjust to center the beast collider horizontally.
+    doodlerVisualOffsetY: -24, // Adjust to center the beast collider vertically.
 
     // Doodler properties
     doodlerWidth: 46,
@@ -84,8 +92,10 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       x: 0,
       y: 0,
       worldY: 0,
-      width: 60,
-      height: 60,
+      width: 15,
+      height: 25,
+      hitboxOffsetX: 10,
+      hitboxOffsetY: 10,
     },
 
     // Platform properties
@@ -255,8 +265,10 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       x: game.boardWidth / 2 - game.doodlerWidth / 2,
       y: (game.boardHeight * 7) / 8 - game.doodlerHeight,
       worldY: (game.boardHeight * 7) / 8 - game.doodlerHeight,
-      width: game.doodlerWidth,
-      height: game.doodlerHeight,
+      width: 15,         
+      height: 25,        
+      hitboxOffsetX: 10, 
+      hitboxOffsetY: 10, 
     };
 
     game.velocityX = 0;
@@ -434,10 +446,10 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
   // Detect collision between doodler and a platform
   const detectCollision = (a: any, b: any) => {
     return (
-      a.x < b.x + b.width &&
-      a.x + a.width > b.x &&
-      a.worldY < b.worldY + b.height &&
-      a.worldY + a.height > b.worldY
+      (a.x + a.hitboxOffsetX) < b.x + b.width &&
+      (a.x + a.hitboxOffsetX + a.width) > b.x &&
+      (a.worldY + a.hitboxOffsetY) < b.worldY + b.height &&
+      (a.worldY + a.hitboxOffsetY + a.height) > b.worldY
     );
   };
 
@@ -613,11 +625,20 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     // Draw the doodler image on the canvas
     context.drawImage(
       game.doodler.img!,
-      game.doodler.x,
-      game.doodler.y,
-      game.doodler.width,
-      game.doodler.height
+      game.doodler.x + game.doodlerVisualOffsetX, 
+      game.doodler.y + game.doodlerVisualOffsetY, 
+      game.doodlerVisualWidth,
+      game.doodlerVisualHeight
     );
+
+    // Hitbox/collider display (for debugging) keep commented out in production
+    //context.strokeStyle = 'red';
+    //context.strokeRect(
+    //  game.doodler.x + game.doodler.hitboxOffsetX,
+    //  game.doodler.y + game.doodler.hitboxOffsetY,
+    //  game.doodler.width,
+    //  game.doodler.height
+    //);
 
     // Replenish platforms that move off-screen
     while (
