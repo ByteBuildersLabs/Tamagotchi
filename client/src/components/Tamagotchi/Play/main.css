@@ -36,7 +36,7 @@
   display: grid;
   grid-template-columns: 64px 1fr;
   column-gap: 10px;
-  align-items: center;
+  align-items: start;
 }
 
 .game-card:hover {
@@ -48,12 +48,14 @@
   width: 64px;
   height: 64px;
   object-fit: contain;
+  grid-column: 1 / 2;
 }
 
 .game-card-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
+  grid-column: 2 / 3;
 }
 
 .game-name {
