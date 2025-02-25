@@ -1,74 +1,33 @@
-import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
-import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useAccount } from "@starknet-react/core";
-import { useEffect, useMemo } from "react";
-import { AccountInterface, addAddressPadding } from "starknet";
-import { ModelsMapping } from "../dojo/bindings";
+import { useAccount } from '@starknet-react/core';
+import { useState, useEffect } from 'react';
+
+function hexToDecimal(hexArray: string[] | undefined) {
+  if (!hexArray) return 
+  return hexArray.map(hexString => parseInt(hexString, 16));
+}
 
 export const useBeastsStatus = () => {
-  const { useDojoStore, sdk } = useDojoSDK();
   const { account } = useAccount();
-  const state = useDojoStore((state) => state);
-  const entities = useDojoStore((state) => state.entities);
-
-  const beastsStatus = useMemo(() => {
-    return Object.values(entities)
-      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.BeastStatus)
-      .map(entity => entity.models.tamagotchi.BeastStatus);
-  }, [entities]);
-
-  const entityId = useMemo(() => {
-    if (account) {
-      return getEntityIdFromKeys([BigInt(account.address)]);
-    }
-    return BigInt(0);
-  }, [account]);
+  const [beastStatus, setStatus] = useState<any>(null);
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-
-    const subscribe = async (account: AccountInterface) => {
-      const [initialData, subscription] = await sdk.subscribeEntityQuery({
-        query: new ToriiQueryBuilder()
-          .withClause(
-            // Querying Moves and Position models that has at least [account.address] as key
-            KeysClause(
-              [ModelsMapping.BeastStatus ],
-              [addAddressPadding(account.address)],
-              "VariableLen"
-            ).build()
-          )
-          .includeHashedKeys(),
-        callback: ({ error, data }) => {
-          if (error) {
-            console.error("Error setting up entity sync:", error);
-          } else if (data && data[0].entityId !== "0x0") {
-            state.updateEntity(data[0]);
-          }
-        },
-      });
-
-      state.setEntities(initialData);
-
-      unsubscribe = () => subscription.cancel();
-    };
-
-    if (account) {
-      subscribe(account);
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
+    const fetchStatus = async () => {
+      try {
+        const response = await account?.callContract({
+          contractAddress: "0x535446c53848f4d19ea9b71d4d9215f646b0696c7fb75dd055533bbfc3bc579",
+          entrypoint: "get_timestamp_based_status_with_address",
+          calldata: [String(account?.address)],
+        });
+        setStatus(hexToDecimal(response));
+      } catch (err) {
+        console.log(err)
       }
     };
-  }, [sdk, account, state]);
 
-  const beastStatus = useModel(entityId as string, ModelsMapping.BeastStatus);
+    fetchStatus();
+  }, [account]);
 
-  return {
-    beastStatus,
-    beastsStatus
-  };
+ 
+
+  return { beastStatus };
 };

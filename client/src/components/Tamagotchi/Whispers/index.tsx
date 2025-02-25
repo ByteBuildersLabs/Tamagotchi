@@ -116,7 +116,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
             Hygiene: ${beastStatus.hygiene}/100
             
             Respond in ONE short line (max 15 words). 
-            Focus on your ${criticalStat.stat.toLowerCase()} being ${criticalStat.value}%.`;
+            Focus on your ${criticalStat?.stat.toLowerCase()} being ${criticalStat?.value}%.`;
   };
 
   const createWhisper = async (prompt: string) => {

@@ -1,7 +1,6 @@
 // React imports
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalProvider } from "./hooks/appContext.tsx";
 import { MusicProvider } from "./context/contextMusic.tsx";
 
@@ -13,14 +12,8 @@ import { setupWorld } from "./dojo/contracts.gen.ts";
 import { dojoConfig } from "./dojo/dojoConfig.ts";
 import StarknetProvider from "./dojo/starknet-provider.tsx";
 
-// Import components and style
-import Main from "./components/Main/index.tsx";
-import Dex from "./components/BeastsDexGrid/index.tsx";
-
 // Import the layout component
-import AppLayout from "./components/Layouts/AppLayout.tsx";
-import Lore from "./components/Lore/index.tsx";
-import Leaderboard from "./components/Leadeboard/index.tsx";
+import Main from "./components/Main/index.tsx";
 import "./index.css";
 
 async function main() {
@@ -49,17 +42,8 @@ async function main() {
         >
           <StarknetProvider>
             <GlobalProvider>
-              <MusicProvider> {/* Añadido aquí */}
-                  <Router>
-                    <Routes>
-                      <Route element={<AppLayout />}>
-                        <Route path="/" element={<Main />} />
-                        <Route path="/dex" element={<Dex />} />
-                        <Route path="/lore" element={<Lore />} />
-                        <Route path="/leaderboard" element={<Leaderboard />} />
-                      </Route>
-                    </Routes>
-                  </Router>
+              <MusicProvider>
+                <Main />
               </MusicProvider>
             </GlobalProvider>
           </StarknetProvider>

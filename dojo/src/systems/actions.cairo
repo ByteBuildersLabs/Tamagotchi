@@ -1,5 +1,6 @@
 // Types import
 use tamagotchi::models::beast_status::BeastStatus;
+use starknet::ContractAddress;
 
 // Interface definition
 #[starknet::interface]
@@ -11,7 +12,7 @@ pub trait IActions<T> {
     fn set_current_beast(ref self: T, beast_id: u16);
 
     // ------------------------- Beast methods -------------------------
-    fn update_beast_status(ref self: T);
+    fn update_beast(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
     fn awake(ref self: T);
@@ -26,6 +27,9 @@ pub trait IActions<T> {
 
     // ------------------------- Read Calls -------------------------
     fn get_timestamp_based_status(ref self: T) -> BeastStatus;
+    fn get_timestamp_based_status_with_address(ref self: T, address: ContractAddress) -> BeastStatus;
+    fn get_beast_age(ref self: T) -> u16;
+    fn get_beast_age_with_address(ref self: T, address: ContractAddress) -> u16;
 }
 
 #[dojo::contract]
@@ -42,12 +46,6 @@ pub mod actions {
     
     // Local import
     use super::{IActions};
-
-    // Utils import
-    use tamagotchi::utils::math::{math::{calculate_age}};
-
-    // Events import
-    use tamagotchi::events::beast_age::BeastAge;
     
     // Model imports
     #[allow(unused_imports)]
@@ -127,7 +125,7 @@ pub mod actions {
 
          // ------------------------- Beast methods -------------------------
          // This method is used to update the beast related data and write it to the world
-        fn update_beast_status(ref self: ContractState) {
+        fn update_beast(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             let current_timestamp = get_block_timestamp();
@@ -135,16 +133,16 @@ pub mod actions {
             let player: Player = store.read_player();
             player.assert_exists();
             
-            // Update beast status
+            // Update beast status and write it to the world
             let beast_id = player.current_beast_id;
             let mut beast_status: BeastStatus = store.read_beast_status(beast_id);
             beast_status.calculate_timestamp_based_status(current_timestamp);
             store.write_beast_status(@beast_status);
             
-            // Update beast ege by emmiting the event
+            // Update beast and write it to the world
             let mut beast: Beast = store.read_beast(beast_id);
-            let age: u8 = calculate_age(beast.birth_date, current_timestamp);
-            world.emit_event(@BeastAge { beast_id, age });
+            beast.calculate_age(current_timestamp);
+            store.write_beast(@beast);
         }
 
         fn feed(ref self: ContractState, food_id: u8) {
@@ -182,12 +180,6 @@ pub mod actions {
                     store.write_food(@food);
                     store.write_beast_status(@beast_status);
                 }
-
-                // Update beast age by emmiting the event
-                let current_timestamp = get_block_timestamp();
-                let mut beast: Beast = store.read_beast(beast_id);
-                let age: u8 = calculate_age(beast.birth_date, current_timestamp);
-                world.emit_event(@BeastAge { beast_id, age });
             }
         }
 
@@ -379,6 +371,55 @@ pub mod actions {
             beast_status.calculate_timestamp_based_status(current_timestampt);
 
             beast_status
+        }
+
+        fn get_timestamp_based_status_with_address(ref self: ContractState, address: ContractAddress) -> BeastStatus {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player_from_address(address);
+            player.assert_exists();
+
+            let beast_id = player.current_beast_id;
+            let mut beast_status = store.read_beast_status(beast_id);
+            
+            let current_timestampt = get_block_timestamp();
+            beast_status.calculate_timestamp_based_status(current_timestampt);
+
+            beast_status
+        }
+
+        
+        fn get_beast_age(ref self: ContractState) -> u16 {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player();
+            player.assert_exists();
+            
+            let beast_id = player.current_beast_id;
+            let mut beast: Beast = store.read_beast(beast_id);
+            
+            let current_timestampt = get_block_timestamp();
+            beast.calculate_age(current_timestampt);
+            
+            beast.age
+        }
+
+        fn get_beast_age_with_address(ref self: ContractState, address: ContractAddress) -> u16 {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let player: Player = store.read_player_from_address(address);
+            player.assert_exists();
+
+            let beast_id = player.current_beast_id;
+            let mut beast: Beast = store.read_beast(beast_id);
+
+            let current_timestampt = get_block_timestamp();
+            beast.calculate_age(current_timestampt);
+            
+            beast.age
         }
     }
 }

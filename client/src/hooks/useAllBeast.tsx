@@ -17,7 +17,6 @@ export const useBeasts = () => {
       .map(entity => entity.models.tamagotchi.Beast);
   }, [entities]);
 
-
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
 
@@ -37,7 +36,6 @@ export const useBeasts = () => {
           if (error) {
             console.error("Error setting up entity sync:", error);
           } else if (data && data[0].entityId !== "0x0") {
-            console.log('Rolitoooo')
             state.updateEntity(data[0]);
           }
         },

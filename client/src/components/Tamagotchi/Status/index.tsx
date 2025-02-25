@@ -1,4 +1,3 @@
-import { BeastStatus } from "../../../dojo/bindings";
 import CircularProgressBar from "../../ui/circularProgressBar";
 import Energy from '../../../assets/img/energy.svg';
 import Happyness from '../../../assets/img/Mood.svg';
@@ -8,10 +7,10 @@ import './main.css';
 
 
 const statusItems = [
-  { value: (beastStatus: BeastStatus) => Math.round(beastStatus.energy), pic: Energy, color: '#ECECDA' },
-  { value: (beastStatus: BeastStatus) => Math.round(beastStatus.hunger), pic: Hunger, color: '#ECECDA' },
-  { value: (beastStatus: BeastStatus) => Math.round(beastStatus.happiness), pic: Happyness, color: '#ECECDA' },
-  { value: (beastStatus: BeastStatus) => Math.round(beastStatus.hygiene), pic: Hygienne, color: '#ECECDA' }
+  { value: (beastStatus: any) => beastStatus[4], pic: Energy, color: '#ECECDA' },
+  { value: (beastStatus: any) => beastStatus[3], pic: Hunger, color: '#ECECDA' },
+  { value: (beastStatus: any) => beastStatus[5], pic: Happyness, color: '#ECECDA' },
+  { value: (beastStatus: any) => beastStatus[6], pic: Hygienne, color: '#ECECDA' }
 ];
 
 function Status({ beastStatus }: { beastStatus: any }) {

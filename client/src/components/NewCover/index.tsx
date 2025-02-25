@@ -1,19 +1,56 @@
 import { useEffect, useState } from 'react';
 import { DeveloperCode } from "../DeveloperCode/index.tsx";
+import { useAccount } from '@starknet-react/core';
+import { usePlayer } from '../../hooks/usePlayers.tsx';
+import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
+const gradients = [
+  { id: 'raiseGradient', cx: 200, cy: 160, color: '#ff69b4' },
+  { id: 'playGradient', cx: 130, cy: 280, color: '#9370db' },
+  { id: 'evolveGradient', cx: 270, cy: 280, color: '#87ceeb' }
+];
+
+const stars = [
+  { cx: 50, cy: 150, r: 3 }, { cx: 70, cy: 180, r: 2 },
+  { cx: 350, cy: 180, r: 3 }, { cx: 325, cy: 140, r: 2 }
+];
+
+const twinkles = [
+  { d: "M60 130 L65 140 L70 130 L65 120 Z", transform: "translate(10)" },
+  { d: "M340 130 L345 140 L350 130 L345 120 Z", transform: "translate(-25, 40)" }
+];
+
+const circles = [
+  { cx: 200, cy: 160, text: 'RAISE', gradient: 'raiseGradient' },
+  { cx: 130, cy: 280, text: 'PLAY', gradient: 'playGradient' },
+  { cx: 270, cy: 280, text: 'EVOLVE', gradient: 'evolveGradient' }
+];
+
 function NewCover() {
+
+  // Make sure the flow goes properly
+  const navigate = useNavigate();
+  const { account } = useAccount();
+  const { player } = usePlayer();
+  useEffect(() => {
+    if (!account) return
+    if (!account || !player)  navigate('/spawn');
+  }, [account]);
+   // Make sure the flow goes properly
+ 
+   useEffect(() => {
+   }, [account, player])
+
   const [currentCircle, setCurrentCircle] = useState('play');
-  
+
   useEffect(() => {
     const sequence = ['play', 'raise', 'evolve'];
     let currentIndex = 0;
-
     const interval = setInterval(() => {
       currentIndex = (currentIndex + 1) % sequence.length;
       setCurrentCircle(sequence[currentIndex]);
     }, 2000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -24,27 +61,13 @@ function NewCover() {
         <div className="venn-diagram">
           <svg viewBox="0 0 400 400">
             <defs>
-              <radialGradient id="raiseGradient" gradientUnits="userSpaceOnUse"
-                cx="200" cy="160" r="100" fx="200" fy="160">
-                <stop offset="0%" stopColor="#ff69b4" stopOpacity="0.8" />
-                <stop offset="60%" stopColor="#ff69b4" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#ff69b4" stopOpacity="0" />
-              </radialGradient>
-
-              <radialGradient id="playGradient" gradientUnits="userSpaceOnUse"
-                cx="130" cy="280" r="100" fx="130" fy="280">
-                <stop offset="0%" stopColor="#9370db" stopOpacity="0.8" />
-                <stop offset="60%" stopColor="#9370db" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#9370db" stopOpacity="0" />
-              </radialGradient>
-
-              <radialGradient id="evolveGradient" gradientUnits="userSpaceOnUse"
-                cx="270" cy="280" r="100" fx="270" fy="280">
-                <stop offset="0%" stopColor="#87ceeb" stopOpacity="0.8" />
-                <stop offset="60%" stopColor="#87ceeb" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#87ceeb" stopOpacity="0" />
-              </radialGradient>
-
+              {gradients.map(({ id, cx, cy, color }) => (
+                <radialGradient key={id} id={id} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r="100" fx={cx} fy={cy}>
+                  <stop offset="0%" stopColor={color} stopOpacity="0.8" />
+                  <stop offset="60%" stopColor={color} stopOpacity="0.3" />
+                  <stop offset="100%" stopColor={color} stopOpacity="0" />
+                </radialGradient>
+              ))}
               <filter id="glow">
                 <feGaussianBlur stdDeviation="4" result="coloredBlur" />
                 <feMerge>
@@ -53,47 +76,19 @@ function NewCover() {
                 </feMerge>
               </filter>
             </defs>
-
-            {/* Estrellas */}
             <g className="stars">
-              {/* Izquierda */}
-              <circle className="star" cx="50" cy="150" r="3" />
-              <circle className="star" cx="70" cy="180" r="2" />
-              <path className="twinkle" transform="translate(10)" d="M60 130 L65 140 L70 130 L65 120 Z" />
-
-              {/* Derecha */}
-              <circle className="star" cx="350" cy="180" r="3" />
-              <circle className="star" cx="325" cy="140" r="2" />
-              <path className="twinkle" transform="translate(-25, 40)" d="M340 130 L345 140 L350 130 L345 120 Z" />
+              {stars.map((star, index) => <circle key={index} className="star" {...star} />)}
+              {twinkles.map((twinkle, index) => <path key={index} className="twinkle" {...twinkle} />)}
             </g>
-
-            {/* Diagrama Venn */}
-            <g className="circle-group">
-              <circle cx="200" cy="160" r="100" className="circle-base" />
-              <circle cx="200" cy="160" r="100" fill="url(#raiseGradient)"
-                className={`circle-gradient ${currentCircle === 'raise' ? 'active' : ''}`}
-                filter="url(#glow)"
-              />
-              <text x="200" y="160" className="circle-text">RAISE</text>
-            </g>
-
-            <g className="circle-group">
-              <circle cx="130" cy="280" r="100" className="circle-base" />
-              <circle cx="130" cy="280" r="100" fill="url(#playGradient)"
-                className={`circle-gradient ${currentCircle === 'play' ? 'active' : ''}`}
-                filter="url(#glow)"
-              />
-              <text x="130" y="280" className="circle-text">PLAY</text>
-            </g>
-
-            <g className="circle-group">
-              <circle cx="270" cy="280" r="100" className="circle-base" />
-              <circle cx="270" cy="280" r="100" fill="url(#evolveGradient)"
-                className={`circle-gradient ${currentCircle === 'evolve' ? 'active' : ''}`}
-                filter="url(#glow)"
-              />
-              <text x="270" y="280" className="circle-text">EVOLVE</text>
-            </g>
+            {circles.map(({ cx, cy, text, gradient }) => (
+              <g key={text} className="circle-group">
+                <circle cx={cx} cy={cy} r="100" className="circle-base" />
+                <circle cx={cx} cy={cy} r="100" fill={`url(#${gradient})`}
+                  className={`circle-gradient ${currentCircle === text.toLowerCase() ? 'active' : ''}`}
+                  filter="url(#glow)" />
+                <text x={cx} y={cy} className="circle-text">{text}</text>
+              </g>
+            ))}
           </svg>
         </div>
         <div className='mt-4 px-3 w-100'>
@@ -102,6 +97,6 @@ function NewCover() {
       </div>
     </div>
   );
-};
+}
 
 export default NewCover;

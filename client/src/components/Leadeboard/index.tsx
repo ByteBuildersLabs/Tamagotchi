@@ -3,11 +3,14 @@ import Header from '../Header/index.tsx';
 import dojologo from '../../assets/img/dojo-icon.svg';
 import starknet from '../../assets/img/stark.png'
 import { useEffect, useState } from 'react';
-import daniel from '../../assets/img/daniel.jpeg';
 import './main.css';
+import beastsDex from '../../data/beastDex.tsx';
 
 const Leaderboard: React.FC = () => {
+
   const { beasts } = useBeasts();
+  const [allBeasts, setAllBeasts] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
@@ -19,21 +22,20 @@ const Leaderboard: React.FC = () => {
     }
   }, []);
 
-   const [allBeasts, setBeasts] = useState<any>(null);
-
   useEffect(() => {
-    if (beasts) {
-      setBeasts(beasts);
-      console.log('Rolooo', allBeasts);
+    if (!isLoaded && beasts.length > 0) {
+      const sortedBeasts = [...beasts].sort((a, b) => b?.age - a?.age);
+      setAllBeasts(sortedBeasts);
+      setIsLoaded(true);
     }
-  }, [beasts]);
+  }, [beasts, isLoaded]);
 
   return (
     <>
       <Header />
       <div className="leaderboard">
         <div className='d-flex justify-content-between align-items-center'>
-          <p className={'title mb-4'}>
+          <p className={'title mb-5'}>
             Leaderboard
             <span className='d-block'>How old is your beast?</span>
           </p>
@@ -43,76 +45,38 @@ const Leaderboard: React.FC = () => {
             <h4>
               Leaderboard
             </h4>
-            <div className='row mb-4'>
+            <div className='row mb-3'>
               <div className='col-3'>
-                Position
+                <span>Position</span>
               </div>
               <div className='col-3'>
-                Player
+                <span>Player</span>
               </div>
               <div className='col-3'>
-                Beast
+                <span>Beast</span>
               </div>
               <div className='col-3'>
-                Age
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-3'>
-                1  
-              </div>
-              <div className='col-3'>
-                Rolo
-              </div>
-              <div className='col-3'>
-                <img src={daniel} className='beast' />
-              </div>
-              <div className='col-3'>
-                65
+                <span>Age</span>
               </div>
             </div>
-            <div className='row'>
-              <div className='col-3'>
-                1  
-              </div>
-              <div className='col-3'>
-                Rolo
-              </div>
-              <div className='col-3'>
-                <img src={daniel} className='beast' />
-              </div>
-              <div className='col-3'>
-                65
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-3'>
-                1  
-              </div>
-              <div className='col-3'>
-                Rolo
-              </div>
-              <div className='col-3'>
-                <img src={daniel} className='beast' />
-              </div>
-              <div className='col-3'>
-                65
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-3'>
-                1  
-              </div>
-              <div className='col-3'>
-                Rolo
-              </div>
-              <div className='col-3'>
-                <img src={daniel} className='beast' />
-              </div>
-              <div className='col-3'>
-                65
-              </div>
-            </div>
+            {
+              allBeasts && allBeasts.map((beast: any, index: number) => (
+                <div className='row mb-3' key={index}>
+                  <div className='col-3'>
+                    {index + 1}
+                  </div>
+                  <div className='col-3'>
+                    ...{beast.player?.slice(-6)}
+                  </div>
+                  <div className='col-3'>
+                    <img src={beastsDex[beast.specie - 1]?.idlePicture } className='beast' alt={beast.name} />
+                  </div>
+                  <div className='col-3'>
+                    {beast.age}
+                  </div>
+                </div>
+              ))
+            }
           </div>
         </div>
         <p className='bottom-footer'>

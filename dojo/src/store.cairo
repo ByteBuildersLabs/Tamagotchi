@@ -32,6 +32,10 @@ pub impl StoreImpl of StoreTrait {
     }
 
     // --------- Getters ---------
+    fn read_player_from_address(self: Store, player_address: ContractAddress) -> Player {
+        self.world.read_model(player_address)
+    }
+
     fn read_player(self: Store) -> Player {
         let player_address = get_caller_address();
         self.world.read_model(player_address)
@@ -270,6 +274,7 @@ pub impl StoreImpl of StoreTrait {
         let mut new_beast = Beast {
             player: player,
             beast_id: beast_id,
+            age: 1,
             birth_date: current_timestamp,
             specie: specie,
             beast_type: beast_type,

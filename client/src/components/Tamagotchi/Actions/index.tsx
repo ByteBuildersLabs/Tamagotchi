@@ -29,7 +29,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
 
   return (
     <div className="actions mb-0">
-      {actionButtons.map(({ label, img, action, pictureKey, isRevive }) => (
+      {actionButtons.map(({ label, img, action, pictureKey }) => (
         <Button
           key={label}
           onClick={async () => {
@@ -62,7 +62,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               console.error("Action error:", error);
             }
           }}
-          disabled={ isLoading || (isRevive ? beastStatus?.is_alive : !beastStatus?.is_alive)}
+          disabled={ isLoading || beastStatus[1] == 0}
         >
           {img && <img src={img} alt={label} />} {label}
         </Button>

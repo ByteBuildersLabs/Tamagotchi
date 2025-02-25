@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useSound from 'use-sound';
 import { Account } from "starknet";
 import { useGlobalContext } from "../../hooks/appContext.tsx";
 import { Card } from '../../components/ui/card';
+import useSound from 'use-sound';
 import toast from 'react-hot-toast';
 import beastsDex from "../../data/beastDex.tsx";
 import dead from '../../assets/img/dead.gif';
@@ -30,11 +30,13 @@ function Tamagotchi() {
   const { userAccount } = useGlobalContext();
   const { client } = useDojoSDK();
   const { beasts } = useBeasts();
-  const { beastsStatus } = useBeastsStatus();
+  const { beastStatus } = useBeastsStatus();
   const { player } = usePlayer();
 
   const [beast, setBeast] = useState<any>(null);
-  const [status, setStatus] = useState<any>(null);
+  const [status, setStatus] = useState<any>([]);
+
+  console.info('status', status);
 
   useEffect(() => {
     if (player && beasts.length > 0) {
@@ -44,11 +46,11 @@ function Tamagotchi() {
   }, [player, beasts]);
 
   useEffect(() => {
-    if (player && beastsStatus.length > 0) {
-      const foundStatus = beastsStatus[0];
+    if (player && beastStatus?.length > 0) {
+      const foundStatus = beastStatus;
       setStatus(foundStatus);
     }
-  }, [player, beastsStatus]);
+  }, [player, beastStatus]);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
@@ -115,10 +117,10 @@ function Tamagotchi() {
   };
 
   useEffect(() => {
-    if (status?.is_alive == false) {
+    if (status[1] == 0) {
       showDeathAnimation();
     }
-  }, [status?.is_alive]);
+  }, [status]);
 
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
@@ -140,7 +142,7 @@ function Tamagotchi() {
 
   const handleCuddle = async () => {
     if (!beast || !userAccount) return;
-    if (!status?.is_alive) return;
+    if (status[1] == 0 ) return;
     try {
       await toast.promise(
         handleAction(
@@ -197,8 +199,13 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
-                  <img className="actions-icon" src={share} onClick={handleShareClick}
-                  />
+
+                  <img className="actions-icon" src={share} onClick={handleShareClick} />
+
+                  <div className="age-icon">
+                    {beast.age}
+                  </div>
+
                 </div>
               </div>
               {

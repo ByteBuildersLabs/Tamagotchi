@@ -1,14 +1,6 @@
 pub mod constants;
 pub mod store;
 
-pub mod events {
-    pub mod beast_age;
-}
-
-pub mod utils {
-    pub mod math;
-}
-
 pub mod systems {
     pub mod actions;
 }

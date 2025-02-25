@@ -1,6 +1,5 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
-
 // Type definition for `tamagotchi::models::beast::Beast` struct
 export interface Beast {
 	player: string;
