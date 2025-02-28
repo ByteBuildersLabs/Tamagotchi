@@ -37,36 +37,8 @@ function Tamagotchi() {
   const [beast, setBeast] = useState<any>(null);
   const [status, setStatus] = useState<any>([]);
 
-  useEffect(() => {
-    console.log("Ruta cambiada a:", location.pathname);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if(!player) return
-    if(beast) return
-    const foundBeast = beasts.find((beast: any) => beast.player === player.address);
-    if (!foundBeast) return
-    setBeast(foundBeast);
-    async function setBeastId() {
-      await client.actions.setCurrentBeast(userAccount as Account, foundBeast?.beast_id)
-    }
-    setBeastId();
-  }, [player, beasts]);
-
-  useEffect(() => {
-    if(!player) return
-    let status:any = fetchStatus(userAccount);
-
-    const intervalId = setInterval(async () => {
-      status = await fetchStatus(userAccount);
-      setStatus(status);
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [beast]);
-
   const loadingTime = 6000;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('actions');
 
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
@@ -80,7 +52,7 @@ function Tamagotchi() {
   // Extract stats for sharing
   const getShareableStats = () => {
     if (!status) return undefined;
-    
+
     return {
       age: beast?.age || 0,
       energy: status[4] || 0,
@@ -94,6 +66,36 @@ function Tamagotchi() {
   const handleShareClick = () => {
     setIsShareModalOpen(true);
   };
+
+  useEffect(() => {
+    console.log("Ruta cambiada a:", location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!player) return
+    if (beast) return
+    const foundBeast = beasts.find((beast: any) => beast.player === player.address);
+    if (!foundBeast) return
+    setBeast(foundBeast);
+    async function setBeastId() {
+      await client.actions.setCurrentBeast(userAccount as Account, foundBeast?.beast_id)
+    }
+    setBeastId();
+  }, [player, beasts]);
+
+  useEffect(() => {
+    if (!player) return
+    let status: any = fetchStatus(userAccount);
+    setIsLoading(true);
+
+    const intervalId = setInterval(async () => {
+      status = await fetchStatus(userAccount);
+      setStatus(status);
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [beast]);
 
   useEffect(() => {
     const updateBackground = () => {
@@ -156,7 +158,7 @@ function Tamagotchi() {
 
   const handleCuddle = async () => {
     if (!beast || !userAccount) return;
-    if (status[1] == 0 ) return;
+    if (status[1] == 0) return;
     try {
       await toast.promise(
         handleAction(
@@ -176,7 +178,7 @@ function Tamagotchi() {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-      }, 5000);
+      }, 6000);
     } catch (error) {
       console.error("Cuddle error:", error);
     }

@@ -45,3 +45,6 @@
   width: 30px;
   margin-left: 4px;
 }
+.leaderboard-container .initial-info {
+  background-color: transparent;
+}

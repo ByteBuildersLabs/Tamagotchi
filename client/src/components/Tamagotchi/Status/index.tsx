@@ -3,9 +3,8 @@ import Energy from '../../../assets/img/energy.svg';
 import Happyness from '../../../assets/img/Mood.svg';
 import Hygienne from '../../../assets/img/Hygeine.svg';
 import Hunger from '../../../assets/img/hunger.svg';
-import './main.css';
 import Spinner from "../../ui/spinner";
-
+import './main.css';
 
 const statusItems = [
   { value: (beastStatus: any) => beastStatus[4], pic: Energy, color: '#ECECDA' },
