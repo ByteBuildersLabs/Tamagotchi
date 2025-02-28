@@ -80,12 +80,13 @@ p, span {
 }
 
 .button {
-  background: linear-gradient(to right, #85002A, #D1093D); 
-  color: #ECECDA; 
+  background: #ECECDA; 
+  color: #85002A; 
   border: none;
-  border-radius: 25px;
+  border-radius: 13px;
   font-size: 18px;
-  font-family: 'Kallisto', sans-serif; 
+  font-family: 'Kallisto', sans-serif;
+  font-weight: bolder;
   text-transform: uppercase;
   cursor: pointer; 
   transition: background 0.3s ease, transform 0.2s ease;
@@ -98,15 +99,15 @@ p, span {
 }
 
 .button:hover {
-  background: linear-gradient(to right, #95033A, #E11A4D); 
+  background: #ECECDA; 
   transform: translateY(-2px); 
-  color: #ECECDA;
+  color: #6E0022;
 }
 
 .button:active {
-  background: linear-gradient(to right, #B00833, #6E0022); 
-  transform: translateY(0);
-  color: #ECECDA;
+  background: #ECECDA; 
+  transform: translateY(0); 
+  color: #6E0022;
 }
 
 .button:disabled {
@@ -212,6 +213,8 @@ p, span {
   border-radius: 3px !important;
   font-weight: bold !important;
   border-radius: 5px;
+  font-weight: bold;
+  font-size: 24px;
 }
 
 .go-back-container {
@@ -266,7 +269,7 @@ p, span {
   height: 25px;
   border-radius: 50%;
   border: 3px solid #ECECDA;
-  border-top-color: #e4a101;
+  border-top-color: #6E0022;
   animation: loading 1s linear infinite;
 }
 @keyframes loading {
@@ -274,4 +277,3 @@ p, span {
     transform: rotate(360deg);
   }
 }
-

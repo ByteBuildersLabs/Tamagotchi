@@ -39,7 +39,7 @@
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  background-color: rgba(55, 0, 1, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 20px 15px;
   margin: 0 0 13px;
   text-align: center;
