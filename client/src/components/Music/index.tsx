@@ -8,6 +8,7 @@ function Music() {
   return (
     <button onClick={toggleMute} className="music-icon">
       <img src={music} className={isMuted ? 'muted' : ''} alt="Music control" />
+      <span>Music</span>
     </button>
   );
 }

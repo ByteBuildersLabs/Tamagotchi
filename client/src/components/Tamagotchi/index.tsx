@@ -24,15 +24,14 @@ import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
-import { useLocation } from "react-router-dom";
 import './main.css';
+import Loading from "../Loading/index.tsx";
 
 function Tamagotchi() {
   const { userAccount } = useGlobalContext();
   const { client } = useDojoSDK();
   const { beasts } = useBeasts();
   const { player } = usePlayer();
-  const location = useLocation();
 
   const [beast, setBeast] = useState<any>(null);
   const [status, setStatus] = useState<any>([]);
@@ -49,28 +48,6 @@ function Tamagotchi() {
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  // Extract stats for sharing
-  const getShareableStats = () => {
-    if (!status) return undefined;
-
-    return {
-      age: beast?.age || 0,
-      energy: status[4] || 0,
-      hunger: status[3] || 0,
-      happiness: status[5] || 0,
-      clean: status[7] || 0
-    };
-  };
-
-  // Handler for share button
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
-
-  useEffect(() => {
-    console.log("Ruta cambiada a:", location.pathname);
-  }, [location.pathname]);
-
   useEffect(() => {
     if (!player) return
     if (beast) return
@@ -82,6 +59,7 @@ function Tamagotchi() {
     }
     setBeastId();
   }, [player, beasts]);
+
 
   useEffect(() => {
     if (!player) return
@@ -134,6 +112,24 @@ function Tamagotchi() {
       showDeathAnimation();
     }
   }, [status]);
+
+  // Twitter Share
+  const getShareableStats = () => {
+    if (!status) return undefined;
+
+    return {
+      age: beast?.age || 0,
+      energy: status[4] || 0,
+      hunger: status[3] || 0,
+      happiness: status[5] || 0,
+      clean: status[7] || 0
+    };
+  };
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
+
 
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
@@ -199,28 +195,37 @@ function Tamagotchi() {
               beastStatus={status}
             />
             <div className="game">
-              <Whispers
-                beast={beast}
-                expanded={currentView === 'chat'}
-                beastStatus={status}
-              />
+              {
+                beast == null && !status || status.length === 0 ? <></> :
+                  <Whispers
+                    beast={beast}
+                    expanded={currentView === 'chat'}
+                    beastStatus={status}
+                  />
+              }
+
               <div className="scenario flex justify-center items-column">
-                <img
-                  src={currentImage}
-                  alt="Tamagotchi"
-                  className="w-40 h-40"
-                  onClick={handleCuddle} style={{ cursor: 'pointer' }}
-                />
+                {
+                  beast == null && !status || status.length === 0 ? <></> :
+                    <img
+                      src={currentImage}
+                      alt="Tamagotchi"
+                      className="w-40 h-40"
+                      onClick={handleCuddle} style={{ cursor: 'pointer' }}
+                    />
+                }
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
+                  <div className="name-section">
+                    <div className="age-icon">
+                      <img className="x-icon" src={share} onClick={handleShareClick} />
+                    </div>
+                    <div className="age-icon">
+                      <span>Age {beast.age}</span>
+                    </div>
+                  </div>
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
-                  <div className="age-icon">
-                    <img className="x-icon" src={share} onClick={handleShareClick} />
-                  </div>
-                  <div className="age-icon">
-                    <span>{beast.age}</span>
-                  </div>
                 </div>
               </div>
               {

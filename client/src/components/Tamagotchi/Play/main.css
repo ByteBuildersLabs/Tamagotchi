@@ -1,7 +1,7 @@
 .game-selection-container {
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 12px;
+  border-radius: 15px;
   height: 120px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
@@ -27,16 +27,16 @@
 }
 
 .game-card {
-  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   display: grid;
   grid-template-columns: 64px 1fr;
   column-gap: 10px;
   align-items: start;
+  color: #ececda;
+  cursor: pointer;
 }
 
 .game-card:hover {
@@ -62,12 +62,11 @@
   font-size: 18px;
   font-weight: bold;
   margin: 0 0 5px 0;
-  color: #ECECDA;
 }
 
 .game-description {
   font-size: 16px;
-  color: #ECECDA;
+  font-weight: bold;
   margin: 0 0 5px 0;
   line-height: 1.2;
 }
@@ -75,7 +74,6 @@
 .game-high-score {
   font-size: 14px;
   font-family: 'Kallisto', sans-serif;
-  color: #ECECDA;
   margin: 0;
 }
 
@@ -200,7 +198,7 @@ body.game-active {
   padding: 5px;
   height: 120px;
   background-color: rgba(0,0,0, 0.6); 
-  border-radius: 12px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
   max-width: 400px;
@@ -261,13 +259,12 @@ body.game-active {
 .game-error-container {
   padding: 20px;
   background-color: rgba(55, 0, 1, 0.8);
-  border-radius: 12px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
   max-width: 400px;
   margin: 0 auto;
 }
-
 
 .game-error-container p {
   font-family: 'Montserrat', serif;

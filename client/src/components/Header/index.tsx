@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Music from "../Music";
 import monster from "../../assets/img/logo.jpg";
 import trophy from "../../assets/img/trophy.svg";
-import logout from "../../assets/img/logout.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
 import { useBeasts } from "../../hooks/useBeasts";
@@ -50,12 +49,8 @@ function Header() {
           </Link>
           <div className="item">
             <Music />
-            <span>Music</span>
           </div>
           <div className="item">
-            <div className="lore-icon">
-              <img src={logout} alt="Beast Lore" />
-            </div>
             <ControllerConnectButton />
           </div>
         </div>

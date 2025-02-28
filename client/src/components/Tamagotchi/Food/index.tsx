@@ -44,10 +44,10 @@ const initialFoodItems = [
   { name: 'Potato', img: Potato, count: 7, id: 15 }
 ];
 
-const Food = ({ handleAction, beast, account, client, showAnimation }: { 
-  handleAction: any, 
-  beast: any, 
-  account: any, 
+const Food = ({ handleAction, beast, account, client, showAnimation }: {
+  handleAction: any,
+  beast: any,
+  account: any,
   client: any,
   showAnimation: (gifPath: string) => void,
 }) => {
@@ -56,14 +56,14 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
 
   // Mark the function as async so we can await the promise
   const feedTamagotchi = async (foodName: string) => {
-    if (!beast) return; 
+    if (!beast) return;
 
     // Reduce the food count in state
     setFoodItems(prevFoodItems =>
       prevFoodItems.map(item =>
-      item.name === foodName && item.count > 0
-        ? { ...item, count: item.count - 1 }
-        : item
+        item.name === foodName && item.count > 0
+          ? { ...item, count: item.count - 1 }
+          : item
       )
     );
 
@@ -89,40 +89,27 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
     }
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-  };
-
   return (
-    <div className="food-carousel">
-      <Slider {...settings}>
+    <>
+      <div className="food-carousel">
         {foodItems.map(({ name, img, count }) => (
-          <div className="food-slide" key={name}>
-            <div className="food-label">
-              <img src={img} alt={name} />
-              <div className="food-text">
-                <span className="food-name">{name} {count}</span>
-                <button 
-                  className="button" 
-                  onClick={() => feedTamagotchi(name)}
-                  disabled={count === 0} // Disable button if there is no food left
-                >
-                  Feed
-                </button>
-              </div>
-            </div>
-          </div>
+          <button
+            key={name}
+            className="button"
+            onClick={() => feedTamagotchi(name)}
+            disabled={count === 0}
+          >
+            <span>
+             x{count}
+            </span>
+            <img alt="option" src={img} />
+            {name}
+          </button>
         ))}
-      </Slider>
-      {/* Render the Toaster to display toast notifications */}
+      </div>
       <Toaster position="bottom-center" />
-    </div>
-  );
+    </>
+  )
 };
 
 export default Food;

@@ -28,12 +28,6 @@
   border-radius: 50%;
 }
 
-.side-menu img {
-  width: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
 .navbar-toggler {
   padding: 0;
 }
@@ -60,8 +54,7 @@
 .dex-icon,
 .leader-icon,
 .bag-icon,
-.lore-icon,
-.music-icon {
+.lore-icon {
   background-image: url('../../assets/img/back.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -86,8 +79,13 @@
 
 .music-icon {
   border: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   padding: 0;
   cursor: pointer;
+  width: 100%;
+  background-color: #ECECDA;
 }
 
 .music-icon .muted {
@@ -141,13 +139,15 @@
 }
 
 .side-menu .item {
+  background-color: #ECECDA;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  padding: 7px 0;
+  padding: 7px 5px;
 }
 
 .side-menu span {
-  color: #ECECDA;
+  color: #891a29;
   margin-left: 10px;
   font-weight: bold;
 }

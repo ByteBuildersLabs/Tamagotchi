@@ -14,7 +14,6 @@ const statusItems = [
 ];
 
 function Status({ beastStatus }: { beastStatus: any }) {
-  console.log('status', beastStatus)
 
   if (!beastStatus || beastStatus.length === 0) {
     return (

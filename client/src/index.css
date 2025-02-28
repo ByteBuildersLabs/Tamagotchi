@@ -50,8 +50,9 @@ a,
 a:active,
 a:visited {
   text-decoration: none;
-  color: #ECECDA;
-  font-family: "Montserrat", serif;
+  color: #85002A;
+  font-family: 'Kallisto';
+  font-weight: bold;
 }
 
 p, span {
@@ -122,14 +123,28 @@ p, span {
 }
 
 .disconnect-button {
-  width: 35%;
+  width: 90%;
   padding: 0 10px;
   margin: 0;
-  background-color: #370001;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.25s;
   font-weight: bold;
+  color: #891a29;
+  display: flex;
+}
+
+.disconnect-button span {
+  margin-left: 10px;
+}
+
+.disconnect-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.disconnect-button.a, .disconnect-button.a:active, .disconnect-button.a:visited {
+  color: #370001;
 }
 
 .hint {
@@ -214,7 +229,7 @@ p, span {
   font-weight: bold !important;
   border-radius: 5px;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 16px;
 }
 
 .go-back-container {

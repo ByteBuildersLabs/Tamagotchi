@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
+import logout from "../../assets/img/logout.svg";
 import dojo from '../../assets/img/dojo-icon.svg';
 
 const ControllerConnectButton = () => {
@@ -20,7 +21,8 @@ const ControllerConnectButton = () => {
                 bodyElement.style.padding = '0';
               }
             }}>
-            Disconnect ...{address?.slice(-6)}
+            <img src={logout} alt="Beast Lore" />
+            <span>Disconnect</span>
           </Link>
         ) : (
           <button

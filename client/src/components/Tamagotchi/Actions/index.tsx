@@ -12,9 +12,9 @@ import { fetchStatus } from '../../../utils/tamagotchi';
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
 
 const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [
-  { label: "Feed", img: Food, action: "feed", pictureKey: "eatPicture" },
   { label: "Sleep", img: Sleep, action: "sleep", pictureKey: "sleepPicture" },
   { label: "Clean", img: Clean, action: "clean", pictureKey: "cleanPicture" },
+  { label: "Feed", img: Food, action: "feed", pictureKey: "eatPicture" },
   { label: "Play", img: Play, action: "play", pictureKey: "playPicture" },
 ];
 
