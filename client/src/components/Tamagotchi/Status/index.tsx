@@ -4,6 +4,7 @@ import Happyness from '../../../assets/img/Mood.svg';
 import Hygienne from '../../../assets/img/Hygeine.svg';
 import Hunger from '../../../assets/img/hunger.svg';
 import './main.css';
+import Spinner from "../../ui/spinner";
 
 
 const statusItems = [
@@ -14,6 +15,15 @@ const statusItems = [
 ];
 
 function Status({ beastStatus }: { beastStatus: any }) {
+  console.log('status', beastStatus)
+
+  if (!beastStatus || beastStatus.length === 0) {
+    return (
+      <div className="status">
+        <Spinner />
+      </div>
+    );
+  }
 
   if(beastStatus) {
     return (

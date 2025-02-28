@@ -22,26 +22,29 @@ import Header from '../../components/Header';
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { useBeastsStatus } from "../../hooks/useBeastsStatus.tsx";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import { useLocation } from "react-router-dom";
 import './main.css';
 
 function Tamagotchi() {
   const { userAccount } = useGlobalContext();
   const { client } = useDojoSDK();
   const { beasts } = useBeasts();
-  const { beastStatus } = useBeastsStatus();
   const { player } = usePlayer();
+  const location = useLocation();
 
   const [beast, setBeast] = useState<any>(null);
   const [status, setStatus] = useState<any>([]);
 
   useEffect(() => {
+    console.log("Ruta cambiada a:", location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
     if(!player) return
     if(beast) return
     const foundBeast = beasts.find((beast: any) => beast.player === player.address);
-    console.info('player', player);
-    console.info('foundBeast', foundBeast);
     if (!foundBeast) return
     setBeast(foundBeast);
     async function setBeastId() {
@@ -52,12 +55,15 @@ function Tamagotchi() {
 
   useEffect(() => {
     if(!player) return
-    console.log('beastStatus', beastStatus);
-    if (beastStatus?.length > 0) {
-      const foundStatus = beastStatus;
-      setStatus(foundStatus);
-    }
-  }, [player, beast]);
+    let status:any = fetchStatus(userAccount);
+
+    const intervalId = setInterval(async () => {
+      status = await fetchStatus(userAccount);
+      setStatus(status);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [beast]);
 
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(false);
@@ -222,6 +228,7 @@ function Tamagotchi() {
                     isLoading={isLoading}
                     beast={beast}
                     beastStatus={status}
+                    setStatus={setStatus}
                     account={userAccount}
                     client={client}
                     setCurrentView={setCurrentView}
