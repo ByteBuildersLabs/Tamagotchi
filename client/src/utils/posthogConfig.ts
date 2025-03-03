@@ -14,6 +14,7 @@ interface PostHogSetupResult {
 
 export function setupPostHog(): PostHogSetupResult {
   const env = import.meta.env as unknown as CustomEnv;
+
   const apiKey = env.VITE_POSTHOG_API_KEY;
   const apiHost = env.VITE_POSTHOG_HOST;
   const isDevelopment = env.DEV;
@@ -21,6 +22,10 @@ export function setupPostHog(): PostHogSetupResult {
   if (!apiKey) {
     console.warn('PostHog API key not found. Analytics will not be loaded.');
     return { initialized: false, client: null };
+  }
+
+  if (!apiHost) {
+    console.warn('PostHog API host not found. Using default host.');
   }
 
   const options = {
@@ -35,12 +40,16 @@ export function setupPostHog(): PostHogSetupResult {
     },
   };
 
-  posthog.init(apiKey, options);
-
-  return { 
-    initialized: true, 
-    client: posthog 
-  };
+  try {
+    posthog.init(apiKey, options);
+    return { 
+      initialized: true, 
+      client: posthog 
+    };
+  } catch (error) {
+    console.error('PostHog Error:', error);
+    return { initialized: false, client: null };
+  }
 }
 
 export const posthogInstance = setupPostHog();
