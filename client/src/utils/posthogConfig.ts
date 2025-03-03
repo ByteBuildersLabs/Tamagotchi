@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+import type { PostHog } from 'posthog-js'; 
 
 interface CustomEnv {
   VITE_POSTHOG_API_KEY: string;
@@ -6,8 +7,12 @@ interface CustomEnv {
   DEV: boolean;
 }
 
-// Initialize PostHog
-export function setupPostHog() {
+interface PostHogSetupResult {
+  initialized: boolean;
+  client: PostHog | null; 
+}
+
+export function setupPostHog(): PostHogSetupResult {
   const env = import.meta.env as unknown as CustomEnv;
   const apiKey = env.VITE_POSTHOG_API_KEY;
   const apiHost = env.VITE_POSTHOG_HOST;
@@ -18,13 +23,12 @@ export function setupPostHog() {
     return { initialized: false, client: null };
   }
 
-  // Basic configuration
   const options = {
     api_host: apiHost,
     autocapture: true,
-    loaded: (ph: typeof posthog) => {
+    loaded: (ph: PostHog) => {
       if (isDevelopment) {
-        // Descomment the following line to disable capturing in development
+        // Descomment this line to disable capturing events in development
         // ph.opt_out_capturing();
         ph.debug(true);
       }
