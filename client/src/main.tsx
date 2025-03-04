@@ -37,49 +37,30 @@ async function main() {
 
   const rootElement = document.getElementById("root");
   if (rootElement) {
-    // Render the application with or without PostHog depending on whether it was initialized correctly
-    if (posthogInstance.initialized && posthogInstance.client) {
-      ReactDOM.render(
-        <StrictMode>
-          <PostHogProvider client={posthogInstance.client}>
-            <DojoSdkProvider
-              sdk={sdk}
-              dojoConfig={dojoConfig}
-              clientFn={setupWorld}
-            >
-              <StarknetProvider>
-                <GlobalProvider>
-                  <MusicProvider>
+    ReactDOM.render(
+      <StrictMode>
+        <DojoSdkProvider
+          sdk={sdk}
+          dojoConfig={dojoConfig}
+          clientFn={setupWorld}
+        >
+          <StarknetProvider>
+            <GlobalProvider>
+              <MusicProvider>
+                {posthogInstance.initialized && posthogInstance.client ? (
+                  <PostHogProvider client={posthogInstance.client}>
                     <Main />
-                  </MusicProvider>
-                </GlobalProvider>
-              </StarknetProvider>
-            </DojoSdkProvider>
-          </PostHogProvider>
-        </StrictMode>,
-        rootElement
-      );
-    } else {
-      // Fallback without PostHog
-      ReactDOM.render(
-        <StrictMode>
-          <DojoSdkProvider
-            sdk={sdk}
-            dojoConfig={dojoConfig}
-            clientFn={setupWorld}
-          >
-            <StarknetProvider>
-              <GlobalProvider>
-                <MusicProvider>
+                  </PostHogProvider>
+                ) : (
                   <Main />
-                </MusicProvider>
-              </GlobalProvider>
-            </StarknetProvider>
-          </DojoSdkProvider>
-        </StrictMode>,
-        rootElement
-      );
-    }
+                )}
+              </MusicProvider>
+            </GlobalProvider>
+          </StarknetProvider>
+        </DojoSdkProvider>
+      </StrictMode>,
+      rootElement
+    );
   }
 }
 

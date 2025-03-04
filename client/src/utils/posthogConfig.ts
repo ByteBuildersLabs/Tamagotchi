@@ -24,9 +24,7 @@ export function setupPostHog(): PostHogSetupResult {
     return { initialized: false, client: null };
   }
 
-  if (!apiHost) {
-    console.warn('PostHog API host not found. Using default host.');
-  }
+  if (!apiHost) console.warn('PostHog API host not found. Using default host.');
 
   const options = {
     api_host: apiHost,
