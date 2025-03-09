@@ -27,6 +27,7 @@ import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocation } from "react-router-dom";
 import './main.css';
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
+import Spinner from "../ui/spinner.tsx";
 
 function Tamagotchi() {
   const { userAccount } = useGlobalContext();
@@ -39,7 +40,7 @@ function Tamagotchi() {
   const [status, setStatus] = useLocalStorage('status', []);
 
   const loadingTime = 6000;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('actions');
 
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
@@ -65,14 +66,17 @@ function Tamagotchi() {
   useEffect(() => {
     if (!player) return
     let response: any = fetchStatus(userAccount);
+    
     if (!status || status.length === 0) setIsLoading(true);
+    if(status[0] != player.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
+      if(status[1] == 0) return
       response = await fetchStatus(userAccount);
       if(response) setStatus(response);
       console.info(status);
       setIsLoading(false);
-    }, 5000);
+    }, 3000);
   }, [beast, location]);
 
   useEffect(() => {
@@ -86,14 +90,7 @@ function Tamagotchi() {
   }, []);
 
   // Animations
-  const [currentImage, setCurrentImage] = useState(beast ? beastsDex[beast.specie - 1]?.idlePicture : '');
-  const [firstTime, isFirstTime] = useState(true);
-  useEffect(() => {
-    if (firstTime && beast) {
-      setCurrentImage(beast ? beastsDex[beast.specie - 1]?.idlePicture : '')
-      isFirstTime(false);
-    }
-  }, [beast]);
+  const [currentImage, setCurrentImage] = useState<any>('');
 
   const showAnimation = (gifPath: string) => {
     setCurrentImage(gifPath);
@@ -102,15 +99,11 @@ function Tamagotchi() {
     }, loadingTime);
   };
 
-  const showDeathAnimation = () => {
-    setCurrentImage(dead);
-  };
-
   useEffect(() => {
-    if (status[1] == 0) {
-      showDeathAnimation();
-    }
-  }, [status]);
+    if (!status || !beast) return;
+    if (status[1] == 0) setCurrentImage(dead);
+    if (status[1] == 1) setCurrentImage(beast ? beastsDex[beast.specie - 1]?.idlePicture : '')
+  }, [status, beast]);
 
   // Twitter Share
   const getShareableStats = () => {
@@ -205,13 +198,13 @@ function Tamagotchi() {
 
               <div className="scenario flex justify-center items-column">
                 {
-                  beast == null && !status || status.length === 0 ? <></> :
+                  status[0] == player?.current_beast_id ?
                     <img
                       src={currentImage}
                       alt="Tamagotchi"
                       className="w-40 h-40"
                       onClick={handleCuddle} style={{ cursor: 'pointer' }}
-                    />
+                    /> : <Spinner /> 
                 }
               </div>
               <div className="beast-interaction">
