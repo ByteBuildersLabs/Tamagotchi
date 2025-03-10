@@ -15,21 +15,25 @@
 }
 
 .body {
-  margin: 0 auto;
+  margin: 0;
   padding: 22px 15px;
-  width: 100vw;
-  min-height: 100dvh;
+  width: 100%;
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.25s;
+  transition: background-color 0.25s, background-image 0.25s;
   background-color: #000;
   background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/img/daybackground.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .body.day {
