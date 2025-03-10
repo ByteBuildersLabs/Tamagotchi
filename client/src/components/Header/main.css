@@ -157,3 +157,24 @@
   visibility: visible;
   transform: translateY(0);
 }
+
+.share-icon {
+  background-image: url('../../assets/img/back.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.share-icon img {
+  width: 30px;
+  height: 30px;
+  border-radius: unset;
+  object-fit: contain;
+}
