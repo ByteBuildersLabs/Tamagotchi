@@ -19,15 +19,15 @@ import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import monster from '../../assets/img/logo.svg';
 import share from '../../assets/img/share.svg';
 import Header from '../../components/Header';
+import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocation } from "react-router-dom";
-import './main.css';
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import Spinner from "../ui/spinner.tsx";
+import './main.css';
 
 function Tamagotchi() {
   const { userAccount } = useGlobalContext();
@@ -74,7 +74,6 @@ function Tamagotchi() {
       if(status[1] == 0) return
       response = await fetchStatus(userAccount);
       if(response) setStatus(response);
-      console.info(status);
       setIsLoading(false);
     }, 3000);
   }, [beast, location]);
@@ -114,14 +113,13 @@ function Tamagotchi() {
       energy: status[4] || 0,
       hunger: status[3] || 0,
       happiness: status[5] || 0,
-      clean: status[7] || 0
+      clean: status[6] || 0
     };
   };
 
   const handleShareClick = () => {
     setIsShareModalOpen(true);
   };
-
 
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
@@ -141,7 +139,7 @@ function Tamagotchi() {
     actionFn();
     setTimeout(() => {
       setIsLoading(false);
-    }, 6000);
+    }, loadingTime);
   };
 
   const handleCuddle = async () => {
@@ -166,7 +164,7 @@ function Tamagotchi() {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-      }, 6000);
+      }, loadingTime);
     } catch (error) {
       console.error("Cuddle error:", error);
     }
@@ -188,7 +186,7 @@ function Tamagotchi() {
             />
             <div className="game">
               {
-                beast == null && !status || status.length === 0 ? <></> :
+                !status || status.length === 0 ? <></> :
                   <Whispers
                     beast={beast}
                     expanded={currentView === 'chat'}
@@ -198,13 +196,13 @@ function Tamagotchi() {
 
               <div className="scenario flex justify-center items-column">
                 {
-                  status[0] == player?.current_beast_id ?
+                  !status || status.length === 0 ? <Spinner /> :
                     <img
                       src={currentImage}
                       alt="Tamagotchi"
                       className="w-40 h-40"
                       onClick={handleCuddle} style={{ cursor: 'pointer' }}
-                    /> : <Spinner /> 
+                    />
                 }
               </div>
               <div className="beast-interaction">

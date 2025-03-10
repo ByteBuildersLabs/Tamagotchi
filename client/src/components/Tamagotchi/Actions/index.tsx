@@ -61,7 +61,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
                 }
               );
 
-              await client.actions.update_beast();
+              await client.actions.updateBeast();
 
               let status:any = fetchStatus(account);
               setStatus(status);
