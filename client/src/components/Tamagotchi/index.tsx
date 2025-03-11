@@ -24,7 +24,7 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import Close from "../../assets/img/close.svg";
+import Close from "../../assets/img/CloseWhite.svg";
 import './main.css';
 
 function Tamagotchi() {
@@ -46,14 +46,6 @@ function Tamagotchi() {
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-
-  // SOLO PARA TESTEAR SPINNER, BORRAR LUEGO
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
-  }, []);
 
   useEffect(() => {
     if (!player) return
@@ -171,7 +163,6 @@ function Tamagotchi() {
 
   return (
     <>
-    {/* {isLoading && <Spinner />} */}
       <Header tamagotchiStats={getShareableStats()}/>
       <div className="tamaguchi">
         <>{beast &&
@@ -207,16 +198,23 @@ function Tamagotchi() {
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
+                    {beast && (
+                      <div className="age-indicator">
+                        <span>{beast.age}</span>
+                      </div>
+                    )}
                   {(currentView === 'food' || currentView === 'play') && (
-                    <img 
-                      className="actions-icon" 
-                      src={Close} 
-                      onClick={() => setCurrentView('actions')} 
-                    />
+                    <div className="back-button">
+                      <img 
+                        src={Close} 
+                        onClick={() => setCurrentView('actions')} 
+                        alt="Back to actions"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
-              {
+                            {
                 currentView === 'actions' ?
                   <Actions
                     handleAction={handleAction}

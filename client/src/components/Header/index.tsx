@@ -49,12 +49,6 @@ function Header({ tamagotchiStats }: HeaderProps) {
           <Link to={route} className="logo">
             <img src={monster} alt="Logo" />
           </Link>
-          
-          {isTamagotchiRoute && tamagotchiStats && (
-            <div className="age-icon">
-              <span>{tamagotchiStats.age}</span>
-            </div>
-          )}
         </div>
         
         <div className="side-menu-container">
@@ -82,7 +76,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
                 <div className="share-icon">
                   <img src={share} alt="Share" />
                 </div>
-                <span>Share Progress</span>
+                <span>Share</span>
               </div>
             )}
             
