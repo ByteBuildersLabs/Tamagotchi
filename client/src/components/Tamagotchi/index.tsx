@@ -16,7 +16,6 @@ import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
-import monster from '../../assets/img/logo.svg';
 import Header from '../../components/Header';
 import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -25,6 +24,7 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
+import Close from "../../assets/img/close.svg";
 import './main.css';
 
 function Tamagotchi() {
@@ -198,7 +198,13 @@ function Tamagotchi() {
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
-                  <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
+                  {(currentView === 'food' || currentView === 'play') && (
+                    <img 
+                      className="actions-icon" 
+                      src={Close} 
+                      onClick={() => setCurrentView('actions')} 
+                    />
+                  )}
                 </div>
               </div>
               {
