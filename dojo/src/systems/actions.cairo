@@ -22,6 +22,7 @@ pub trait IActions<T> {
     fn spawn_player(ref self: T);
     fn add_initial_food(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u16);
+    fn update_player_daily_streak(ref self: T);
     
     // ------------------------- Other methods -------------------------
     fn init_tap_counter(ref self: T);
@@ -53,7 +54,7 @@ pub mod actions {
     #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
     use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
-    use tamagotchi::models::player::{Player, PlayerAssert};
+    use tamagotchi::models::player::{Player, PlayerAssert, PlayerTrait};
     use tamagotchi::models::food::{Food};
 
     // Constants import
@@ -325,6 +326,20 @@ pub mod actions {
             let mut player: Player = store.read_player();
             player.assert_exists();
             player.current_beast_id = beast_id;
+
+            store.write_player(@player);
+        }
+
+        fn update_player_daily_streak(ref self: ContractState) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            let current_timestamp = get_block_timestamp();
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            player.update_daily_streak(current_timestamp);
 
             store.write_player(@player);
         }

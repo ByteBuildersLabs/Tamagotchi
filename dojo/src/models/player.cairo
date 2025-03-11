@@ -26,19 +26,16 @@ pub impl PlayerImpl of PlayerTrait {
     fn update_daily_streak(ref self: Player, current_timestamp: u64) {
         let current_day: u32 = Timestamp::unix_timestamp_to_day(current_timestamp);
 
-        // Don't update if it's the same day
         if current_day == self.last_active_day {
             return;
         }
 
-        // Check if player was active yesterday
         if current_day == self.last_active_day + 1 {
             self.daily_streak += 1;
         } else {
             self.daily_streak = 0;
         }
 
-        // [Effect] Update the last active day
         self.last_active_day = current_day;
     }
 
