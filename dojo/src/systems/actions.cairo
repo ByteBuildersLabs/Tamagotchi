@@ -1,17 +1,14 @@
 // Types import
 use tamagotchi::models::beast_status::BeastStatus;
+
+// Starknet import
 use starknet::ContractAddress;
 
 // Interface definition
 #[starknet::interface]
 pub trait IActions<T> {
-    // ------------------------- Init methods -------------------------
-    fn spawn_player(ref self: T);
-    fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
-    fn add_initial_food(ref self: T);
-    fn set_current_beast(ref self: T, beast_id: u16);
-
     // ------------------------- Beast methods -------------------------
+    fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
     fn update_beast(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -20,7 +17,12 @@ pub trait IActions<T> {
     fn pet(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
-
+    
+    // ------------------------- Player methods -------------------------
+    fn spawn_player(ref self: T);
+    fn add_initial_food(ref self: T);
+    fn set_current_beast(ref self: T, beast_id: u16);
+    
     // ------------------------- Other methods -------------------------
     fn init_tap_counter(ref self: T);
     fn tap(ref self: T, specie: u8, beast_type: u8);
@@ -63,7 +65,6 @@ pub mod actions {
     // Dojo Imports
     #[allow(unused_imports)]
     use dojo::model::{ModelStorage};
-
     #[allow(unused_imports)]
     use dojo::event::EventStorage;
 
@@ -82,17 +83,7 @@ pub mod actions {
     // Implementation of the interface methods
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
-        // ------------------------- Init methods -------------------------
-        fn spawn_player(ref self: ContractState) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            store.new_player();
-
-            self.add_initial_food();
-            self.init_tap_counter();
-        }
-        
+        // ------------------------- Beast methods -------------------------
         fn spawn_beast(ref self: ContractState, specie: u8, beast_type: u8) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
@@ -105,25 +96,6 @@ pub mod actions {
             self.beast_counter.write(current_beast_id+1);
         }
 
-        fn add_initial_food(ref self: ContractState) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            store.init_player_food();
-        }
-        
-        fn set_current_beast(ref self: ContractState, beast_id: u16) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            let mut player: Player = store.read_player();
-            player.assert_exists();
-            player.current_beast_id = beast_id;
-
-            store.write_player(@player);
-        }
-
-         // ------------------------- Beast methods -------------------------
          // This method is used to update the beast related data and write it to the world
         fn update_beast(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
@@ -136,7 +108,7 @@ pub mod actions {
             // Update beast status and write it to the world
             let beast_id = player.current_beast_id;
             let mut beast_status: BeastStatus = store.read_beast_status(beast_id);
-            beast_status.calculate_timestamp_based_status(current_timestamp);
+            beast_status.calculate_timestamp_based_status(current_timestamp);   
             store.write_beast_status(@beast_status);
             
             // Update beast and write it to the world
@@ -328,6 +300,35 @@ pub mod actions {
             }
         }
 
+        // ------------------------- Player methods -------------------------
+        fn spawn_player(ref self: ContractState) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            store.new_player();
+
+            self.add_initial_food();
+            self.init_tap_counter();
+        }
+
+        fn add_initial_food(ref self: ContractState) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            store.init_player_food();
+        }
+        
+        fn set_current_beast(ref self: ContractState, beast_id: u16) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+            player.current_beast_id = beast_id;
+
+            store.write_player(@player);
+        }
+
         // ------------------------- Other methods -------------------------
         fn init_tap_counter(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
@@ -389,7 +390,6 @@ pub mod actions {
             beast_status
         }
 
-        
         fn get_beast_age(ref self: ContractState) -> u16 {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);

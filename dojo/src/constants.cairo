@@ -30,3 +30,6 @@ pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;
 pub fn ZERO_ADDRESS() -> ContractAddress {
     contract_address_const::<0x0>()
 }
+
+// Seconds per day
+pub const SECONDS_PER_DAY: u64 = 86400;
