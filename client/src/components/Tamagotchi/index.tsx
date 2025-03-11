@@ -47,6 +47,14 @@ function Tamagotchi() {
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
 
+  // SOLO PARA TESTEAR SPINNER, BORRAR LUEGO
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+  }, []);
+
   useEffect(() => {
     if (!player) return
     if (beast) return
@@ -163,6 +171,7 @@ function Tamagotchi() {
 
   return (
     <>
+    {/* {isLoading && <Spinner />} */}
       <Header tamagotchiStats={getShareableStats()}/>
       <div className="tamaguchi">
         <>{beast &&
