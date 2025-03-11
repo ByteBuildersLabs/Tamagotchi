@@ -198,11 +198,6 @@ function Tamagotchi() {
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
-                  <div className="name-section">
-                    <div className="age-icon">
-                      <span>Age {beast.age}</span>
-                    </div>
-                  </div>
                   <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
                 </div>
               </div>

@@ -10,7 +10,7 @@ const statusItems = [
   { value: (beastStatus: any) => beastStatus[4], pic: Energy, color: '#ECECDA' },
   { value: (beastStatus: any) => beastStatus[3], pic: Hunger, color: '#ECECDA' },
   { value: (beastStatus: any) => beastStatus[5], pic: Happyness, color: '#ECECDA' },
-  { value: (beastStatus: any) => beastStatus[6], pic: Hygienne, color: '#ECECDA' }
+  { value: (beastStatus: any) => beastStatus[6], pic: Hygienne, color: '#ECECDA' },
 ];
 
 function Status({ beastStatus }: { beastStatus: any }) {

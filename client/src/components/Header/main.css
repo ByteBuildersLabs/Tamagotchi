@@ -178,3 +178,29 @@
   border-radius: unset;
   object-fit: contain;
 }
+
+.logo-age-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.age-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ececda;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.age-icon span {
+  color: #85002A;
+  font-weight: bold;
+  font-size: 20px;
+}

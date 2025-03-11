@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
 import monster from "../../assets/img/logo.jpg";
 import trophy from "../../assets/img/trophy.svg";
@@ -11,16 +11,15 @@ import { usePlayer } from "../../hooks/usePlayers";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import "./main.css";
-interface TamagotchiStats {
-  age?: number;
-  energy?: number;
-  hunger?: number;
-  happiness?: number;
-  clean?: number;
-}
 
 interface HeaderProps {
-  tamagotchiStats?: TamagotchiStats;
+  tamagotchiStats?: {
+    age?: number;
+    energy?: number;
+    hunger?: number;
+    happiness?: number;
+    clean?: number;
+  };
 }
 
 function Header({ tamagotchiStats }: HeaderProps) {
@@ -29,6 +28,9 @@ function Header({ tamagotchiStats }: HeaderProps) {
   const { beasts } = useBeasts();
   const { player } = usePlayer();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const location = useLocation();
+  
+  const isTamagotchiRoute = location.pathname === '/play';
 
   useEffect(() => {
     if (!player) return;
@@ -43,9 +45,17 @@ function Header({ tamagotchiStats }: HeaderProps) {
   return (
     <>
       <nav className="navbar">
-        <Link to={route} className="logo">
-          <img src={monster} alt="Logo" />
-        </Link>
+        <div className="logo-age-container">
+          <Link to={route} className="logo">
+            <img src={monster} alt="Logo" />
+          </Link>
+          
+          {isTamagotchiRoute && tamagotchiStats && (
+            <div className="age-icon">
+              <span>{tamagotchiStats.age}</span>
+            </div>
+          )}
+        </div>
         
         <div className="side-menu-container">
           <button 
@@ -67,8 +77,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
               <span>Leaderboard</span>
             </Link>
             
-            {/* Botón de compartir con el estilo consistente */}
-            {tamagotchiStats && (
+            {isTamagotchiRoute && tamagotchiStats && (
               <div className="item" onClick={handleShareClick}>
                 <div className="share-icon">
                   <img src={share} alt="Share" />
@@ -87,7 +96,6 @@ function Header({ tamagotchiStats }: HeaderProps) {
         </div>
       </nav>
       
-      {/* Modal de compartir */}
       {tamagotchiStats && (
         <ShareProgress
           isOpen={isShareModalOpen}
