@@ -1,6 +1,6 @@
 
 # ByteBeasts Tamagotchi
-![HORIZONTAL](client/src/assets/img/original-dark.png)
+[](client/src/assets/img/original-dark.png)
 
 
 
