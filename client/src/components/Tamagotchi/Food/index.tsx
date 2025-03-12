@@ -27,9 +27,6 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
         return foodFromAPI ? { ...item, count: foodFromAPI.amount } : item;
       });
       setFoodItems(updatedFoodItems);
-      console.log('foods', foods);
-      console.log('updatedFoodItems', updatedFoodItems);
-      console.log('foodItems', foodItems);
     }
   }, [foods]);
 
