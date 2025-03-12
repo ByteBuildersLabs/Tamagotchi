@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    // Dojo imports
+    // Dojo import
     use dojo::model::{ModelStorage};
 
     // Game imports
