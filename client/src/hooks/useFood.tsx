@@ -1,74 +1,25 @@
-import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
-import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useAccount } from "@starknet-react/core";
-import { useEffect, useMemo } from "react";
-import { AccountInterface, addAddressPadding } from "starknet";
-import { ModelsMapping } from "../dojo/bindings";
+import { useDojoSDK } from "@dojoengine/sdk/react";
+import { addAddressPadding } from "starknet";
+import { useEffect, useState } from "react";
 
 export const useFood = () => {
-  const { useDojoStore, sdk } = useDojoSDK();
-  const { account } = useAccount();
-  const state = useDojoStore((state) => state);
+  const { useDojoStore } = useDojoSDK();
   const entities = useDojoStore((state) => state.entities);
-
-  const foods = useMemo(() => {
-    return Object.values(entities)
-      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.Beast)
-      .map(entity => entity.models.tamagotchi.Beast);
-  }, [entities]);
-
-  const entityId = useMemo(() => {
-    if (account) {
-      return getEntityIdFromKeys([BigInt(account.address)]);
-    }
-    return BigInt(0);
-  }, [account]);
+  const { account } = useAccount();
+  const [ foods, setFoods ] = useState<any[]>([]);
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
+    if (!account) return;
+    const foodEntities = Object.values(entities)
+      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.Food)
+      .map(entity => entity.models.tamagotchi.Food);
 
-    const subscribe = async (account: AccountInterface) => {
-      const [initialData, subscription] = await sdk.subscribeEntityQuery({
-        query: new ToriiQueryBuilder()
-          .withClause(
-            // Querying Moves and Position models that has at least [account.address] as key
-            KeysClause(
-              [ModelsMapping.Food],
-              [addAddressPadding(account.address)],
-              "VariableLen"
-            ).build()
-          )
-          .includeHashedKeys(),
-        callback: ({ error, data }) => {
-          if (error) {
-            console.error("Error setting up entity sync:", error);
-          } else if (data && data[0].entityId !== "0x0") {
-            state.updateEntity(data[0]);
-          }
-        },
-      });
-
-      state.setEntities(initialData);
-
-      unsubscribe = () => subscription.cancel();
-    };
-
-    if (account) {
-      subscribe(account);
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [sdk, account, state]);
-
-  const food = useModel(entityId as string, ModelsMapping.Food);
+    const ownedFoods = foodEntities.filter(food => food?.player === addAddressPadding(account.address));
+    setFoods(ownedFoods);
+  }, [entities]);
 
   return {
-    food,
     foods
   };
 };
