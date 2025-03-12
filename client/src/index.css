@@ -81,7 +81,7 @@ p, span {
 
 .button {
   background: #ECECDA; 
-  color: #85002A; 
+  color: #85002A;
   border: none;
   border-radius: 13px;
   font-size: 18px;
@@ -106,8 +106,8 @@ p, span {
 
 .button:active {
   background: #ECECDA; 
+  color: #85002A; 
   transform: translateY(0); 
-  color: #6E0022;
 }
 
 .button:disabled {
