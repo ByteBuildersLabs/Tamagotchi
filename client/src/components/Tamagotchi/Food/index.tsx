@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useLocalStorage } from '../../../hooks/useLocalStorage.tsx';
 import { useFood } from '../../../hooks/useFood.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
-import Spinner from '../../ui/spinner.tsx';
 import initialFoodItems from '../../../data/food.tsx';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
+
 
 const Food = ({ handleAction, beast, account, client, showAnimation }: {
   handleAction: any,
@@ -16,7 +17,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   showAnimation: (gifPath: string) => void,
 }) => {
 
-  const [foodItems, setFoodItems] = useState(initialFoodItems);
+  const [foodItems, setFoodItems] = useLocalStorage('food', initialFoodItems);
   const { foods } = useFood();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
       setFoodItems(updatedFoodItems);
       console.log('foods', foods);
       console.log('updatedFoodItems', updatedFoodItems);
+      console.log('foodItems', foodItems);
     }
   }, [foods]);
 
@@ -36,7 +38,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
     if (!beast) return;
 
     // Reduce the food count in state
-    setFoodItems(prevFoodItems =>
+    setFoodItems((prevFoodItems: any[]) =>
       prevFoodItems.map(item =>
         item.name === foodName && item.count > 0
           ? { ...item, count: item.count - 1 }
@@ -50,7 +52,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
 
     // Execute the feed action wrapped in a toast.promise to show notifications
     try {
-      const selectedFood = foodItems.find(item => item.name === foodName);
+      const selectedFood = foodItems.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
 
       await toast.promise(
@@ -69,7 +71,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   return (
     <>
       <div className="food-carousel">
-        {foodItems.map(({ name, img, count }) => (
+        {foodItems.map(({ name, img, count }: { name:any, img:any, count:any }) => (
           <button
             key={name}
             className="button"
