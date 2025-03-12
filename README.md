@@ -1,6 +1,6 @@
 
 # ByteBeasts Tamagotchi
-![HORIZONTAL 1](client/src/assets/img/Branding/original-dark.png)
+![HORIZONTAL 1](https://drive.google.com/uc?export=view&id=1g6prIRcLrvmfYMSqrUosrJl09D6UG5Wb)
 
 
 

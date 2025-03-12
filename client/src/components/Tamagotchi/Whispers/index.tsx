@@ -1,6 +1,5 @@
 import { Beast, BeastStatus } from "../../../dojo/bindings";
 import { useEffect, useState, useRef } from "react";
-import message from '../../../assets/img/message.svg';
 import MessageComponent, { Message } from "../../ui/message";
 import beastsDex from "../../../data/beastDex";
 import { useBeastChat } from "../../../hooks/useBeastChat";
@@ -68,7 +67,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
             disabled={isLoading}
             className={`button ${isLoading ? 'loading' : ''}`}
           >
-            <img src={message} alt="Send message" />
+            {/* <img src={message} alt="Send message" /> */}
           </button>
         </div>
         {error && <div className="error-tooltip">{error.message}</div>}

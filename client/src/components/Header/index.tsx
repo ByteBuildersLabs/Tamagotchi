@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
-import monster from "../../assets/img/logo.jpg";
+import monster from "../../assets/img/logo.svg";
 import trophy from "../../assets/img/trophy.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
