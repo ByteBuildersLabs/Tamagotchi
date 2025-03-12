@@ -21,13 +21,13 @@ use tamagotchi::constants;
 // Helpers import
 use tamagotchi::helpers::timestamp::Timestamp;
 
-// Store struct.
+// Store struct
 #[derive(Copy, Drop)]
 pub struct Store {
     world: WorldStorage,
 }
 
-//Implementation of the `StoreTrait` trait for the `Store` struct.
+//Implementation of the `StoreTrait` trait for the `Store` struct
 #[generate_trait]
 pub impl StoreImpl of StoreTrait {
     fn new(world: WorldStorage) -> Store {
@@ -75,7 +75,6 @@ pub impl StoreImpl of StoreTrait {
         self.world.write_model(food)
     }
 
-    
     // --------- New entities ---------
     fn new_player(mut self: Store) {
         let caller = get_caller_address();
@@ -289,5 +288,4 @@ pub impl StoreImpl of StoreTrait {
 
         self.world.write_model(@new_beast);
     }
-    // Delete
 }

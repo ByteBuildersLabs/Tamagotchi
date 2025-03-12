@@ -8,6 +8,7 @@ use tamagotchi::types::food::{FoodType};
 // Constants import
 use tamagotchi::constants;
 
+//Model
 #[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
 pub struct Beast {
@@ -21,6 +22,7 @@ pub struct Beast {
     pub beast_type: u8
 }
 
+// Traits implementation
 #[generate_trait]
 pub impl BeastImpl of BeastTrait {
     // Function to calculate the age of a beast
@@ -78,6 +80,7 @@ pub impl BeastImpl of BeastTrait {
     }
 }
 
+// Tests
 #[cfg(test)]
 mod tests {
     use super::Beast;

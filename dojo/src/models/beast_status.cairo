@@ -1,6 +1,10 @@
 // Types imports
 use tamagotchi::types::clean_status::CleanStatus;
 
+// Constants import
+use tamagotchi::constants;
+
+// Model
 #[derive(Drop, Serde, IntrospectPacked,  Debug)]
 #[dojo::model]
 pub struct BeastStatus {
@@ -16,6 +20,7 @@ pub struct BeastStatus {
     pub last_timestamp: u64,
 }
 
+// Traits implementations
 #[generate_trait]
 pub impl BeastStatusImpl of BeastStatusTrait {
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
@@ -41,9 +46,9 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
     fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / 600; // 600: total seconds in 10 minutes   
+        let total_points: u64 = total_seconds / constants::SECONDS_IN_10_MINUTES;
 
-        if total_points < 100 {
+        if total_points < constants::MAX_POINTS {
             let points_to_drecrease: u8 = total_points.try_into().unwrap();
 
             let multiplied_hunger_to_decrease = points_to_drecrease * 2;
@@ -107,6 +112,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
 }
 
+// Tests
 #[cfg(test)]
 mod tests {
     use super::BeastStatus;
