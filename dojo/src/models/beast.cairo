@@ -9,7 +9,7 @@ use tamagotchi::types::food::{FoodType};
 use tamagotchi::constants;
 
 //Model
-#[derive(Drop, Serde, IntrospectPacked,  Debug)]
+#[derive(Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct Beast {
     #[key]
