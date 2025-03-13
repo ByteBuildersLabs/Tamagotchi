@@ -3,7 +3,7 @@ use starknet::{get_block_timestamp, get_block_number};
 use core::pedersen::PedersenTrait;
 
 #[generate_trait]
-pub impl RandomUtils of RandomUtilsTrait {
+pub impl PseudoRandom of PseudoRandomTrait {
     /// Generates a pseudo-random number between min and max (inclusive)
     /// 
     /// # Arguments
@@ -70,7 +70,7 @@ pub impl RandomUtils of RandomUtilsTrait {
 
 #[cfg(test)]
 mod tests {
-    use super::RandomUtils;
+    use super::PseudoRandom;
     
     #[test]
     #[available_gas(300000)]
@@ -79,9 +79,9 @@ mod tests {
         let max: u8 = 90;
         
         // Test with different seeds
-        let random1 = RandomUtils::generate_random(1, 100, min, max);
-        let random2 = RandomUtils::generate_random(2, 100, min, max);
-        let random3 = RandomUtils::generate_random(1, 101, min, max);
+        let random1 = PseudoRandom::generate_random(1, 100, min, max);
+        let random2 = PseudoRandom::generate_random(2, 100, min, max);
+        let random3 = PseudoRandom::generate_random(1, 101, min, max);
         
         // Check that values are within range
         assert(random1 >= min && random1 <= max, 'Value should be within range');
@@ -102,17 +102,17 @@ mod tests {
         let max: u8 = 90;
         
         // Generate attributes for different beasts
-        let hunger1 = RandomUtils::generate_beast_attribute(beast_id, 1, min, max);
-        let hunger2 = RandomUtils::generate_beast_attribute(beast_id + 1, 1, min, max);
+        let hunger1 = PseudoRandom::generate_beast_attribute(beast_id, 1, min, max);
+        let hunger2 = PseudoRandom::generate_beast_attribute(beast_id + 1, 1, min, max);
         
         // Check that values are within range
         assert(hunger1 >= min && hunger1 <= max, 'Value out of range');
         assert(hunger2 >= min && hunger2 <= max, 'Value out of range');
         
         // Generate several values to see if they are different
-        let happiness = RandomUtils::generate_beast_attribute(beast_id, 2, min, max);
-        let energy = RandomUtils::generate_beast_attribute(beast_id, 3, min, max);
-        let hygiene = RandomUtils::generate_beast_attribute(beast_id, 4, min, max);
+        let happiness = PseudoRandom::generate_beast_attribute(beast_id, 2, min, max);
+        let energy = PseudoRandom::generate_beast_attribute(beast_id, 3, min, max);
+        let hygiene = PseudoRandom::generate_beast_attribute(beast_id, 4, min, max);
         
         // At least some values are different
         let all_equal = hunger1 == happiness && happiness == energy && energy == hygiene;
