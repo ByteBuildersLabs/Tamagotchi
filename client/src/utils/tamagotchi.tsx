@@ -10,8 +10,6 @@ const fetchStatus = async (account:any) => {
           entrypoint: "get_timestamp_based_status_with_address",
           calldata: [String(account?.address)],
         });
-        console.info('account hex:', account);
-        console.log('Status hex:', hexToDecimal(response));
         return hexToDecimal(response);
       } catch (err) {
         console.log(err)

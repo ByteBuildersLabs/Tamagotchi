@@ -8,13 +8,13 @@ export const useFood = () => {
   const entities = useDojoStore((state) => state.entities);
   const { account } = useAccount();
   const [ foods, setFoods ] = useState<any[]>([]);
+  console.log(entities);
 
   useEffect(() => {
     if (!account) return;
     const foodEntities = Object.values(entities)
       .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.Food)
       .map(entity => entity.models.tamagotchi.Food);
-
     const ownedFoods = foodEntities.filter(food => food?.player === addAddressPadding(account.address));
     setFoods(ownedFoods);
   }, [entities]);

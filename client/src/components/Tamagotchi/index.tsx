@@ -45,12 +45,10 @@ function Tamagotchi() {
 
   useEffect(() => {
     if (player) setPlayer(player);
-    console.log('zplayer:', zplayer);
   }, [player, setPlayer, location]);
   
   useEffect(() => {
     if (beasts) setBeasts(beasts);
-    console.log('zbeasts:', zbeasts);
   }, [beasts, setBeasts, location]);
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
@@ -85,7 +83,6 @@ function Tamagotchi() {
       if(response) setStatus(response);
       setIsLoading(false);
     }, 3000);
-    console.log('Status:', status);
   }, [zcurrentBeast, location]);
 
   const loadingTime = 6000;
@@ -200,14 +197,13 @@ function Tamagotchi() {
             />
             <div className="game">
               {
-                !status || status.length === 0 ? <></> :
+                !status || status.length === 0 || !zcurrentBeast ? <></> :
                   <Whispers
                     beast={zcurrentBeast}
                     expanded={currentView === 'chat'}
                     beastStatus={status}
                   />
               }
-
               <div className="scenario flex justify-center items-column">
                 {
                   !status || status.length === 0 ? <Spinner /> :
