@@ -27,6 +27,13 @@ import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import './main.css';
 
+// Scenarios de QA
+// Cuando es una bestia nueva del todo
+
+// Cuando es una bestia que ya esta creada ✅ Sirve y entra de una
+
+// Cuando le doy click a los actions, que suba los stats de una
+
 function Tamagotchi() {
   const { account } = useAccount();
   const { client } = useDojoSDK();
@@ -38,11 +45,13 @@ function Tamagotchi() {
 
   useEffect(() => {
     if (player) setPlayer(player);
-  }, [setPlayer]);
+    console.log('zplayer:', zplayer);
+  }, [player, setPlayer, location]);
   
   useEffect(() => {
     if (beasts) setBeasts(beasts);
-  }, [beasts, setBeasts]);
+    console.log('zbeasts:', zbeasts);
+  }, [beasts, setBeasts, location]);
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
     if (!foundBeast) return
@@ -54,8 +63,9 @@ function Tamagotchi() {
     if (!zbeasts || zbeasts.length === 0) return;
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
     if (foundBeast) {
-      setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
+      if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
+      setCurrentBeastInPlayer(foundBeast);
     }
   }, [zplayer, zbeasts]);
 
@@ -75,6 +85,7 @@ function Tamagotchi() {
       if(response) setStatus(response);
       setIsLoading(false);
     }, 3000);
+    console.log('Status:', status);
   }, [zcurrentBeast, location]);
 
   const loadingTime = 6000;
