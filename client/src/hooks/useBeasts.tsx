@@ -2,8 +2,20 @@ import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 const TORII_URL = dojoConfig.toriiUrl+"/graphql";
 
-export const useBeasts = () => {
+interface Beast {
+  player: string;
+  age: number;
+  beast_type: string;
+  birth_date: string;
+  specie: string;
+  beast_id: string;
+}
 
+interface BeastEdge {
+  node: Beast;
+}
+
+export const useBeasts = () => {
   const [beastsData, setBeastsData] = useState([]);
   useEffect(() => {
     const fetchBeasts = async () => {
@@ -18,7 +30,10 @@ export const useBeasts = () => {
                   edges {
                     node {
                       player
+                      beast_id
                       age
+                      birth_date
+                      specie
                       beast_type
                     }
                   }
@@ -45,13 +60,3 @@ export const useBeasts = () => {
     beastsData
   };
 };
-
-interface Beast {
-  player: string;
-  age: number;
-  beast_type: string;
-}
-
-interface BeastEdge {
-  node: Beast;
-}

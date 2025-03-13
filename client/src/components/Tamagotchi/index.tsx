@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Account } from "starknet";
-import { useGlobalContext } from "../../hooks/appContext.tsx";
+import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
 import toast from 'react-hot-toast';
@@ -28,7 +28,7 @@ import Close from "../../assets/img/CloseWhite.svg";
 import './main.css';
 
 function Tamagotchi() {
-  const { userAccount } = useGlobalContext();
+  const { account } = useAccount();
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
@@ -54,21 +54,21 @@ function Tamagotchi() {
     if (!foundBeast) return
     setBeast(foundBeast);
     async function setBeastId() {
-      await client.actions.setCurrentBeast(userAccount as Account, foundBeast?.beast_id)
+      await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
     }
     setBeastId();
   }, [player, beasts]);
 
   useEffect(() => {
     if (!player) return
-    let response: any = fetchStatus(userAccount);
+    let response: any = fetchStatus(account);
     
     if (!status || status.length === 0) setIsLoading(true);
     if(status[0] != player.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
       if(status[1] == 0) return
-      response = await fetchStatus(userAccount);
+      response = await fetchStatus(account);
       if(response) setStatus(response);
       setIsLoading(false);
     }, 3000);
@@ -134,14 +134,14 @@ function Tamagotchi() {
   };
 
   const handleCuddle = async () => {
-    if (!beast || !userAccount) return;
+    if (!beast || !account) return;
     if (status[1] == 0) return;
     try {
       await toast.promise(
         handleAction(
           "Cuddle",
           // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.pet(userAccount as Account), //change sleep action to cuddle action
+          () => client.actions.pet(account as Account), //change sleep action to cuddle action
           // Use the cuddle animation from your initials data
           beastsDex[beast.specie - 1].cuddlePicture
         ),
@@ -222,7 +222,7 @@ function Tamagotchi() {
                     beast={beast}
                     beastStatus={status}
                     setStatus={setStatus}
-                    account={userAccount}
+                    account={account}
                     client={client}
                     setCurrentView={setCurrentView}
                   />
@@ -230,7 +230,7 @@ function Tamagotchi() {
                     <Food
                       handleAction={handleAction}
                       beast={beast}
-                      account={userAccount}
+                      account={account}
                       client={client}
                       showAnimation={showAnimation}
                     />
@@ -238,7 +238,7 @@ function Tamagotchi() {
                     <Play
                       handleAction={handleAction}
                       beast={beast}
-                      account={userAccount}
+                      account={account}
                       client={client}
                     />
                   ) : (
