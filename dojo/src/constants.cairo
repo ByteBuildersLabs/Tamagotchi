@@ -8,6 +8,9 @@ pub const MAX_HAPPINESS: u8 = 100;
 pub const MAX_HYGIENE: u8 = 100;
 pub const MAX_POINTS: u64 = 100;
 
+// Status values to init a Beast
+pub const MIN_INITIAL_STATUS: u8 = 50;
+pub const MAX_INITIAL_STATUS: u8 = 90;
 
 // Tap counter max value
 pub const MAX_TAP_COUNTER: u8 = 10;
