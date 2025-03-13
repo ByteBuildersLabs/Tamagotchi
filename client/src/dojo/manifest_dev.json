@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x535446c53848f4d19ea9b71d4d9215f646b0696c7fb75dd055533bbfc3bc579",
-      "class_hash": "0x13630f84882e2a9670cd8834f769fbeac9a7a88738521b96d7bbc6e8cda8716",
+      "address": "0x2d714296564c29beeee7ca64a53268eb8b4f90978161e7e9f48e59d41c67cec",
+      "class_hash": "0x7bf98819b02063a457423ad5bb4123b8793f110398557fb512eba42dc5edc72",
       "abi": [
         {
           "type": "impl",
@@ -1439,13 +1439,6 @@
           "items": [
             {
               "type": "function",
-              "name": "spawn_player",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
               "name": "spawn_beast",
               "inputs": [
                 {
@@ -1455,25 +1448,6 @@
                 {
                   "name": "beast_type",
                   "type": "core::integer::u8"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "add_initial_food",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_current_beast",
-              "inputs": [
-                {
-                  "name": "beast_id",
-                  "type": "core::integer::u16"
                 }
               ],
               "outputs": [],
@@ -1536,6 +1510,39 @@
             {
               "type": "function",
               "name": "revive",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "spawn_player",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_initial_food",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_current_beast",
+              "inputs": [
+                {
+                  "name": "beast_id",
+                  "type": "core::integer::u16"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "update_player_daily_streak",
               "inputs": [],
               "outputs": [],
               "state_mutability": "external"
@@ -1732,10 +1739,7 @@
       "selector": "0x6a3f87b1bc5ef116efb19b582b8cb03ae569dd55e62065c6d6213c352191f97",
       "systems": [
         "dojo_init",
-        "spawn_player",
         "spawn_beast",
-        "add_initial_food",
-        "set_current_beast",
         "update_beast",
         "feed",
         "sleep",
@@ -1744,6 +1748,10 @@
         "pet",
         "clean",
         "revive",
+        "spawn_player",
+        "add_initial_food",
+        "set_current_beast",
+        "update_player_daily_streak",
         "init_tap_counter",
         "tap",
         "get_timestamp_based_status",
@@ -1776,7 +1784,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x10ab169ff73e2388744e47dc584e013bdcd39dab819979ad838ac2bd39e10ab",
+      "class_hash": "0x43f4a65fffddae11c476aec7ff1802522aba44712b29219ceca1c3fea8d9dd7",
       "tag": "tamagotchi-Player",
       "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
