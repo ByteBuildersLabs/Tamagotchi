@@ -20,53 +20,6 @@
   width: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border-radius: 50%;
-  transform: scaleX(-1);
-}
-
-.dex-icon,
-.leader-icon,
-.bag-icon,
-.lore-icon {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-  width: 37px;
-  height: 37px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-}
-
-.lore-icon img,
-.leader-icon img {
-  width: 30px;
-  height: 30px;
-  border-radius: unset;
-  object-fit: contain;
-}
-
-
-.music-icon {
-  border: none;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  padding: 0;
-  cursor: pointer;
-  width: 100%;
-  background-color: #ECECDA;
-}
-
-.music-icon .muted {
-  filter: brightness(0.5);
-  transition: all 0.25s;
-}
-
-.side-menu-container {
-  position: relative;
 }
 
 .menu-toggle {
@@ -82,7 +35,6 @@
   padding: 0;
   background-color: #ECECDA;
 }
-
 .toggle-icon {
   width: 25px;
   height: 25px;
@@ -117,7 +69,6 @@
 }
 
 .side-menu .item {
-  height: 50px;
   background-color: #ECECDA;
   border-radius: 12px;
   display: flex;
@@ -131,7 +82,6 @@
   align-items: center;
   width: 100%;
   text-decoration: none;
-  padding: 0px 7px;
 }
 
 .side-menu span {
@@ -142,18 +92,11 @@
 
 .icon-container {
   background-image: url('../../assets/img/back.png');
-.side-menu.expanded {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.share-icon {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  width: 37px;
-  height: 37px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
