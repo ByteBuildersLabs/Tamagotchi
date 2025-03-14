@@ -7,20 +7,18 @@ use dojo::model::ModelStorage;
 
 // Models imports
 use tamagotchi::models::beast::{Beast};
-use tamagotchi::models::beast_status::{BeastStatus};
+use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
 use tamagotchi::models::player::{Player};
 use tamagotchi::models::food::{Food};
 
 // types import
 use tamagotchi::types::food::{FoodType};
-use tamagotchi::types::clean_status::{CleanStatus};
 
 // Constants import
 use tamagotchi::constants;
 
 // Helpers import
 use tamagotchi::helpers::timestamp::Timestamp;
-use tamagotchi::helpers::pseudo_random::PseudoRandom;
 
 // Store struct
 #[derive(Copy, Drop)]
@@ -225,29 +223,10 @@ pub impl StoreImpl of StoreTrait {
         self.new_potatoes(caller);
     }
 
-    fn generate_random_status(mut self: Store, beast_id: u16, attribute_id: u16) -> u8 {
-        PseudoRandom::generate_beast_attribute(
-            beast_id,
-            attribute_id,
-            constants::MIN_INITIAL_STATUS,
-            constants::MAX_INITIAL_STATUS
-        )
-    }
-
     fn new_beast_status(mut self: Store, beast_id: u16) {
         let current_timestamp = get_block_timestamp();
 
-        let mut beast_status = BeastStatus {
-            beast_id: beast_id,
-            is_alive: true,
-            is_awake: true,
-            hunger: self.generate_random_status(beast_id, 1),
-            energy: self.generate_random_status(beast_id, 2),
-            happiness: self.generate_random_status(beast_id, 3),
-            hygiene: self.generate_random_status(beast_id, 4),
-            clean_status: CleanStatus::Clean.into(),
-            last_timestamp: current_timestamp,
-        };
+        let mut beast_status = BeastStatusTrait::new_beast_random_status(beast_id, current_timestamp);
 
         self.world.write_model(@beast_status);
     }
