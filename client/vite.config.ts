@@ -3,7 +3,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
-//import fs from "fs";
+// import fs from "fs";
 
 export default defineConfig({
 //   server: {

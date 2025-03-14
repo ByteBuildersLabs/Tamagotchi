@@ -1,75 +1,77 @@
 import type { SchemaType as ISchemaType } from "@dojoengine/sdk";
 
+import { BigNumberish } from 'starknet';
+
 // Type definition for `tamagotchi::models::beast::Beast` struct
 export interface Beast {
 	player: string;
-	beast_id: number;
-	age: number;
-	birth_date: number;
-	specie: number;
-	beast_type: number;
+	beast_id: BigNumberish;
+	age: BigNumberish;
+	birth_date: BigNumberish;
+	specie: BigNumberish;
+	beast_type: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::beast::BeastValue` struct
 export interface BeastValue {
-	age: number;
-	birth_date: number;
-	specie: number;
-	beast_type: number;
+	age: BigNumberish;
+	birth_date: BigNumberish;
+	specie: BigNumberish;
+	beast_type: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::beast_status::BeastStatus` struct
 export interface BeastStatus {
-	beast_id: number;
+	beast_id: BigNumberish;
 	is_alive: boolean;
 	is_awake: boolean;
-	hunger: number;
-	energy: number;
-	happiness: number;
-	hygiene: number;
-	clean_status: number;
-	last_timestamp: number;
+	hunger: BigNumberish;
+	energy: BigNumberish;
+	happiness: BigNumberish;
+	hygiene: BigNumberish;
+	clean_status: BigNumberish;
+	last_timestamp: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::beast_status::BeastStatusValue` struct
 export interface BeastStatusValue {
 	is_alive: boolean;
 	is_awake: boolean;
-	hunger: number;
-	energy: number;
-	happiness: number;
-	hygiene: number;
-	clean_status: number;
-	last_timestamp: number;
+	hunger: BigNumberish;
+	energy: BigNumberish;
+	happiness: BigNumberish;
+	hygiene: BigNumberish;
+	clean_status: BigNumberish;
+	last_timestamp: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::food::Food` struct
 export interface Food {
 	player: string;
-	id: number;
-	amount: number;
+	id: BigNumberish;
+	amount: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::food::FoodValue` struct
 export interface FoodValue {
-	amount: number;
+	amount: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::player::Player` struct
 export interface Player {
 	address: string;
-	current_beast_id: number;
-	daily_streak: number;
-	last_active_day: number;
-	creation_day: number;
+	current_beast_id: BigNumberish;
+	daily_streak: BigNumberish;
+	last_active_day: BigNumberish;
+	creation_day: BigNumberish;
 }
 
 // Type definition for `tamagotchi::models::player::PlayerValue` struct
 export interface PlayerValue {
-	current_beast_id: number;
-	daily_streak: number;
-	last_active_day: number;
-	creation_day: number;
+	current_beast_id: BigNumberish;
+	daily_streak: BigNumberish;
+	last_active_day: BigNumberish;
+	creation_day: BigNumberish;
 }
 
 export interface SchemaType extends ISchemaType {

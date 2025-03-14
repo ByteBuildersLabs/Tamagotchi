@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
 
-
 const Food = ({ handleAction, beast, account, client, showAnimation }: {
   handleAction: any,
   beast: any,

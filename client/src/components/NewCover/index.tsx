@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DeveloperCode } from "../DeveloperCode/index.tsx";
 import { useAccount } from '@starknet-react/core';
-import { usePlayer } from '../../hooks/usePlayers.tsx';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
@@ -29,12 +28,11 @@ const circles = [
 
 function NewCover() {
 
-  // Make sure the flow goes properly
+  // Redirect to Spawn page if account is connected
   const navigate = useNavigate();
   const { account } = useAccount();
-  const { player } = usePlayer();
   useEffect(() => {
-    if (account || player)  navigate('/spawn');
+    if (account)  navigate('/spawn');
   }, [account]);
 
   const [currentCircle, setCurrentCircle] = useState('play');

@@ -1,7 +1,6 @@
 // React imports
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom";
-import { GlobalProvider } from "./hooks/appContext.tsx";
 import { MusicProvider } from "./context/contextMusic.tsx";
 
 // Dojo imports
@@ -41,11 +40,9 @@ async function main() {
           clientFn={setupWorld}
         >
           <StarknetProvider>
-            <GlobalProvider>
-              <MusicProvider>
-                <Main />
-              </MusicProvider>
-            </GlobalProvider>
+            <MusicProvider>
+              <Main />
+            </MusicProvider>
           </StarknetProvider>
         </DojoSdkProvider>
       </StrictMode>,

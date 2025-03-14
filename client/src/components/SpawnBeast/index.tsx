@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { useGlobalContext } from "../../hooks/appContext.tsx";
 import toast, { Toaster } from 'react-hot-toast';
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
-import { Account } from "starknet";
-import { usePlayer } from "../../hooks/usePlayers.tsx";
+import { Account, addAddressPadding } from "starknet";
+import { useAccount } from "@starknet-react/core";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
+import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useNavigate } from 'react-router-dom';
 import './main.css';
+import useAppStore from "../../context/store.ts";
 
 function SpawnBeast() {
-  const { userAccount } = useGlobalContext();
+  const { account } = useAccount();
   const { client } = useDojoSDK();
   const { player } = usePlayer();
   const { beastsData: beasts } = useBeasts();
@@ -21,11 +22,32 @@ function SpawnBeast() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();
+
+  async function setCurrentBeastInPlayer(foundBeast:any) {
+    if (!foundBeast) return
+    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
+  }
+  
   useEffect(() => {
-    if(!player) return
-    const foundBeast = beasts.find((beast: any) => beast.player === player.address);
-    if (foundBeast) navigate('/play');
-  }, [player, beasts]);
+    if (player) setPlayer(player);
+  }, [player, setPlayer]);
+  
+  useEffect(() => {
+    if (beasts) setBeasts(beasts);
+  }, [beasts, setBeasts]);
+
+  // Set current beast and navigate to play If there is a beast for the player
+  useEffect(() => {
+    if (!zplayer || Object.keys(zplayer).length === 0) return;
+    if (!zbeasts || zbeasts.length === 0) return;
+    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
+    if (foundBeast) {
+      setCurrentBeastInPlayer(foundBeast);
+      setCurrentBeast(foundBeast);
+      navigate('/play');
+    }
+  }, [zplayer, zbeasts]);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
@@ -45,12 +67,12 @@ function SpawnBeast() {
   }
 
   const spawnPlayer = async () => {
-    if (!userAccount) return
+    if (!account) return
 
-    if (!player) {
+    if (!zplayer) {
       setLoading(true);
-      await client.actions.spawnPlayer(userAccount as Account);
-      await client.actions.addInitialFood(userAccount as Account);
+      await client.actions.spawnPlayer(account as Account);
+      await client.actions.addInitialFood(account as Account);
       await new Promise(resolve => setTimeout(resolve, 2500));
       setLoading(false);
     }
@@ -58,7 +80,7 @@ function SpawnBeast() {
     notify();
     setLoading(true);
     await spawn(randomNumber);
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     
     navigate('/play');
   };
@@ -91,7 +113,7 @@ function SpawnBeast() {
               Hatch your own Baby Beast and <br />take care of him!
             </p>
           </div>
-          { userAccount && 
+          { account && 
             <button
               className="button"
               onClick={async () => {

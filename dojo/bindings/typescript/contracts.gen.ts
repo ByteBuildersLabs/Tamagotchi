@@ -1,5 +1,6 @@
 import { DojoProvider, DojoCall } from "@dojoengine/core";
-import { Account, AccountInterface } from "starknet";
+import { Account, AccountInterface, BigNumberish, CairoOption, CairoCustomEnum, ByteArray } from "starknet";
+import * as models from "./models.gen";
 
 export function setupWorld(provider: DojoProvider) {
 
@@ -14,7 +15,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_addInitialFood = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_addInitialFood_calldata(),
 				"tamagotchi",
 			);
@@ -35,7 +36,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_awake = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_awake_calldata(),
 				"tamagotchi",
 			);
@@ -56,7 +57,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_clean = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_clean_calldata(),
 				"tamagotchi",
 			);
@@ -66,7 +67,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_feed_calldata = (foodId: number): DojoCall => {
+	const build_actions_feed_calldata = (foodId: BigNumberish): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "feed",
@@ -74,10 +75,10 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_feed = async (snAccount: Account | AccountInterface, foodId: number) => {
+	const actions_feed = async (snAccount: Account | AccountInterface, foodId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_feed_calldata(foodId),
 				"tamagotchi",
 			);
@@ -98,7 +99,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_getBeastAge = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_getBeastAge_calldata(),
 				"tamagotchi",
 			);
@@ -119,7 +120,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_getBeastAgeWithAddress = async (snAccount: Account | AccountInterface, address: string) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_getBeastAgeWithAddress_calldata(address),
 				"tamagotchi",
 			);
@@ -140,7 +141,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_getTimestampBasedStatus = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_getTimestampBasedStatus_calldata(),
 				"tamagotchi",
 			);
@@ -161,7 +162,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_getTimestampBasedStatusWithAddress = async (snAccount: Account | AccountInterface, address: string) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_getTimestampBasedStatusWithAddress_calldata(address),
 				"tamagotchi",
 			);
@@ -182,7 +183,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_initTapCounter = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_initTapCounter_calldata(),
 				"tamagotchi",
 			);
@@ -203,7 +204,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_pet = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_pet_calldata(),
 				"tamagotchi",
 			);
@@ -224,7 +225,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_play = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_play_calldata(),
 				"tamagotchi",
 			);
@@ -245,7 +246,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_revive = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_revive_calldata(),
 				"tamagotchi",
 			);
@@ -255,7 +256,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_setCurrentBeast_calldata = (beastId: number): DojoCall => {
+	const build_actions_setCurrentBeast_calldata = (beastId: BigNumberish): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "set_current_beast",
@@ -263,10 +264,10 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_setCurrentBeast = async (snAccount: Account | AccountInterface, beastId: number) => {
+	const actions_setCurrentBeast = async (snAccount: Account | AccountInterface, beastId: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_setCurrentBeast_calldata(beastId),
 				"tamagotchi",
 			);
@@ -287,7 +288,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_sleep = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_sleep_calldata(),
 				"tamagotchi",
 			);
@@ -297,7 +298,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_spawnBeast_calldata = (specie: number, beastType: number): DojoCall => {
+	const build_actions_spawnBeast_calldata = (specie: BigNumberish, beastType: BigNumberish): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "spawn_beast",
@@ -305,10 +306,10 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_spawnBeast = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
+	const actions_spawnBeast = async (snAccount: Account | AccountInterface, specie: BigNumberish, beastType: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_spawnBeast_calldata(specie, beastType),
 				"tamagotchi",
 			);
@@ -329,7 +330,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_spawnPlayer = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_spawnPlayer_calldata(),
 				"tamagotchi",
 			);
@@ -339,7 +340,7 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_actions_tap_calldata = (specie: number, beastType: number): DojoCall => {
+	const build_actions_tap_calldata = (specie: BigNumberish, beastType: BigNumberish): DojoCall => {
 		return {
 			contractName: "actions",
 			entrypoint: "tap",
@@ -347,10 +348,10 @@ export function setupWorld(provider: DojoProvider) {
 		};
 	};
 
-	const actions_tap = async (snAccount: Account | AccountInterface, specie: number, beastType: number) => {
+	const actions_tap = async (snAccount: Account | AccountInterface, specie: BigNumberish, beastType: BigNumberish) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_tap_calldata(specie, beastType),
 				"tamagotchi",
 			);
@@ -371,7 +372,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_updateBeast = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_updateBeast_calldata(),
 				"tamagotchi",
 			);
@@ -392,7 +393,7 @@ export function setupWorld(provider: DojoProvider) {
 	const actions_updatePlayerDailyStreak = async (snAccount: Account | AccountInterface) => {
 		try {
 			return await provider.execute(
-				snAccount as any,
+				snAccount,
 				build_actions_updatePlayerDailyStreak_calldata(),
 				"tamagotchi",
 			);

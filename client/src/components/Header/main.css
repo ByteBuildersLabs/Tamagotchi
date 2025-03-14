@@ -59,8 +59,8 @@
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-  width: 40px;
-  height: 40px;
+  width: 37px;
+  height: 37px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,11 +138,12 @@
 }
 
 .side-menu .item {
+  height: 50px;
   background-color: #ECECDA;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  padding: 7px 5px;
+  padding: 0px 7px;
 }
 
 .side-menu span {
@@ -162,8 +163,8 @@
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-  width: 40px;
-  height: 40px;
+  width: 37px;
+  height: 37px;
   display: flex;
   justify-content: center;
   align-items: center;

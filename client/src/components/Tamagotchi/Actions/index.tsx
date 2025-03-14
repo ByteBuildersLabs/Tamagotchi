@@ -69,7 +69,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               console.error("Action error:", error);
             }
           }}
-          disabled={ isLoading || beastStatus[1] == 0}
+          disabled={ isLoading || !beastStatus || beastStatus[1] == 0}
         >
           {img && <img src={img} alt={label} />} {label}
         </Button>
