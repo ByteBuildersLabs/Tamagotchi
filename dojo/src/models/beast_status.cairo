@@ -46,7 +46,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
     fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / constants::SECONDS_IN_10_MINUTES;
+        let total_points: u64 = total_seconds / constants::SECONDS_FOR_TESTING;
 
         if total_points < constants::MAX_POINTS {
             let points_to_drecrease: u8 = total_points.try_into().unwrap();

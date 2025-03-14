@@ -38,3 +38,4 @@ pub const SECONDS_PER_DAY: u64 = 86400;
 
 // Total seconds in 10 minutes
 pub const SECONDS_IN_10_MINUTES: u64 = 600;
+pub const SECONDS_FOR_TESTING: u64 = 30;

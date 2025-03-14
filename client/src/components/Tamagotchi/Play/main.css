@@ -108,7 +108,7 @@ div[style*="canvasContainerStyle"] {
 /* The canvas must be adjusted maintaining its proportion */
 canvas {
   height: auto !important;
-  max-height: 95vh !important;
+  max-height: 95dvh !important;
   width: auto !important;
   max-width: 100% !important;
   object-fit: contain !important;
@@ -179,13 +179,13 @@ canvas {
   canvas {
     width: 100% !important;
     height: auto !important;
-    max-height: 85vh !important;
+    max-height: 85dvh !important;
   }
 }
 
 @media (min-aspect-ratio: 1/1) {
   canvas {
-    height: 92vh !important;
+    height: 92dvh !important;
     width: auto !important;
   }
 }

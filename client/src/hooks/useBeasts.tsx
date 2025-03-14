@@ -1,74 +1,62 @@
-import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
-import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useAccount } from "@starknet-react/core";
-import { useEffect, useMemo } from "react";
-import { AccountInterface, addAddressPadding } from "starknet";
-import { ModelsMapping } from "../dojo/bindings";
+import { useEffect, useState } from "react";
+import { dojoConfig } from "../dojo/dojoConfig";
+const TORII_URL = dojoConfig.toriiUrl+"/graphql";
+
+interface Beast {
+  player: string;
+  age: number;
+  beast_type: string;
+  birth_date: string;
+  specie: string;
+  beast_id: string;
+}
+
+interface BeastEdge {
+  node: Beast;
+}
 
 export const useBeasts = () => {
-  const { useDojoStore, sdk } = useDojoSDK();
-  const { account } = useAccount();
-  const state = useDojoStore((state) => state);
-  const entities = useDojoStore((state) => state.entities);
-
-  const beasts = useMemo(() => {
-    return Object.values(entities)
-      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.Beast)
-      .map(entity => entity.models.tamagotchi.Beast);
-  }, [entities]);
-
-  const entityId = useMemo(() => {
-    if (account) {
-      return getEntityIdFromKeys([BigInt(account.address)]);
-    }
-    return BigInt(0);
-  }, [account]);
-
+  const [beastsData, setBeastsData] = useState([]);
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
+    const fetchBeasts = async () => {
+      try {
+        const response = await fetch(TORII_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `
+              query GetBeast {
+                tamagotchiBeastModels(first: 100) {
+                  edges {
+                    node {
+                      player
+                      beast_id
+                      age
+                      birth_date
+                      specie
+                      beast_type
+                    }
+                  }
+                  totalCount
+                }
+              }
+            `,
+          }),
+        });
 
-    const subscribe = async (account: AccountInterface) => {
-      const [initialData, subscription] = await sdk.subscribeEntityQuery({
-        query: new ToriiQueryBuilder()
-          .withClause(
-            // Querying Moves and Position models that has at least [account.address] as key
-            KeysClause(
-              [ModelsMapping.Beast ],
-              [addAddressPadding(account.address)],
-              "VariableLen"
-            ).build()
-          )
-          .includeHashedKeys(),
-        callback: ({ error, data }) => {
-          if (error) {
-            console.error("Error setting up entity sync:", error);
-          } else if (data && data[0].entityId !== "0x0") {
-            state.updateEntity(data[0]);
-          }
-        },
-      });
-
-      state.setEntities(initialData);
-
-      unsubscribe = () => subscription.cancel();
-    };
-
-    if (account) {
-      subscribe(account);
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
+        const result = await response.json();
+        if (result.data && result.data.tamagotchiBeastModels) {
+          setBeastsData(result.data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => edge.node));
+        }
+      } catch (error) {
+        console.error("Error fetching beasts:", error);
       }
     };
-  }, [sdk, account, state]);
 
-  const beastie = useModel(entityId as string, ModelsMapping.Beast);
+    fetchBeasts();
+  }, []);
 
   return {
-    beastie,
-    beasts
+    beastsData
   };
 };

@@ -22,8 +22,8 @@ function Status({ beastStatus }: { beastStatus: any }) {
   if(beastStatus) {
     return (
       <div className="status">
-        {statusItems.map(({ pic, value, color }) => (
-          <div className="item">
+        {statusItems.map(({ pic, value, color }, index) => (
+          <div className="item" key={index}>
             <CircularProgressBar progress={value(beastStatus)} pic={pic} color={color} />
           </div>
         ))}

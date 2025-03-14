@@ -59,11 +59,17 @@ export interface FoodValue {
 export interface Player {
 	address: string;
 	current_beast_id: number;
+	daily_streak: number;
+	last_active_day: number;
+	creation_day: number;
 }
 
 // Type definition for `tamagotchi::models::player::PlayerValue` struct
 export interface PlayerValue {
 	current_beast_id: number;
+	daily_streak: number;
+	last_active_day: number;
+	creation_day: number;
 }
 
 export interface SchemaType extends ISchemaType {
@@ -126,9 +132,15 @@ export const schema: SchemaType = {
 		Player: {
 			address: "",
 			current_beast_id: 0,
+			daily_streak: 0,
+			last_active_day: 0,
+			creation_day: 0,
 		},
 		PlayerValue: {
 			current_beast_id: 0,
+			daily_streak: 0,
+			last_active_day: 0,
+			creation_day: 0,
 		},
 	},
 };

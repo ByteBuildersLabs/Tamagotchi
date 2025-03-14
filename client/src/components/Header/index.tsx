@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
-import monster from "../../assets/img/logo.jpg";
+import monster from "../../assets/img/logo.svg";
 import trophy from "../../assets/img/trophy.svg";
 import book from "../../assets/img/book.svg";
 import menuIcon from "../../assets/img/Menu.svg";
@@ -35,7 +35,7 @@ interface MenuItem {
 function Header({ tamagotchiStats }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [route, setRoute] = useState('/');
-  const { beasts } = useBeasts();
+  const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
@@ -44,7 +44,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
 
   useEffect(() => {
     if (!player) return;
-    const foundBeast = beasts.find((beast) => beast?.player === player.address);
+    const foundBeast = beasts.find((beast:any) => beast?.player === player.address);
     if (foundBeast) setRoute('/play');
   }, [beasts, player]);
 

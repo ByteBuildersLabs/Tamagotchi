@@ -5,10 +5,11 @@ import beastsDex from '../../data/beastDex.tsx';
 import { useBeasts } from '../../hooks/useBeasts.tsx';
 
 const Leaderboard = () => {
-
-  const { beasts } = useBeasts();
   const [allBeasts, setAllBeasts] = useState<any[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const { beastsData } = useBeasts();
+  let beasts:any=beastsData;
 
   useEffect(() => {
     if (!isLoaded && beasts.length > 3) {
@@ -56,7 +57,7 @@ const Leaderboard = () => {
                       ...{beast.player?.slice(-6)}
                     </div>
                     <div className='col-3'>
-                      <img src={beastsDex[beast.specie - 1]?.idlePicture} className='beast' alt={beast.name} />
+                      <img src={beastsDex[beast.beast_type - 1]?.idlePicture} className='beast' alt={beast.name} />
                     </div>
                     <div className='col-3'>
                       {beast.age}

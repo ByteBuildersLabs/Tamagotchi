@@ -57,7 +57,7 @@ export const usePlayer = () => {
         unsubscribe();
       }
     };
-  }, [sdk, account, state]);
+  }, [sdk, account]);
 
   const player = useModel(entityId as string, ModelsMapping.Player);
   
