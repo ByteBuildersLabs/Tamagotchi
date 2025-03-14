@@ -27,13 +27,6 @@ import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import './main.css';
 
-// Scenarios de QA
-// Cuando es una bestia nueva del todo
-
-// Cuando es una bestia que ya esta creada ✅ Sirve y entra de una
-
-// Cuando le doy click a los actions, que suba los stats de una
-
 function Tamagotchi() {
   const { account } = useAccount();
   const { client } = useDojoSDK();
