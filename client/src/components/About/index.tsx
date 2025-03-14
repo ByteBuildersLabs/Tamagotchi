@@ -1,6 +1,6 @@
 import './main.css';
 import Header from '../Header/index.tsx';
-import banner from '../../assets/img/bannerlogo.jpeg'
+import banner from '../../assets/img/original-dark.png'
 import Footer from '../Footer/index.tsx';
 import './main.css';
 

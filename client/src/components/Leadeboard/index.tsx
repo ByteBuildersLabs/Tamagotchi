@@ -30,9 +30,6 @@ const Leaderboard = () => {
           </p>
           <div className='leaderboard-container'>
             <div className="initial-info">
-              <h4>
-                Leaderboard
-              </h4>
               <div className='row mb-3'>
                 <div className='col-3'>
                   <span>Position</span>

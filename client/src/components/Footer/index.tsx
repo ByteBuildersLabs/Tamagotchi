@@ -3,7 +3,7 @@ import marco from '../../assets/img/marco.jpeg';
 import luis from '../../assets/img/Luis.png';
 import daniel from '../../assets/img/daniel.jpeg';
 import dojologo from '../../assets/img/dojo-icon.svg';
-import starknet from '../../assets/img/stark.png'
+import starknet from '../../assets/img/stark.svg'
 
 import './main.css';
 
