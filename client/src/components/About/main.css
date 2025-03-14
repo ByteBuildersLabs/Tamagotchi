@@ -74,12 +74,6 @@
     margin-bottom: 0;
   }
   
-  /* Highlight important phrases */
-  .highlight {
-    color: #ff6b6b;
-    font-weight: bold;
-  }
-  
   /* Animation */
   @keyframes fade-in-up {
     from {
