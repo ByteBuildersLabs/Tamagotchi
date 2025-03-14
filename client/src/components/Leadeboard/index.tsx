@@ -1,11 +1,8 @@
 import Header from '../Header/index.tsx';
-import dojologo from '../../assets/img/dojo-icon.svg';
-import starknet from '../../assets/img/stark.svg'
 import { useEffect, useState } from 'react';
 import './main.css';
 import beastsDex from '../../data/beastDex.tsx';
 import { useBeasts } from '../../hooks/useBeasts.tsx';
-import Footer from '../Footer/index.tsx';
 
 const Leaderboard = () => {
   const [allBeasts, setAllBeasts] = useState<any[]>([]);
@@ -22,13 +19,6 @@ const Leaderboard = () => {
     }
   }, [beasts, isLoaded]);
 
-  useEffect(() => {
-    const bodyElement = document.querySelector('.body') as HTMLElement;
-    if (bodyElement) {
-      bodyElement.classList.remove('day');
-    }
-  }, []);
-
   return (
     <>
       <Header />
@@ -40,9 +30,6 @@ const Leaderboard = () => {
           </p>
           <div className='leaderboard-container'>
             <div className="initial-info">
-              <h4>
-                Leaderboard
-              </h4>
               <div className='row mb-3'>
                 <div className='col-3'>
                   <span>Position</span>
@@ -78,16 +65,6 @@ const Leaderboard = () => {
             </div>
           </div>
         </div>
-
-        <p className='bottom-footer'>
-          <div className='d-flex w-100 justify-content-center'>
-            <span>Powered by Dojo</span>
-            <img className='copy' src={dojologo} />
-            <span>and Starknet</span>
-            <img className='copy' src={starknet} />
-          </div>
-          <Footer />
-        </p>
       </div>
     </>
   )

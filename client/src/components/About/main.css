@@ -1,0 +1,87 @@
+.team {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    transform: translateY(30px);
+    animation: fade-in-up 1s ease-out forwards;
+  }
+  
+  .team .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ECECDA;
+    margin-bottom: 1.5rem;
+  }
+  
+  .team .title span {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
+  
+  /* Banner and hero section */
+  .banner-container {
+    position: relative;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .team .banner {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 24px;
+    transition: transform 0.5s ease;
+  }
+  
+  .banner-container:hover .banner {
+    transform: scale(1.05);
+  }
+  
+  /* Content styling */
+  .lore-container {
+    padding: 0;
+    text-align: left;
+  }
+  
+  .initial-info {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #ECECDA;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .initial-info h4 {
+    color: #ECECDA;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .initial-info p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .initial-info p:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Animation */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

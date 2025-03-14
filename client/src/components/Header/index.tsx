@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
 import monster from "../../assets/img/logo.svg";
 import trophy from "../../assets/img/trophy.svg";
+import book from "../../assets/img/book.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
 import share from "../../assets/img/share.svg";
@@ -22,6 +23,15 @@ interface HeaderProps {
   };
 }
 
+interface MenuItem {
+  to?: string;
+  icon?: string;
+  alt?: string;
+  label?: string;
+  onClick?: () => void;
+  component?: React.ReactNode;
+}
+
 function Header({ tamagotchiStats }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [route, setRoute] = useState('/');
@@ -36,24 +46,43 @@ function Header({ tamagotchiStats }: HeaderProps) {
     if (!player) return;
     const foundBeast = beasts.find((beast:any) => beast?.player === player.address);
     if (foundBeast) setRoute('/play');
-  }, [beasts]);
+  }, [beasts, player]);
 
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const handleShareClick = () => setIsShareModalOpen(true);
+
+  // Define menu items in a standardized way
+  const menuItems: MenuItem[] = [
+    { to: '/leaderboard', icon: trophy, alt: "Leaderboard", label: "Leaderboard" },
+    { to: '/about', icon: book, alt: "Book", label: "About" }
+  ];
+
+  // Conditionally add Share option if on tamagotchi route
+  if (isTamagotchiRoute && tamagotchiStats) {
+    menuItems.push({
+      icon: share,
+      alt: "Share",
+      label: "Share",
+      onClick: handleShareClick
+    });
+  }
+
+  // Add Music and Controller as regular menu items
+  menuItems.push(
+    { component: <Music />, label: "Music" },
+    { component: <ControllerConnectButton /> }
+  );
 
   return (
     <>
       <nav className="navbar">
-        <div className="logo-age-container">
-          <Link to={route} className="logo">
-            <img src={monster} alt="Logo" />
-          </Link>
-        </div>
+        <Link to={route} className="logo">
+          <img src={monster} alt="Logo" />
+        </Link>
         
         <div className="side-menu-container">
           <button 
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleMenu}
             className="menu-toggle"
             aria-label="Toggle menu"
           >
@@ -63,29 +92,19 @@ function Header({ tamagotchiStats }: HeaderProps) {
               className="toggle-icon"
             />
           </button>
+          
           <div className={`side-menu ${isOpen ? 'expanded' : ''}`}>
-            <Link className="item" to={'/leaderboard'} >
-              <div className="leader-icon">
-                <img src={trophy} alt="Leaderboard" />
+            {menuItems.map((item, index) => (
+              <div key={index} className="item" onClick={item.onClick}>
+                {item.to ? (
+                  <Link className="menu-link" to={item.to}>
+                    {renderMenuItem(item)}
+                  </Link>
+                ) : (
+                  renderMenuItem(item)
+                )}
               </div>
-              <span>Leaderboard</span>
-            </Link>
-            
-            {isTamagotchiRoute && tamagotchiStats && (
-              <div className="item" onClick={handleShareClick}>
-                <div className="share-icon">
-                  <img src={share} alt="Share" />
-                </div>
-                <span>Share</span>
-              </div>
-            )}
-            
-            <div className="item">
-              <Music />
-            </div>
-            <div className="item">
-              <ControllerConnectButton />
-            </div>
+            ))}
           </div>
         </div>
       </nav>
@@ -98,6 +117,19 @@ function Header({ tamagotchiStats }: HeaderProps) {
           stats={tamagotchiStats}
         />
       )}
+    </>
+  );
+}
+
+function renderMenuItem(item: MenuItem) {
+  return (
+    <>
+      <div className="icon-container">
+        {item.icon ? (
+          <img src={item.icon} alt={item.alt} />
+        ) : item.component}
+      </div>
+      {item.label && <span>{item.label}</span>}
     </>
   );
 }

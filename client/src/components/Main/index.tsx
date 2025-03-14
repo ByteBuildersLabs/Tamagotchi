@@ -3,6 +3,7 @@ import Leaderboard from "../Leadeboard";
 import NewCover from "../NewCover";
 import Tamagotchi from "../Tamagotchi";
 import SpawnBeast from "../SpawnBeast";
+import About from "../About";
 
 function Main() {
 
@@ -13,6 +14,7 @@ function Main() {
           <Route path="/spawn" element={<SpawnBeast />} />
           <Route path="/play" element={<Tamagotchi />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   )

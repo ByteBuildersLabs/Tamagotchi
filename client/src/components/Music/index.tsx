@@ -6,10 +6,13 @@ function Music() {
   const { isMuted, toggleMute } = useMusic();
 
   return (
-    <button onClick={toggleMute} className="music-icon">
-      <img src={music} className={isMuted ? 'muted' : ''} alt="Music control" />
-      <span>Music</span>
-    </button>
+    <img 
+      src={music} 
+      className={isMuted ? 'muted' : ''} 
+      alt="Music control" 
+      onClick={toggleMute}
+      style={{ cursor: 'pointer' }}
+    />
   );
 }
 
