@@ -80,28 +80,6 @@
     font-weight: bold;
   }
   
-  /* Bottom footer styling */
-  .bottom-footer {
-    color: #ECECDA;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
-    padding: 1rem 0;
-    border-top: 1px solid rgba(236, 236, 218, 0.2);
-  }
-  
-  .bottom-footer img {
-    width: 30px;
-    margin: 0 8px;
-    transition: transform 0.3s ease;
-  }
-  
-  .bottom-footer img:hover {
-    transform: scale(1.2);
-  }
-  
   /* Animation */
   @keyframes fade-in-up {
     from {

@@ -2,8 +2,6 @@ import './main.css';
 import Header from '../Header/index.tsx';
 import banner from '../../assets/img/bannerlogo.jpeg'
 import Footer from '../Footer/index.tsx';
-import dojologo from '../../assets/img/dojo-icon.svg';
-import starknet from '../../assets/img/stark.png'
 import './main.css';
 
 const About: React.FC = () => {
@@ -46,13 +44,6 @@ const About: React.FC = () => {
 
           <Footer />
         </div>
-
-        <p className='bottom-footer'>
-          <span>Powered by</span>
-          <img src={dojologo} alt="Dojo Engine" />
-          <span>&</span>
-          <img src={starknet} alt="Starknet" />
-        </p>
       </div>
     </>
   )
