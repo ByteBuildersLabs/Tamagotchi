@@ -6,7 +6,7 @@ function hexToDecimal(hexArray: string[] | undefined) {
 const fetchStatus = async (account:any) => {
     try {
         const response = await account?.callContract({
-          contractAddress: "0x535446c53848f4d19ea9b71d4d9215f646b0696c7fb75dd055533bbfc3bc579",
+          contractAddress: "0x3459f5079a6defb83b5a3dac087ebc2b22e24c99b585c95eb2e2986c8a08f6c",
           entrypoint: "get_timestamp_based_status_with_address",
           calldata: [String(account?.address)],
         });

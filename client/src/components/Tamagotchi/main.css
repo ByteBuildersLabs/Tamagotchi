@@ -23,7 +23,7 @@
   width: 40%;
   object-fit: contain;
   position: absolute;
-  bottom: 0;
+  bottom: 30px;
   right: 30%;
   margin: auto;
 }
@@ -31,67 +31,65 @@
 .beast-interaction {
   position: relative;
   display: flex;
-  justify-content: space-between;
 }
 
 .beast-buttons {
   position: absolute;
-  top: -50px;
+  top: -45px; 
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  pointer-events: none;
 }
 
 .name-section {
+  flex: 1;
   display: flex;
-}
-
-.age-icon {
-  padding: 5px 10px;
-  background-color: #ececda;
-  height: 35px;
-  font-weight: bold;
-  font-size: 18px;
-  margin-right: 10px;
-  border-radius: 10px;
-}
-
-.age-icon span {
-  color: #85002A;
-}
-
-.x-icon {
-  margin: auto;
-  width: 25px;
-  height: 25px;
+  justify-content: center;
 }
 
 .beast-interaction .actions-icon {
   width: 35px;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 0px;
+  grid-column: 3;
+  justify-self: end;
 }
 
-/* Styles for goBack container*/
-.beast-interaction .icon-circle {
+.age-indicator {
   width: 35px;
   height: 35px;
-  background-color: #ececda;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px 15px 0 0;
+  margin-left: 0px;
+  pointer-events: auto;
+}
+
+.age-indicator span {
+  color: #ECECDA;
+  font-family: 'Montserrat';
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.back-button {
+  width: 35px; 
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  pointer-events: auto; 
 }
 
-.beast-interaction .icon-circle:hover {
-  transform: scale(1.1);
-}
-
-.beast-interaction .icon-circle img[src*="GoBack"] {
-  width: 20px;
-  height: 20px;
-  margin: 0;
+.beast-interaction .icon-circle .actions-icon {
+  width: 25px;
+  height: 25px;
 }

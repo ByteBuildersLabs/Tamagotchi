@@ -381,6 +381,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_actions_updatePlayerDailyStreak_calldata = (): DojoCall => {
+		return {
+			contractName: "actions",
+			entrypoint: "update_player_daily_streak",
+			calldata: [],
+		};
+	};
+
+	const actions_updatePlayerDailyStreak = async (snAccount: Account | AccountInterface) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_actions_updatePlayerDailyStreak_calldata(),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 
 
 	return {
@@ -421,6 +442,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildTapCalldata: build_actions_tap_calldata,
 			updateBeast: actions_updateBeast,
 			buildUpdateBeastCalldata: build_actions_updateBeast_calldata,
+			updatePlayerDailyStreak: actions_updatePlayerDailyStreak,
+			buildUpdatePlayerDailyStreakCalldata: build_actions_updatePlayerDailyStreak_calldata,
 		},
 	};
 }

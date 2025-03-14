@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    // Dojo import
     use dojo::model::{ModelStorage};
   
     // Import the interface and implementations

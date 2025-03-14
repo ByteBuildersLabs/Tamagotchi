@@ -1,6 +1,6 @@
 import Header from '../Header/index.tsx';
 import dojologo from '../../assets/img/dojo-icon.svg';
-import starknet from '../../assets/img/stark.png'
+import starknet from '../../assets/img/stark.svg'
 import { useEffect, useState } from 'react';
 import './main.css';
 import beastsDex from '../../data/beastDex.tsx';
@@ -8,10 +8,11 @@ import { useBeasts } from '../../hooks/useBeasts.tsx';
 import Footer from '../Footer/index.tsx';
 
 const Leaderboard = () => {
-
-  const { beasts } = useBeasts();
   const [allBeasts, setAllBeasts] = useState<any[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const { beastsData } = useBeasts();
+  let beasts:any=beastsData;
 
   useEffect(() => {
     if (!isLoaded && beasts.length > 3) {
@@ -66,7 +67,7 @@ const Leaderboard = () => {
                       ...{beast.player?.slice(-6)}
                     </div>
                     <div className='col-3'>
-                      <img src={beastsDex[beast.specie - 1]?.idlePicture} className='beast' alt={beast.name} />
+                      <img src={beastsDex[beast.beast_type - 1]?.idlePicture} className='beast' alt={beast.name} />
                     </div>
                     <div className='col-3'>
                       {beast.age}

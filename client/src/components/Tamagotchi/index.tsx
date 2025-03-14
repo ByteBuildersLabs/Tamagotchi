@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Account } from "starknet";
-import { useGlobalContext } from "../../hooks/appContext.tsx";
+import { Account, addAddressPadding } from "starknet";
+import useAppStore from "../../context/store.ts";
+import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
 import toast from 'react-hot-toast';
@@ -16,64 +17,75 @@ import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
-import monster from '../../assets/img/logo.svg';
-import share from '../../assets/img/share.svg';
 import Header from '../../components/Header';
+import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
-import { useLocation } from "react-router-dom";
-import './main.css';
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
+import Close from "../../assets/img/CloseWhite.svg";
+import './main.css';
 
 function Tamagotchi() {
-  const { userAccount } = useGlobalContext();
+  const { account } = useAccount();
   const { client } = useDojoSDK();
-  const { beasts } = useBeasts();
+  const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
-  const location = useLocation();
 
-  const [beast, setBeast] = useState<any>(null);
+  // Fetch Beasts and Player
+  const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
+
+  useEffect(() => {
+    if (player) setPlayer(player);
+  }, [player, setPlayer, location]);
+  
+  useEffect(() => {
+    if (beasts) setBeasts(beasts);
+  }, [beasts, setBeasts, location]);
+
+  async function setCurrentBeastInPlayer(foundBeast:any) {
+    if (!foundBeast) return
+    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
+  }
+
+  useEffect(() => {
+    if (!zplayer || Object.keys(zplayer).length === 0) return;
+    if (!zbeasts || zbeasts.length === 0) return;
+    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
+    if (foundBeast) {
+      setCurrentBeast(foundBeast);
+      if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
+      setCurrentBeastInPlayer(foundBeast);
+    }
+  }, [zplayer, zbeasts]);
+
+  // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
 
-  const loadingTime = 6000;
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentView, setCurrentView] = useState('actions');
+  useEffect(() => {
+    if (!zplayer || !account) return
+    let response: any = fetchStatus(account);
+    
+    if (!status || status.length === 0) setIsLoading(true);
+    if(status[0] != zplayer.current_beast_id) setIsLoading(true);
 
+    setInterval(async () => {
+      if(status[1] == 0) return
+      response = await fetchStatus(account);
+      if(response) setStatus(response);
+      setIsLoading(false);
+    }, 3000);
+  }, [zcurrentBeast, location]);
+
+  const loadingTime = 6000;
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentView, setCurrentView] = useState('actions');
   const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
   const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!player) return
-    if (beast) return
-    const foundBeast = beasts.find((beast: any) => beast.player === player.address);
-    if (!foundBeast) return
-    setBeast(foundBeast);
-    async function setBeastId() {
-      await client.actions.setCurrentBeast(userAccount as Account, foundBeast?.beast_id)
-    }
-    setBeastId();
-  }, [player, beasts]);
-
-  useEffect(() => {
-    if (!player) return
-    let response: any = fetchStatus(userAccount);
-    if (!status || status.length === 0) setIsLoading(true);
-
-    setInterval(async () => {
-      response = await fetchStatus(userAccount);
-      if(response) setStatus(response);
-      console.info(status);
-      setIsLoading(false);
-    }, 5000);
-  }, [beast, location]);
 
   useEffect(() => {
     const updateBackground = () => {
@@ -86,50 +98,33 @@ function Tamagotchi() {
   }, []);
 
   // Animations
-  const [currentImage, setCurrentImage] = useState(beast ? beastsDex[beast.specie - 1]?.idlePicture : '');
-  const [firstTime, isFirstTime] = useState(true);
-  useEffect(() => {
-    if (firstTime && beast) {
-      setCurrentImage(beast ? beastsDex[beast.specie - 1]?.idlePicture : '')
-      isFirstTime(false);
-    }
-  }, [beast]);
+  const [currentImage, setCurrentImage] = useState<any>('');
 
   const showAnimation = (gifPath: string) => {
     setCurrentImage(gifPath);
     setTimeout(() => {
-      setCurrentImage(beast ? beastsDex[beast.specie - 1]?.idlePicture : '');
+      setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '');
     }, loadingTime);
   };
 
-  const showDeathAnimation = () => {
-    setCurrentImage(dead);
-  };
-
   useEffect(() => {
-    if (status[1] == 0) {
-      showDeathAnimation();
-    }
-  }, [status]);
+    if (!status || !zcurrentBeast) return;
+    if (status[1] == 0) setCurrentImage(dead);
+    if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
+  }, [status, zcurrentBeast]);
 
   // Twitter Share
   const getShareableStats = () => {
-    if (!status) return undefined;
-
+    if (!status || !zcurrentBeast) return undefined;
+  
     return {
-      age: beast?.age || 0,
+      age: zcurrentBeast?.age || 0,
       energy: status[4] || 0,
       hunger: status[3] || 0,
       happiness: status[5] || 0,
-      clean: status[7] || 0
+      clean: status[6] || 0
     };
   };
-
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
-
-
   // Helper to wrap Dojo actions with toast
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
@@ -148,20 +143,20 @@ function Tamagotchi() {
     actionFn();
     setTimeout(() => {
       setIsLoading(false);
-    }, 6000);
+    }, loadingTime);
   };
 
   const handleCuddle = async () => {
-    if (!beast || !userAccount) return;
+    if (!zcurrentBeast || !account) return;
     if (status[1] == 0) return;
     try {
       await toast.promise(
         handleAction(
           "Cuddle",
           // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.pet(userAccount as Account), //change sleep action to cuddle action
+          () => client.actions.pet(account as Account), //change sleep action to cuddle action
           // Use the cuddle animation from your initials data
-          beastsDex[beast.specie - 1].cuddlePicture
+          beastsDex[zcurrentBeast.specie - 1].cuddlePicture
         ),
         {
           loading: "Cuddling...",
@@ -173,7 +168,7 @@ function Tamagotchi() {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-      }, 6000);
+      }, loadingTime);
     } catch (error) {
       console.error("Cuddle error:", error);
     }
@@ -181,9 +176,9 @@ function Tamagotchi() {
 
   return (
     <>
-      <Header />
+      <Header tamagotchiStats={getShareableStats()}/>
       <div className="tamaguchi">
-        <>{beast &&
+        <>{zcurrentBeast &&
           <Card style={{
             display: 'flex',
             flexDirection: 'column',
@@ -195,17 +190,16 @@ function Tamagotchi() {
             />
             <div className="game">
               {
-                beast == null && !status || status.length === 0 ? <></> :
+                !status || status.length === 0 || !zcurrentBeast ? <></> :
                   <Whispers
-                    beast={beast}
+                    beast={zcurrentBeast}
                     expanded={currentView === 'chat'}
                     beastStatus={status}
                   />
               }
-
               <div className="scenario flex justify-center items-column">
                 {
-                  beast == null && !status || status.length === 0 ? <></> :
+                  !status || status.length === 0 ? <Spinner /> :
                     <img
                       src={currentImage}
                       alt="Tamagotchi"
@@ -216,42 +210,47 @@ function Tamagotchi() {
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
-                  <div className="name-section">
-                    <div className="age-icon">
-                      <img className="x-icon" src={share} onClick={handleShareClick} />
+                    {zcurrentBeast && (
+                      <div className="age-indicator">
+                        <span>{zcurrentBeast.age}</span>
+                      </div>
+                    )}
+                  {(currentView === 'food' || currentView === 'play') && (
+                    <div className="back-button">
+                      <img 
+                        src={Close} 
+                        onClick={() => setCurrentView('actions')} 
+                        alt="Back to actions"
+                      />
                     </div>
-                    <div className="age-icon">
-                      <span>Age {beast.age}</span>
-                    </div>
-                  </div>
-                  <img className="actions-icon" src={monster} onClick={() => (setCurrentView('actions'))} />
+                  )}
                 </div>
               </div>
-              {
+                            {
                 currentView === 'actions' ?
                   <Actions
                     handleAction={handleAction}
                     isLoading={isLoading}
-                    beast={beast}
+                    beast={zcurrentBeast}
                     beastStatus={status}
                     setStatus={setStatus}
-                    account={userAccount}
+                    account={account}
                     client={client}
                     setCurrentView={setCurrentView}
                   />
                   : currentView === 'food' ? (
                     <Food
                       handleAction={handleAction}
-                      beast={beast}
-                      account={userAccount}
+                      beast={zcurrentBeast}
+                      account={account}
                       client={client}
                       showAnimation={showAnimation}
                     />
                   ) : currentView === 'play' ? (
                     <Play
                       handleAction={handleAction}
-                      beast={beast}
-                      account={userAccount}
+                      beast={zcurrentBeast}
+                      account={account}
                       client={client}
                     />
                   ) : (
@@ -262,12 +261,6 @@ function Tamagotchi() {
           </Card>
         }</>
       </div>
-      <ShareProgress
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        type="beast"
-        stats={getShareableStats()}
-      />
     </>
   );
 }

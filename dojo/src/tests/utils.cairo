@@ -17,11 +17,12 @@ pub mod utils {
     use tamagotchi::models::player::{m_Player};
     use tamagotchi::models::food::{m_Food};
 
-    // Constants
+    // ------- Constants -------
     pub fn PLAYER() -> ContractAddress {
         starknet::contract_address_const::<'PLAYER'>()
     }
 
+     // ------- Definitions -------
     pub fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
             namespace: "tamagotchi",
@@ -61,6 +62,9 @@ pub mod utils {
          (actions_system, world)
     }
 
+
+    // ------- Custom cheat functions -------
+
     // set_contract_address: used to define the address of the calling contract,
     // set_account_contract_address: used to define the address of the account used for the current
     // transaction.
@@ -73,6 +77,7 @@ pub mod utils {
         set_block_timestamp(timestamp);
     }
 
+     // ------- Events testing functions -------
     pub fn drop_all_events(address: ContractAddress) {
         loop {
             match starknet::testing::pop_log_raw(address) {
@@ -81,4 +86,5 @@ pub mod utils {
             };
         }
     }
+    
 }

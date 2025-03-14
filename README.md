@@ -1,6 +1,6 @@
 
 # ByteBeasts Tamagotchi
-![HORIZONTAL 1](client/src/assets/img/Branding/original-dark.png)
+![HORIZONTAL 1](client/src/assets/img/original-dark.png)
 
 
 
@@ -50,7 +50,7 @@ Remember to regularly check and manage your beast's stats to keep it happy and h
 <table>
   <tr>
     <td align="center">
-      <img src="client/src/assets/img/rol.jpg" width="100px;" alt="Maintainer: Rolando"/>
+      <img src="client/src/assets/img/rolo.jpg" width="100px;" alt="Maintainer: Rolando"/>
       <br />
       <a href="https://t.me/roloxworld">Rolando</a>
       <br />

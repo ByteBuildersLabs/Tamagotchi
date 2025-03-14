@@ -1,7 +1,14 @@
 // Types imports
 use tamagotchi::types::clean_status::CleanStatus;
 
-#[derive(Drop, Serde, IntrospectPacked,  Debug)]
+// Constants import
+use tamagotchi::constants;
+
+// Helpers import
+use tamagotchi::helpers::pseudo_random::PseudoRandom;
+
+// Model
+#[derive(Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct BeastStatus {
     #[key]
@@ -16,8 +23,33 @@ pub struct BeastStatus {
     pub last_timestamp: u64,
 }
 
+// Traits implementations
 #[generate_trait]
 pub impl BeastStatusImpl of BeastStatusTrait {
+
+    fn generate_random_u8(beast_id: u16, attribute_id: u16) -> u8 {
+        PseudoRandom::generate_random_u8(
+            beast_id,
+            attribute_id,
+            constants::MIN_INITIAL_STATUS,
+            constants::MAX_INITIAL_STATUS
+        )
+    }
+
+    fn new_beast_random_status(beast_id: u16, current_timestamp: u64) -> BeastStatus {
+        BeastStatus {
+            beast_id: beast_id,
+            is_alive: true,
+            is_awake: true,
+            hunger: Self::generate_random_u8(beast_id, 1),
+            energy: Self::generate_random_u8(beast_id, 2),
+            happiness: Self::generate_random_u8(beast_id, 3),
+            hygiene: Self::generate_random_u8(beast_id, 4),
+            clean_status: CleanStatus::Clean.into(),
+            last_timestamp: current_timestamp,
+        }
+    }
+
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
             if hygiene>=90{
                 self.clean_status = CleanStatus::Clean.into();
@@ -41,9 +73,9 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
     fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / 600; // 600: total seconds in 10 minutes   
+        let total_points: u64 = total_seconds / constants::SECONDS_FOR_TESTING;
 
-        if total_points < 100 {
+        if total_points < constants::MAX_POINTS {
             let points_to_drecrease: u8 = total_points.try_into().unwrap();
 
             let multiplied_hunger_to_decrease = points_to_drecrease * 2;
@@ -104,9 +136,9 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         // updae timestamp
         self.last_timestamp = current_timestamp;
     }
-
 }
 
+// Tests
 #[cfg(test)]
 mod tests {
     use super::BeastStatus;

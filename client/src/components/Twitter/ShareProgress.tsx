@@ -8,11 +8,11 @@ interface ShareModalProps {
   onClose: () => void;
   type: 'beast' | 'minigame';
   stats?: {
-    age: number;
-    energy: number;
-    hunger: number;
-    happiness: number;
-    clean: number;
+    age?: number;
+    energy?: number;
+    hunger?: number;
+    happiness?: number;
+    clean?: number;
   };
   minigameData?: {
     name: string;

@@ -14,6 +14,7 @@ const ControllerConnectButton = () => {
         status === "connected" ? (
           <Link to="/" key={connector.id} className="disconnect-button" onClick={() => {
             disconnect();
+            localStorage.clear();
             const bodyElement = document.querySelector('.body') as HTMLElement;
               if (bodyElement) {
                 bodyElement.classList.remove('day', 'night');
@@ -21,7 +22,7 @@ const ControllerConnectButton = () => {
                 bodyElement.style.padding = '0';
               }
             }}>
-            <img src={logout} alt="Beast Lore" />
+            <img src={logout} alt="Logout" />
             <span>Disconnect</span>
           </Link>
         ) : (
