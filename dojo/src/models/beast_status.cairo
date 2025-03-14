@@ -26,25 +26,15 @@ pub struct BeastStatus {
 // Traits implementations
 #[generate_trait]
 pub impl BeastStatusImpl of BeastStatusTrait {
-
-    fn generate_random_u8(beast_id: u16, attribute_id: u16) -> u8 {
-        PseudoRandom::generate_random_u8(
-            beast_id,
-            attribute_id,
-            constants::MIN_INITIAL_STATUS,
-            constants::MAX_INITIAL_STATUS
-        )
-    }
-
-    fn new_beast_random_status(beast_id: u16, current_timestamp: u64) -> BeastStatus {
+    fn new_beast_status_random_values(beast_id: u16, current_timestamp: u64) -> BeastStatus {
         BeastStatus {
             beast_id: beast_id,
             is_alive: true,
             is_awake: true,
-            hunger: Self::generate_random_u8(beast_id, 1),
-            energy: Self::generate_random_u8(beast_id, 2),
-            happiness: Self::generate_random_u8(beast_id, 3),
-            hygiene: Self::generate_random_u8(beast_id, 4),
+            hunger: PseudoRandom::generate_random_u8(beast_id, 1, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            energy: PseudoRandom::generate_random_u8(beast_id, 2, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            happiness: PseudoRandom::generate_random_u8(beast_id, 3, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            hygiene: PseudoRandom::generate_random_u8(beast_id, 4, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: current_timestamp,
         }

@@ -1,22 +1,26 @@
+// Core imports
 use core::hash::{HashStateTrait};
-use starknet::{get_block_timestamp, get_block_number};
 use core::pedersen::PedersenTrait;
 
+// Starknet import
+use starknet::{get_block_timestamp, get_block_number};
+
+// Trait implementation
 #[generate_trait]
 pub impl PseudoRandom of PseudoRandomTrait {
     /// Generates a pseudo-random u8 number between min and max (inclusive)
     /// 
     /// # Arguments
-    /// * `beast_id` - ID of the beast to generate randomness for
-    /// * `attribute_salt` - Unique salt value for each attribute
+    /// * `unique_id` - Unique ID used to generate randomness
+    /// * `salt` - Unique salt value to generate randomness
     /// * `min` - Minimum value for the range
     /// * `max` - Maximum value for the range
     /// 
     /// # Returns
     /// * `u8` - Random number between min and max
     fn generate_random_u8(
-        beast_id: u16, 
-        attribute_salt: u16,
+        unique_id: u16, 
+        salt: u16,
         min: u8, 
         max: u8
     ) -> u8 {
@@ -25,9 +29,9 @@ pub impl PseudoRandom of PseudoRandomTrait {
         let block_number = get_block_number();
         
         // Create unique seeds by combining different sources
-        let timestamp_seed: felt252 = block_timestamp.into() + attribute_salt.into();
-        let block_seed: felt252 = block_number.into() + beast_id.into();
-        let combined_seed: felt252 = timestamp_seed + (beast_id * attribute_salt).into();
+        let timestamp_seed: felt252 = block_timestamp.into() + salt.into();
+        let block_seed: felt252 = block_number.into() + unique_id.into();
+        let combined_seed: felt252 = timestamp_seed + (unique_id * salt).into();
         
         // Combine the seeds
         let hash_input = combined_seed + block_seed;
@@ -53,6 +57,7 @@ pub impl PseudoRandom of PseudoRandomTrait {
     }
 }
 
+// Tests
 #[cfg(test)]
 mod tests {
     use super::PseudoRandom;
