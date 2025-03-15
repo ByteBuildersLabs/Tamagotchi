@@ -10,8 +10,11 @@ pub mod utils {
         spawn_test_world, NamespaceDef, TestResource, ContractDefTrait, ContractDef,
     };
 
-    // Game imports
-    use tamagotchi::systems::actions::{actions, IActionsDispatcher};
+    // System imports
+    use tamagotchi::systems::player::{player, IPlayerDispatcher};
+    use tamagotchi::systems::game::{game, IGameDispatcher};
+
+    // Models imports
     use tamagotchi::models::beast::{m_Beast};
     use tamagotchi::models::beast_status::{m_BeastStatus};
     use tamagotchi::models::player::{m_Player};
@@ -31,7 +34,8 @@ pub mod utils {
                 TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),
-                TestResource::Contract(actions::TEST_CLASS_HASH),
+                TestResource::Contract(player::TEST_CLASS_HASH),
+                TestResource::Contract(game::TEST_CLASS_HASH),
             ].span(),
         };
 
@@ -40,14 +44,32 @@ pub mod utils {
 
     pub fn contract_defs() -> Span<ContractDef> {
         [
-            ContractDefTrait::new(@"tamagotchi", @"actions")
-                .with_writer_of([dojo::utils::bytearray_hash(@"tamagotchi")].span())
+            ContractDefTrait::new(@"tamagotchi", @"player")
+                .with_writer_of([dojo::utils::bytearray_hash(@"tamagotchi")].span()),
+            ContractDefTrait::new(@"tamagotchi", @"game")
+                .with_writer_of([dojo::utils::bytearray_hash(@"tamagotchi")].span()),
+                
         ]
             .span()
     }
 
+    pub fn create_game_system(world: WorldStorage) -> IGameDispatcher {
+         let (contract_address, _) = world.dns(@"game").unwrap();
 
-    pub fn actions_system_world() -> (IActionsDispatcher, WorldStorage){
+         let game_system = IGameDispatcher { contract_address };
+
+         game_system
+    }
+
+    pub fn create_player_system(world: WorldStorage) -> IPlayerDispatcher {
+        let (contract_address, _) = world.dns(@"player").unwrap();
+
+        let player_system = IPlayerDispatcher { contract_address };
+
+        player_system
+   }
+
+    pub fn create_test_world() -> WorldStorage {
          // Initialize test environment
          let ndef = namespace_def();
 
@@ -56,12 +78,10 @@ pub mod utils {
  
          // Ensures permissions and initializations are synced.
          world.sync_perms_and_inits(contract_defs());
- 
-         let (contract_address, _) = world.dns(@"actions").unwrap();
-         let actions_system = IActionsDispatcher { contract_address };
-         (actions_system, world)
-    }
 
+         world
+    }
+    
 
     // ------- Custom cheat functions -------
 

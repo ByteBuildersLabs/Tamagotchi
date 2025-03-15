@@ -3,26 +3,29 @@ mod tests {
     // Dojo import
     use dojo::model::{ModelStorage};
 
-    // Import the interface and implementations
-    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
+    // Traits import
+    use tamagotchi::systems::game::IGameDispatcherTrait;
+    use tamagotchi::systems::player::IPlayerDispatcherTrait;
 
     // Import models and types
     use tamagotchi::models::beast::{Beast};
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, create_game_system, create_player_system, create_test_world, cheat_block_timestamp}};
 
     #[test]
     fn test_spawn_beast() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
 
         cheat_caller_address(PLAYER());
 
         // Setup player
-        actions_system.spawn_player();
+        player_system.spawn_player();
 
         // Spawn beast with specie 1
-        actions_system.spawn_beast(1, 1);
-        actions_system.set_current_beast(1);
+        game_system.spawn_beast(1, 1);
+        player_system.set_current_beast(1);
 
         // Get beast data
         let beast: Beast = world.read_model((PLAYER(), 1));
@@ -36,45 +39,49 @@ mod tests {
     #[test]
     fn test_beast_age() {
         // Initialize test environment
-        let (actions_system, _) = actions_system_world();
+        let world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
 
         cheat_caller_address(PLAYER());
         cheat_block_timestamp(7000000);
 
-        actions_system.spawn_player();
-        actions_system.spawn_beast(1, 1);
-        actions_system.set_current_beast(1);
+        player_system.spawn_player();
+        game_system.spawn_beast(1, 1);
+        player_system.set_current_beast(1);
 
         // Get beast age
         cheat_block_timestamp(7172000);
-        let age: u16 = actions_system.get_beast_age();
+        let age: u16 = game_system.get_beast_age();
         assert(age == 1, 'wrong beast age');
 
         // Get beast age
         cheat_block_timestamp(7173000);
-        let age: u16 = actions_system.get_beast_age();
+        let age: u16 = game_system.get_beast_age();
         assert(age == 2, 'wrong beast age');
 
         // Get beast age
         cheat_block_timestamp(7260000);
-        let age: u16 = actions_system.get_beast_age();
+        let age: u16 = game_system.get_beast_age();
         assert(age == 3, 'wrong beast age');
     }
 
     #[test]
     fn test_multiple_beasts() {
         // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        let world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
 
         cheat_caller_address(PLAYER());
 
         // Setup player
-        actions_system.spawn_player();
+        player_system.spawn_player();
 
         // Spawn multiple beasts
-        actions_system.spawn_beast(1, 1); // First beast, specie 1
-        actions_system.spawn_beast(2 , 2); // Second beast, specie 2
-        actions_system.spawn_beast(3, 3); // Third beast, specie 3
+        game_system.spawn_beast(1, 1); // First beast, specie 1
+        game_system.spawn_beast(2 , 2); // Second beast, specie 2
+        game_system.spawn_beast(3, 3); // Third beast, specie 3
 
         // Read and verify each beast
         let beast1: Beast = world.read_model((PLAYER(), 1));

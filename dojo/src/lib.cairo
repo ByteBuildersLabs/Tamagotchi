@@ -8,7 +8,7 @@ pub mod helpers {
 
 pub mod systems {
     pub mod game;
-    pub mod user;
+    pub mod player;
 }
 
 pub mod models {
@@ -27,8 +27,8 @@ pub mod types {
 #[cfg(test)]
 pub mod tests {
     mod utils;
-    mod test_player;
-    mod test_food;
-    mod test_status;
     mod test_beast;
+    mod test_food;
+    mod test_player;
+    mod test_status;
 }

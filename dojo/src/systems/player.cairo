@@ -1,6 +1,6 @@
 // Interface definition
 #[starknet::interface]
-pub trait IUser<T> {
+pub trait IPlayer<T> {
     // ------------------------- Player methods -------------------------
     fn spawn_player(ref self: T);
     fn add_initial_food(ref self: T);
@@ -9,9 +9,9 @@ pub trait IUser<T> {
 }
 
 #[dojo::contract]
-pub mod user {
+pub mod player {
     // Local import
-    use super::{IUser};
+    use super::{IPlayer};
     
     // Starknet imports
     use starknet::get_block_timestamp;
@@ -34,7 +34,7 @@ pub mod user {
 
     // Implementation of the interface methods
     #[abi(embed_v0)]
-    impl UserImpl of IUser<ContractState> {
+    impl PlayerImpl of IPlayer<ContractState> {
         // ------------------------- Player methods -------------------------
         fn spawn_player(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");

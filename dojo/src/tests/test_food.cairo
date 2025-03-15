@@ -2,27 +2,29 @@
 mod tests {
     // Dojo import
     use dojo::model::{ModelStorage};
-  
-    // Import the interface and implementations
-    use tamagotchi::systems::actions::{IActionsDispatcherTrait};
 
+    // Traits import
+    use tamagotchi::systems::game::IGameDispatcherTrait;
+    use tamagotchi::systems::player::IPlayerDispatcherTrait;
+  
     // Import models and types
     use tamagotchi::models::food::{Food};
     use tamagotchi::models::beast_status::{BeastStatus};
     use tamagotchi::constants;
-    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, actions_system_world, cheat_block_timestamp}};
+    use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, create_game_system, create_player_system, create_test_world, cheat_block_timestamp}};
 
     #[test]
     #[available_gas(60000000)]
     fn test_add_initial_food() {
-        // Initialize test environment
-        let (actions_system, world) = actions_system_world();
+        // Initialize test environment]
+        let world = create_test_world();
+        let player_system = create_player_system(world);
 
         cheat_caller_address(PLAYER());
 
         // Initialize player and add initial food
-        actions_system.spawn_player();
-        actions_system.add_initial_food();
+        player_system.spawn_player();
+        player_system.add_initial_food();
 
         // Read foods after initialization using correct IDs (1, 2, 3)
         let apple: Food = world.read_model((PLAYER(), 1));
@@ -49,19 +51,21 @@ mod tests {
     #[test]
     fn test_feed_beast_decreases_status() {
         // Initialize test environment
-        let (actions_system, _) = actions_system_world();
+        let world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
         
         cheat_caller_address(PLAYER());
         cheat_block_timestamp(7000000);
 
         // Create player, food, and beast
-        actions_system.spawn_player();
-        actions_system.add_initial_food();
-        actions_system.spawn_beast(1, 3); // Spawn beast with specie 1
-        actions_system.set_current_beast(1);
+        player_system.spawn_player();
+        player_system.add_initial_food();
+        game_system.spawn_beast(1, 3); // Spawn beast with specie 1
+        player_system.set_current_beast(1);
 
         // Get initial status
-        let initial_status: BeastStatus = actions_system.get_timestamp_based_status();
+        let initial_status: BeastStatus = game_system.get_timestamp_based_status();
         let initial_hunger = initial_status.hunger;
         let initial_energy = initial_status.energy;
 
@@ -71,7 +75,7 @@ mod tests {
         cheat_block_timestamp(7005000);
 
         // Get updated status
-        let updated_status: BeastStatus = actions_system.get_timestamp_based_status();
+        let updated_status: BeastStatus = game_system.get_timestamp_based_status();
 
         println!("Updated Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);
@@ -84,22 +88,24 @@ mod tests {
     #[test]
     fn test_feed_beast_increase_status() {
         // Initialize test environment
-        let (actions_system, _) = actions_system_world();
+        let world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
 
         cheat_caller_address(PLAYER());
         cheat_block_timestamp(7000000);
 
         // Create player, food, and beast
-        actions_system.spawn_player();
-        actions_system.add_initial_food();
-        actions_system.spawn_beast(1 ,1); // Spawn beast with specie 1
-        actions_system.set_current_beast(1);
+        player_system.spawn_player();
+        player_system.add_initial_food();
+        game_system.spawn_beast(1 ,1); // Spawn beast with specie 1
+        player_system.set_current_beast(1);
 
         // We decrease the status to verify that they increase after feeding
         cheat_block_timestamp(7005000);
 
         // Get initial status
-        let initial_status: BeastStatus = actions_system.get_timestamp_based_status();
+        let initial_status: BeastStatus = game_system.get_timestamp_based_status();
         let initial_hunger = initial_status.hunger;
         let initial_energy = initial_status.energy;
 
@@ -107,10 +113,10 @@ mod tests {
         initial_status.energy, initial_status.hunger);
 
         // Increase status
-        actions_system.feed(3);
+        game_system.feed(3);
 
         // Get updated status
-        let updated_status: BeastStatus = actions_system.get_timestamp_based_status();
+        let updated_status: BeastStatus = game_system.get_timestamp_based_status();
 
         println!("Updated Status - Energy: {}, Hunger: {}", 
         initial_status.energy, initial_status.hunger);
