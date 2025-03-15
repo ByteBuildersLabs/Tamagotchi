@@ -7,7 +7,8 @@ pub mod helpers {
 }
 
 pub mod systems {
-    pub mod actions;
+    pub mod game;
+    pub mod user;
 }
 
 pub mod models {
