@@ -73,7 +73,7 @@ function Tamagotchi() {
     setInterval(async () => {
       if(status[1] == 0) return
       response = await fetchStatus(account);
-      if(response) setStatus(response);
+      if (response && Object.keys(response).length !== 0) setStatus(response);
       setIsLoading(false);
     }, 3000);
   }, [zcurrentBeast, location]);

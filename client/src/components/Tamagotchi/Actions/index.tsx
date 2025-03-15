@@ -64,7 +64,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               await client.actions.updateBeast();
 
               let status:any = fetchStatus(account);
-              setStatus(status);
+              if (status && Object.keys(status).length !== 0) setStatus(status);
             } catch (error) {
               console.error("Action error:", error);
             }

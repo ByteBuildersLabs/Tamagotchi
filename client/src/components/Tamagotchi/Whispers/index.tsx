@@ -49,7 +49,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
           <input
             ref={inputRef}
             type="text"
-            placeholder={`Talk to ${beastsDex[beast.specie - 1]?.name}`}
+            placeholder={`Talk to ${beastsDex[beast?.specie - 1]?.name}`}
             value={input}
             disabled={isLoading}
             onChange={(e) => setInput(e.target.value)}
@@ -107,8 +107,9 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
   };
 
   const generatePrompt = (beastStatus: BeastStatus) => {
+    if (!beast) return '';
     const criticalStat = analyzeStats(beastStatus);
-    return `You are ${beastsDex[beast.specie - 1]?.name}, with the following statistics:
+    return `You are ${beastsDex[beast?.specie - 1]?.name}, with the following statistics:
             Hunger: ${beastStatus.hunger}/100
             Energy: ${beastStatus.energy}/100
             Happiness: ${beastStatus.happiness}/100
@@ -140,7 +141,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
 
   useEffect(() => {
     let intervalId: string | number | NodeJS.Timeout | undefined;
-    if(beastStatus) {
+    if(beastStatus && beast) {
       const prompt = generatePrompt(beastStatus);
       createWhisper(prompt);
       intervalId = setInterval(() => {
