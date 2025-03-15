@@ -226,7 +226,7 @@ function Tamagotchi() {
                   )}
                 </div>
               </div>
-                            {
+              {
                 currentView === 'actions' ?
                   <Actions
                     handleAction={handleAction}

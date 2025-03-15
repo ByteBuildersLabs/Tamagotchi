@@ -72,7 +72,6 @@ function SpawnBeast() {
     if (!zplayer) {
       setLoading(true);
       await client.actions.spawnPlayer(account as Account);
-      await client.actions.addInitialFood(account as Account);
       await new Promise(resolve => setTimeout(resolve, 2500));
       setLoading(false);
     }
