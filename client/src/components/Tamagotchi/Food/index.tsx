@@ -5,6 +5,7 @@ import { useFood } from '../../../hooks/useFood.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
+import Apple from '../../../assets/img/food/fruit_apple.svg';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
@@ -70,8 +71,9 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
     <>
       <div className="food-carousel">
         {foods.length === 0 ? (
-            <button className="button" onClick={spawnFood}>
-              Spawn Food
+            <button className="button spawn-food" onClick={spawnFood}>
+              <img alt="option" src={Apple} />
+              Claim food!
             </button>
         ) : 
         zfoods.map(({ name, img, count }: { name:any, img:any, count:any }) => (
