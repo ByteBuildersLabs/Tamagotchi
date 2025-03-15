@@ -5,7 +5,7 @@ import { useFood } from '../../../hooks/useFood.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
-import Apple from '../../../assets/img/food/fruit_apple.svg';
+import Blueberry from '../../../assets/img/food/fruit_blueberry.svg';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
@@ -23,6 +23,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
 
   async function spawnFood() {
     await client.actions.addInitialFood(account as Account);
+    
   }
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
       <div className="food-carousel">
         {foods.length === 0 ? (
             <button className="button spawn-food" onClick={spawnFood}>
-              <img alt="option" src={Apple} />
+              <img alt="option" src={Blueberry} />
               Claim food!
             </button>
         ) : 
