@@ -1,7 +1,9 @@
 import rolo from '../../assets/img/rolo.jpg';
-import cox from '../../assets/img/marco.jpeg';
+import marco from '../../assets/img/marco.jpeg';
 import luis from '../../assets/img/Luis.png';
 import daniel from '../../assets/img/daniel.jpeg';
+import dojologo from '../../assets/img/dojo-icon.svg';
+import starknet from '../../assets/img/stark.svg'
 
 import './main.css';
 
@@ -13,7 +15,7 @@ function Footer() {
           <img src={rolo} className='footer-team' />
         </a>
         <a href='https://github.com/coxmars' target='_blank'>
-          <img src={cox} className='footer-team' />
+          <img src={marco} className='footer-team' />
         </a>
         <a href='https://github.com/jimenezz22' target='_blank'>
           <img src={luis} className='footer-team' />
@@ -22,6 +24,12 @@ function Footer() {
           <img src={daniel} className='footer-team' />
         </a>
       </div>
+      <p className='bottom-footer'>
+        <span>Powered by</span>
+        <img src={dojologo} alt="Dojo Engine" />
+        <span>&</span>
+        <img src={starknet} alt="Starknet" />
+      </p>
     </>
   )
 }
