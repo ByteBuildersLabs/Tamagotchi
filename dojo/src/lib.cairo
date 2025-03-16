@@ -3,6 +3,7 @@ pub mod store;
 
 pub mod helpers {
     pub mod timestamp;
+    pub mod pseudo_random;
 }
 
 pub mod systems {

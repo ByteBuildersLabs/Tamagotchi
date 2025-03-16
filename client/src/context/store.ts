@@ -23,7 +23,7 @@ const useAppStore = create<AppState>((set) => ({
   zcurrentBeast: {},
   setCurrentBeast: (zcurrentBeast) => set({ zcurrentBeast }),
   zstatus: [],
-  setStatus: (zstatus) => set({ zstatus }),
+  setStatus: (zstatus) => set({ zstatus })
 }));
 
 export default useAppStore;

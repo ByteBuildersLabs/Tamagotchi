@@ -31,6 +31,20 @@
   font-size: 13px;
   font-family: "Montserrat", serif;
   text-transform: capitalize;
+  cursor: pointer;
+}
+
+.food-carousel .button.spawn-food {
+  width: 50%;
+  height: 100%;
+  margin: auto;
+  font-size: 20px;
+  animation: aura 1.5s infinite;
+  font-family: 'Kallisto';
+}
+
+.food-carousel .button.spawn-food img {
+  animation: moveUpDown 3s infinite;
 }
 
 .food-carousel span {
@@ -44,4 +58,28 @@
   width: 30px;
   height: 30px;
   margin: auto;
+}
+
+@keyframes aura {
+  0% {
+    box-shadow: 0 0 2px #85002A, 0 0 4px #85002A, 0 0 6px #85002A, 0 0 8px #85002A;
+  }
+  50% {
+    box-shadow: 0 0 4px #85002A, 0 0 8px #85002A, 0 0 12px #85002A, 0 0 16px #85002A;
+  }
+  100% {
+    box-shadow: 0 0 2px #85002A, 0 0 4px #85002A, 0 0 6px #85002A, 0 0 8px #85002A;
+  }
+}
+
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(-25%);
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(-25%);
+  }
 }

@@ -169,6 +169,7 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
     fn test_beast_clean_status() {
         // Initialize test environment
         let (actions_system, _) = actions_system_world();

@@ -4,8 +4,11 @@ use tamagotchi::types::clean_status::CleanStatus;
 // Constants import
 use tamagotchi::constants;
 
+// Helpers import
+use tamagotchi::helpers::pseudo_random::PseudoRandom;
+
 // Model
-#[derive(Drop, Serde, IntrospectPacked,  Debug)]
+#[derive(Drop, Serde, IntrospectPacked, Debug)]
 #[dojo::model]
 pub struct BeastStatus {
     #[key]
@@ -23,6 +26,20 @@ pub struct BeastStatus {
 // Traits implementations
 #[generate_trait]
 pub impl BeastStatusImpl of BeastStatusTrait {
+    fn new_beast_status_random_values(beast_id: u16, current_timestamp: u64) -> BeastStatus {
+        BeastStatus {
+            beast_id: beast_id,
+            is_alive: true,
+            is_awake: true,
+            hunger: PseudoRandom::generate_random_u8(beast_id, 1, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            energy: PseudoRandom::generate_random_u8(beast_id, 2, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            happiness: PseudoRandom::generate_random_u8(beast_id, 3, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            hygiene: PseudoRandom::generate_random_u8(beast_id, 4, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
+            clean_status: CleanStatus::Clean.into(),
+            last_timestamp: current_timestamp,
+        }
+    }
+
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
             if hygiene>=90{
                 self.clean_status = CleanStatus::Clean.into();
@@ -109,7 +126,6 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         // updae timestamp
         self.last_timestamp = current_timestamp;
     }
-
 }
 
 // Tests

@@ -1,9 +1,11 @@
+import { Account } from 'starknet';
 import { useEffect } from 'react';
-import { useLocalStorage } from '../../../hooks/useLocalStorage.tsx';
+import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
+import Blueberry from '../../../assets/img/food/fruit_blueberry.svg';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
@@ -16,16 +18,27 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   showAnimation: (gifPath: string) => void,
 }) => {
 
-  const [foodItems, setFoodItems] = useLocalStorage('food', initialFoodItems);
-  const { foods } = useFood();
+  const { foods } = useFood(account);
+  const { zfoods, setFoods } = useAppStore();
+
+  async function spawnFood() {
+    await client.actions.addInitialFood(account as Account);
+    
+  }
 
   useEffect(() => {
     if (foods.length > 0) {
-      const updatedFoodItems = initialFoodItems.map(item => {
-        const foodFromAPI = foods.find(food => food.id === item.id);
-        return foodFromAPI ? { ...item, count: foodFromAPI.amount } : item;
+      const updatedFoods = foods.map((food) => {
+        const initialFood = initialFoodItems.find(item => item.id === food.id);
+        return {
+          ...food,
+          name: initialFood?.name,
+          img: initialFood?.img,
+          count: food.amount,
+        };
       });
-      setFoodItems(updatedFoodItems);
+      setFoods(updatedFoods);
+      console.info("Updating food items:", updatedFoods);
     }
   }, [foods]);
 
@@ -33,22 +46,13 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   const feedTamagotchi = async (foodName: string) => {
     if (!beast) return;
 
-    // Reduce the food count in state
-    setFoodItems((prevFoodItems: any[]) =>
-      prevFoodItems.map(item =>
-        item.name === foodName && item.count > 0
-          ? { ...item, count: item.count - 1 }
-          : item
-      )
-    );
-
     // Get the appropriate eating animation for the beast
     const eatAnimation = beastsDex[beast.specie - 1].eatPicture;
     showAnimation(eatAnimation);
 
     // Execute the feed action wrapped in a toast.promise to show notifications
     try {
-      const selectedFood = foodItems.find((item: { name: string; }) => item.name === foodName);
+      const selectedFood = zfoods.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
 
       await toast.promise(
@@ -67,7 +71,13 @@ const Food = ({ handleAction, beast, account, client, showAnimation }: {
   return (
     <>
       <div className="food-carousel">
-        {foodItems.map(({ name, img, count }: { name:any, img:any, count:any }) => (
+        {foods.length === 0 ? (
+            <button className="button spawn-food" onClick={spawnFood}>
+              <img alt="option" src={Blueberry} />
+              Claim food!
+            </button>
+        ) : 
+        zfoods.map(({ name, img, count }: { name:any, img:any, count:any }) => (
           <button
             key={name}
             className="button"
