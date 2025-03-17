@@ -10,17 +10,22 @@ import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 const gameContainerStyle: React.CSSProperties = {
   position: 'relative',
   width: '100%',
+  height: '100vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: '20px',
+  padding: '0px',
+  margin: '0', 
+  overflow: 'hidden', 
 };
 
 // Container style for the canvas
 const canvasContainerStyle: React.CSSProperties = {
   position: 'relative',
+  width: '100%', 
+  height: '100%',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-  borderRadius: '8px',
+  borderRadius: '0',
   overflow: 'hidden',
 };
 
@@ -294,20 +299,29 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
     const adjustGameSize = () => {
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
-      const aspectRatio = game.boardWidth / game.boardHeight;
-      if (viewportWidth / viewportHeight > aspectRatio) {
-        const scaleFactor = (viewportHeight * 0.8) / game.boardHeight;
-        canvas.style.height = `${game.boardHeight * scaleFactor}px`;
-        canvas.style.width = `${game.boardWidth * scaleFactor}px`;
-      } else {
-        const scaleFactor = (viewportWidth * 0.8) / game.boardWidth;
-        canvas.style.width = `${game.boardWidth * scaleFactor}px`;
-        canvas.style.height = `${game.boardHeight * scaleFactor}px`;
-      }
+      
+      // Actualizar las dimensiones reales del canvas
+      canvas.width = viewportWidth;
+      canvas.height = viewportHeight;
+      
+      // Actualizar las dimensiones lógicas del juego
+      game.boardWidth = viewportWidth;
+      game.boardHeight = viewportHeight;
+      
+      // Aplicar dimensiones al estilo del canvas
+      canvas.style.width = `${viewportWidth}px`;
+      canvas.style.height = `${viewportHeight}px`;
+      
+      // Reposicionar el doodler al centro
+      game.doodler.x = viewportWidth / 2 - game.doodlerWidth / 2;
+      
+      // Redistribuir las plataformas si es necesario
+      placePlatforms(game);
     };
 
     adjustGameSize();
     window.addEventListener('resize', adjustGameSize);
+    window.addEventListener('orientationchange', adjustGameSize);
 
     if (isMobile) {
       document.body.classList.add('mobile-gameplay');
@@ -359,6 +373,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       document.removeEventListener('keydown', moveDoodler);
       document.removeEventListener('keyup', stopDoodler);
       window.removeEventListener('resize', adjustGameSize);
+      window.addEventListener('orientationchange', adjustGameSize);
 
       if (game.gyroControls.enabled) {
         window.removeEventListener('deviceorientation', handleDeviceOrientation);
@@ -682,6 +697,8 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
             backgroundRepeat: 'no-repeat',
             display: 'block',
             maxHeight: '100hv',
+            width: '100%', 
+            height: '100%', 
             objectFit: 'contain',
           }}
           onClick={gameRef.current.gameOver ? handleRestartTouch : undefined}
