@@ -4,6 +4,7 @@ import './main.css';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import { ShareProgress } from '../../Twitter/ShareProgress.tsx';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; 
 
@@ -68,6 +69,8 @@ const Play = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [showGameSelection, setShowGameSelection] = useState(true);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Update high score when the game or beast changes
   useEffect(() => {
@@ -101,11 +104,23 @@ const Play = ({
       
       setSelectedGame(gameId);
       setCurrentScore(0);
-      setIsPlaying(true);
+
+      //setIsPlaying(true);
       setShowGameSelection(false);
       
       const savedHighScore = getHighScore(gameId, beast.beast_id);
       setHighScore(savedHighScore);
+
+      if (gameId === 'doodleGame') {
+        navigate('/fullscreen-game', {
+          state: {
+            beastId: beast.beast_id,
+            specie: beast.specie
+          }
+        });
+        return;
+      }
+
     } catch (error) {
       console.error("Error starting the game:", error);
     }
@@ -153,6 +168,15 @@ const Play = ({
         };
     }, [isPlaying]);
 
+    useEffect(() => {
+      if (location.state?.gameEnded && location.state?.score) {
+        // El juego ha terminado y tenemos una puntuación
+        setCurrentScore(location.state.score);
+        setIsPlaying(false);
+        setIsShareModalOpen(true);
+      }
+    }, [location]);
+
   if (showGameSelection) {
     // Render the game selection screen
     return (
@@ -182,22 +206,16 @@ const Play = ({
 
   // Render the selected game
   if (selectedGame === 'doodleGame') {
-    if (isPlaying) {
-        return (
-            <div className="game-container">
-              <div className="game-score-display"></div>
-              <DoodleGame 
-                className="fullscreen-doodle"
-                onScoreUpdate={setCurrentScore} 
-                onGameEnd={handleGameEnd}
-                beastImageRight={beastsDex[beast.specie - 1]?.idlePicture}
-                beastImageLeft={beastsDex[beast.specie - 1]?.idlePicture}
-                onExitGame={returnToGameSelection}
-              />
-              <Toaster position="bottom-center" />
-            </div>
-            
-        );
+    // Añadir una condición para cuando el juego está en modo de redirección a pantalla completa
+    if (!isPlaying && !isShareModalOpen) {
+      // En este estado, acabamos de seleccionar el juego y estamos esperando la redirección
+      // o el juego está en curso en la otra página
+      return (
+        <div className="game-loading-container">
+          <p>Launching game...</p>
+          <Toaster position="bottom-center" />
+        </div>
+      );
     } else if (isShareModalOpen) {
       // Mostrar primero el ShareProgress antes del modal de resultados
       return (
