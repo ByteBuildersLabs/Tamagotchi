@@ -575,7 +575,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       context.fillStyle = 'black';
       context.font = '16px sans-serif';
       context.fillText(
-        isMobile ? 'Game Over: Tap to Reset' : "Game Over: Press 'Space' to Reset",
+        isMobile ? '' : "",
         game.boardWidth / 7,
         (game.boardHeight * 7) / 8
       );
