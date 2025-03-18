@@ -46,7 +46,7 @@ function Tamagotchi() {
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
     if (!foundBeast) return
-    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
+    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id);
   }
 
   useEffect(() => {
@@ -57,6 +57,7 @@ function Tamagotchi() {
       setCurrentBeast(foundBeast);
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
+
     }
   }, [zplayer, zbeasts]);
 
@@ -244,6 +245,7 @@ function Tamagotchi() {
                       beast={zcurrentBeast}
                       account={account}
                       client={client}
+                      beastStatus={status}
                       showAnimation={showAnimation}
                     />
                   ) : currentView === 'play' ? (

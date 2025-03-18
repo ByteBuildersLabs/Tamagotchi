@@ -1,3 +1,4 @@
+import { fetchStatus } from '../../../utils/tamagotchi';
 import toast, { Toaster } from 'react-hot-toast';
 import { Account } from '@dojoengine/torii-wasm';
 import { Button } from '../../../components/ui/button';
@@ -7,7 +8,6 @@ import Clean from '../../../assets/img/Clean.svg';
 import Play from '../../../assets/img/Play.svg';
 import beastsDex from '../../../data/beastDex';
 import './main.css';
-import { fetchStatus } from '../../../utils/tamagotchi';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
 
