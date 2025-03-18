@@ -45,12 +45,14 @@ function SpawnBeast() {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
-    if (foundBeast && status[1] == 1) {
+    console.info('outside');
+    if (foundBeast) {
+      console.info('inside');
       setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
       navigate('/play');
     }
-  }, [zplayer, zbeasts]);
+  }, [zplayer, zbeasts, status]);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;

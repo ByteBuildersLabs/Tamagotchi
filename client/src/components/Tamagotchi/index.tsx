@@ -26,6 +26,7 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
+import Egg from "../../assets/img/egg.gif";
 import './main.css';
 
 function Tamagotchi() {
@@ -76,7 +77,10 @@ function Tamagotchi() {
     setInterval(async () => {
       if(!alive) return
       response = await fetchStatus(account);
-      if (response && Object.keys(response).length !== 0) setStatus(response);
+      if (response && Object.keys(response).length !== 0) {
+        setAlive(true);
+        setStatus(response);
+      }
       setIsLoading(false);
     }, 3000);
   }, [zcurrentBeast, location]);
@@ -101,11 +105,12 @@ function Tamagotchi() {
   };
 
   useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) bodyElement.classList.add('day');
+
     if(!status) return
     if (status[1] == 0) setAlive(false);
-    const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
-    if (bodyElement && status[1] == 1) bodyElement.classList.add('day');
   }, [status, zcurrentBeast])
 
   useEffect(() => {
@@ -207,6 +212,7 @@ function Tamagotchi() {
                     onClick={handleNewEgg}
                   >
                     Hatch a new Egg
+                    <img src={Egg} className="new-egg" alt="beast" />
                   </button>
                 </>
               }
