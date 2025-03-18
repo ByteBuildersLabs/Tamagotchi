@@ -45,9 +45,7 @@ function SpawnBeast() {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
-    console.info('outside');
     if (foundBeast) {
-      console.info('inside');
       setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
       navigate('/play');
