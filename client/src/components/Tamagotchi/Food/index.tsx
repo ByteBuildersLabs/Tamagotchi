@@ -1,4 +1,3 @@
-import { Account } from 'starknet';
 import { useEffect, useState } from 'react';
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
@@ -21,19 +20,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
   const [ loading, setLoading ] = useState(true);
-
-  async function spawnFood() {
-    await client.actions.addInitialFood(account as Account);
-  }
-
-  useEffect(() => {
-    if (loadingFood) return
-    if (zfoods.length === 0 && foods.length === 0) {
-      console.info("Spawning initial food items...");
-      setLoading(false);
-      spawnFood();
-    }
-  }, [loadingFood]);
 
   useEffect(() => {
     if (!loadingFood && foods.length > 0) {
