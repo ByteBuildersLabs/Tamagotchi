@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import platformImg from '../../assets/SkyJump/platform.png';
 import bgImage1 from '../../assets/SkyJump/sky-bg.gif';
 import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
@@ -46,6 +46,11 @@ const controlButtonStyle: React.CSSProperties = {
   zIndex: 100,
 };
 
+// Interface for the DoodleGame ref handle
+export interface DoodleGameRefHandle {
+  resetGame: () => void;
+}
+
 // Props interface for the DoodleGame component
 interface DoodleGameProps {
   className?: string;
@@ -57,7 +62,7 @@ interface DoodleGameProps {
   onExitGame?: () => void;
 }
 
-const DoodleGame: React.FC<DoodleGameProps> = ({
+const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
   className = '',
   style = {},
   onScoreUpdate,
@@ -65,7 +70,7 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
   beastImageRight,
   beastImageLeft,
   onExitGame,
-}) => {
+}, ref ) => {
   // Reference to the canvas element
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // State to determine if device is mobile
@@ -155,6 +160,13 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       sensitivity: 2.5,
     },
   });
+
+  // expose resetGame function to parent component
+  useImperativeHandle(ref, () => ({
+    resetGame: () => {
+      resetGame();
+    }
+  }));
 
   // Check if the current device is mobile
   useEffect(() => {
@@ -763,6 +775,6 @@ const DoodleGame: React.FC<DoodleGameProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default DoodleGame;

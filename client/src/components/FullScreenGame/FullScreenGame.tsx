@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DoodleGame from '../SkyJumpMiniGame/index.tsx';
 import beastsDex from '../../data/beastDex.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
+import type { DoodleGameRefHandle } from '../SkyJumpMiniGame/index.tsx';
 import './main.css';
 
 // Para gestionar los puntajes altos
@@ -53,7 +54,9 @@ const FullscreenGame = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
 
-  const [gameKey, setGameKey] = useState(Date.now());
+  //const [gameKey, setGameKey] = useState(Date.now());
+
+  const gameRef = useRef<DoodleGameRefHandle>(null);
 
   useEffect(() => {
     // Recuperar los datos pasados a través del estado de navegación
@@ -114,9 +117,11 @@ const FullscreenGame = () => {
     setGameOver(false);
     setShowGameOverModal(false);
     setCurrentScore(0);
-    setGameKey(Date.now());
-    // No es necesario reiniciar el juego ya que el componente DoodleGame
-    // se remontará cuando cambiemos estos estados
+    //setGameKey(Date.now());
+    
+    if (gameRef.current) {
+      gameRef.current.resetGame();
+    }
   };
 
   // Si no tenemos datos del juego, mostramos un loader
@@ -132,7 +137,8 @@ const FullscreenGame = () => {
     <div className="fullscreen-game-container">
       {/* El juego siempre se renderiza para mantener el fondo */}
       <DoodleGame 
-        key={gameKey}
+        //key={gameKey}
+        ref={gameRef}
         className="fullscreen-mode"
         style={{
           width: '100vw',
