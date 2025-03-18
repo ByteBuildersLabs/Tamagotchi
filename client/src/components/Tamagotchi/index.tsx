@@ -244,6 +244,7 @@ function Tamagotchi() {
                       beast={zcurrentBeast}
                       account={account}
                       client={client}
+                      beastStatus={status}
                       showAnimation={showAnimation}
                     />
                   ) : currentView === 'play' ? (
