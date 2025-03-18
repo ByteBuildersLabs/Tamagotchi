@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useAppStore from "../../context/store.ts";
 import toast, { Toaster } from 'react-hot-toast';
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
@@ -11,7 +12,6 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useNavigate } from 'react-router-dom';
 import './main.css';
-import useAppStore from "../../context/store.ts";
 
 function SpawnBeast() {
   const { account } = useAccount();
@@ -76,6 +76,7 @@ function SpawnBeast() {
       setLoading(false);
     }
 
+    await client.actions.addInitialFood(account as Account);
     notify();
     setLoading(true);
     await spawn(randomNumber);
