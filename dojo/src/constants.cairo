@@ -45,3 +45,7 @@ pub const SECONDS_FOR_DECREASE: u64 = 220;
 // Sleeping mechanics
 pub const POINTS_PER_SECOND: u8 = 80;
 pub const MAX_RECOVER_TIME: u32 = 8000;
+
+// Sleeping mechanics
+pub const POINTS_PER_SECOND: u8 = 80;
+pub const MAX_RECOVER_TIME: u32 = 8000;
