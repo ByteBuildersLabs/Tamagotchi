@@ -55,7 +55,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
           error: 'Failed to feed beast.',
         }
       );
-      console.info('selectedFood', selectedFood);
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
