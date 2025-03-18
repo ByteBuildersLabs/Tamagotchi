@@ -63,13 +63,13 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
     fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / constants::SECONDS_FOR_TESTING;
+        let total_points: u64 = total_seconds / constants::SECONDS_FOR_DECREASE;
 
         if total_points < constants::MAX_POINTS {
             let points_to_drecrease: u8 = total_points.try_into().unwrap();
 
-            let multiplied_hunger_to_decrease = points_to_drecrease * 2;
-            let multiplied_energy_to_decrease = points_to_drecrease * 2;
+            let multiplied_hunger_to_decrease = (points_to_drecrease * 3) / 2;
+            let multiplied_energy_to_decrease = (points_to_drecrease * 3) / 2; 
 
             if self.is_alive == true {
                 // Decrease energy based on conditions

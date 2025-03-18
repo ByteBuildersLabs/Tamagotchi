@@ -206,8 +206,8 @@ pub mod game {
                 };
 
                 // Decrease hunger safety avoiding overflow
-                beast_status.hunger = if beast_status.hunger >= constants::M_UPDATE_POINTS {
-                    beast_status.hunger - constants::M_UPDATE_POINTS
+                beast_status.hunger = if beast_status.hunger >= constants::S_UPDATE_POINTS {
+                    beast_status.hunger - constants::S_UPDATE_POINTS
                 } else {
                     0
                 };

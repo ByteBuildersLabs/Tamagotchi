@@ -9,7 +9,7 @@ pub const MAX_HYGIENE: u8 = 100;
 pub const MAX_POINTS: u64 = 100;
 
 // Status values to init a Beast
-pub const MIN_INITIAL_STATUS: u8 = 50;
+pub const MIN_INITIAL_STATUS: u8 = 70;
 pub const MAX_INITIAL_STATUS: u8 = 90;
 
 // Tap counter max value
@@ -23,10 +23,10 @@ pub const MAX_BABY_LEVEL: u8 = 15;
 
 // Increase or decrease values
 pub const XS_UPDATE_POINTS: u8 = 2;
-pub const S_UPDATE_POINTS: u8 = 5;
-pub const M_UPDATE_POINTS: u8 = 8;
-pub const L_UPDATE_POINTS: u8 = 12;
-pub const XL_UPDATE_POINTS: u8 = 15;
+pub const S_UPDATE_POINTS: u8 = 4;
+pub const M_UPDATE_POINTS: u8 = 6;
+pub const L_UPDATE_POINTS: u8 = 8;
+pub const XL_UPDATE_POINTS: u8 = 10;
 
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;
@@ -40,5 +40,4 @@ pub fn ZERO_ADDRESS() -> ContractAddress {
 pub const SECONDS_PER_DAY: u64 = 86400;
 
 // Total seconds in 10 minutes
-pub const SECONDS_IN_10_MINUTES: u64 = 600;
-pub const SECONDS_FOR_TESTING: u64 = 30;
+pub const SECONDS_FOR_DECREASE: u64 = 220;
