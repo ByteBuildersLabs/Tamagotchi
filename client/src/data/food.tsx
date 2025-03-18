@@ -28,10 +28,10 @@ const initialFoodItems = [
   { name: 'Fish', img: Fish, count: 50, id: 10 },
   { name: 'French Fries', img: FrenchFries, count: 50, id: 11 },
   { name: 'Blueberry', img: Blueberry, count: 50, id: 12 },
-  { name: 'Beef', img: Beef, count: 50, id: 12 },
-  { name: 'Pizza', img: Pizza, count: 50, id: 13 },
-  { name: 'Corn', img: Corn, count: 50, id: 14 },
-  { name: 'Potato', img: Potato, count: 50, id: 15 }
+  { name: 'Beef', img: Beef, count: 50, id: 13 },
+  { name: 'Pizza', img: Pizza, count: 50, id: 14 },
+  { name: 'Corn', img: Corn, count: 50, id: 15 },
+  { name: 'Potato', img: Potato, count: 50, id: 16 }
 ];
 
 export default initialFoodItems;

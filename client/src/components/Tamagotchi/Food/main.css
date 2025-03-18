@@ -34,24 +34,16 @@
   cursor: pointer;
 }
 
-.food-carousel .button.spawn-food {
-  width: 50%;
-  height: 100%;
-  margin: auto;
-  font-size: 20px;
-  animation: aura 1.5s infinite;
-  font-family: 'Kallisto';
-}
-
-.food-carousel .button.spawn-food img {
-  animation: moveUpDown 3s infinite;
-}
-
 .food-carousel span {
   position: absolute;
   right: 5px;
   top: 5px;
   font-size: 12px;
+}
+
+.food-carousel p {
+  text-align: center;
+  margin: 0 auto;
 }
 
 .food-carousel button img {

@@ -37,15 +37,12 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     }
   }, [loadingFood, foods]);
 
-  // Mark the function as async so we can await the promise
   const feedTamagotchi = async (foodName: string) => {
     if (!beast) return;
 
-    // Get the appropriate eating animation for the beast
     const eatAnimation = beastsDex[beast.specie - 1].eatPicture;
     showAnimation(eatAnimation);
 
-    // Execute the feed action wrapped in a toast.promise to show notifications
     try {
       const selectedFood = zfoods.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
@@ -58,6 +55,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
           error: 'Failed to feed beast.',
         }
       );
+      console.info('selectedFood', selectedFood);
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
@@ -79,7 +77,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
                 x{count}
               </span>
               <img alt="option" src={img} />
-              {name}
+              <p>{name}</p>
             </button>
           ))
         }

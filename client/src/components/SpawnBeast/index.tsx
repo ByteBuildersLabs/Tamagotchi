@@ -71,12 +71,7 @@ function SpawnBeast() {
 
     if (!zplayer) {
       setLoading(true);
-      const aa = await client.actions.spawnPlayer(account as Account);
-
-      console.info('account', account);
-      console.info('aa', aa);
-      
-      
+      await client.actions.spawnPlayer(account as Account);
       await new Promise(resolve => setTimeout(resolve, 2500));
       setLoading(false);
     }
