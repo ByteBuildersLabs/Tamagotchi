@@ -21,6 +21,7 @@ pub struct BeastStatus {
     pub hygiene: u8,
     pub clean_status: u8,
     pub last_timestamp: u64,
+    pub sleep_timestamp: u64,
 }
 
 // Traits implementations
@@ -37,7 +38,12 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             hygiene: PseudoRandom::generate_random_u8(beast_id, 4, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: current_timestamp,
+            sleep_timestamp: current_timestamp,   
         }
+    }
+
+    fn calculate_recover_time(ref self: BeastStatus, current_timestamp: u64) -> u64 {
+        return ((constants::MAX_POINTS.try_into().unwrap() - self.energy) * constants::POINTS_PER_SECOND).try_into().unwrap();
     }
 
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
@@ -147,6 +153,7 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,   
         };
 
         assert_eq!(beast_status.beast_id, 1, "Beast ID should be 1");
@@ -172,6 +179,7 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         assert!(max_status_beast.hunger <= 100, "Hunger should not exceed 100");
@@ -194,6 +202,7 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         let beast2 = BeastStatus {
@@ -206,6 +215,7 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         assert!(
@@ -227,6 +237,7 @@ mod tests {
             hygiene: 0,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         assert!(!deceased_beast.is_alive, "Beast should be deceased");
@@ -248,6 +259,7 @@ mod tests {
             hygiene: 1,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         assert!(low_status_beast.hunger >= 0, "Hunger should never be negative");
@@ -274,6 +286,7 @@ mod tests {
             hygiene: 0,
             clean_status: CleanStatus::Filthy.into(),
             last_timestamp: 1,
+            sleep_timestamp: 1,  
         };
 
         assert_eq!(zero_status_beast.hunger, 0, "Minimum hunger should be 0");
