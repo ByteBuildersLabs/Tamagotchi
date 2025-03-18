@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import useAppStore from "../../context/store.ts";
 import toast, { Toaster } from 'react-hot-toast';
 import Egg from "../../assets/img/egg.gif";
@@ -37,12 +38,14 @@ function SpawnBeast() {
     if (beasts) setBeasts(beasts);
   }, [beasts, setBeasts]);
 
+  const [status] = useLocalStorage('status', []);
+
   // Set current beast and navigate to play If there is a beast for the player
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
-    if (foundBeast) {
+    if (foundBeast && status[1] == 1) {
       setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
       navigate('/play');
@@ -80,8 +83,8 @@ function SpawnBeast() {
     notify();
     setLoading(true);
     await spawn(randomNumber);
+    localStorage.removeItem('status');
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
     navigate('/play');
   };
 
