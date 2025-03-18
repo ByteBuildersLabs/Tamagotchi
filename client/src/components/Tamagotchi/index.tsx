@@ -5,6 +5,7 @@ import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
 import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 import beastsDex from "../../data/beastDex.tsx";
 import dead from '../../assets/img/dead.gif';
 import Actions from "./Actions/index.tsx";
@@ -25,6 +26,7 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
+import Egg from "../../assets/img/egg.gif";
 import './main.css';
 
 function Tamagotchi() {
@@ -32,6 +34,8 @@ function Tamagotchi() {
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
+  const navigate = useNavigate();
+  const [ alive, setAlive ] = useState<any>(true);
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -57,7 +61,6 @@ function Tamagotchi() {
       setCurrentBeast(foundBeast);
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
-
     }
   }, [zplayer, zbeasts]);
 
@@ -72,9 +75,12 @@ function Tamagotchi() {
     if(status[0] != zplayer.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
-      if(status[1] == 0) return
+      if(!alive) return
       response = await fetchStatus(account);
-      if (response && Object.keys(response).length !== 0) setStatus(response);
+      if (response && Object.keys(response).length !== 0) {
+        setAlive(true);
+        setStatus(response);
+      }
       setIsLoading(false);
     }, 3000);
   }, [zcurrentBeast, location]);
@@ -88,16 +94,6 @@ function Tamagotchi() {
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
 
-  useEffect(() => {
-    const updateBackground = () => {
-      const bodyElement = document.querySelector('.body') as HTMLElement;
-      if (bodyElement) {
-        bodyElement.classList.add('day');
-      }
-    };
-    updateBackground();
-  }, []);
-
   // Animations
   const [currentImage, setCurrentImage] = useState<any>('');
 
@@ -109,9 +105,18 @@ function Tamagotchi() {
   };
 
   useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) bodyElement.classList.add('day');
+
+    if(!status) return
+    if (status[1] == 0) setAlive(false);
+    if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
+  }, [status, zcurrentBeast])
+
+  useEffect(() => {
     if (!status || !zcurrentBeast) return;
-    if (status[1] == 0) setCurrentImage(dead);
-    if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
+    if (!alive) setCurrentImage(dead);
+    if (alive) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
   }, [status, zcurrentBeast]);
 
   // Twitter Share
@@ -149,7 +154,7 @@ function Tamagotchi() {
 
   const handleCuddle = async () => {
     if (!zcurrentBeast || !account) return;
-    if (status[1] == 0) return;
+    if (!alive) return;
     try {
       await toast.promise(
         handleAction(
@@ -174,6 +179,11 @@ function Tamagotchi() {
       console.error("Cuddle error:", error);
     }
   };
+  
+  const handleNewEgg = () => {
+    localStorage.removeItem('status');
+    navigate('/spawn');
+  }
 
   return (
     <>
@@ -190,6 +200,22 @@ function Tamagotchi() {
               beastStatus={status}
             />
             <div className="game">
+              {
+                !alive && 
+                <> 
+                  <span className="w-100 text-center">
+                    <h2 className="d-block mb-3">Oh no!</h2>
+                    <h2 className="mb-4">Your Baby is death!</h2>
+                  </span>
+                  <button
+                    className="button"
+                    onClick={handleNewEgg}
+                  >
+                    Hatch a new Egg
+                    <img src={Egg} className="new-egg" alt="beast" />
+                  </button>
+                </>
+              }
               {
                 !status || status.length === 0 || !zcurrentBeast ? <></> :
                   <Whispers
