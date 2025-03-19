@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
-import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import Spinner from '../ui/spinner.tsx';
 import './main.css';
 
-import { GAMES_REGISTRY, GameData, getHighScore, saveHighScore } from '../../data/gamesMiniGamesRegistry.tsx';
+import { GAMES_REGISTRY, GameData, getHighScore } from '../../data/gamesMiniGamesRegistry.tsx';
 import beastsDex from '../../data/beastDex.tsx';
+
 interface GameState {
   beastId: number;
   specie: number;
@@ -19,20 +18,17 @@ const FullscreenGame = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [isGameOver, setGameOver] = useState(false);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [currentGameData, setCurrentGameData] = useState<GameData | null>(null);
 
-  // Generic reference to the active game
+  // Referencia al juego activo
   const gameRef = useRef<any>(null);
 
   useEffect(() => {
-    // Get game data from location state
+    // Obtener datos del juego desde el estado de location
     if (location.state?.beastId && location.state?.specie && location.state?.gameId) {
       const gameId = location.state.gameId;
     
-        // Check if the game exists in the registry
+      // Verificar si el juego existe en el registro
       if (!GAMES_REGISTRY[gameId]) {
         console.error(`Game with ID ${gameId} not found in registry`);
         navigate('/play');
@@ -48,18 +44,18 @@ const FullscreenGame = () => {
       setGameState(state);
       setCurrentGameData(GAMES_REGISTRY[gameId]);
       
-      // get high score
+      // Obtener puntuación alta
       const savedHighScore = getHighScore(gameId, state.beastId);
       setHighScore(savedHighScore);
     } else {
       navigate('/play');
     }
 
-    // Class to apply fullscreen styles
+    // Aplicar estilos de pantalla completa
     document.body.classList.add('fullscreen-game-mode');
     
     return () => {
-      // Cleanup
+      // Limpieza
       document.body.classList.remove('fullscreen-game-mode');
     };
   }, [location.state, navigate]);
@@ -68,49 +64,17 @@ const FullscreenGame = () => {
     navigate('/play');
   };
 
-  const handleGameEnd = (score: number) => {
-    if (!gameState) return;
-    
+  const handleScoreUpdate = (score: number) => {
     setCurrentScore(score);
-    setGameOver(true);
-    
-    // Check if it's a new high score
-    if (score > highScore) {
-      saveHighScore(gameState.gameId, gameState.beastId, score);
-      setHighScore(score);
-      
-      toast.success(`¡New high score: ${score}!`, {
-        icon: '🏆',
-        duration: 4000
-      });
-    } else {
-      toast.success(`¡Game over! Score: ${score}`, {
-        duration: 3000
-      });
-    }
-    // First, show the game over modal
-    setIsShareModalOpen(true);
   };
 
-  const handlePlayAgain = () => {
-    setGameOver(false);
-    setShowGameOverModal(false);
-    setCurrentScore(0);
-    
-    // Reset the game
-    if (gameRef.current && typeof gameRef.current.resetGame === 'function') {
-      gameRef.current.resetGame();
-    }
-  };
-
-  // Show loader while game data is being fetched
+  // Mostrar loader mientras se cargan los datos del juego
   if (!gameState || !currentGameData) {
     return <Spinner message="Loading mini game..." />;
   }
 
-  // Render the game component dynamically
+  // Renderizar el componente del juego dinámicamente
   const GameComponent = currentGameData.component;
-  const gameName = currentGameData.name;
 
   return (
     <div className="fullscreen-game-container">
@@ -124,70 +88,23 @@ const FullscreenGame = () => {
           padding: 0,
           boxSizing: 'border-box'
         }}
-        onScoreUpdate={setCurrentScore}
-        onGameEnd={handleGameEnd}
+        onScoreUpdate={handleScoreUpdate}
         beastImageRight={beastsDex[gameState.specie - 1]?.idlePicture} 
         beastImageLeft={beastsDex[gameState.specie - 1]?.idlePicture}
         onExitGame={handleExitGame}
-        useExternalGameOver={true} 
+        highScore={highScore}
+        gameId={gameState.gameId}
+        beastId={gameState.beastId}
+        gameName={currentGameData.name}
       />
       
-      {/* Button to close the game */}
+      {/* Botón para cerrar el juego */}
       <button 
         className="return-button"
         onClick={handleExitGame}
       >
         X
       </button>
-      
-      {/* Share on X Modal*/}
-      {isShareModalOpen && (
-        <div className="modal-overlay">
-          <ShareProgress
-            isOpen={isShareModalOpen}
-            onClose={() => {
-              setIsShareModalOpen(false);
-              setShowGameOverModal(true);
-            }}
-            type="minigame"
-            minigameData={{
-              name: gameName,
-              score: currentScore
-            }}
-          />
-        </div>
-      )}
-      
-      {/* Game Over Modal */}
-      {showGameOverModal && (
-        <div className="game-result-container">
-          <h2 className="game-result-title">¡Game over!</h2>
-          <p className="game-result-score">
-            Score: {currentScore}
-          </p>
-          {highScore > 0 && (
-            <p className="game-result-score">
-              High Score: {highScore}
-            </p>
-          )}
-          <div className="game-result-buttons">
-            <button 
-              className="play-again-button"
-              onClick={handlePlayAgain}
-            >
-              Play again
-            </button>
-            <button 
-              className="play-again-button"
-              onClick={handleExitGame}
-            >
-              Exit
-            </button>
-          </div>
-        </div>
-      )}
-      
-      <Toaster position="bottom-center" />
     </div>
   );
 };

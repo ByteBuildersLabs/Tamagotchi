@@ -155,6 +155,7 @@
   }
   
   .modal-overlay {
+    pointer-events: auto;
     position: fixed;
     top: 0;
     left: 0;
@@ -165,4 +166,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .modal-overlay.closed {
+    pointer-events: none;
   }
