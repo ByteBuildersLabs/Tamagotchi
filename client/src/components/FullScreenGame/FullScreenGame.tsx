@@ -1,47 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import DoodleGame from '../SkyJumpMiniGame/index.tsx';
-import beastsDex from '../../data/beastDex.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
-import type { DoodleGameRefHandle } from '../SkyJumpMiniGame/index.tsx';
 import './main.css';
 
-// Para gestionar los puntajes altos
-const getHighScore = (gameId: string, beastId: number): number => {
-  const scoresStr = localStorage.getItem('gameHighScores');
-  if (!scoresStr) return 0;
-  
-  try {
-    const scores = JSON.parse(scoresStr);
-    return scores[`${gameId}_${beastId}`] || 0;
-  } catch (e) {
-    console.error('Error parsing high scores:', e);
-    return 0;
-  }
-};
-
-const saveHighScore = (gameId: string, beastId: number, score: number): void => {
-  const currentHighScore = getHighScore(gameId, beastId);
-  if (score <= currentHighScore) return;
-  
-  const scoresStr = localStorage.getItem('gameHighScores');
-  let scores: { [key: string]: number } = {};
-  
-  try {
-    if (scoresStr) {
-      scores = JSON.parse(scoresStr);
-    }
-    scores[`${gameId}_${beastId}`] = score;
-    localStorage.setItem('gameHighScores', JSON.stringify(scores));
-  } catch (e) {
-    console.error('Error saving high score:', e);
-  }
-};
-
+import { GAMES_REGISTRY, GameData, getHighScore, saveHighScore } from '../../data/gamesMiniGamesRegistry.tsx';
+import beastsDex from '../../data/beastDex.tsx';
 interface GameState {
   beastId: number;
   specie: number;
+  gameId: string;
 }
 
 const FullscreenGame = () => {
@@ -50,53 +18,64 @@ const FullscreenGame = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+  const [isGameOver, setGameOver] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
+  const [currentGameData, setCurrentGameData] = useState<GameData | null>(null);
 
-  //const [gameKey, setGameKey] = useState(Date.now());
-
-  const gameRef = useRef<DoodleGameRefHandle>(null);
+  // Generic reference to the active game
+  const gameRef = useRef<any>(null);
 
   useEffect(() => {
-    // Recuperar los datos pasados a través del estado de navegación
-    if (location.state?.beastId && location.state?.specie) {
+    // Get game data from location state
+    if (location.state?.beastId && location.state?.specie && location.state?.gameId) {
+      const gameId = location.state.gameId;
+    
+        // Check if the game exists in the registry
+      if (!GAMES_REGISTRY[gameId]) {
+        console.error(`Game with ID ${gameId} not found in registry`);
+        navigate('/play');
+        return;
+      }
+      
       const state = {
         beastId: location.state.beastId,
         specie: location.state.specie,
+        gameId: gameId
       };
       
       setGameState(state);
+      setCurrentGameData(GAMES_REGISTRY[gameId]);
       
-      // Cargar el puntaje más alto
-      const savedHighScore = getHighScore('doodleGame', state.beastId);
+      // get high score
+      const savedHighScore = getHighScore(gameId, state.beastId);
       setHighScore(savedHighScore);
     } else {
-      // Si no hay datos, regresar a la página de juego
       navigate('/play');
     }
 
-    // Añadir clase para el modo fullscreen
+    // Class to apply fullscreen styles
     document.body.classList.add('fullscreen-game-mode');
     
     return () => {
-      // Limpiar al desmontar
+      // Cleanup
       document.body.classList.remove('fullscreen-game-mode');
     };
   }, [location.state, navigate]);
 
   const handleExitGame = () => {
-    // Regresar directamente a la selección de juegos
     navigate('/play');
   };
 
   const handleGameEnd = (score: number) => {
+    if (!gameState) return;
+    
     setCurrentScore(score);
     setGameOver(true);
     
-    // Verificar si es un nuevo récord
-    if (gameState && score > highScore) {
-      saveHighScore('doodleGame', gameState.beastId, score);
+    // Check if it's a new high score
+    if (score > highScore) {
+      saveHighScore(gameState.gameId, gameState.beastId, score);
       setHighScore(score);
       
       toast.success(`¡New high score: ${score}!`, {
@@ -108,8 +87,7 @@ const FullscreenGame = () => {
         duration: 3000
       });
     }
-    
-    // Primero mostrar el modal de compartir
+    // First, show the game over modal
     setIsShareModalOpen(true);
   };
 
@@ -117,27 +95,29 @@ const FullscreenGame = () => {
     setGameOver(false);
     setShowGameOverModal(false);
     setCurrentScore(0);
-    //setGameKey(Date.now());
     
-    if (gameRef.current) {
+    // Reset the game
+    if (gameRef.current && typeof gameRef.current.resetGame === 'function') {
       gameRef.current.resetGame();
     }
   };
 
-  // Si no tenemos datos del juego, mostramos un loader
-  if (!gameState) {
+  // Show loader while game data is being fetched
+  if (!gameState || !currentGameData) {
     return (
       <div className="game-loading-container">
-        <p>Loading Sky Jump...</p>
+        <p>Loading game...</p>
       </div>
     );
   }
 
+  // Render the game component dynamically
+  const GameComponent = currentGameData.component;
+  const gameName = currentGameData.name;
+
   return (
     <div className="fullscreen-game-container">
-      {/* El juego siempre se renderiza para mantener el fondo */}
-      <DoodleGame 
-        //key={gameKey}
+      <GameComponent
         ref={gameRef}
         className="fullscreen-mode"
         style={{
@@ -154,7 +134,7 @@ const FullscreenGame = () => {
         onExitGame={handleExitGame}
       />
       
-      {/* Botón para salir siempre visible */}
+      {/* Button to close the game */}
       <button 
         className="return-button"
         onClick={handleExitGame}
@@ -162,7 +142,7 @@ const FullscreenGame = () => {
         X
       </button>
       
-      {/* Modal de compartir */}
+      {/* Share on X Modal*/}
       {isShareModalOpen && (
         <div className="modal-overlay">
           <ShareProgress
@@ -173,14 +153,14 @@ const FullscreenGame = () => {
             }}
             type="minigame"
             minigameData={{
-              name: "Sky Jump",
+              name: gameName,
               score: currentScore
             }}
           />
         </div>
       )}
       
-      {/* Modal de Game Over */}
+      {/* Game Over Modal */}
       {showGameOverModal && (
         <div className="game-result-container">
           <h2 className="game-result-title">¡Game over!</h2>

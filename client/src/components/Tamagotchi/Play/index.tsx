@@ -1,45 +1,24 @@
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
+import { getAvailableGames, getHighScore } from '../../../data/gamesMiniGamesRegistry.tsx';
 import './main.css';
 
-import doodleGameIcon from '../../../assets/img/doodle-game-icon.svg'; 
+const availableGames = getAvailableGames();
+interface PlayProps {
+  handleAction: any;
+  beast: any;
+  account: any;
+  client: any;
+  showAnimation?: (gifPath: string) => void;
+}
 
-const availableGames = [
-  { 
-    id: 'doodleGame',
-    name: 'Sky Jump',
-    description: 'Jump as high as you can!',
-    icon: doodleGameIcon 
-  },
-];
-
-// Aux functions to manage high scores in localStorage
-const getHighScore = (gameId: string, beastId: number): number => {
-  const scoresStr = localStorage.getItem('gameHighScores');
-  if (!scoresStr) return 0;
-  
-  try {
-    const scores = JSON.parse(scoresStr);
-    return scores[`${gameId}_${beastId}`] || 0;
-  } catch (e) {
-    console.error('Error parsing high scores:', e);
-    return 0;
-  }
-};
-
-const Play = ({ 
+const Play: React.FC<PlayProps> = ({ 
   handleAction, 
   beast, 
   account, 
   client,
   showAnimation 
-}: { 
-  handleAction: any, 
-  beast: any, 
-  account: any, 
-  client: any,
-  showAnimation?: (gifPath: string) => void
 }) => {
   const navigate = useNavigate();
   
@@ -65,21 +44,18 @@ const Play = ({
         }
       );
       
-      // Si es el juego Doodle, redirigir a la página de pantalla completa
-      if (gameId === 'doodleGame') {
-        navigate('/fullscreen-game', {
-          state: {
-            beastId: beast.beast_id,
-            specie: beast.specie
-          }
-        });
-      }
+      navigate('/fullscreen-game', {
+        state: {
+          beastId: beast.beast_id,
+          specie: beast.specie,
+          gameId: gameId
+        }
+      });
     } catch (error) {
       console.error("Error starting the game:", error);
     }
   };
 
-  // Render the game selection screen
   return (
     <div className="game-selection-container">
       <div className="game-selection-grid">
