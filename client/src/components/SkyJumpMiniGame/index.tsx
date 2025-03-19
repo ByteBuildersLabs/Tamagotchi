@@ -230,31 +230,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       resetGame();
     }
   }));
-
-  // CAMBIO 4: Añadir efectos para sincronizar estados
-
-  // Agregar este efecto para sincronizar estados de modal con el estado de pantalla
-  useEffect(() => {
-    // Sincronizar estado de modales basado en la pantalla actual
-    switch (currentScreen) {
-      case 'playing':
-        // En modo jugando, todos los modales deben estar cerrados
-        if (isShareModalOpen) setIsShareModalOpen(false);
-        if (showGameOverModal) setShowGameOverModal(false);
-        break;
-      case 'sharing':
-        // En modo compartir, asegurarse de que el modal de compartir está abierto
-        if (!isShareModalOpen) setIsShareModalOpen(true);
-        // Y el de game over está cerrado
-        if (showGameOverModal) setShowGameOverModal(false);
-        break;
-      case 'gameover':
-        // En game over, solo mostrar ese modal
-        if (isShareModalOpen) setIsShareModalOpen(false);
-        if (!showGameOverModal) setShowGameOverModal(true);
-        break;
-    }
-  }, [currentScreen]);
   
   // Check if the device is mobile
   useEffect(() => {
