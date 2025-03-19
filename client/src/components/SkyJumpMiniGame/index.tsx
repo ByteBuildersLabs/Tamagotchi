@@ -7,7 +7,6 @@ import Lock from '../../assets/img/lock.svg';
 import Unlock from '../../assets/img/unlock.svg';
 import './main.css';
 
-// Importación de imágenes
 import platformImg from '../../assets/SkyJump/platform.png';
 import bgImage1 from '../../assets/SkyJump/sky-bg.gif';
 import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
@@ -15,12 +14,12 @@ import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 
-// Interface para la referencia del juego
+// Interface for the game reference
 export interface DOMDoodleGameRefHandle {
   resetGame: () => void;
 }
 
-// Props interface para el componente
+// Props interface for the component
 interface DOMDoodleGameProps {
   className?: string;
   style?: React.CSSProperties;
@@ -47,7 +46,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   beastId,
   gameName,
 }, ref) => {
-  // Referencias y estados
+  // References and states
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const doodlerRef = useRef<HTMLDivElement>(null);
   const platformsRef = useRef<HTMLDivElement>(null);
@@ -56,7 +55,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const maxHeightRef = useRef<number>(0);
   const lastMilestoneRef = useRef<number>(0);
   
-  // Estados
+  // States
   const [background, setBackground] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [gyroscopePermission, setGyroscopePermission] = useState<PermissionState | null>(null);
@@ -64,7 +63,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   
-  // Estados para los modales
+  // States for modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
@@ -73,7 +72,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
 
-  // Configuración del juego
+  // Game configuration
   const gameConfig = useRef({
     boardWidth: 360,
     boardHeight: 576,
@@ -134,100 +133,100 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     },
   });
   
-  // Función para manejar el final del juego
+  // Function to handle game end
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
     setFinalScore(score);
     
-    // Verificar si es un nuevo récord
+    // Check if it's a new high score
     if (score > currentHighScore) {
       saveHighScore(gameId, beastId, score);
       setCurrentHighScore(score);
       
-      toast.success(`¡New high score: ${score}!`, {
+      toast.success(`New high score: ${score}!`, {
         icon: '🏆',
         duration: 4000
       });
     } else {
-      toast.success(`¡Game over! Score: ${score}`, {
+      toast.success(`Game over! Score: ${score}`, {
         duration: 3000
       });
     }
     
-    // Transición al estado de compartir
+    // Transition to sharing state
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
   
-  // Función para manejar "jugar de nuevo"
+  // Function to handle "play again"
   const handlePlayAgain = () => {
     setShowGameOverModal(false);
-    setCurrentScreen('playing');  // Cambiar el estado de pantalla primero
+    setCurrentScreen('playing');  // Change screen state first
     resetGame();
   };
   
-  // SISTEMA DE PUNTUACIÓN BASADO EN ALTURA
+  // HEIGHT-BASED SCORING SYSTEM
   const updateScoreByHeight = () => {
     const game = gameConfig.current;
       
-    // Calcular la altura actual basada en la posición de la cámara (siempre positiva)
+    // Calculate current height based on camera position (always positive)
     const currentHeight = Math.max(0, -game.cameraY);
     
-    // Solo actualizar la puntuación cuando se alcanza una nueva altura máxima
+    // Only update score when a new maximum height is reached
     if (currentHeight > maxHeightRef.current) {
-      // Actualizar la altura máxima
+      // Update maximum height
       maxHeightRef.current = currentHeight;
       
-      // Convertir altura a puntos (1 punto por cada 5 píxeles de altura)
+      // Convert height to points (1 point for every 5 pixels of height)
       const heightScore = Math.floor(currentHeight / 5);
       
-      // Siempre actualizar cuando hay un cambio, incluso si es el mismo valor
+      // Always update when there is a change, even if it's the same value
       if (heightScore !== currentScoreRef.current) {
         const oldScore = currentScoreRef.current;
         currentScoreRef.current = heightScore;
         
-        // Log para depuración
-        console.log(`Puntuación actualizada: ${oldScore} → ${heightScore}`);
-        console.log(`Altura actual: ${currentHeight.toFixed(2)}, Cámara Y: ${game.cameraY.toFixed(2)}`);
+        // Log for debugging
+        console.log(`Score updated: ${oldScore} → ${heightScore}`);
+        console.log(`Current height: ${currentHeight.toFixed(2)}, Camera Y: ${game.cameraY.toFixed(2)}`);
         
-        // Actualizar tanto el estado de React como el DOM directamente
+        // Update both React state and DOM directly
         setScore(heightScore);
         
         if (scoreCardRef.current) {
           scoreCardRef.current.textContent = heightScore.toString();
         }
         
-        // Notificar al componente padre
+        // Notify parent component
         if (onScoreUpdate) {
           onScoreUpdate(heightScore);
         }
         
-        // Actualizar el fondo según la puntuación
+        // Update background based on score
         updateBackground(heightScore);
         
-        // Verificar hitos de puntuación
+        // Check score milestones
         checkScoreMilestones(heightScore);
       }
     }
   };
   
-  // Verificar hitos de puntuación y mostrar alertas
+  // Check score milestones and show alerts
   const checkScoreMilestones = (currentScore: number) => {
     const milestone = Math.floor(currentScore / 50) * 50;
     
     if (milestone > 0 && milestone > lastMilestoneRef.current) {
-      // Actualizar el último hito alcanzado
+      // Update last milestone reached
       lastMilestoneRef.current = milestone;
       
-      // Mostrar toast con el hito alcanzado
-      toast.success(`¡Increíble! Has alcanzado ${milestone} puntos`, {
+      // Show toast with milestone reached
+      toast.success(`Amazing! You've reached ${milestone} points`, {
         position: "top-center",
         duration: 2000
       });
     }
   };
   
-  // Exponer la función resetGame al componente padre
+  // Expose resetGame function to parent component
   useImperativeHandle(ref, () => ({
     resetGame: () => {
       resetGame();
@@ -268,14 +267,14 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
   
-  // Calibrar el giroscopio
+  // Calibrate the gyroscope
   const calibrateGyroscope = (event: DeviceOrientationEvent) => {
     if (event.gamma !== null) {
       gameConfig.current.gyroControls.calibration = event.gamma;
     }
   };
   
-  // Manejar la orientación del dispositivo
+  // Handle device orientation
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
     const game = gameConfig.current;
     if (!game.gyroControls.enabled || gameOver) return;
@@ -301,7 +300,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
   
-  // Manejar eventos táctiles para controles móviles
+  // Handle touch events for mobile controls
   const handleTouchStart = (direction: number) => {
     const game = gameConfig.current;
     game.touchControls.isPressed = true;
@@ -322,7 +321,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
   
-  // Detener el movimiento al soltar
+  // Stop movement on touch end
   const handleTouchEnd = () => {
     const game = gameConfig.current;
     game.touchControls.isPressed = false;
@@ -330,7 +329,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.velocityX = 0;
   };
   
-  // Alternar el uso del giroscopio
+  // Toggle the use of the gyroscope
   const toggleGyroscope = () => {
     if (usingGyroscope) {
       gameConfig.current.gyroControls.enabled = false;
@@ -341,27 +340,27 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
   
-  // Crear plataformas iniciales
+  // Create initial platforms
   const placePlatforms = () => {
     const game = gameConfig.current;
     const platformsContainer = platformsRef.current;
     if (!platformsContainer) return;
     
-    // Limpiar plataformas existentes
+    // Clear existing platforms
     while (platformsContainer.firstChild) {
       platformsContainer.removeChild(platformsContainer.firstChild);
     }
     
     game.platforms = [];
     
-    // Factor de altura de pantalla
+    // Screen height factor
     const screenHeightFactor = Math.max(1, game.boardHeight / 600);
     
-    // Calculamos cuántas plataformas iniciales necesitamos
-    // Para pantallas más grandes, necesitamos más plataformas iniciales
+    // Calculate how many initial platforms we need
+    // For larger screens, we need more initial platforms
     const initialPlatformCount = Math.max(6, Math.ceil(8 * screenHeightFactor));
     
-    // Agregar plataforma inicial (base)
+    // Add initial platform (base)
     const initialPlatform = {
       x: game.boardWidth / 2 - game.platformWidth / 2,
       y: game.boardHeight - 50,
@@ -373,17 +372,17 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     game.platforms.push(initialPlatform);
     
-    // Calculamos la distancia vertical entre plataformas iniciales
-    // Usamos distancias más cercanas para pantallas grandes
-    const baseDistance = 85 * Math.sqrt(screenHeightFactor); // Ajuste no lineal
+    // Calculate the vertical distance between initial platforms
+    // Use closer distances for larger screens
+    const baseDistance = 85 * Math.sqrt(screenHeightFactor); // Non-linear adjustment
     
-    // Agregar plataformas adicionales distribuidas en altura
+    // Add additional platforms distributed in height
     for (let i = 0; i < initialPlatformCount; i++) {
-      // Distribuir más ampliamente en pantallas anchas
+      // Distribute more widely on wide screens
       const maxX = game.boardWidth * 0.8;
       const randomX = Math.floor(Math.random() * maxX);
       
-      // Distribuir en altura con espaciado adaptativo
+      // Distribute in height with adaptive spacing
       const worldY = game.boardHeight - baseDistance * i - 150;
       
       const platform = {
@@ -398,7 +397,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       game.platforms.push(platform);
     }
     
-    // Crear elementos DOM para las plataformas
+    // Create DOM elements for the platforms
     game.platforms.forEach(platform => {
       const platformElement = platform.element;
       platformElement.className = 'platform';
@@ -411,44 +410,44 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       platformsContainer.appendChild(platformElement);
     });
     
-    console.log(`Plataformas iniciales colocadas: ${game.platforms.length}`);
+    console.log(`Initial platforms placed: ${game.platforms.length}`);
   };
   
-  // Crear una nueva plataforma cuando una sale de pantalla
+  // Create a new platform when one goes off-screen
   const newPlatform = () => {
     const game = gameConfig.current;
     const platformsContainer = platformsRef.current;
     if (!platformsContainer) return null;
     
-    // Calculamos un ancho adaptativo para la posición X
+    // Calculate an adaptive width for the X position
     const maxX = game.boardWidth - game.platformWidth;
     const randomX = Math.floor(Math.random() * maxX);
     
-    // Factor de altura de pantalla (base 600px)
+    // Screen height factor (base 600px)
     const screenHeightFactor = Math.max(1, game.boardHeight / 600);
     
-    // Ajustamos la distancia vertical entre plataformas
-    // Hacemos un ajuste no lineal para que en pantallas grandes la distancia 
-    // no sea excesiva pero mantenga la jugabilidad
-    const baseGap = 90; // Gap base más pequeño que antes (era 100)
+    // Adjust the vertical distance between platforms
+    // Make a non-linear adjustment so that on large screens the distance 
+    // is not excessive but maintains playability
+    const baseGap = 90; // Smaller base gap than before (was 100)
     
-    // Aplicamos una función raíz cuadrada para que el aumento no sea lineal con el tamaño
-    // Esto hace que en pantallas grandes el aumento sea proporcionalmente menor
+    // Apply a square root function so that the increase is not linear with size
+    // This makes the increase proportionally smaller on large screens
     const screenAdjustment = Math.sqrt(screenHeightFactor);
     
-    // Calculamos la distancia usando el factor de dificultad y la puntuación
-    const difficultyMultiplier = 1 + game.backgrounds.current * 0.15; // Reducido de 0.2 a 0.15
-    const scoreAdjustment = Math.min(1, score / 200); // Limita el efecto de la puntuación
+    // Calculate the distance using the difficulty factor and score
+    const difficultyMultiplier = 1 + game.backgrounds.current * 0.15; // Reduced from 0.2 to 0.15
+    const scoreAdjustment = Math.min(1, score / 200); // Limits the effect of the score
     
-    // Gap combinado - más cercano en pantallas grandes para mantener la jugabilidad
+    // Combined gap - closer on large screens to maintain playability
     const adjustedGap = (baseGap * screenAdjustment) * (1 + scoreAdjustment * difficultyMultiplier);
     
-    // Calculamos la posición vertical (worldY) de la nueva plataforma
+    // Calculate the vertical position (worldY) of the new platform
     const worldY = game.platforms.length > 0 
       ? game.platforms[game.platforms.length - 1].worldY - adjustedGap
       : game.boardHeight - 150;
     
-    // Creamos el elemento visual de la plataforma
+    // Create the visual element of the platform
     const platformElement = document.createElement('div');
     platformElement.className = 'platform';
     platformElement.style.width = `${game.platformWidth}px`;
@@ -456,7 +455,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     platformElement.style.backgroundImage = `url(${platformImg})`;
     platformElement.style.backgroundSize = 'cover';
     
-    // Creamos el objeto de la plataforma
+    // Create the platform object
     const platform = {
       x: randomX,
       y: worldY - game.cameraY,
@@ -466,23 +465,23 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       element: platformElement
     };
     
-    // Actualizamos la posición visual del elemento
+    // Update the visual position of the element
     platformElement.style.left = `${platform.x}px`;
     platformElement.style.top = `${platform.y}px`;
     
-    // Añadimos la plataforma al contenedor visual
+    // Add the platform to the visual container
     platformsContainer.appendChild(platformElement);
     
     return platform;
   };
   
-  // Detectar colisión entre el doodler y una plataforma
+  // Detect collision between the doodler and a platform
   const detectCollision = (doodler: any, platform: any) => {
-    // Solo detectar colisión si el doodler está cayendo
+    // Only detect collision if the doodler is falling
     if (gameConfig.current.velocityY < 0) return false;
     
-    // Calcular hitbox con más precisión y un poco de margen adicional
-    const hitboxMargin = 2; // Pequeño margen para hacer más fácil aterrizar
+    // Calculate hitbox more precisely with a bit of extra margin
+    const hitboxMargin = 2; // Small margin to make landing easier
     
     const doodlerLeft = doodler.x + doodler.hitboxOffsetX;
     const doodlerRight = doodlerLeft + doodler.width;
@@ -493,7 +492,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     const platformRight = platform.x + platform.width;
     const platformTop = platform.worldY - hitboxMargin;
     
-    // Mejorar la detección de colisiones para garantizar que se detecten correctamente
+    // Improve collision detection to ensure they are detected correctly
     const isColliding = 
     doodlerBottom >= platformTop && 
     doodlerBottom <= platformTop + platform.height/2 + hitboxMargin &&
@@ -503,7 +502,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     return isColliding;
   };
   
-  // Actualizar el fondo según la puntuación
+  // Update the background based on the score
   const updateBackground = (currentScore: number) => {
     const game = gameConfig.current;
     const gameContainer = gameContainerRef.current;
@@ -523,7 +522,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
   
-  // Actualizar la posición de la cámara para seguir al doodler
+  // Update the camera position to follow the doodler
   const updateCamera = () => {
     const game = gameConfig.current;
     const platformsContainer = platformsRef.current;
@@ -531,33 +530,33 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     if (!platformsContainer || !doodlerElement) return;
     
-    // Calcular la posición del doodler relativa a la cámara
+    // Calculate the doodler's position relative to the camera
     game.doodler.y = game.doodler.worldY - game.cameraY;
     
-    // Si el doodler está por encima del umbral, mover la cámara hacia arriba
+    // If the doodler is above the threshold, move the camera up
     const cameraThreshold = 150;
     if (game.doodler.y < cameraThreshold) {
       const diff = cameraThreshold - game.doodler.y;
       game.cameraY -= diff;
       
-      // Log para depuración - ver movimiento de cámara
-      console.log(`Cámara movida: ${game.cameraY.toFixed(2)}, Doodler worldY: ${game.doodler.worldY.toFixed(2)}`);
+      // Log for debugging - see camera movement
+      console.log(`Camera moved: ${game.cameraY.toFixed(2)}, Doodler worldY: ${game.doodler.worldY.toFixed(2)}`);
       
-      // Actualizar score inmediatamente cuando la cámara se mueve hacia arriba
+      // Update score immediately when the camera moves up
       updateScoreByHeight();
     }
     
-    // Actualizar posiciones visuales de plataformas
+    // Update visual positions of platforms
     game.platforms.forEach(platform => {
       platform.y = platform.worldY - game.cameraY;
       platform.element.style.top = `${platform.y}px`;
     });
     
-    // Actualizar posición visual del doodler
+    // Update visual position of the doodler
     doodlerElement.style.top = `${game.doodler.y}px`;
   };
   
-  // Función principal de actualización del juego
+  // Main game update function
   const update = (timestamp: number) => {
     const game = gameConfig.current;
     
@@ -571,33 +570,33 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.lastTimestamp = timestamp;
     const frameFactor = dt * 60;
     
-    // Si el juego ya terminó, actualizamos la puntuación pero no continuamos con la lógica del juego
+    // If the game is already over, update the score but do not continue with game logic
     if (gameOver) {
       if (onScoreUpdate) {
         onScoreUpdate(currentScoreRef.current);
       }
       
-      // Mantenemos el bucle de animación
+      // Keep the animation loop
       game.animationFrameId = requestAnimationFrame(update);
       return;
     }
     
-    // Actualizar posición horizontal
+    // Update horizontal position
     game.doodler.x += game.velocityX * frameFactor;
     
-    // Wraparound horizontal
+    // Horizontal wraparound
     if (game.doodler.x > game.boardWidth) {
       game.doodler.x = 0;
     } else if (game.doodler.x + game.doodler.width < 0) {
       game.doodler.x = game.boardWidth;
     }
     
-    // Actualizar el elemento doodler
+    // Update the doodler element
     if (doodlerRef.current) {
       doodlerRef.current.style.left = `${game.doodler.x}px`;
     }
     
-    // Actualizar velocidad vertical con gravedad
+    // Update vertical velocity with gravity
     const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
     const currentGravity = game.gravity * difficultyMultiplier;
     game.velocityY = Math.min(
@@ -605,112 +604,112 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       8 * frameFactor
     );
     
-    // Actualizar posición vertical
+    // Update vertical position
     game.doodler.worldY += game.velocityY * frameFactor;
     
-    // Actualizar cámara y posiciones
+    // Update camera and positions
     updateCamera();
     
-    // Actualizar puntuación basada en altura
+    // Update score based on height
     updateScoreByHeight();
     
-    // Verificar si el doodler cayó fuera de la pantalla
+    // Check if the doodler fell off the screen
     if (game.doodler.worldY > game.cameraY + game.boardHeight) {
-      // Solo establecer gameOver si aún no está en ese estado
+      // Only set gameOver if it's not already in that state
       if (!gameOver) {
-        setGameOver(true);
-        game.running = false;
-        
-        // Manejar el final del juego internamente
-        handleGameEnd();
+      setGameOver(true);
+      game.running = false;
+      
+      // Handle game end internally
+      handleGameEnd();
       }
-      return; // Salir del bucle de update inmediatamente
+      return; // Exit the update loop immediately
     }
     
-    // Comprobar colisiones con plataformas
+    // Check for collisions with platforms
     let collisionDetected = false;
     
     for (let i = 0; i < game.platforms.length && !collisionDetected; i++) {
       const platform = game.platforms[i];
       
-      // Si la plataforma está fuera de la pantalla, ocultarla
+      // If the platform is off-screen, hide it
       if (platform.y < -platform.height || platform.y > game.boardHeight) {
-        platform.element.style.display = 'none';
+      platform.element.style.display = 'none';
       } else {
-        platform.element.style.display = 'block';
+      platform.element.style.display = 'block';
       }
       
-      // Detectar colisión y hacer que el doodler rebote
+      // Detect collision and make the doodler bounce
       if (detectCollision(game.doodler, platform)) {
-        // Hacer que el doodler rebote
-        game.velocityY = game.initialVelocityY;
-        game.doodler.worldY = platform.worldY - game.doodler.height - game.doodler.hitboxOffsetY;
-        collisionDetected = true;
+      // Make the doodler bounce
+      game.velocityY = game.initialVelocityY;
+      game.doodler.worldY = platform.worldY - game.doodler.height - game.doodler.hitboxOffsetY;
+      collisionDetected = true;
       }
     }
     
-    // --- INICIO CÓDIGO CORREGIDO DE GENERACIÓN DE PLATAFORMAS ---
+    // --- START CORRECTED PLATFORM GENERATION CODE ---
     
-    // Verificar si necesitamos agregar más plataformas
+    // Check if we need to add more platforms
     const highestPlatform = game.platforms.length > 0 
       ? game.platforms[game.platforms.length - 1].worldY 
       : 0;
     const visibleTop = game.cameraY;
     const visibleHeight = game.boardHeight;
     
-    // Generamos más plataformas si la plataforma más alta está a menos de 
-    // 2 veces la altura visible por encima de la cámara
+    // Generate more platforms if the highest platform is less than 
+    // 2 times the visible height above the camera
     const platformsNeeded = visibleTop - highestPlatform > -visibleHeight * 2;
 
-    // Si necesitamos más plataformas, las añadimos
+    // If we need more platforms, add them
     if (platformsNeeded) {
       const newPlatformObj = newPlatform();
       if (newPlatformObj) {
-        game.platforms.push(newPlatformObj);
+      game.platforms.push(newPlatformObj);
       }
     }
 
-    // Eliminar plataformas que ya no son visibles para mejorar el rendimiento
+    // Remove platforms that are no longer visible to improve performance
     while (
       game.platforms.length > 0 &&
-      game.platforms[0].worldY > game.cameraY + game.boardHeight * 1.5 // Margen para asegurar visibilidad
+      game.platforms[0].worldY > game.cameraY + game.boardHeight * 1.5 // Margin to ensure visibility
     ) {
       const removedPlatform = game.platforms.shift();
       if (removedPlatform && removedPlatform.element && removedPlatform.element.parentNode) {
-        removedPlatform.element.parentNode.removeChild(removedPlatform.element);
+      removedPlatform.element.parentNode.removeChild(removedPlatform.element);
       }
     }
     
-    // --- FIN CÓDIGO CORREGIDO DE GENERACIÓN DE PLATAFORMAS ---
+    // --- END CORRECTED PLATFORM GENERATION CODE ---
     
     game.animationFrameId = requestAnimationFrame(update);
-  };
-  
-  // Resetear el juego
-  const resetGame = () => {
+    };
+    
+    // Reset the game
+    const resetGame = () => {
     const game = gameConfig.current;
     const gameContainer = gameContainerRef.current;
     
     if (!gameContainer) return;
 
-    // Detener el bucle de juego actual
+    // Stop the current game loop
     if (game.animationFrameId) {
       cancelAnimationFrame(game.animationFrameId);
       game.animationFrameId = 0;
     }
     
-    // Asegurarse de que running es false antes de reiniciar
+    // Ensure running is false before restarting
     game.running = false;
     
-    // Reiniciar explícitamente el estado de la cámara
+    // Explicitly reset the camera state
     game.cameraY = 0;
     
-    // Resetear contadores de puntuación
+    // Reset score counters
     currentScoreRef.current = 0;
     maxHeightRef.current = 0;
     lastMilestoneRef.current = 0;
     
-    // Resetear estados
+    // Reset states
     setScore(0);
     setGameOver(false);
     setBackground(0);
@@ -718,10 +717,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setCurrentScreen('playing');
     setShowGameOverModal(false);
 
-    // Resetear flag de notificación de game over
+    // Reset game over notification flag
     game.endNotified = false;
     
-    // Actualizar el marcador directamente
+    // Update the scorecard directly
     if (scoreCardRef.current) {
       scoreCardRef.current.textContent = "0";
     }
@@ -730,10 +729,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.backgrounds.current = 0;
     gameContainer.style.backgroundImage = `url(${game.backgrounds.images[0].img})`;
     
-    // Resetear timestamp
+    // Reset timestamp
     game.lastTimestamp = 0;
     
-    // Resetear posición del doodler
+    // Reset doodler position
     game.doodler = {
       img: beastImageRight,
       x: game.boardWidth / 2 - game.doodlerWidth / 2,
@@ -755,71 +754,71 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.velocityX = 0;
     game.velocityY = game.initialVelocityY;
     
-    // Colocar nuevas plataformas
+    // Place new platforms
     placePlatforms();
 
-    // Usar un pequeño retraso para reiniciar el juego
-    // Esto da tiempo para que React actualice los estados
+    // Use a small delay to restart the game
+    // This gives time for React to update states
     setTimeout(() => {
-      console.log('Reiniciando el bucle del juego después del timeout');
+      console.log('Restarting the game loop after timeout');
       game.running = true;
       game.animationFrameId = requestAnimationFrame(update);
     }, 100);
-  };
-  
-  // Efecto para ajustar el tamaño del juego y configurar controles
-  useEffect(() => {
+    };
+    
+    // Effect to adjust game size and set up controls
+    useEffect(() => {
     const game = gameConfig.current;
     const gameContainer = gameContainerRef.current;
     
     if (!gameContainer) return;
     
-    // Inicializar el contador de referencia
+    // Initialize the reference counter
     currentScoreRef.current = 0;
     maxHeightRef.current = 0;
     lastMilestoneRef.current = 0;
     
-    // Actualizar el marcador visual inicial
+    // Update the initial visual scorecard
     if (scoreCardRef.current) {
       scoreCardRef.current.textContent = "0";
     }
     
-    // Función para ajustar el tamaño del juego según la ventana
+    // Function to adjust game size based on the window
     const adjustGameSize = () => {
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
       
-      // Actualizar dimensiones lógicas
+      // Update logical dimensions
       game.boardWidth = viewportWidth;
       game.boardHeight = viewportHeight;
       
-      // Actualizar dimensiones visuales del contenedor
+      // Update visual dimensions of the container
       gameContainer.style.width = `${viewportWidth}px`;
       gameContainer.style.height = `${viewportHeight}px`;
       
-      // Reposicionar el doodler al centro
+      // Reposition the doodler to the center
       game.doodler.x = viewportWidth / 2 - game.doodlerWidth / 2;
       
       if (doodlerRef.current) {
-        doodlerRef.current.style.left = `${game.doodler.x}px`;
+      doodlerRef.current.style.left = `${game.doodler.x}px`;
       }
       
-      // NUEVO: Ajustar parámetros de física según el tamaño de pantalla
-      const screenSizeFactor = Math.max(1, viewportHeight / 600); // Base de 600px de altura
+      // NEW: Adjust physics parameters based on screen size
+      const screenSizeFactor = Math.max(1, viewportHeight / 600); // Base of 600px height
       
-      // Ajuste dinámico de la velocidad de salto
-      // Aumenta la potencia de salto para pantallas más grandes
+      // Dynamic adjustment of jump velocity
+      // Increase jump power for larger screens
       game.initialVelocityY = -8 * Math.sqrt(screenSizeFactor);
       
-      // También ajustamos la gravedad para mantener la física consistente
+      // Also adjust gravity to keep physics consistent
       game.gravity = 0.25 * Math.sqrt(screenSizeFactor);
       
-      console.log(`Ajustes para pantalla: altura=${viewportHeight}px, velocidadSalto=${game.initialVelocityY.toFixed(2)}, gravedad=${game.gravity.toFixed(2)}`);
+      console.log(`Adjustments for screen: height=${viewportHeight}px, jumpVelocity=${game.initialVelocityY.toFixed(2)}, gravity=${game.gravity.toFixed(2)}`);
       
-      // Actualizar la velocidad inicial
+      // Update initial velocity
       game.velocityY = game.initialVelocityY;
       
-      // Redistribuir plataformas
+      // Redistribute platforms
       placePlatforms();
     };
     
@@ -831,7 +830,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       document.body.classList.add('mobile-gameplay');
     }
     
-    // Inicializar posición del doodler
+    // Initialize doodler position
     game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
     game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
     game.doodler.worldY = game.doodler.y;
@@ -844,52 +843,52 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     game.velocityY = game.initialVelocityY;
     
-    // Colocar plataformas iniciales
+    // Place initial platforms
     placePlatforms();
     
-    // Iniciar el bucle del juego
+    // Start the game loop
     game.running = true;
     game.animationFrameId = requestAnimationFrame(update);
     
-    // Controles de teclado: iniciar movimiento
+    // Keyboard controls: start movement
     const moveDoodler = (e: KeyboardEvent) => {
-      // Si hay algún modal abierto, no procesar eventos de teclado
+      // If any modal is open, do not process keyboard events
       if (isShareModalOpen || showGameOverModal) return;
       
       if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-        game.velocityX = 4;
-        game.doodler.facingRight = true;
-        if (doodlerRef.current) {
-          doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
-        }
+      game.velocityX = 4;
+      game.doodler.facingRight = true;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+      }
       } else if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-        game.velocityX = -4;
-        game.doodler.facingRight = false;
-        if (doodlerRef.current) {
-          doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
-        }
+      game.velocityX = -4;
+      game.doodler.facingRight = false;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
+      }
       }
       
-      // Eliminamos la posibilidad de reiniciar con la tecla espacio
-      // ya que queremos que sea explícito a través de los botones
+      // Remove the possibility of restarting with the space key
+      // as we want it to be explicit through the buttons
     };
     
-    // Controles de teclado: detener movimiento
+    // Keyboard controls: stop movement
     const stopDoodler = (e: KeyboardEvent) => {
-      // Si hay algún modal abierto, no procesar eventos de teclado
+      // If any modal is open, do not process keyboard events
       if (isShareModalOpen || showGameOverModal) return;
       
       if ((e.code === 'ArrowRight' || e.code === 'KeyD') && game.velocityX > 0) {
-        game.velocityX = 0;
+      game.velocityX = 0;
       } else if ((e.code === 'ArrowLeft' || e.code === 'KeyA') && game.velocityX < 0) {
-        game.velocityX = 0;
+      game.velocityX = 0;
       }
     };
     
     document.addEventListener('keydown', moveDoodler);
     document.addEventListener('keyup', stopDoodler);
     
-    // Limpieza al desmontar
+    // Cleanup on unmount
     return () => {
       document.removeEventListener('keydown', moveDoodler);
       document.removeEventListener('keyup', stopDoodler);
@@ -897,156 +896,156 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       window.removeEventListener('orientationchange', adjustGameSize);
       
       if (game.gyroControls.enabled) {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
       }
       
       if (game.animationFrameId) {
-        cancelAnimationFrame(game.animationFrameId);
+      cancelAnimationFrame(game.animationFrameId);
       }
       
       if (isMobile) {
-        document.body.classList.remove('mobile-gameplay');
+      document.body.classList.remove('mobile-gameplay');
       }
       
       game.running = false;
     };
-  }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
-  
-  // Manejar el giroscopio
-  useEffect(() => {
+    }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
+    
+    // Handle the gyroscope
+    useEffect(() => {
     if (usingGyroscope && gyroscopePermission === 'granted') {
       window.addEventListener('deviceorientation', handleDeviceOrientation);
       return () => {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
       };
     }
-  }, [usingGyroscope, gyroscopePermission]);
-  
-  return (
-        <div 
+    }, [usingGyroscope, gyroscopePermission]);
+    
+    return (
+    <div 
       ref={gameContainerRef} 
       className={`dom-doodle-game ${className} ${isMobile ? 'mobile-game' : ''}`} 
       style={{
-        backgroundImage: `url(${gameConfig.current.backgrounds.images[background].img})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        ...style
+      backgroundImage: `url(${gameConfig.current.backgrounds.images[background].img})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      ...style
       }}
     >
-      {/* Doodler (personaje del juego) */}
+      {/* Doodler (game character) */}
       <div 
-        ref={doodlerRef} 
-        className="doodler"
-        style={{
-          width: `${gameConfig.current.doodlerVisualWidth}px`,
-          height: `${gameConfig.current.doodlerVisualHeight}px`,
-          backgroundImage: `url(${beastImageRight})`,
-          left: `${gameConfig.current.doodler.x}px`,
-          top: `${gameConfig.current.doodler.y}px`
-        }}
+      ref={doodlerRef} 
+      className="doodler"
+      style={{
+        width: `${gameConfig.current.doodlerVisualWidth}px`,
+        height: `${gameConfig.current.doodlerVisualHeight}px`,
+        backgroundImage: `url(${beastImageRight})`,
+        left: `${gameConfig.current.doodler.x}px`,
+        top: `${gameConfig.current.doodler.y}px`
+      }}
       />
       
-      {/* Contenedor para las plataformas */}
+      {/* Container for platforms */}
       <div ref={platformsRef} className="platforms-container" />
       
-      {/* Marcador de puntuación */}
+      {/* Scoreboard */}
       <div className="score-card">
-        <div ref={scoreCardRef} className="score-text">0</div>
+      <div ref={scoreCardRef} className="score-text">0</div>
       </div>
       
-      {/* Controles táctiles para dispositivos móviles */}
+      {/* Touch controls for mobile devices */}
       {isMobile && !usingGyroscope && (
-        <>
-          <div
-            className="control-button left-button"
-            onTouchStart={() => handleTouchStart(-1)}
-            onTouchEnd={handleTouchEnd}
-          >
-            ←
-          </div>
-          <div
-            className="control-button right-button"
-            onTouchStart={() => handleTouchStart(1)}
-            onTouchEnd={handleTouchEnd}
-          >
-            →
-          </div>
-        </>
-      )}
-      
-      {/* Botón para salir */}
-      {onExitGame && (
-        <button 
-          className="return-button"
-          onClick={onExitGame}
+      <>
+        <div
+        className="control-button left-button"
+        onTouchStart={() => handleTouchStart(-1)}
+        onTouchEnd={handleTouchEnd}
         >
-          X
-        </button>
+        ←
+        </div>
+        <div
+        className="control-button right-button"
+        onTouchStart={() => handleTouchStart(1)}
+        onTouchEnd={handleTouchEnd}
+        >
+        →
+        </div>
+      </>
       )}
       
-      {/* Botón para alternar giroscopio en móviles */}
+      {/* Exit button */}
+      {onExitGame && (
+      <button 
+        className="return-button"
+        onClick={onExitGame}
+      >
+        X
+      </button>
+      )}
+      
+      {/* Button to toggle gyroscope on mobile */}
       {isMobile && (
       <div
-        className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
-        onClick={toggleGyroscope}
+      className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
+      onClick={toggleGyroscope}
       >
-        <img 
-          src={usingGyroscope ? Unlock : Lock} 
-          alt={usingGyroscope ? "open" : "close"}
-          className="lock-icon"
-        />
+      <img 
+        src={usingGyroscope ? Unlock : Lock} 
+        alt={usingGyroscope ? "open" : "close"}
+        className="lock-icon"
+      />
       </div>
     )}
       
-      {/* Modal para compartir en X */}
+      {/* Modal to share on X */}
       {currentScreen === 'sharing' && (
-        <div className="modal-overlay">
-          <ShareProgress
-            isOpen={isShareModalOpen}
-            onClose={() => {
-              setIsShareModalOpen(false);
-              setCurrentScreen('gameover');
-              setShowGameOverModal(true);
-            }}
-            type="minigame"
-            minigameData={{
-              name: gameName,
-              score: finalScore
-            }}
-          />
-        </div>
+      <div className="modal-overlay">
+        <ShareProgress
+        isOpen={isShareModalOpen}
+        onClose={() => {
+          setIsShareModalOpen(false);
+          setCurrentScreen('gameover');
+          setShowGameOverModal(true);
+        }}
+        type="minigame"
+        minigameData={{
+          name: gameName,
+          score: finalScore
+        }}
+        />
+      </div>
       )}
       
-      {/* Modal de Game Over */}
+      {/* Game Over modal */}
       {currentScreen === 'gameover' && (
-        <div className="game-result-container">
-          <h2 className="game-result-title">¡Game over!</h2>
-          <p className="game-result-score">
-            Score: {finalScore}
-          </p>
-          {currentHighScore > 0 && (
-            <p className="game-result-score">
-              High Score: {currentHighScore}
-            </p>
-          )}
-          <div className="game-result-buttons">
-          <button 
-              className="play-again-button"
-              onClick={handlePlayAgain}
-            >
-              <img 
-                src={Restart} 
-                alt="Restart icon" 
-                className="restart-icon" 
-              />
-            </button>
-          </div>
+      <div className="game-result-container">
+        <h2 className="game-result-title">Game over!</h2>
+        <p className="game-result-score">
+        Score: {finalScore}
+        </p>
+        {currentHighScore > 0 && (
+        <p className="game-result-score">
+          High Score: {currentHighScore}
+        </p>
+        )}
+        <div className="game-result-buttons">
+        <button 
+          className="play-again-button"
+          onClick={handlePlayAgain}
+        >
+          <img 
+          src={Restart} 
+          alt="Restart icon" 
+          className="restart-icon" 
+          />
+        </button>
         </div>
+      </div>
       )}
       
       <Toaster position="bottom-center" />
     </div>
-  );
-});
+    );
+  });
 
-export default DOMDoodleGame;
+  export default DOMDoodleGame;

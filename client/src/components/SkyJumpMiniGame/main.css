@@ -1,4 +1,4 @@
-/* Estilos principales del contenedor del juego */
+/* Main styles of the game container */
 .dom-doodle-game {
     position: relative;
     width: 100%;
@@ -14,17 +14,17 @@
     background-repeat: no-repeat;
   }
   
-  /* Estilos para el personaje principal (doodler) */
+  /* Styles for the main character (doodler) */
   .doodler {
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     z-index: 50;
-    transform: translate(-13px, -24px); /* Offset visual para ajustar la hitbox */
+    transform: translate(-13px, -24px); /* Visual offset to adjust the hitbox */
   }
   
-  /* Contenedor de plataformas */
+  /* Platform container */
   .platforms-container {
     position: absolute;
     width: 100%;
@@ -34,7 +34,7 @@
     z-index: 40;
   }
   
-  /* Estilo de cada plataforma */
+  /* Style of each platform */
   .platform {
     position: absolute;
     background-size: cover;
@@ -43,7 +43,7 @@
     z-index: 45;
   }
   
-  /* Estilos para el marcador de puntuación */
+  /* Styles for the punctuation marker */
   .score-card {
     position: absolute;
     top: 10px;
@@ -69,7 +69,7 @@
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
   }
   
-  /* Estilos para los botones de control en dispositivos móviles */
+  /* Styles for control buttons on mobile devices */
   .control-button {
     color: #85002A;
     position: absolute;
@@ -95,7 +95,7 @@
     right: 20px;
   }
   
-  /* Estilo para el botón de giroscopio */
+  /* Style for the gyroscope button */
   .gyro-button {
     position: absolute;
     top: 60px;
@@ -120,11 +120,11 @@
   }
   
   .lock-icon.unlocked {
-    transform: rotate(180deg); /* o cualquier otra transformación visual */
-    opacity: 0.7; /* para indicar que está desbloqueado */
+    transform: rotate(180deg); 
+    opacity: 0.7; 
   }
   
-  /* Mensaje de Game Over */
+  /* Game Over message */
   .game-over-message {
     position: absolute;
     top: 50%;
@@ -144,7 +144,7 @@
     margin-bottom: 10px;
   }
   
-  /* Estilos para el botón de salir */
+  /* Styles for the exit button */
   .exit-button {
     position: absolute;
     top: 10px;
@@ -163,20 +163,19 @@
     z-index: 100;
   }
   
-  /* Estilos específicos para dispositivos móviles */
+  /* Mobile-specific styles */
   .mobile-game .control-button {
     width: 80px;
     height: 80px;
     font-size: 32px;
   }
   
-  /* Eliminar el resaltado al tocar en móviles */
+  /* Remove highlighting when tapping on mobile devices */
   .mobile-gameplay {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
   
-  /* Overlay para modales */
   .modal-overlay {
     pointer-events: auto;
     position: fixed;
@@ -195,7 +194,7 @@
     pointer-events: none;
   }
   
-  /* Estilos para el modal de fin de juego */
+  /* Styles for the end-game modal */
   .game-result-container {
     position: fixed;
     height: 140px;
@@ -261,7 +260,7 @@
     height: 20px;
   }
   
-  /* Estilos para pantalla completa */
+  /* Styles for full screen */
   .fullscreen-game-container {
     position: fixed;
     top: 0;
@@ -288,14 +287,13 @@
     width: 100%;
   }
   
-  /* Ocultar elementos de interfaz no deseados en modo pantalla completa */
+  /* Hide unwanted interface elements in full screen mode */
   .fullscreen-game-mode header,
   .fullscreen-game-mode footer,
   .fullscreen-game-mode nav {
     display: none !important;
   }
   
-  /* Botón de retorno (alternativo al exit-button) */
   .return-button {
     background-color: #ECECDA;
     color: #85002A;
@@ -326,7 +324,7 @@
     transform: translateY(0);
   }
   
-  /* Pantalla de carga */
+  /* Loading screen */
   .game-loading-container {
     position: fixed;
     top: 0;
@@ -342,7 +340,7 @@
     font-family: 'Kallisto', sans-serif;
   }
   
-  /* Animaciones */
+  /* Animations */
   @keyframes jump {
     0% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-5px) scale(1.05); }
@@ -365,7 +363,7 @@
     }
   }
   
-  /* Aplicar la animación a las nuevas plataformas */
+  /* Apply animations for spawn new platforms*/
   .platform {
     animation: fadeIn 0.3s ease-in-out;
   }

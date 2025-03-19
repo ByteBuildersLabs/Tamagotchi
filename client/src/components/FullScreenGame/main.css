@@ -1,4 +1,4 @@
-/* Estilos para pantalla completa */
+/* Styles for full screen */
 .fullscreen-game-container {
   position: fixed;
   top: 0;
@@ -25,7 +25,7 @@
   width: 100%;
 }
 
-/* Ocultar elementos de interfaz no deseados en modo pantalla completa */
+/* Hide unwanted interface elements in full screen mode */
 .fullscreen-game-mode header,
 .fullscreen-game-mode footer,
 .fullscreen-game-mode nav {

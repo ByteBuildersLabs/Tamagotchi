@@ -20,15 +20,15 @@ const FullscreenGame = () => {
   const [highScore, setHighScore] = useState(0);
   const [currentGameData, setCurrentGameData] = useState<GameData | null>(null);
 
-  // Referencia al juego activo
+  // Reference to the active game
   const gameRef = useRef<any>(null);
 
   useEffect(() => {
-    // Obtener datos del juego desde el estado de location
+    // Get game data from the location state
     if (location.state?.beastId && location.state?.specie && location.state?.gameId) {
       const gameId = location.state.gameId;
     
-      // Verificar si el juego existe en el registro
+      // Verify if the game exists in the registry
       if (!GAMES_REGISTRY[gameId]) {
         console.error(`Game with ID ${gameId} not found in registry`);
         navigate('/play');
@@ -44,18 +44,18 @@ const FullscreenGame = () => {
       setGameState(state);
       setCurrentGameData(GAMES_REGISTRY[gameId]);
       
-      // Obtener puntuación alta
+      // Get high score
       const savedHighScore = getHighScore(gameId, state.beastId);
       setHighScore(savedHighScore);
     } else {
       navigate('/play');
     }
 
-    // Aplicar estilos de pantalla completa
+    // Apply full screen styles
     document.body.classList.add('fullscreen-game-mode');
     
     return () => {
-      // Limpieza
+      // Cleanup
       document.body.classList.remove('fullscreen-game-mode');
     };
   }, [location.state, navigate]);
@@ -68,12 +68,12 @@ const FullscreenGame = () => {
     setCurrentScore(score);
   };
 
-  // Mostrar loader mientras se cargan los datos del juego
+  // Show loader while game data is loading
   if (!gameState || !currentGameData) {
     return <Spinner message="Loading mini game..." />;
   }
 
-  // Renderizar el componente del juego dinámicamente
+  // Dynamically render the game component
   const GameComponent = currentGameData.component;
 
   return (
@@ -98,7 +98,7 @@ const FullscreenGame = () => {
         gameName={currentGameData.name}
       />
       
-      {/* Botón para cerrar el juego */}
+      {/* Button to close the game */}
       <button 
         className="return-button"
         onClick={handleExitGame}
