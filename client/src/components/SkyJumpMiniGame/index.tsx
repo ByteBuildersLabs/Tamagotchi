@@ -67,6 +67,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [finalScore, setFinalScore] = useState(0);
   const [currentHighScore, setCurrentHighScore] = useState(highScore);
 
+  type GameScreenState = 'playing' | 'sharing' | 'gameover';
+  const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
+
   // Configuración del juego
   const gameConfig = useRef({
     boardWidth: 360,
@@ -148,13 +151,15 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       });
     }
     
-    // Mostrar primero el modal de compartir
+    // Transición al estado de compartir
+    setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
   
   // Función para manejar "jugar de nuevo"
   const handlePlayAgain = () => {
     setShowGameOverModal(false);
+    setCurrentScreen('playing');  // Cambiar el estado de pantalla primero
     resetGame();
   };
   
@@ -320,13 +325,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.touchControls.isPressed = false;
     game.touchControls.direction = 0;
     game.velocityX = 0;
-  };
-  
-  // Reiniciar el juego al tocar si es game over
-  const handleRestartTouch = () => {
-    if (gameOver) {
-      resetGame();
-    }
   };
   
   // Alternar el uso del giroscopio
@@ -714,6 +712,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setGameOver(false);
     setBackground(0);
     setIsShareModalOpen(false);
+    setCurrentScreen('playing');
     setShowGameOverModal(false);
 
     // Resetear flag de notificación de game over
@@ -993,12 +992,13 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       )}
       
       {/* Modal para compartir en X */}
-      {isShareModalOpen && (
+      {currentScreen === 'sharing' && (
         <div className="modal-overlay">
           <ShareProgress
             isOpen={isShareModalOpen}
             onClose={() => {
               setIsShareModalOpen(false);
+              setCurrentScreen('gameover');
               setShowGameOverModal(true);
             }}
             type="minigame"
@@ -1011,7 +1011,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       )}
       
       {/* Modal de Game Over */}
-      {showGameOverModal && (
+      {currentScreen === 'gameover' && (
         <div className="game-result-container">
           <h2 className="game-result-title">¡Game over!</h2>
           <p className="game-result-score">
