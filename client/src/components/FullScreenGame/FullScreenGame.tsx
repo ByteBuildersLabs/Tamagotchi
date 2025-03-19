@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
+import Spinner from '../ui/spinner.tsx';
 import './main.css';
 
 import { GAMES_REGISTRY, GameData, getHighScore, saveHighScore } from '../../data/gamesMiniGamesRegistry.tsx';
@@ -104,11 +105,7 @@ const FullscreenGame = () => {
 
   // Show loader while game data is being fetched
   if (!gameState || !currentGameData) {
-    return (
-      <div className="game-loading-container">
-        <p>Loading game...</p>
-      </div>
-    );
+    return <Spinner message="Loading mini game..." />;
   }
 
   // Render the game component dynamically
