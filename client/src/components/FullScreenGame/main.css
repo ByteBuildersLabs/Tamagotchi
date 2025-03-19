@@ -1,173 +1,87 @@
+/* Estilos para pantalla completa */
 .fullscreen-game-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    z-index: 9999;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  .fullscreen-mode {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .fullscreen-game-mode {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-  }
-  
-  /* Ocultar elementos de interfaz no deseados en modo pantalla completa */
-  .fullscreen-game-mode header,
-  .fullscreen-game-mode footer,
-  .fullscreen-game-mode nav {
-    display: none !important;
-  }
-  
-  /* Estilos para el modal de fin de juego */
-  .game-result-container {
-    position: fixed;
-    top: 40%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: rgba(0,0,0, 0.8); 
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    text-align: center;
-    max-width: 400px;
-    width: 80%;
-    z-index: 10000;
-    animation: fade-in-up 0.5s ease-out forwards;
-  }
-  
-  .game-result-title {
-    font-family: 'Kallisto', sans-serif;
-    font-size: 24px;
-    color: #ECECDA;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .game-result-score {
-    font-family: 'Montserrat', serif;
-    font-size: 20px;
-    font-weight: bold;
-    color: #ECECDA;
-    margin-bottom: 20px;
-  }
-  
-  .game-result-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .play-again-button {
-    background: linear-gradient(to right, #85002A, #D1093D);
-    color: #ECECDA;
-    border: none;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-family: 'Kallisto', sans-serif;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    font-weight: bold;
-  }
-  
-  .play-again-button:hover {
-    background: linear-gradient(to right, #95033A, #E11A4D);
-    transform: translateY(-2px);
-  }
-  
-  .play-again-button:active {
-    background: linear-gradient(to right, #B00833, #6E0022);
-    transform: translateY(0);
-  }
-  
-  .return-button {
-    background: rgba(133, 0, 42, 0.8);
-    color: #ECECDA;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    font-family: 'Kallisto', sans-serif;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10001;
-  }
-  
-  .return-button:hover {
-    background: linear-gradient(to right, #95033A, #E11A4D);
-    transform: translateY(-2px);
-  }
-  
-  .return-button:active {
-    background: linear-gradient(to right, #B00833, #6E0022);
-    transform: translateY(0);
-  }
-  
-  /* Animación para el modal */
-  @keyframes fade-in-up {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, -40%);
-    }
-    100% {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
-  }
-  
-  .game-loading-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-family: 'Kallisto', sans-serif;
-  }
-  
-  .modal-overlay {
-    pointer-events: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 9999;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
-  .modal-overlay.closed {
-    pointer-events: none;
-  }
+.fullscreen-mode {
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen-game-mode {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+/* Ocultar elementos de interfaz no deseados en modo pantalla completa */
+.fullscreen-game-mode header,
+.fullscreen-game-mode footer,
+.fullscreen-game-mode nav {
+  display: none !important;
+}
+
+/* Botón de retorno (no utilizado en el componente actual) */
+.return-button {
+  background: rgba(133, 0, 42, 0.8);
+  color: #ECECDA;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  font-family: 'Kallisto', sans-serif;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+}
+
+.return-button:hover {
+  background: linear-gradient(to right, #95033A, #E11A4D);
+  transform: translateY(-2px);
+}
+
+.return-button:active {
+  background: linear-gradient(to right, #B00833, #6E0022);
+  transform: translateY(0);
+}
+
+/* Pantalla de carga */
+.game-loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-family: 'Kallisto', sans-serif;
+}
+
+/* Estado cerrado del modal overlay (no utilizado en el componente actual) */
+.modal-overlay.closed {
+  pointer-events: none;
+}
