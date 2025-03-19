@@ -35,7 +35,6 @@ function Tamagotchi() {
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
-  const [ alive, setAlive ] = useState<any>(true);
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -62,10 +61,11 @@ function Tamagotchi() {
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
     }
-  }, [zplayer, zbeasts]);
+  }, [zplayer, zbeasts, location]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
+  const [reborn, setReborn] = useLocalStorage('reborn', false);
 
   useEffect(() => {
     if (!zplayer || !account) return
@@ -75,10 +75,9 @@ function Tamagotchi() {
     if(status[0] != zplayer.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
-      if(!alive) return
+      if(status[1] == 0) return
       response = await fetchStatus(account);
       if (response && Object.keys(response).length !== 0) {
-        setAlive(true);
         setStatus(response);
       }
       setIsLoading(false);
@@ -109,15 +108,13 @@ function Tamagotchi() {
     if (bodyElement) bodyElement.classList.add('day');
 
     if(!status) return
-    if (status[1] == 0) setAlive(false);
     if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
-  }, [status, zcurrentBeast])
+  }, [status, zcurrentBeast, location])
 
   useEffect(() => {
-    if (!status || !zcurrentBeast) return;
-    if (!alive) setCurrentImage(dead);
-    if (alive) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
-  }, [status, zcurrentBeast]);
+    if (status[1] == 0) setCurrentImage(dead);
+    if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
+  }, [status, zcurrentBeast, location]);
 
   // Twitter Share
   const getShareableStats = () => {
@@ -154,7 +151,7 @@ function Tamagotchi() {
 
   const handleCuddle = async () => {
     if (!zcurrentBeast || !account) return;
-    if (!alive) return;
+    if (status[1] == 0) return;
     try {
       await toast.promise(
         handleAction(
@@ -181,7 +178,7 @@ function Tamagotchi() {
   };
   
   const handleNewEgg = () => {
-    localStorage.removeItem('status');
+    if(!reborn) setReborn(true);
     navigate('/spawn');
   }
 
@@ -201,12 +198,8 @@ function Tamagotchi() {
             />
             <div className="game">
               {
-                !alive && 
+                status[1] == 0 && 
                 <> 
-                  <span className="w-100 text-center">
-                    <h2 className="d-block mb-3">Oh no!</h2>
-                    <h2 className="mb-4">Your Baby is death!</h2>
-                  </span>
                   <button
                     className="button"
                     onClick={handleNewEgg}
