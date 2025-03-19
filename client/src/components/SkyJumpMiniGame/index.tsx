@@ -181,7 +181,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   }));
   
-  // Verificar si el dispositivo es móvil
+  // Check if the device is mobile
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor;
@@ -191,7 +191,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     checkMobile();
   }, []);
   
-  // Solicitar permiso para usar el giroscopio
+  // Request access to device orientation
   const requestOrientationPermission = async () => {
     try {
       if (typeof DeviceOrientationEvent !== 'undefined' && 
@@ -308,10 +308,12 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     game.platforms = [];
     
-    // Calcular cuántas plataformas iniciales necesitamos basadas en el tamaño de la pantalla
+    // Factor de altura de pantalla
+    const screenHeightFactor = Math.max(1, game.boardHeight / 600);
+    
+    // Calculamos cuántas plataformas iniciales necesitamos
     // Para pantallas más grandes, necesitamos más plataformas iniciales
-    const screenHeightRatio = game.boardHeight / 600; // Relativo a una altura base de 600px
-    const initialPlatformCount = Math.max(6, Math.ceil(8 * screenHeightRatio));
+    const initialPlatformCount = Math.max(6, Math.ceil(8 * screenHeightFactor));
     
     // Agregar plataforma inicial (base)
     const initialPlatform = {
@@ -325,14 +327,14 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     game.platforms.push(initialPlatform);
     
-    // Calcular la distancia vertical entre plataformas iniciales
-    // Adaptamos la distancia según la altura de la pantalla
-    const baseDistance = 100 * screenHeightRatio;
+    // Calculamos la distancia vertical entre plataformas iniciales
+    // Usamos distancias más cercanas para pantallas grandes
+    const baseDistance = 85 * Math.sqrt(screenHeightFactor); // Ajuste no lineal
     
     // Agregar plataformas adicionales distribuidas en altura
     for (let i = 0; i < initialPlatformCount; i++) {
-      // Distribuir a lo ancho (limitando para evitar que estén muy al borde)
-      const maxX = game.boardWidth * 0.75;
+      // Distribuir más ampliamente en pantallas anchas
+      const maxX = game.boardWidth * 0.8;
       const randomX = Math.floor(Math.random() * maxX);
       
       // Distribuir en altura con espaciado adaptativo
@@ -372,29 +374,33 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     const platformsContainer = platformsRef.current;
     if (!platformsContainer) return null;
     
-    // Calculamos un ancho más adaptativo para la posición X en pantallas grandes
-    // Usamos un porcentaje del ancho de la pantalla para distribuir mejor las plataformas
+    // Calculamos un ancho adaptativo para la posición X
     const maxX = game.boardWidth - game.platformWidth;
-    
-    // Aseguramos que las plataformas se distribuyan a lo largo de toda la pantalla
-    // independientemente de su tamaño
     const randomX = Math.floor(Math.random() * maxX);
     
-    // Calculamos la distancia vertical entre plataformas
-    // En pantallas más grandes, necesitamos ajustar esta distancia para que las plataformas
-    // aparezcan con una frecuencia adecuada
-    const baseGap = 100; // Gap mínimo
-    const screenHeightFactor = Math.max(1, game.boardHeight / 600); // Factor de ajuste por altura de pantalla
-    const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
-    const gapIncrement = score * 0.2 * difficultyMultiplier;
+    // Factor de altura de pantalla (base 600px)
+    const screenHeightFactor = Math.max(1, game.boardHeight / 600);
     
-    // Ajustamos la distancia vertical según el tamaño de la pantalla
-    const adjustedGap = (baseGap + gapIncrement) * screenHeightFactor;
+    // Ajustamos la distancia vertical entre plataformas
+    // Hacemos un ajuste no lineal para que en pantallas grandes la distancia 
+    // no sea excesiva pero mantenga la jugabilidad
+    const baseGap = 90; // Gap base más pequeño que antes (era 100)
+    
+    // Aplicamos una función raíz cuadrada para que el aumento no sea lineal con el tamaño
+    // Esto hace que en pantallas grandes el aumento sea proporcionalmente menor
+    const screenAdjustment = Math.sqrt(screenHeightFactor);
+    
+    // Calculamos la distancia usando el factor de dificultad y la puntuación
+    const difficultyMultiplier = 1 + game.backgrounds.current * 0.15; // Reducido de 0.2 a 0.15
+    const scoreAdjustment = Math.min(1, score / 200); // Limita el efecto de la puntuación
+    
+    // Gap combinado - más cercano en pantallas grandes para mantener la jugabilidad
+    const adjustedGap = (baseGap * screenAdjustment) * (1 + scoreAdjustment * difficultyMultiplier);
     
     // Calculamos la posición vertical (worldY) de la nueva plataforma
     const worldY = game.platforms.length > 0 
       ? game.platforms[game.platforms.length - 1].worldY - adjustedGap
-      : game.boardHeight - 150; // Posición inicial si no hay plataformas
+      : game.boardHeight - 150;
     
     // Creamos el elemento visual de la plataforma
     const platformElement = document.createElement('div');
@@ -407,8 +413,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Creamos el objeto de la plataforma
     const platform = {
       x: randomX,
-      y: worldY - game.cameraY, // Posición relativa a la cámara
-      worldY: worldY,           // Posición absoluta en el mundo
+      y: worldY - game.cameraY,
+      worldY: worldY,
       width: game.platformWidth,
       height: game.platformHeight,
       element: platformElement
@@ -421,9 +427,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Añadimos la plataforma al contenedor visual
     platformsContainer.appendChild(platformElement);
     
-    // Log para depuración (opcional)
-    console.log(`Nueva plataforma generada en worldY: ${worldY}, gap: ${adjustedGap}`);
-    
     return platform;
   };
   
@@ -432,22 +435,24 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Solo detectar colisión si el doodler está cayendo
     if (gameConfig.current.velocityY < 0) return false;
     
-    // Calcular hitbox con más precisión
+    // Calcular hitbox con más precisión y un poco de margen adicional
+    const hitboxMargin = 2; // Pequeño margen para hacer más fácil aterrizar
+    
     const doodlerLeft = doodler.x + doodler.hitboxOffsetX;
     const doodlerRight = doodlerLeft + doodler.width;
     const doodlerTop = doodler.worldY + doodler.hitboxOffsetY;
-    const doodlerBottom = doodlerTop + doodler.height;
+    const doodlerBottom = doodlerTop + doodler.height + hitboxMargin;
     
     const platformLeft = platform.x;
     const platformRight = platform.x + platform.width;
-    const platformTop = platform.worldY;
+    const platformTop = platform.worldY - hitboxMargin;
     
     // Mejorar la detección de colisiones para garantizar que se detecten correctamente
     const isColliding = 
     doodlerBottom >= platformTop && 
-    doodlerBottom <= platformTop + platform.height/2 &&
+    doodlerBottom <= platformTop + platform.height/2 + hitboxMargin &&
     doodlerRight > platformLeft && 
-    doodlerLeft < platformRight;
+    doodlerLeft < platformRight
 
     // Log para depuración de colisiones (descomenta si necesitas ver las colisiones)
     // if (isColliding) {
@@ -710,127 +715,143 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
   
   // Efecto para ajustar el tamaño del juego y configurar controles
-  useEffect(() => {
-    const game = gameConfig.current;
-    const gameContainer = gameContainerRef.current;
+  // Efecto para ajustar el tamaño del juego y configurar controles
+useEffect(() => {
+  const game = gameConfig.current;
+  const gameContainer = gameContainerRef.current;
+  
+  if (!gameContainer) return;
+  
+  // Inicializar el contador de referencia
+  currentScoreRef.current = 0;
+  maxHeightRef.current = 0;
+  lastMilestoneRef.current = 0;
+  
+  // Actualizar el marcador visual inicial
+  if (scoreCardRef.current) {
+    scoreCardRef.current.textContent = "0";
+  }
+  
+  // Función para ajustar el tamaño del juego según la ventana
+  const adjustGameSize = () => {
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
     
-    if (!gameContainer) return;
+    // Actualizar dimensiones lógicas
+    game.boardWidth = viewportWidth;
+    game.boardHeight = viewportHeight;
     
-    // Inicializar el contador de referencia
-    currentScoreRef.current = 0;
-    maxHeightRef.current = 0;
-    lastMilestoneRef.current = 0;
+    // Actualizar dimensiones visuales del contenedor
+    gameContainer.style.width = `${viewportWidth}px`;
+    gameContainer.style.height = `${viewportHeight}px`;
     
-    // Actualizar el marcador visual inicial
-    if (scoreCardRef.current) {
-      scoreCardRef.current.textContent = "0";
-    }
-    
-    // Función para ajustar el tamaño del juego según la ventana
-    const adjustGameSize = () => {
-      const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
-      
-      // Actualizar dimensiones lógicas
-      game.boardWidth = viewportWidth;
-      game.boardHeight = viewportHeight;
-      
-      // Actualizar dimensiones visuales del contenedor
-      gameContainer.style.width = `${viewportWidth}px`;
-      gameContainer.style.height = `${viewportHeight}px`;
-      
-      // Reposicionar el doodler al centro
-      game.doodler.x = viewportWidth / 2 - game.doodlerWidth / 2;
-      
-      if (doodlerRef.current) {
-        doodlerRef.current.style.left = `${game.doodler.x}px`;
-      }
-      
-      // Redistribuir plataformas
-      placePlatforms();
-    };
-    
-    adjustGameSize();
-    window.addEventListener('resize', adjustGameSize);
-    window.addEventListener('orientationchange', adjustGameSize);
-    
-    if (isMobile) {
-      document.body.classList.add('mobile-gameplay');
-    }
-    
-    // Inicializar posición del doodler
-    game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
-    game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
-    game.doodler.worldY = game.doodler.y;
+    // Reposicionar el doodler al centro
+    game.doodler.x = viewportWidth / 2 - game.doodlerWidth / 2;
     
     if (doodlerRef.current) {
       doodlerRef.current.style.left = `${game.doodler.x}px`;
-      doodlerRef.current.style.top = `${game.doodler.y}px`;
-      doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
     }
     
+    // NUEVO: Ajustar parámetros de física según el tamaño de pantalla
+    const screenSizeFactor = Math.max(1, viewportHeight / 600); // Base de 600px de altura
+    
+    // Ajuste dinámico de la velocidad de salto
+    // Aumenta la potencia de salto para pantallas más grandes
+    game.initialVelocityY = -8 * Math.sqrt(screenSizeFactor);
+    
+    // También ajustamos la gravedad para mantener la física consistente
+    game.gravity = 0.25 * Math.sqrt(screenSizeFactor);
+    
+    console.log(`Ajustes para pantalla: altura=${viewportHeight}px, velocidadSalto=${game.initialVelocityY.toFixed(2)}, gravedad=${game.gravity.toFixed(2)}`);
+    
+    // Actualizar la velocidad inicial
     game.velocityY = game.initialVelocityY;
     
-    // Colocar plataformas iniciales
+    // Redistribuir plataformas
     placePlatforms();
-    
-    // Iniciar el bucle del juego
-    game.running = true;
-    game.animationFrameId = requestAnimationFrame(update);
-    
-    // Controles de teclado: iniciar movimiento
-    const moveDoodler = (e: KeyboardEvent) => {
-      if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-        game.velocityX = 4;
-        game.doodler.facingRight = true;
-        if (doodlerRef.current) {
-          doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
-        }
-      } else if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-        game.velocityX = -4;
-        game.doodler.facingRight = false;
-        if (doodlerRef.current) {
-          doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
-        }
-      } else if (e.code === 'Space' && gameOver) {
-        resetGame();
+  };
+  
+  adjustGameSize();
+  window.addEventListener('resize', adjustGameSize);
+  window.addEventListener('orientationchange', adjustGameSize);
+  
+  if (isMobile) {
+    document.body.classList.add('mobile-gameplay');
+  }
+  
+  // Inicializar posición del doodler
+  game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
+  game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
+  game.doodler.worldY = game.doodler.y;
+  
+  if (doodlerRef.current) {
+    doodlerRef.current.style.left = `${game.doodler.x}px`;
+    doodlerRef.current.style.top = `${game.doodler.y}px`;
+    doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+  }
+  
+  game.velocityY = game.initialVelocityY;
+  
+  // Colocar plataformas iniciales
+  placePlatforms();
+  
+  // Iniciar el bucle del juego
+  game.running = true;
+  game.animationFrameId = requestAnimationFrame(update);
+  
+  // Controles de teclado: iniciar movimiento
+  const moveDoodler = (e: KeyboardEvent) => {
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+      game.velocityX = 4;
+      game.doodler.facingRight = true;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
       }
-    };
+    } else if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+      game.velocityX = -4;
+      game.doodler.facingRight = false;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
+      }
+    } else if (e.code === 'Space' && gameOver) {
+      resetGame();
+    }
+  };
+  
+  // Controles de teclado: detener movimiento
+  const stopDoodler = (e: KeyboardEvent) => {
+    if ((e.code === 'ArrowRight' || e.code === 'KeyD') && game.velocityX > 0) {
+      game.velocityX = 0;
+    } else if ((e.code === 'ArrowLeft' || e.code === 'KeyA') && game.velocityX < 0) {
+      game.velocityX = 0;
+    }
+  };
+  
+  document.addEventListener('keydown', moveDoodler);
+  document.addEventListener('keyup', stopDoodler);
+  
+  // Limpieza al desmontar
+  return () => {
+    document.removeEventListener('keydown', moveDoodler);
+    document.removeEventListener('keyup', stopDoodler);
+    window.removeEventListener('resize', adjustGameSize);
+    window.removeEventListener('orientationchange', adjustGameSize);
     
-    // Controles de teclado: detener movimiento
-    const stopDoodler = (e: KeyboardEvent) => {
-      if ((e.code === 'ArrowRight' || e.code === 'KeyD') && game.velocityX > 0) {
-        game.velocityX = 0;
-      } else if ((e.code === 'ArrowLeft' || e.code === 'KeyA') && game.velocityX < 0) {
-        game.velocityX = 0;
-      }
-    };
+    if (game.gyroControls.enabled) {
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+    }
     
-    document.addEventListener('keydown', moveDoodler);
-    document.addEventListener('keyup', stopDoodler);
+    if (game.animationFrameId) {
+      cancelAnimationFrame(game.animationFrameId);
+    }
     
-    // Limpieza al desmontar
-    return () => {
-      document.removeEventListener('keydown', moveDoodler);
-      document.removeEventListener('keyup', stopDoodler);
-      window.removeEventListener('resize', adjustGameSize);
-      window.removeEventListener('orientationchange', adjustGameSize);
-      
-      if (game.gyroControls.enabled) {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation);
-      }
-      
-      if (game.animationFrameId) {
-        cancelAnimationFrame(game.animationFrameId);
-      }
-      
-      if (isMobile) {
-        document.body.classList.remove('mobile-gameplay');
-      }
-      
-      game.running = false;
-    };
-  }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
+    if (isMobile) {
+      document.body.classList.remove('mobile-gameplay');
+    }
+    
+    game.running = false;
+  };
+}, [beastImageRight, beastImageLeft, isMobile, gameOver]);
   
   // Manejar el giroscopio
   useEffect(() => {
