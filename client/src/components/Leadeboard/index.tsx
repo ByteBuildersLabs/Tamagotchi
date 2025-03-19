@@ -51,7 +51,7 @@ const Leaderboard = () => {
                       {index + 1}
                     </div>
                     <div className='col-3'>
-                      ...{beast.player?.slice(-6)}
+                      {beast.userName}
                     </div>
                     <div className='col-3'>
                       <img src={beastsDex[beast.beast_type - 1]?.idlePicture} className='beast' alt={beast.name} />
