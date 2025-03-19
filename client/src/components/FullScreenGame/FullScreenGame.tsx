@@ -129,6 +129,7 @@ const FullscreenGame = () => {
         beastImageRight={beastsDex[gameState.specie - 1]?.idlePicture} 
         beastImageLeft={beastsDex[gameState.specie - 1]?.idlePicture}
         onExitGame={handleExitGame}
+        useExternalGameOver={true} 
       />
       
       {/* Button to close the game */}

@@ -24,6 +24,7 @@ interface DOMDoodleGameProps {
   beastImageRight?: string;
   beastImageLeft?: string;
   onExitGame?: () => void;
+  useExternalGameOver?: boolean;
 }
 
 const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
@@ -34,6 +35,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   beastImageRight,
   beastImageLeft,
   onExitGame,
+  useExternalGameOver = false,
 }, ref) => {
   // Referencias y estados
   const gameContainerRef = useRef<HTMLDivElement>(null);
@@ -581,6 +583,13 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (game.doodler.worldY > game.cameraY + game.boardHeight) {
       setGameOver(true);
       game.running = false;
+
+      // Notificar inmediatamente al componente padre sobre el game over
+      if (onGameEnd && !game.endNotified) {
+        game.endNotified = true;
+        console.log(`GAME OVER - Puntuación final: ${currentScoreRef.current}`);
+        onGameEnd(currentScoreRef.current);
+      }
     }
     
     // Comprobar colisiones con plataformas
@@ -663,6 +672,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setScore(0);
     setGameOver(false);
     setBackground(0);
+
+    // Resetear flag de notificación de game over para permitir notificar de nuevo
+    game.endNotified = false;
     
     // Actualizar el marcador directamente
     if (scoreCardRef.current) {
@@ -873,7 +885,7 @@ useEffect(() => {
         backgroundPosition: 'center',
         ...style
       }}
-      onClick={gameOver ? handleRestartTouch : undefined}
+      onClick={gameOver && !useExternalGameOver ? handleRestartTouch : undefined}
     >
       {/* Doodler (personaje del juego) */}
       <div 
@@ -933,15 +945,6 @@ useEffect(() => {
           onClick={toggleGyroscope}
         >
           {usingGyroscope ? '🔓' : '🔒'}
-        </div>
-      )}
-      
-      {/* Mensaje de Game Over */}
-      {gameOver && (
-        <div className="game-over-message">
-          <div>Game Over</div>
-          <div>Toca para reiniciar</div>
-          <div>Puntuación: {score}</div>
         </div>
       )}
     </div>
