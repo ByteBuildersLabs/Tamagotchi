@@ -12,6 +12,11 @@ const Leaderboard = () => {
   let beasts:any=beastsData;
 
   useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) bodyElement.classList.remove('day');
+  }, [])
+
+  useEffect(() => {
     if (!isLoaded && beasts.length > 3) {
       const sortedBeasts = [...beasts].sort((a, b) => b?.age - a?.age);
       setAllBeasts(sortedBeasts);

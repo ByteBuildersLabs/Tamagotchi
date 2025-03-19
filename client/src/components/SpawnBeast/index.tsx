@@ -41,9 +41,6 @@ function SpawnBeast() {
   const [status] = useLocalStorage('status', []);
   const [reborn] = useLocalStorage('reborn', false);
 
-  console.info('zplayer', zplayer);
-  console.info('zbeasts', zbeasts);
-
   // Set current beast and navigate to play If there is a beast for the player
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
