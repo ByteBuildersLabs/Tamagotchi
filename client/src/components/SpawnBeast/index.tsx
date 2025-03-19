@@ -39,15 +39,19 @@ function SpawnBeast() {
   }, [beasts, setBeasts]);
 
   const [status] = useLocalStorage('status', []);
+  const [reborn] = useLocalStorage('reborn', false);
 
   // Set current beast and navigate to play If there is a beast for the player
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
-    if (foundBeast) {
+    console.info('status', status);
+    if (foundBeast && !reborn) {
       setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
+      localStorage.removeItem('reborn');
+      localStorage.removeItem('status');
       navigate('/play');
     }
   }, [zplayer, zbeasts, status]);
@@ -83,8 +87,9 @@ function SpawnBeast() {
     notify();
     setLoading(true);
     await spawn(randomNumber);
-    localStorage.removeItem('status');
     await new Promise(resolve => setTimeout(resolve, 5000));
+    localStorage.removeItem('reborn');
+    localStorage.removeItem('status');
     navigate('/play');
   };
 

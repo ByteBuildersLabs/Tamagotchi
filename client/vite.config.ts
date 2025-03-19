@@ -6,12 +6,12 @@ import wasm from "vite-plugin-wasm";
 // import fs from "fs";
 
 export default defineConfig({
-//   server: {
-//   https: {
-//   key: fs.readFileSync("mkcert+1-key.pem"), // Path to private key file
-//   cert: fs.readFileSync("mkcert+1.pem"),   // Path to certificate file
-//   },
-//  },
+  // server: {
+  //   https: {
+  //   key: fs.readFileSync("mkcert+1-key.pem"), // Path to private key file
+  //   cert: fs.readFileSync("mkcert+1.pem"),   // Path to certificate file
+  //   },
+  // },
   plugins: [
     react(),
     wasm(),
@@ -21,7 +21,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-Cwg6g-uB.jpg"],
+      includeAssets: ["/assets/logo-DCgLxktZ.svg"],
       manifest: {
         name: "Byte Beasts Tamagotchi",
         short_name: "Byte Beasts Tamagotchi",
@@ -32,7 +32,7 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-Cwg6g-uB.jpg",
+            src: "/assets/logo-DCgLxktZ.svg",
             sizes: "180x180",
             type: "image/svg",
           },
