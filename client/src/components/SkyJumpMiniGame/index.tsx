@@ -2,6 +2,9 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { toast, Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry';
+import Restart from '../../assets/img/restart.svg';
+import Lock from '../../assets/img/lock.svg';
+import Unlock from '../../assets/img/unlock.svg';
 import './main.css';
 
 // Importación de imágenes
@@ -974,7 +977,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       {/* Botón para salir */}
       {onExitGame && (
         <button 
-          className="exit-button"
+          className="return-button"
           onClick={onExitGame}
         >
           X
@@ -983,13 +986,17 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       
       {/* Botón para alternar giroscopio en móviles */}
       {isMobile && (
-        <div
-          className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
-          onClick={toggleGyroscope}
-        >
-          {usingGyroscope ? '🔓' : '🔒'}
-        </div>
-      )}
+      <div
+        className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
+        onClick={toggleGyroscope}
+      >
+        <img 
+          src={usingGyroscope ? Unlock : Lock} 
+          alt={usingGyroscope ? "open" : "close"}
+          className="lock-icon"
+        />
+      </div>
+    )}
       
       {/* Modal para compartir en X */}
       {currentScreen === 'sharing' && (
@@ -1023,17 +1030,15 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
             </p>
           )}
           <div className="game-result-buttons">
-            <button 
+          <button 
               className="play-again-button"
               onClick={handlePlayAgain}
             >
-              Play again
-            </button>
-            <button 
-              className="play-again-button"
-              onClick={onExitGame}
-            >
-              Exit
+              <img 
+                src={Restart} 
+                alt="Restart icon" 
+                className="restart-icon" 
+              />
             </button>
           </div>
         </div>

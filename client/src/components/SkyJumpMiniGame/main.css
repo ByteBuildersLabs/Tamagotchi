@@ -50,9 +50,8 @@
     left: 10px;
     min-width: 60px;
     height: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #ECECDA;
     border-radius: 10px;
-    border: 3px solid #333;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,18 +64,19 @@
     font-family: sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: #333;
+    color: #85002A;
     text-align: center;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
   }
   
   /* Estilos para los botones de control en dispositivos móviles */
   .control-button {
+    color: #85002A;
     position: absolute;
     bottom: 20px;
     width: 60px;
     height: 60px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #ECECDA;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -98,9 +98,9 @@
   /* Estilo para el botón de giroscopio */
   .gyro-button {
     position: absolute;
-    top: 50px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
+    top: 60px;
+    right: 15px;
+    background-color: #ECECDA;
     padding: 8px;
     border-radius: 8px;
     font-size: 14px;
@@ -110,7 +110,18 @@
   }
   
   .gyro-button.active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #ECECDA;
+  }
+
+  .lock-icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .lock-icon.unlocked {
+    transform: rotate(180deg); /* o cualquier otra transformación visual */
+    opacity: 0.7; /* para indicar que está desbloqueado */
   }
   
   /* Mensaje de Game Over */
@@ -119,7 +130,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -187,11 +198,12 @@
   /* Estilos para el modal de fin de juego */
   .game-result-container {
     position: fixed;
+    height: 140px;
     top: 40%;
     left: 10%;
     transform: translate(-50%, -50%);
     padding: 20px;
-    background-color: rgba(0,0,0, 0.8); 
+    background-color: rgba(0,0,0, 0.6); 
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     text-align: center;
@@ -206,7 +218,7 @@
     font-size: 24px;
     color: #ECECDA;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   
   .game-result-score {
@@ -214,7 +226,7 @@
     font-size: 20px;
     font-weight: bold;
     color: #ECECDA;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
   
   .game-result-buttons {
@@ -225,27 +237,28 @@
   }
   
   .play-again-button {
-    background: linear-gradient(to right, #85002A, #D1093D);
-    color: #ECECDA;
+    background-color: #ECECDA;
+    color: #85002A;
     border: none;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-family: 'Kallisto', sans-serif;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
   }
-  
-  .play-again-button:hover {
-    background: linear-gradient(to right, #95033A, #E11A4D);
-    transform: translateY(-2px);
-  }
-  
-  .play-again-button:active {
-    background: linear-gradient(to right, #B00833, #6E0022);
-    transform: translateY(0);
+
+  .restart-icon {
+    width: 20px;
+    height: 20px;
   }
   
   /* Estilos para pantalla completa */
@@ -284,14 +297,12 @@
   
   /* Botón de retorno (alternativo al exit-button) */
   .return-button {
-    background: rgba(133, 0, 42, 0.8);
-    color: #ECECDA;
+    background-color: #ECECDA;
+    color: #85002A;
     border: none;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    font-size: 18px;
-    font-family: 'Kallisto', sans-serif;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
