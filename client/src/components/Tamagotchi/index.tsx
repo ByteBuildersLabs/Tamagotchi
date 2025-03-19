@@ -62,10 +62,11 @@ function Tamagotchi() {
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
     }
-  }, [zplayer, zbeasts]);
+  }, [zplayer, zbeasts, location]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
+  const [reborn, setReborn] = useLocalStorage('reborn', false);
 
   useEffect(() => {
     if (!zplayer || !account) return
@@ -111,13 +112,12 @@ function Tamagotchi() {
     if(!status) return
     if (status[1] == 0) setAlive(false);
     if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
-  }, [status, zcurrentBeast])
+  }, [status, zcurrentBeast, location])
 
   useEffect(() => {
-    if (!status || !zcurrentBeast) return;
     if (!alive) setCurrentImage(dead);
     if (alive) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
-  }, [status, zcurrentBeast]);
+  }, [alive, zcurrentBeast, location]);
 
   // Twitter Share
   const getShareableStats = () => {
@@ -181,7 +181,7 @@ function Tamagotchi() {
   };
   
   const handleNewEgg = () => {
-    localStorage.removeItem('status');
+    setReborn(true);
     navigate('/spawn');
   }
 
@@ -203,10 +203,6 @@ function Tamagotchi() {
               {
                 !alive && 
                 <> 
-                  <span className="w-100 text-center">
-                    <h2 className="d-block mb-3">Oh no!</h2>
-                    <h2 className="mb-4">Your Baby is death!</h2>
-                  </span>
                   <button
                     className="button"
                     onClick={handleNewEgg}
