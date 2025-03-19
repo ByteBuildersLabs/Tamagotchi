@@ -1,0 +1,184 @@
+/* Estilos principales del contenedor del juego */
+.dom-doodle-game {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  /* Estilos para el personaje principal (doodler) */
+  .doodler {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 50;
+    transform: translate(-13px, -24px); /* Offset visual para ajustar la hitbox */
+  }
+  
+  /* Contenedor de plataformas */
+  .platforms-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 40;
+  }
+  
+  /* Estilo de cada plataforma */
+  .platform {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 45;
+  }
+  
+  /* Estilos para el marcador de puntuación */
+  .score-card {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    min-width: 60px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: 3px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 0 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .score-text {
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Estilos para los botones de control en dispositivos móviles */
+  .control-button {
+    position: absolute;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    touch-action: manipulation;
+    user-select: none;
+    z-index: 100;
+  }
+  
+  .left-button {
+    left: 20px;
+  }
+  
+  .right-button {
+    right: 20px;
+  }
+  
+  /* Estilo para el botón de giroscopio */
+  .gyro-button {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 100;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+  
+  .gyro-button.active {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Mensaje de Game Over */
+  .game-over-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    z-index: 200;
+  }
+  
+  .game-over-message div:first-child {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para el botón de salir */
+  .exit-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 100;
+  }
+  
+  /* Estilos específicos para dispositivos móviles */
+  .mobile-game .control-button {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+  
+  /* Eliminar el resaltado al tocar en móviles */
+  .mobile-gameplay {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* Animación de salto para el doodler */
+  @keyframes jump {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  
+  /* Animación para las plataformas */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Aplicar la animación a las nuevas plataformas */
+  .platform {
+    animation: fadeIn 0.3s ease-in-out;
+  }

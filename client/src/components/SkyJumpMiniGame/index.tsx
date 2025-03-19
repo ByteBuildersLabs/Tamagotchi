@@ -1,4 +1,8 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import './main.css';
+
+// Importación de imágenes
 import platformImg from '../../assets/SkyJump/platform.png';
 import bgImage1 from '../../assets/SkyJump/sky-bg.gif';
 import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
@@ -6,53 +10,13 @@ import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 
-// Container style for the game wrapper
-const gameContainerStyle: React.CSSProperties = {
-  position: 'relative',
-  width: '100%',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0px',
-  margin: '0', 
-  overflow: 'hidden', 
-};
-
-// Container style for the canvas
-const canvasContainerStyle: React.CSSProperties = {
-  position: 'relative',
-  width: '100%', 
-  height: '100%',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-  borderRadius: '0',
-  overflow: 'hidden',
-};
-
-// Style for mobile control buttons
-const controlButtonStyle: React.CSSProperties = {
-  position: 'absolute',
-  bottom: '20px',
-  backgroundColor: 'rgba(255, 255, 255, 0.7)',
-  borderRadius: '50%',
-  width: '60px',
-  height: '60px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '24px',
-  touchAction: 'manipulation',
-  userSelect: 'none',
-  zIndex: 100,
-};
-
-// Interface for the DoodleGame ref handle
-export interface DoodleGameRefHandle {
+// Interface para la referencia del juego
+export interface DOMDoodleGameRefHandle {
   resetGame: () => void;
 }
 
-// Props interface for the DoodleGame component
-interface DoodleGameProps {
+// Props interface para el componente
+interface DOMDoodleGameProps {
   className?: string;
   style?: React.CSSProperties;
   onScoreUpdate?: (score: number) => void;
@@ -62,7 +26,7 @@ interface DoodleGameProps {
   onExitGame?: () => void;
 }
 
-const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
+const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   className = '',
   style = {},
   onScoreUpdate,
@@ -70,35 +34,37 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
   beastImageRight,
   beastImageLeft,
   onExitGame,
-}, ref ) => {
-  // Reference to the canvas element
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  // State to determine if device is mobile
+}, ref) => {
+  // Referencias y estados
+  const gameContainerRef = useRef<HTMLDivElement>(null);
+  const doodlerRef = useRef<HTMLDivElement>(null);
+  const platformsRef = useRef<HTMLDivElement>(null);
+  const scoreCardRef = useRef<HTMLDivElement>(null);
+  const currentScoreRef = useRef<number>(0);
+  const maxHeightRef = useRef<number>(0);
+  const lastMilestoneRef = useRef<number>(0);
+  
+  // Estados
+  const [background, setBackground] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  // State to store gyroscope permission status
   const [gyroscopePermission, setGyroscopePermission] = useState<PermissionState | null>(null);
-  // State to indicate if gyroscope is currently used
   const [usingGyroscope, setUsingGyroscope] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [score, setScore] = useState(0);
 
-  // Game state and configuration stored in a ref
-  const gameRef = useRef<any>({
-    boardWidth: 360, // Canvas width
-    boardHeight: 576, // Canvas height
-    cameraY: 0, // Camera vertical position
+  // Configuración del juego
+  const gameConfig = useRef({
+    boardWidth: 360,
+    boardHeight: 576,
+    cameraY: 0,
     
-    // Visual beasts size 
-    doodlerVisualWidth: 65, 
-    doodlerVisualHeight: 65, 
-
-    // Ajustes para centrar visualmente (offset visual)
-    doodlerVisualOffsetX: -13, // Adjust to center the beast collider horizontally.
-    doodlerVisualOffsetY: -24, // Adjust to center the beast collider vertically.
-
-    // Doodler properties
+    doodlerVisualWidth: 65,
+    doodlerVisualHeight: 65,
+    
     doodlerWidth: 46,
     doodlerHeight: 46,
     doodler: {
-      img: null as HTMLImageElement | null,
+      img: beastImageRight,
       x: 0,
       y: 0,
       worldY: 0,
@@ -106,36 +72,24 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
       height: 25,
       hitboxOffsetX: 10,
       hitboxOffsetY: 10,
+      facingRight: true,
     },
-
-    // Platform properties
+    
     platformWidth: 60,
     platformHeight: 18,
     platforms: [] as any[],
-
-    // Physics properties
+    
     velocityX: 0,
     velocityY: 0,
     initialVelocityY: -8,
     gravity: 0.25,
-
-    // Game state variables
-    score: 0,
+    
     maxScore: 0,
-    gameOver: false,
     endNotified: false,
     animationFrameId: 0,
-    lastTimestamp: 0, // For delta time calculation
-
-    // Image objects for doodler and platform
-    doodlerRightImg: new Image(),
-    doodlerLeftImg: new Image(),
-    platformImg: new Image(),
-
-    // Set to track platforms already scored
-    touchedPlatforms: new Set() as Set<string>,
-
-    // Background images with score thresholds
+    lastTimestamp: 0,
+    running: false,
+    
     backgrounds: {
       current: 0,
       images: [
@@ -146,29 +100,88 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
         { img: bgImage5, scoreThreshold: 450 },
       ],
     },
-
-    // Mobile touch controls state
+    
     touchControls: {
       isPressed: false,
-      direction: 0, // -1 for left, 0 for none, 1 for right
+      direction: 0,
     },
-
-    // Gyroscope control configuration
+    
     gyroControls: {
       enabled: false,
       calibration: 0,
       sensitivity: 2.5,
     },
   });
-
-  // expose resetGame function to parent component
+  
+  // SISTEMA DE PUNTUACIÓN BASADO EN ALTURA
+  const updateScoreByHeight = () => {
+    const game = gameConfig.current;
+      
+    // Calcular la altura actual basada en la posición de la cámara (siempre positiva)
+    const currentHeight = Math.max(0, -game.cameraY);
+    
+    // Solo actualizar la puntuación cuando se alcanza una nueva altura máxima
+    if (currentHeight > maxHeightRef.current) {
+      // Actualizar la altura máxima
+      maxHeightRef.current = currentHeight;
+      
+      // Convertir altura a puntos (1 punto por cada 5 píxeles de altura)
+      const heightScore = Math.floor(currentHeight / 5);
+      
+      // Siempre actualizar cuando hay un cambio, incluso si es el mismo valor
+      if (heightScore !== currentScoreRef.current) {
+        const oldScore = currentScoreRef.current;
+        currentScoreRef.current = heightScore;
+        
+        // Log para depuración
+        console.log(`Puntuación actualizada: ${oldScore} → ${heightScore}`);
+        console.log(`Altura actual: ${currentHeight.toFixed(2)}, Cámara Y: ${game.cameraY.toFixed(2)}`);
+        
+        // Actualizar tanto el estado de React como el DOM directamente
+        setScore(heightScore);
+        
+        if (scoreCardRef.current) {
+          scoreCardRef.current.textContent = heightScore.toString();
+        }
+        
+        // Notificar al componente padre
+        if (onScoreUpdate) {
+          onScoreUpdate(heightScore);
+        }
+        
+        // Actualizar el fondo según la puntuación
+        updateBackground(heightScore);
+        
+        // Verificar hitos de puntuación
+        checkScoreMilestones(heightScore);
+      }
+    }
+  };
+  
+  // Verificar hitos de puntuación y mostrar alertas
+  const checkScoreMilestones = (currentScore: number) => {
+    const milestone = Math.floor(currentScore / 50) * 50;
+    
+    if (milestone > 0 && milestone > lastMilestoneRef.current) {
+      // Actualizar el último hito alcanzado
+      lastMilestoneRef.current = milestone;
+      
+      // Mostrar toast con el hito alcanzado
+      toast.success(`¡Increíble! Has alcanzado ${milestone} puntos`, {
+        position: "top-center",
+        duration: 2000
+      });
+    }
+  };
+  
+  // Exponer la función resetGame al componente padre
   useImperativeHandle(ref, () => ({
     resetGame: () => {
       resetGame();
     }
   }));
-
-  // Check if the current device is mobile
+  
+  // Verificar si el dispositivo es móvil
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor;
@@ -177,8 +190,8 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
     };
     checkMobile();
   }, []);
-
-  // Request permission to use device orientation (gyroscope)
+  
+  // Solicitar permiso para usar el giroscopio
   const requestOrientationPermission = async () => {
     try {
       if (typeof DeviceOrientationEvent !== 'undefined' && 
@@ -186,14 +199,13 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
         const permissionState = await (DeviceOrientationEvent as any).requestPermission();
         setGyroscopePermission(permissionState);
         if (permissionState === 'granted') {
-          gameRef.current.gyroControls.enabled = true;
+          gameConfig.current.gyroControls.enabled = true;
           setUsingGyroscope(true);
-          // Calibrate once on permission grant
           window.addEventListener('deviceorientation', calibrateGyroscope, { once: true });
         }
       } else {
         setGyroscopePermission('granted');
-        gameRef.current.gyroControls.enabled = true;
+        gameConfig.current.gyroControls.enabled = true;
         setUsingGyroscope(true);
         window.addEventListener('deviceorientation', calibrateGyroscope, { once: true });
       }
@@ -202,174 +214,590 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
       setGyroscopePermission('denied');
     }
   };
-
-  // Calibrate the gyroscope by setting a baseline gamma value
+  
+  // Calibrar el giroscopio
   const calibrateGyroscope = (event: DeviceOrientationEvent) => {
     if (event.gamma !== null) {
-      gameRef.current.gyroControls.calibration = event.gamma;
+      gameConfig.current.gyroControls.calibration = event.gamma;
     }
   };
-
-  // Handle device orientation event to update horizontal velocity
+  
+  // Manejar la orientación del dispositivo
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    if (!gameRef.current.gyroControls.enabled || gameRef.current.gameOver) return;
-    const game = gameRef.current;
+    const game = gameConfig.current;
+    if (!game.gyroControls.enabled || gameOver) return;
+    
     if (event.gamma === null) return;
     const gamma = event.gamma;
     const tilt = gamma - game.gyroControls.calibration;
+    
     if (tilt > 5) {
       game.velocityX = Math.min((tilt / 10) * game.gyroControls.sensitivity, 6);
-      game.doodler.img = game.doodlerRightImg;
+      game.doodler.facingRight = true;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+      }
     } else if (tilt < -5) {
       game.velocityX = Math.max((tilt / 10) * game.gyroControls.sensitivity, -6);
-      game.doodler.img = game.doodlerLeftImg;
+      game.doodler.facingRight = false;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
+      }
     } else {
       game.velocityX = 0;
     }
   };
-
-  // Handle touch start event for mobile controls
+  
+  // Manejar eventos táctiles para controles móviles
   const handleTouchStart = (direction: number) => {
-    const game = gameRef.current;
+    const game = gameConfig.current;
     game.touchControls.isPressed = true;
     game.touchControls.direction = direction;
+    
     if (direction === 1) {
       game.velocityX = 4;
-      game.doodler.img = game.doodlerRightImg;
+      game.doodler.facingRight = true;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+      }
     } else if (direction === -1) {
       game.velocityX = -4;
-      game.doodler.img = game.doodlerLeftImg;
+      game.doodler.facingRight = false;
+      if (doodlerRef.current) {
+        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
+      }
     }
   };
-
-  // Handle touch end event to stop mobile control movement
+  
+  // Detener el movimiento al soltar
   const handleTouchEnd = () => {
-    const game = gameRef.current;
+    const game = gameConfig.current;
     game.touchControls.isPressed = false;
     game.touchControls.direction = 0;
     game.velocityX = 0;
   };
-
-  // Handle canvas click to restart game if game is over
+  
+  // Reiniciar el juego al tocar si es game over
   const handleRestartTouch = () => {
-    if (gameRef.current.gameOver) {
+    if (gameOver) {
       resetGame();
     }
   };
+  
+  // Alternar el uso del giroscopio
+  const toggleGyroscope = () => {
+    if (usingGyroscope) {
+      gameConfig.current.gyroControls.enabled = false;
+      setUsingGyroscope(false);
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+    } else {
+      requestOrientationPermission();
+    }
+  };
+  
+  // Crear plataformas iniciales
+  const placePlatforms = () => {
+    const game = gameConfig.current;
+    const platformsContainer = platformsRef.current;
+    if (!platformsContainer) return;
+    
+    // Limpiar plataformas existentes
+    while (platformsContainer.firstChild) {
+      platformsContainer.removeChild(platformsContainer.firstChild);
+    }
+    
+    game.platforms = [];
+    
+    // Calcular cuántas plataformas iniciales necesitamos basadas en el tamaño de la pantalla
+    // Para pantallas más grandes, necesitamos más plataformas iniciales
+    const screenHeightRatio = game.boardHeight / 600; // Relativo a una altura base de 600px
+    const initialPlatformCount = Math.max(6, Math.ceil(8 * screenHeightRatio));
+    
+    // Agregar plataforma inicial (base)
+    const initialPlatform = {
+      x: game.boardWidth / 2 - game.platformWidth / 2,
+      y: game.boardHeight - 50,
+      worldY: game.boardHeight - 50,
+      width: game.platformWidth,
+      height: game.platformHeight,
+      element: document.createElement('div')
+    };
+    
+    game.platforms.push(initialPlatform);
+    
+    // Calcular la distancia vertical entre plataformas iniciales
+    // Adaptamos la distancia según la altura de la pantalla
+    const baseDistance = 100 * screenHeightRatio;
+    
+    // Agregar plataformas adicionales distribuidas en altura
+    for (let i = 0; i < initialPlatformCount; i++) {
+      // Distribuir a lo ancho (limitando para evitar que estén muy al borde)
+      const maxX = game.boardWidth * 0.75;
+      const randomX = Math.floor(Math.random() * maxX);
+      
+      // Distribuir en altura con espaciado adaptativo
+      const worldY = game.boardHeight - baseDistance * i - 150;
+      
+      const platform = {
+        x: randomX,
+        y: worldY,
+        worldY: worldY,
+        width: game.platformWidth,
+        height: game.platformHeight,
+        element: document.createElement('div')
+      };
+      
+      game.platforms.push(platform);
+    }
+    
+    // Crear elementos DOM para las plataformas
+    game.platforms.forEach(platform => {
+      const platformElement = platform.element;
+      platformElement.className = 'platform';
+      platformElement.style.width = `${platform.width}px`;
+      platformElement.style.height = `${platform.height}px`;
+      platformElement.style.left = `${platform.x}px`;
+      platformElement.style.top = `${platform.y}px`;
+      platformElement.style.backgroundImage = `url(${platformImg})`;
+      platformElement.style.backgroundSize = 'cover';
+      platformsContainer.appendChild(platformElement);
+    });
+    
+    console.log(`Plataformas iniciales colocadas: ${game.platforms.length}`);
+  };
+  
+  // Crear una nueva plataforma cuando una sale de pantalla
+  const newPlatform = () => {
+    const game = gameConfig.current;
+    const platformsContainer = platformsRef.current;
+    if (!platformsContainer) return null;
+    
+    // Calculamos un ancho más adaptativo para la posición X en pantallas grandes
+    // Usamos un porcentaje del ancho de la pantalla para distribuir mejor las plataformas
+    const maxX = game.boardWidth - game.platformWidth;
+    
+    // Aseguramos que las plataformas se distribuyan a lo largo de toda la pantalla
+    // independientemente de su tamaño
+    const randomX = Math.floor(Math.random() * maxX);
+    
+    // Calculamos la distancia vertical entre plataformas
+    // En pantallas más grandes, necesitamos ajustar esta distancia para que las plataformas
+    // aparezcan con una frecuencia adecuada
+    const baseGap = 100; // Gap mínimo
+    const screenHeightFactor = Math.max(1, game.boardHeight / 600); // Factor de ajuste por altura de pantalla
+    const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
+    const gapIncrement = score * 0.2 * difficultyMultiplier;
+    
+    // Ajustamos la distancia vertical según el tamaño de la pantalla
+    const adjustedGap = (baseGap + gapIncrement) * screenHeightFactor;
+    
+    // Calculamos la posición vertical (worldY) de la nueva plataforma
+    const worldY = game.platforms.length > 0 
+      ? game.platforms[game.platforms.length - 1].worldY - adjustedGap
+      : game.boardHeight - 150; // Posición inicial si no hay plataformas
+    
+    // Creamos el elemento visual de la plataforma
+    const platformElement = document.createElement('div');
+    platformElement.className = 'platform';
+    platformElement.style.width = `${game.platformWidth}px`;
+    platformElement.style.height = `${game.platformHeight}px`;
+    platformElement.style.backgroundImage = `url(${platformImg})`;
+    platformElement.style.backgroundSize = 'cover';
+    
+    // Creamos el objeto de la plataforma
+    const platform = {
+      x: randomX,
+      y: worldY - game.cameraY, // Posición relativa a la cámara
+      worldY: worldY,           // Posición absoluta en el mundo
+      width: game.platformWidth,
+      height: game.platformHeight,
+      element: platformElement
+    };
+    
+    // Actualizamos la posición visual del elemento
+    platformElement.style.left = `${platform.x}px`;
+    platformElement.style.top = `${platform.y}px`;
+    
+    // Añadimos la plataforma al contenedor visual
+    platformsContainer.appendChild(platformElement);
+    
+    // Log para depuración (opcional)
+    console.log(`Nueva plataforma generada en worldY: ${worldY}, gap: ${adjustedGap}`);
+    
+    return platform;
+  };
+  
+  // Detectar colisión entre el doodler y una plataforma
+  const detectCollision = (doodler: any, platform: any) => {
+    // Solo detectar colisión si el doodler está cayendo
+    if (gameConfig.current.velocityY < 0) return false;
+    
+    // Calcular hitbox con más precisión
+    const doodlerLeft = doodler.x + doodler.hitboxOffsetX;
+    const doodlerRight = doodlerLeft + doodler.width;
+    const doodlerTop = doodler.worldY + doodler.hitboxOffsetY;
+    const doodlerBottom = doodlerTop + doodler.height;
+    
+    const platformLeft = platform.x;
+    const platformRight = platform.x + platform.width;
+    const platformTop = platform.worldY;
+    
+    // Mejorar la detección de colisiones para garantizar que se detecten correctamente
+    const isColliding = 
+    doodlerBottom >= platformTop && 
+    doodlerBottom <= platformTop + platform.height/2 &&
+    doodlerRight > platformLeft && 
+    doodlerLeft < platformRight;
 
-  // Reset game state and restart the game loop
+    // Log para depuración de colisiones (descomenta si necesitas ver las colisiones)
+    // if (isColliding) {
+    //   console.log(`Colisión detectada! Doodler worldY: ${doodler.worldY.toFixed(2)}, Platform worldY: ${platform.worldY.toFixed(2)}`);
+    // }
+
+    return isColliding;
+  };
+  
+  // Actualizar el fondo según la puntuación
+  const updateBackground = (currentScore: number) => {
+    const game = gameConfig.current;
+    const gameContainer = gameContainerRef.current;
+    if (!gameContainer) return;
+    
+    let newBackgroundIndex = 0;
+    for (let i = game.backgrounds.images.length - 1; i >= 0; i--) {
+      if (currentScore >= game.backgrounds.images[i].scoreThreshold) {
+        newBackgroundIndex = i;
+        break;
+      }
+    }
+    
+    if (background !== newBackgroundIndex) {
+      setBackground(newBackgroundIndex);
+      gameContainer.style.backgroundImage = `url(${game.backgrounds.images[newBackgroundIndex].img})`;
+    }
+  };
+  
+  // Actualizar la posición de la cámara para seguir al doodler
+  const updateCamera = () => {
+    const game = gameConfig.current;
+    const platformsContainer = platformsRef.current;
+    const doodlerElement = doodlerRef.current;
+    
+    if (!platformsContainer || !doodlerElement) return;
+    
+    // Calcular la posición del doodler relativa a la cámara
+    game.doodler.y = game.doodler.worldY - game.cameraY;
+    
+    // Si el doodler está por encima del umbral, mover la cámara hacia arriba
+    const cameraThreshold = 150;
+    if (game.doodler.y < cameraThreshold) {
+      const diff = cameraThreshold - game.doodler.y;
+      game.cameraY -= diff;
+      
+      // Log para depuración - ver movimiento de cámara
+      console.log(`Cámara movida: ${game.cameraY.toFixed(2)}, Doodler worldY: ${game.doodler.worldY.toFixed(2)}`);
+      
+      // Actualizar score inmediatamente cuando la cámara se mueve hacia arriba
+      updateScoreByHeight();
+    }
+    
+    // Actualizar posiciones visuales de plataformas
+    game.platforms.forEach(platform => {
+      platform.y = platform.worldY - game.cameraY;
+      platform.element.style.top = `${platform.y}px`;
+    });
+    
+    // Actualizar posición visual del doodler
+    doodlerElement.style.top = `${game.doodler.y}px`;
+  };
+  
+  // Función principal de actualización del juego
+  const update = (timestamp: number) => {
+    const game = gameConfig.current;
+    
+    if (!game.running) return;
+    
+    if (!game.lastTimestamp) {
+      game.lastTimestamp = timestamp;
+    }
+    
+    const dt = (timestamp - game.lastTimestamp) / 1000;
+    game.lastTimestamp = timestamp;
+    const frameFactor = dt * 60;
+    
+    if (gameOver) {
+      if (onScoreUpdate) {
+        onScoreUpdate(currentScoreRef.current);
+      }
+      
+      if (onGameEnd && !game.endNotified) {
+        game.endNotified = true;
+        console.log(`GAME OVER - Puntuación final: ${currentScoreRef.current}`);
+        onGameEnd(currentScoreRef.current);
+      }
+      
+      game.animationFrameId = requestAnimationFrame(update);
+      return;
+    }
+    
+    // Actualizar posición horizontal
+    game.doodler.x += game.velocityX * frameFactor;
+    
+    // Wraparound horizontal
+    if (game.doodler.x > game.boardWidth) {
+      game.doodler.x = 0;
+    } else if (game.doodler.x + game.doodler.width < 0) {
+      game.doodler.x = game.boardWidth;
+    }
+    
+    // Actualizar el elemento doodler
+    if (doodlerRef.current) {
+      doodlerRef.current.style.left = `${game.doodler.x}px`;
+    }
+    
+    // Actualizar velocidad vertical con gravedad
+    const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
+    const currentGravity = game.gravity * difficultyMultiplier;
+    game.velocityY = Math.min(
+      game.velocityY + currentGravity * frameFactor,
+      8 * frameFactor
+    );
+    
+    // Actualizar posición vertical
+    game.doodler.worldY += game.velocityY * frameFactor;
+    
+    // Actualizar cámara y posiciones
+    updateCamera();
+    
+    // Actualizar puntuación basada en altura
+    updateScoreByHeight();
+    
+    // Verificar si el doodler cayó fuera de la pantalla
+    if (game.doodler.worldY > game.cameraY + game.boardHeight) {
+      setGameOver(true);
+      game.running = false;
+    }
+    
+    // Comprobar colisiones con plataformas
+    let collisionDetected = false;
+    
+    for (let i = 0; i < game.platforms.length && !collisionDetected; i++) {
+      const platform = game.platforms[i];
+      
+      // Si la plataforma está fuera de la pantalla, ocultarla
+      if (platform.y < -platform.height || platform.y > game.boardHeight) {
+        platform.element.style.display = 'none';
+      } else {
+        platform.element.style.display = 'block';
+      }
+      
+      // Detectar colisión y hacer que el doodler rebote
+      if (detectCollision(game.doodler, platform)) {
+        // Hacer que el doodler rebote
+        game.velocityY = game.initialVelocityY;
+        game.doodler.worldY = platform.worldY - game.doodler.height - game.doodler.hitboxOffsetY;
+        collisionDetected = true;
+      }
+    }
+    
+    // --- INICIO CÓDIGO CORREGIDO DE GENERACIÓN DE PLATAFORMAS ---
+    
+    // Verificar si necesitamos agregar más plataformas
+    const highestPlatform = game.platforms.length > 0 
+      ? game.platforms[game.platforms.length - 1].worldY 
+      : 0;
+    const visibleTop = game.cameraY;
+    const visibleHeight = game.boardHeight;
+    
+    // Generamos más plataformas si la plataforma más alta está a menos de 
+    // 2 veces la altura visible por encima de la cámara
+    const platformsNeeded = visibleTop - highestPlatform > -visibleHeight * 2;
+
+    // Si necesitamos más plataformas, las añadimos
+    if (platformsNeeded) {
+      const newPlatformObj = newPlatform();
+      if (newPlatformObj) {
+        game.platforms.push(newPlatformObj);
+        // console.log(`Plataforma añadida proactivamente. Total: ${game.platforms.length}`);
+      }
+    }
+
+    // Eliminar plataformas que ya no son visibles para mejorar el rendimiento
+    while (
+      game.platforms.length > 0 &&
+      game.platforms[0].worldY > game.cameraY + game.boardHeight * 1.5 // Margen para asegurar visibilidad
+    ) {
+      const removedPlatform = game.platforms.shift();
+      if (removedPlatform && removedPlatform.element && removedPlatform.element.parentNode) {
+        removedPlatform.element.parentNode.removeChild(removedPlatform.element);
+        // console.log("Plataforma eliminada por debajo de la pantalla");
+      }
+    }
+    
+    // --- FIN CÓDIGO CORREGIDO DE GENERACIÓN DE PLATAFORMAS ---
+    
+    game.animationFrameId = requestAnimationFrame(update);
+  };
+  
+  // Resetear el juego
   const resetGame = () => {
-    const game = gameRef.current;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const game = gameConfig.current;
+    const gameContainer = gameContainerRef.current;
+    
+    if (!gameContainer) return;
 
-    game.score = 0;
+    // Reiniciar explícitamente el estado de la cámara - esto es crucial
+    game.cameraY = 0;
+    
+    // Resetear contadores de puntuación
+    currentScoreRef.current = 0;
+    maxHeightRef.current = 0;
+    lastMilestoneRef.current = 0;
+    
+    // Resetear estados
+    setScore(0);
+    setGameOver(false);
+    setBackground(0);
+    
+    // Actualizar el marcador directamente
+    if (scoreCardRef.current) {
+      scoreCardRef.current.textContent = "0";
+    }
+    
     game.maxScore = 0;
-    game.touchedPlatforms.clear();
     game.backgrounds.current = 0;
     game.endNotified = false;
-    canvas.style.backgroundImage = `url(${game.backgrounds.images[0].img})`;
-
+    gameContainer.style.backgroundImage = `url(${game.backgrounds.images[0].img})`;
+    
     if (game.animationFrameId) {
       cancelAnimationFrame(game.animationFrameId);
     }
-    // Reset timestamp to avoid large delta values
+    
+    // Resetear timestamp
     game.lastTimestamp = 0;
-
-    // Reset doodler position and image
+    
+    // Resetear posición del doodler
     game.doodler = {
-      img: game.doodlerRightImg,
+      img: beastImageRight,
       x: game.boardWidth / 2 - game.doodlerWidth / 2,
       y: (game.boardHeight * 7) / 8 - game.doodlerHeight,
       worldY: (game.boardHeight * 7) / 8 - game.doodlerHeight,
-      width: 15,         
-      height: 25,        
-      hitboxOffsetX: 10, 
-      hitboxOffsetY: 10, 
+      width: 15,
+      height: 25,
+      hitboxOffsetX: 10,
+      hitboxOffsetY: 10,
+      facingRight: true,
     };
-
+    
+    if (doodlerRef.current) {
+      doodlerRef.current.style.left = `${game.doodler.x}px`;
+      doodlerRef.current.style.top = `${game.doodler.y}px`;
+      doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+    }
+    
     game.velocityX = 0;
     game.velocityY = game.initialVelocityY;
-    game.gameOver = false;
     game.cameraY = 0;
-    placePlatforms(game);
+    game.running = true;
+    
+    // Colocar nuevas plataformas
+    placePlatforms();
 
-    game.animationFrameId = requestAnimationFrame((ts) =>
-      update(ts, canvas, game)
-    );
+    game.running = true;
+    
+    // Iniciar el bucle del juego
+    game.animationFrameId = requestAnimationFrame(update);
   };
-
-  // Adjust canvas size on window resize and initialize game images
+  
+  // Efecto para ajustar el tamaño del juego y configurar controles
   useEffect(() => {
-    const game = gameRef.current;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-
-    // Function to adjust the canvas size based on viewport
+    const game = gameConfig.current;
+    const gameContainer = gameContainerRef.current;
+    
+    if (!gameContainer) return;
+    
+    // Inicializar el contador de referencia
+    currentScoreRef.current = 0;
+    maxHeightRef.current = 0;
+    lastMilestoneRef.current = 0;
+    
+    // Actualizar el marcador visual inicial
+    if (scoreCardRef.current) {
+      scoreCardRef.current.textContent = "0";
+    }
+    
+    // Función para ajustar el tamaño del juego según la ventana
     const adjustGameSize = () => {
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
       
-      // Actualizar las dimensiones reales del canvas
-      canvas.width = viewportWidth;
-      canvas.height = viewportHeight;
-      
-      // Actualizar las dimensiones lógicas del juego
+      // Actualizar dimensiones lógicas
       game.boardWidth = viewportWidth;
       game.boardHeight = viewportHeight;
       
-      // Aplicar dimensiones al estilo del canvas
-      canvas.style.width = `${viewportWidth}px`;
-      canvas.style.height = `${viewportHeight}px`;
+      // Actualizar dimensiones visuales del contenedor
+      gameContainer.style.width = `${viewportWidth}px`;
+      gameContainer.style.height = `${viewportHeight}px`;
       
       // Reposicionar el doodler al centro
       game.doodler.x = viewportWidth / 2 - game.doodlerWidth / 2;
       
-      // Redistribuir las plataformas si es necesario
-      placePlatforms(game);
+      if (doodlerRef.current) {
+        doodlerRef.current.style.left = `${game.doodler.x}px`;
+      }
+      
+      // Redistribuir plataformas
+      placePlatforms();
     };
-
+    
     adjustGameSize();
     window.addEventListener('resize', adjustGameSize);
     window.addEventListener('orientationchange', adjustGameSize);
-
+    
     if (isMobile) {
       document.body.classList.add('mobile-gameplay');
     }
-
-    // Initialize doodler position and image sources
+    
+    // Inicializar posición del doodler
     game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
     game.doodler.y = (game.boardHeight * 7) / 8 - game.doodlerHeight;
     game.doodler.worldY = game.doodler.y;
-
-    game.doodlerRightImg.src = beastImageRight || '';
-    game.doodlerLeftImg.src = beastImageLeft || '';
-    game.platformImg.src = platformImg;
-    game.doodler.img = game.doodlerRightImg;
+    
+    if (doodlerRef.current) {
+      doodlerRef.current.style.left = `${game.doodler.x}px`;
+      doodlerRef.current.style.top = `${game.doodler.y}px`;
+      doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+    }
+    
     game.velocityY = game.initialVelocityY;
-
-    placePlatforms(game);
-
-    game.animationFrameId = requestAnimationFrame((ts) =>
-      update(ts, canvas, game)
-    );
-
-    // Keyboard controls: start moving doodler
+    
+    // Colocar plataformas iniciales
+    placePlatforms();
+    
+    // Iniciar el bucle del juego
+    game.running = true;
+    game.animationFrameId = requestAnimationFrame(update);
+    
+    // Controles de teclado: iniciar movimiento
     const moveDoodler = (e: KeyboardEvent) => {
       if (e.code === 'ArrowRight' || e.code === 'KeyD') {
         game.velocityX = 4;
-        game.doodler.img = game.doodlerRightImg;
+        game.doodler.facingRight = true;
+        if (doodlerRef.current) {
+          doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
+        }
       } else if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
         game.velocityX = -4;
-        game.doodler.img = game.doodlerLeftImg;
-      } else if (e.code === 'Space' && game.gameOver) {
+        game.doodler.facingRight = false;
+        if (doodlerRef.current) {
+          doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
+        }
+      } else if (e.code === 'Space' && gameOver) {
         resetGame();
       }
     };
-
-    // Keyboard controls: stop moving doodler
+    
+    // Controles de teclado: detener movimiento
     const stopDoodler = (e: KeyboardEvent) => {
       if ((e.code === 'ArrowRight' || e.code === 'KeyD') && game.velocityX > 0) {
         game.velocityX = 0;
@@ -377,31 +805,34 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
         game.velocityX = 0;
       }
     };
-
+    
     document.addEventListener('keydown', moveDoodler);
     document.addEventListener('keyup', stopDoodler);
-
+    
+    // Limpieza al desmontar
     return () => {
       document.removeEventListener('keydown', moveDoodler);
       document.removeEventListener('keyup', stopDoodler);
       window.removeEventListener('resize', adjustGameSize);
-      window.addEventListener('orientationchange', adjustGameSize);
-
+      window.removeEventListener('orientationchange', adjustGameSize);
+      
       if (game.gyroControls.enabled) {
         window.removeEventListener('deviceorientation', handleDeviceOrientation);
       }
-
+      
       if (game.animationFrameId) {
         cancelAnimationFrame(game.animationFrameId);
       }
-
+      
       if (isMobile) {
         document.body.classList.remove('mobile-gameplay');
       }
+      
+      game.running = false;
     };
-  }, [beastImageRight, beastImageLeft, isMobile]);
-
-  // Add/remove device orientation event listener based on gyroscope usage
+  }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
+  
+  // Manejar el giroscopio
   useEffect(() => {
     if (usingGyroscope && gyroscopePermission === 'granted') {
       window.addEventListener('deviceorientation', handleDeviceOrientation);
@@ -410,371 +841,90 @@ const DoodleGame = forwardRef<DoodleGameRefHandle, DoodleGameProps>(({
       };
     }
   }, [usingGyroscope, gyroscopePermission]);
-
-  // Toggle gyroscope control on or off
-  const toggleGyroscope = () => {
-    if (usingGyroscope) {
-      // Disable gyroscope: remove event listener and update state
-      gameRef.current.gyroControls.enabled = false;
-      setUsingGyroscope(false);
-      window.removeEventListener('deviceorientation', handleDeviceOrientation);
-    } else {
-      // Enable gyroscope by requesting permission
-      requestOrientationPermission();
-    }
-  };
-
-  // Initialize platforms for the game
-  const placePlatforms = (game: any) => {
-    game.platforms = [];
-    // Add initial platform
-    game.platforms.push({
-      img: game.platformImg,
-      x: game.boardWidth / 2 - game.platformWidth / 2,
-      y: game.boardHeight - 50,
-      worldY: game.boardHeight - 50,
-      width: game.platformWidth,
-      height: game.platformHeight,
-    });
-    // Add additional platforms
-    for (let i = 0; i < 6; i++) {
-      let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
-      let worldY = game.boardHeight - 100 * i - 150;
-      game.platforms.push({
-        img: game.platformImg,
-        x: randomX,
-        y: worldY,
-        worldY: worldY,
-        width: game.platformWidth,
-        height: game.platformHeight,
-      });
-    }
-  };
-
-  // Create a new platform when one goes off-screen
-  const newPlatform = (game: any) => {
-    let randomX = Math.floor(Math.random() * (game.boardWidth * 0.75));
-    const baseGap = 100;
-    const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
-    const gapIncrement = game.score * 0.2 * difficultyMultiplier;
-    let worldY =
-      game.platforms[game.platforms.length - 1].worldY -
-      (baseGap + gapIncrement);
-    return {
-      img: game.platformImg,
-      x: randomX,
-      y: worldY - game.cameraY,
-      worldY: worldY,
-      width: game.platformWidth,
-      height: game.platformHeight,
-    };
-  };
-
-  // Detect collision between doodler and a platform
-  const detectCollision = (a: any, b: any) => {
-    return (
-      (a.x + a.hitboxOffsetX) < b.x + b.width &&
-      (a.x + a.hitboxOffsetX + a.width) > b.x &&
-      (a.worldY + a.hitboxOffsetY) < b.worldY + b.height &&
-      (a.worldY + a.hitboxOffsetY + a.height) > b.worldY
-    );
-  };
-
-  // Update game score when doodler lands on a platform
-  const updateScore = (game: any, platform: any) => {
-    const platformId = `${platform.worldY}`;
-    if (!game.touchedPlatforms.has(platformId)) {
-      game.score += 1;
-      game.maxScore = Math.max(game.score, game.maxScore);
-      game.touchedPlatforms.add(platformId);
-      updateBackground(game);
-      if (onScoreUpdate) {
-        onScoreUpdate(game.score);
-      }
-    }
-  };
-
-  // Update canvas background based on current score threshold
-  const updateBackground = (game: any) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    let newBackgroundIndex = 0;
-    for (let i = game.backgrounds.images.length - 1; i >= 0; i--) {
-      if (game.score >= game.backgrounds.images[i].scoreThreshold) {
-        newBackgroundIndex = i;
-        break;
-      }
-    }
-    if (game.backgrounds.current !== newBackgroundIndex) {
-      game.backgrounds.current = newBackgroundIndex;
-      canvas.style.backgroundImage = `url(${game.backgrounds.images[newBackgroundIndex].img})`;
-    }
-  };
-
-  // Update camera position to follow the doodler
-  const updateCamera = (game: any) => {
-    const cameraThreshold = 150;
-    game.doodler.y = game.doodler.worldY - game.cameraY;
-    if (game.doodler.y < cameraThreshold) {
-      const diff = cameraThreshold - game.doodler.y;
-      game.cameraY -= diff;
-    }
-    game.platforms.forEach((platform: any) => {
-      platform.y = platform.worldY - game.cameraY;
-    });
-    game.doodler.y = game.doodler.worldY - game.cameraY;
-  };
-
-  // Draw a rounded rectangle on the canvas
-  const roundRect = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    radius: number,
-    fill: boolean,
-    stroke: boolean
-  ) => {
-    ctx.beginPath(); // Start path
-    ctx.moveTo(x + radius, y); // Move to starting point
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath(); // Close path
-    if (fill) ctx.fill(); // Fill if needed
-    if (stroke) ctx.stroke(); // Stroke if needed
-  };
-
-  // Draw the score card on the canvas
-  const drawScoreCard = (ctx: CanvasRenderingContext2D, game: any) => {
-    const cardX = 5;
-    const cardY = 5;
-    const cardWidth = 60;
-    const cardHeight = 30;
-    const radius = 10;
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    roundRect(ctx, cardX, cardY, cardWidth, cardHeight, radius, true, false);
-    ctx.strokeStyle = 'black';
-    roundRect(ctx, cardX, cardY, cardWidth, cardHeight, radius, false, true);
-    ctx.fillStyle = 'black';
-    ctx.font = '16px sans-serif';
-    const text = game.score.toString();
-    const textWidth = ctx.measureText(text).width;
-    const textX = cardX + (cardWidth - textWidth) / 2;
-    const textY = cardY + cardHeight / 2 + 6;
-    ctx.fillText(text, textX, textY);
-  };
-
-  // Main game loop function using delta time for consistent movement
-  const update = (timestamp: number, canvas: HTMLCanvasElement, game: any) => {
-    const context = canvas.getContext('2d');
-    if (!context) return;
-
-    if (!game.lastTimestamp) {
-      game.lastTimestamp = timestamp; // Initialize lastTimestamp on first frame
-    }
-    const dt = (timestamp - game.lastTimestamp) / 1000; // Calculate delta time in seconds
-    game.lastTimestamp = timestamp;
-    const frameFactor = dt * 60; // Scale factor based on 60 FPS
-
-    if (game.gameOver) {
-      context.fillStyle = 'black';
-      context.font = '16px sans-serif';
-      context.fillText(
-        isMobile ? '' : "",
-        game.boardWidth / 7,
-        (game.boardHeight * 7) / 8
-      );
-
-      if (onScoreUpdate) {
-        onScoreUpdate(game.score);
-      }
-      if (onGameEnd && !game.endNotified) {
-        game.endNotified = true;
-        onGameEnd(game.score);
-      }
-
-      game.animationFrameId = requestAnimationFrame((ts) =>
-        update(ts, canvas, game)
-      );
-      return;
-    }
-
-    context.clearRect(0, 0, game.boardWidth, game.boardHeight);
-
-    // Update horizontal position using frameFactor
-    game.doodler.x += game.velocityX * frameFactor;
-    if (game.doodler.x > game.boardWidth) {
-      game.doodler.x = 0;
-    } else if (game.doodler.x + game.doodler.width < 0) {
-      game.doodler.x = game.boardWidth;
-    }
-
-    const difficultyMultiplier = 1 + game.backgrounds.current * 0.2;
-    const currentGravity = game.gravity * difficultyMultiplier;
-    game.velocityY = Math.min(
-      game.velocityY + currentGravity * frameFactor,
-      8 * frameFactor
-    );
-    game.doodler.worldY += game.velocityY * frameFactor;
-
-    updateCamera(game);
-
-    if (game.doodler.worldY > game.cameraY + game.boardHeight) {
-      game.gameOver = true;
-    }
-
-    // Draw each platform and check for collisions
-    for (let i = 0; i < game.platforms.length; i++) {
-      let platform = game.platforms[i];
-      if (platform.y >= -platform.height && platform.y <= game.boardHeight) {
-        context.drawImage(
-          platform.img,
-          platform.x,
-          platform.y,
-          platform.width,
-          platform.height
-        );
-      }
-      if (detectCollision(game.doodler, platform) && game.velocityY >= 0) {
-        game.velocityY = game.initialVelocityY;
-        game.doodler.worldY = platform.worldY - game.doodler.height;
-        updateScore(game, platform);
-      }
-    }
-
-    // Draw the doodler image on the canvas
-    context.drawImage(
-      game.doodler.img!,
-      game.doodler.x + game.doodlerVisualOffsetX, 
-      game.doodler.y + game.doodlerVisualOffsetY, 
-      game.doodlerVisualWidth,
-      game.doodlerVisualHeight
-    );
-
-    // Hitbox/collider display (for debugging) keep commented out in production
-    //context.strokeStyle = 'red';
-    //context.strokeRect(
-    //  game.doodler.x + game.doodler.hitboxOffsetX,
-    //  game.doodler.y + game.doodler.hitboxOffsetY,
-    //  game.doodler.width,
-    //  game.doodler.height
-    //);
-
-    // Replenish platforms that move off-screen
-    while (
-      game.platforms.length > 0 &&
-      game.platforms[0].worldY > game.cameraY + game.boardHeight
-    ) {
-      game.platforms.shift();
-      game.platforms.push(newPlatform(game));
-    }
-
-    drawScoreCard(context, game);
-
-    game.animationFrameId = requestAnimationFrame((ts) =>
-      update(ts, canvas, game)
-    );
-  };
-
-  // Merge external and internal container styles
-  const containerMergedStyle = { ...gameContainerStyle, ...style };
-
+  
   return (
-    <div className={`doodle-game-container ${className} ${isMobile ? 'mobile-game' : ''}`} style={containerMergedStyle}>
-      <div
+    <div 
+      ref={gameContainerRef} 
+      className={`dom-doodle-game ${className} ${isMobile ? 'mobile-game' : ''}`} 
+      style={{
+        backgroundImage: `url(${gameConfig.current.backgrounds.images[background].img})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        ...style
+      }}
+      onClick={gameOver ? handleRestartTouch : undefined}
+    >
+      {/* Doodler (personaje del juego) */}
+      <div 
+        ref={doodlerRef} 
+        className="doodler"
         style={{
-          ...canvasContainerStyle,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          position: 'relative',
+          width: `${gameConfig.current.doodlerVisualWidth}px`,
+          height: `${gameConfig.current.doodlerVisualHeight}px`,
+          backgroundImage: `url(${beastImageRight})`,
+          left: `${gameConfig.current.doodler.x}px`,
+          top: `${gameConfig.current.doodler.y}px`
         }}
-      >
-        <canvas
-          ref={canvasRef}
-          width={gameRef.current.boardWidth}
-          height={gameRef.current.boardHeight}
-          style={{
-            backgroundImage: `url(${bgImage1})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            display: 'block',
-            maxHeight: '100hv',
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'contain',
-          }}
-          onClick={gameRef.current.gameOver ? handleRestartTouch : undefined}
-        />
-
-        {/* Touch controls for mobile devices */}
-        {isMobile && !usingGyroscope && (
-          <>
-            <div
-              style={{
-                ...controlButtonStyle,
-                left: '20px',
-              }}
-              onTouchStart={() => handleTouchStart(-1)}
-              onTouchEnd={handleTouchEnd}
-            >
-              ←
-            </div>
-            <div
-              style={{
-                ...controlButtonStyle,
-                right: '20px',
-              }}
-              onTouchStart={() => handleTouchStart(1)}
-              onTouchEnd={handleTouchEnd}
-            >
-              →
-            </div>
-          </>
-        )}
-
-        {/* Button to Exit */}
-        {onExitGame && (
-          <button 
-            className="return-button"
-            onClick={onExitGame}
-          >
-            X
-          </button>
-        )}
-
-        {/* Button to toggle gyroscope on mobile */}
-        {isMobile && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50px',
-              right: '10px',
-              backgroundColor: usingGyroscope ? 'rgba(0,0,0,0.3)' : 'rgba(255, 255, 255, 0.5)',
-              padding: '8px',
-              borderRadius: '8px',
-              fontSize: '14px',
-              zIndex: 100,
-              cursor: 'pointer',
-              backdropFilter: 'blur(4px)',
-            }}
-            onClick={toggleGyroscope}
-          >
-            {usingGyroscope ? '🔓' : '🔒'}
-          </div>
-        )}
+      />
+      
+      {/* Contenedor para las plataformas */}
+      <div ref={platformsRef} className="platforms-container" />
+      
+      {/* Marcador de puntuación */}
+      <div className="score-card">
+        <div ref={scoreCardRef} className="score-text">0</div>
       </div>
+      
+      {/* Controles táctiles para dispositivos móviles */}
+      {isMobile && !usingGyroscope && (
+        <>
+          <div
+            className="control-button left-button"
+            onTouchStart={() => handleTouchStart(-1)}
+            onTouchEnd={handleTouchEnd}
+          >
+            ←
+          </div>
+          <div
+            className="control-button right-button"
+            onTouchStart={() => handleTouchStart(1)}
+            onTouchEnd={handleTouchEnd}
+          >
+            →
+          </div>
+        </>
+      )}
+      
+      {/* Botón para salir */}
+      {onExitGame && (
+        <button 
+          className="exit-button"
+          onClick={onExitGame}
+        >
+          X
+        </button>
+      )}
+      
+      {/* Botón para alternar giroscopio en móviles */}
+      {isMobile && (
+        <div
+          className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
+          onClick={toggleGyroscope}
+        >
+          {usingGyroscope ? '🔓' : '🔒'}
+        </div>
+      )}
+      
+      {/* Mensaje de Game Over */}
+      {gameOver && (
+        <div className="game-over-message">
+          <div>Game Over</div>
+          <div>Toca para reiniciar</div>
+          <div>Puntuación: {score}</div>
+        </div>
+      )}
     </div>
   );
 });
 
-export default DoodleGame;
+export default DOMDoodleGame;
