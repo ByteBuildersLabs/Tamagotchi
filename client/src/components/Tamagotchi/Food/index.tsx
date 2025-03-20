@@ -4,6 +4,8 @@ import { useFood } from '../../../hooks/useFood.tsx';
 import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
+import buttonClick from '../../../assets/sounds/click.mp3';
+import useSound from 'use-sound';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
@@ -20,6 +22,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
   const [ loading, setLoading ] = useState(true);
+  const [ buttonSound ] = useSound(buttonClick, { volume: 0.7, preload: true });
 
   useEffect(() => {
     if (!loadingFood && foods.length > 0) {
@@ -38,6 +41,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   }, [loadingFood, foods]);
 
   const feedTamagotchi = async (foodName: string) => {
+    buttonSound();
     if (!beast) return;
 
     const eatAnimation = beastsDex[beast.specie - 1].eatPicture;

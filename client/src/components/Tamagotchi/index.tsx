@@ -18,6 +18,7 @@ import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
+import buttonClick from '../../assets/sounds/click.mp3';
 import Header from '../../components/Header';
 import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -70,7 +71,6 @@ function Tamagotchi() {
   useEffect(() => {
     if (!zplayer || !account) return
     let response: any = fetchStatus(account);
-    
     if (!status || status.length === 0) setIsLoading(true);
     if(status[0] != zplayer.current_beast_id) setIsLoading(true);
 
@@ -92,6 +92,7 @@ function Tamagotchi() {
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
 
   // Animations
   const [currentImage, setCurrentImage] = useState<any>('');
@@ -132,6 +133,7 @@ function Tamagotchi() {
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
     showAnimation(animation);
+    buttonSound();
     // Trigger sound based on action
     switch (actionName) {
       case 'Feed': playFeed(); break;
@@ -178,6 +180,7 @@ function Tamagotchi() {
   };
   
   const handleNewEgg = () => {
+    buttonSound();
     if(!reborn) setReborn(true);
     navigate('/spawn');
   }
