@@ -182,12 +182,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       
       // Always update when there is a change, even if it's the same value
       if (heightScore !== currentScoreRef.current) {
-        const oldScore = currentScoreRef.current;
         currentScoreRef.current = heightScore;
-        
-        // Log for debugging
-        console.log(`Score updated: ${oldScore} → ${heightScore}`);
-        console.log(`Current height: ${currentHeight.toFixed(2)}, Camera Y: ${game.cameraY.toFixed(2)}`);
         
         // Update both React state and DOM directly
         setScore(heightScore);
@@ -410,7 +405,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       platformsContainer.appendChild(platformElement);
     });
     
-    console.log(`Initial platforms placed: ${game.platforms.length}`);
   };
   
   // Create a new platform when one goes off-screen
@@ -538,10 +532,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (game.doodler.y < cameraThreshold) {
       const diff = cameraThreshold - game.doodler.y;
       game.cameraY -= diff;
-      
-      // Log for debugging - see camera movement
-      console.log(`Camera moved: ${game.cameraY.toFixed(2)}, Doodler worldY: ${game.doodler.worldY.toFixed(2)}`);
-      
+         
       // Update score immediately when the camera moves up
       updateScoreByHeight();
     }
@@ -760,7 +751,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Use a small delay to restart the game
     // This gives time for React to update states
     setTimeout(() => {
-      console.log('Restarting the game loop after timeout');
       game.running = true;
       game.animationFrameId = requestAnimationFrame(update);
     }, 100);
@@ -812,9 +802,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       
       // Also adjust gravity to keep physics consistent
       game.gravity = 0.25 * Math.sqrt(screenSizeFactor);
-      
-      console.log(`Adjustments for screen: height=${viewportHeight}px, jumpVelocity=${game.initialVelocityY.toFixed(2)}, gravity=${game.gravity.toFixed(2)}`);
-      
+            
       // Update initial velocity
       game.velocityY = game.initialVelocityY;
       
