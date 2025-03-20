@@ -2,12 +2,14 @@ import { fetchStatus } from '../../../utils/tamagotchi';
 import toast, { Toaster } from 'react-hot-toast';
 import { Account } from '@dojoengine/torii-wasm';
 import { Button } from '../../../components/ui/button';
+import buttonClick from '../../../assets/sounds/click.mp3';
 import Food from '../../../assets/img/Feed.svg';
 import Sleep from '../../../assets/img/Sleep.svg';
 import Clean from '../../../assets/img/Clean.svg';
 import Play from '../../../assets/img/Play.svg';
 import beastsDex from '../../../data/beastDex';
 import './main.css';
+import useSound from 'use-sound';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
 
@@ -29,6 +31,8 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
   setStatus: (view: string) => void,
 }) => {
 
+  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+
   return (
     <div className="actions mb-0">
       {actionButtons.map(({ label, img, action, pictureKey }) => (
@@ -37,11 +41,13 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
           onClick={async () => {
             // For the Feed action, change the view and exit.
             if (action === 'feed') {
+              buttonSound();
               setCurrentView('food');
               return;
             }
 
             if (action === 'play') {
+              buttonSound();
               setCurrentView('play');
               return;
             }
