@@ -67,8 +67,9 @@
 }
 
 .game-high-score {
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Kallisto', sans-serif;
+  color: #ECECDA;
   margin: 0;
 }
 
@@ -89,10 +90,10 @@
   }
   
   .game-name {
-    font-size: 0.9rem;
+    font-size: 18px;
   }
   
   .game-description {
-    font-size: 0.7rem;
+    font-size: 14px;
   }
 }

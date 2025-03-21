@@ -131,7 +131,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    color: #ECECDA;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -152,8 +152,8 @@
     width: 30px;
     height: 30px;
     background-color: rgba(255, 0, 0, 0.7);
-    color: white;
-    border: none;
+    color: #ECECDA;
+    border: 0;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -182,7 +182,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 9999;
     display: flex;
@@ -238,7 +238,7 @@
   .play-again-button {
     background-color: #ECECDA;
     color: #85002A;
-    border: none;
+    border: 0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -291,13 +291,13 @@
   .fullscreen-game-mode header,
   .fullscreen-game-mode footer,
   .fullscreen-game-mode nav {
-    display: none !important;
+    display: none;
   }
   
   .return-button {
     background-color: #ECECDA;
     color: #85002A;
-    border: none;
+    border: 0;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -330,9 +330,9 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background-color: black;
-    color: white;
+    color: #ECECDA;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -367,3 +367,4 @@
   .platform {
     animation: fadeIn 0.3s ease-in-out;
   }
+  

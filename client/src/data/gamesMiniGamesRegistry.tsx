@@ -19,17 +19,6 @@ export const GAMES_REGISTRY: Record<string, GameData> = {
     component: DoodleGame,
     icon: doodleGameIcon
   },
-  // Example of another game:
-  /*
-  'puzzleGame': {
-    id: 'puzzleGame',
-    name: 'Beast Puzzle',
-    description: 'Solve the puzzle!',
-    component: PuzzleGame,
-    refType: PuzzleGameRefHandle,
-    icon: puzzleGameIcon
-  },
-  */
 };
 
 export const getAvailableGames = () => {
@@ -62,9 +51,7 @@ export const saveHighScore = (gameId: string, beastId: number, score: number): v
   let scores: { [key: string]: number } = {};
   
   try {
-    if (scoresStr) {
-      scores = JSON.parse(scoresStr);
-    }
+    if (scoresStr) scores = JSON.parse(scoresStr);
     scores[`${gameId}_${beastId}`] = score;
     localStorage.setItem('gameHighScores', JSON.stringify(scores));
   } catch (e) {

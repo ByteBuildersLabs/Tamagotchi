@@ -14,6 +14,23 @@ import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 
+const HITBOX_MARGIN = 2;
+const CAMERA_THRESHOLD = 150; 
+const GYRO_TILT_THRESHOLD = 5;
+const GYRO_TILT_DIVISOR = 10; 
+
+const VISIBLE_PLATFORM_MARGIN = 1.5; 
+const PLATFORM_GENERATION_THRESHOLD = 2; 
+const PLATFORM_HORIZONTAL_MAX = 0.8; 
+
+const SCORE_MILESTONE_INCREMENT = 50; 
+const MAX_SCORE_ADJUSTMENT = 200; 
+
+const RESET_GAME_DELAY = 100; 
+const MILESTONE_TOAST_DURATION = 2000; 
+const HIGH_SCORE_TOAST_DURATION = 4000; 
+const GAME_OVER_TOAST_DURATION = 3000; 
+
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
   resetGame: () => void;
@@ -46,6 +63,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   beastId,
   gameName,
 }, ref) => {
+
   // References and states
   const gameContainerRef = useRef<HTMLDivElement>(null);
   const doodlerRef = useRef<HTMLDivElement>(null);
@@ -145,11 +163,11 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       
       toast.success(`New high score: ${score}!`, {
         icon: '🏆',
-        duration: 4000
+        duration: HIGH_SCORE_TOAST_DURATION
       });
     } else {
       toast.success(`Game over! Score: ${score}`, {
-        duration: 3000
+        duration: GAME_OVER_TOAST_DURATION
       });
     }
     
@@ -187,14 +205,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         // Update both React state and DOM directly
         setScore(heightScore);
         
-        if (scoreCardRef.current) {
-          scoreCardRef.current.textContent = heightScore.toString();
-        }
+        if (scoreCardRef.current) scoreCardRef.current.textContent = heightScore.toString();
         
         // Notify parent component
-        if (onScoreUpdate) {
-          onScoreUpdate(heightScore);
-        }
+        if (onScoreUpdate) onScoreUpdate(heightScore);
         
         // Update background based on score
         updateBackground(heightScore);
@@ -207,7 +221,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   
   // Check score milestones and show alerts
   const checkScoreMilestones = (currentScore: number) => {
-    const milestone = Math.floor(currentScore / 50) * 50;
+    const milestone = Math.floor(currentScore / SCORE_MILESTONE_INCREMENT) * SCORE_MILESTONE_INCREMENT;
     
     if (milestone > 0 && milestone > lastMilestoneRef.current) {
       // Update last milestone reached
@@ -216,7 +230,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       // Show toast with milestone reached
       toast.success(`Amazing! You've reached ${milestone} points`, {
         position: "top-center",
-        duration: 2000
+        duration: MILESTONE_TOAST_DURATION
       });
     }
   };
@@ -278,18 +292,16 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     const gamma = event.gamma;
     const tilt = gamma - game.gyroControls.calibration;
     
-    if (tilt > 5) {
-      game.velocityX = Math.min((tilt / 10) * game.gyroControls.sensitivity, 6);
+    if (tilt > GYRO_TILT_THRESHOLD) {
+      game.velocityX = Math.min((tilt / GYRO_TILT_DIVISOR ) * game.gyroControls.sensitivity, 6);
       game.doodler.facingRight = true;
       if (doodlerRef.current) {
         doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
       }
-    } else if (tilt < -5) {
-      game.velocityX = Math.max((tilt / 10) * game.gyroControls.sensitivity, -6);
+    } else if (tilt < -GYRO_TILT_THRESHOLD) {
+      game.velocityX = Math.max((tilt / GYRO_TILT_DIVISOR ) * game.gyroControls.sensitivity, -6);
       game.doodler.facingRight = false;
-      if (doodlerRef.current) {
-        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
-      }
+      if (doodlerRef.current) doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
     } else {
       game.velocityX = 0;
     }
@@ -304,15 +316,11 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (direction === 1) {
       game.velocityX = 4;
       game.doodler.facingRight = true;
-      if (doodlerRef.current) {
-        doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
-      }
+      if (doodlerRef.current) doodlerRef.current.style.backgroundImage = `url(${beastImageRight})`;
     } else if (direction === -1) {
       game.velocityX = -4;
       game.doodler.facingRight = false;
-      if (doodlerRef.current) {
-        doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
-      }
+      if (doodlerRef.current) doodlerRef.current.style.backgroundImage = `url(${beastImageLeft})`;
     }
   };
   
@@ -357,7 +365,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     // Add initial platform (base)
     const initialPlatform = {
-      x: game.boardWidth / 2 - game.platformWidth / 2,
+      x: game.boardWidth / PLATFORM_GENERATION_THRESHOLD - game.platformWidth / PLATFORM_GENERATION_THRESHOLD,
       y: game.boardHeight - 50,
       worldY: game.boardHeight - 50,
       width: game.platformWidth,
@@ -374,7 +382,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Add additional platforms distributed in height
     for (let i = 0; i < initialPlatformCount; i++) {
       // Distribute more widely on wide screens
-      const maxX = game.boardWidth * 0.8;
+      const maxX = game.boardWidth * PLATFORM_HORIZONTAL_MAX;
       const randomX = Math.floor(Math.random() * maxX);
       
       // Distribute in height with adaptive spacing
@@ -431,7 +439,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     // Calculate the distance using the difficulty factor and score
     const difficultyMultiplier = 1 + game.backgrounds.current * 0.15; // Reduced from 0.2 to 0.15
-    const scoreAdjustment = Math.min(1, score / 200); // Limits the effect of the score
+    const scoreAdjustment = Math.min(1, score / MAX_SCORE_ADJUSTMENT); // Limits the effect of the score
     
     // Combined gap - closer on large screens to maintain playability
     const adjustedGap = (baseGap * screenAdjustment) * (1 + scoreAdjustment * difficultyMultiplier);
@@ -475,7 +483,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (gameConfig.current.velocityY < 0) return false;
     
     // Calculate hitbox more precisely with a bit of extra margin
-    const hitboxMargin = 2; // Small margin to make landing easier
+    const hitboxMargin = HITBOX_MARGIN; // Small margin to make landing easier
     
     const doodlerLeft = doodler.x + doodler.hitboxOffsetX;
     const doodlerRight = doodlerLeft + doodler.width;
@@ -489,7 +497,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Improve collision detection to ensure they are detected correctly
     const isColliding = 
     doodlerBottom >= platformTop && 
-    doodlerBottom <= platformTop + platform.height/2 + hitboxMargin &&
+    doodlerBottom <= platformTop + platform.height/PLATFORM_GENERATION_THRESHOLD + hitboxMargin &&
     doodlerRight > platformLeft && 
     doodlerLeft < platformRight
 
@@ -528,9 +536,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     game.doodler.y = game.doodler.worldY - game.cameraY;
     
     // If the doodler is above the threshold, move the camera up
-    const cameraThreshold = 150;
-    if (game.doodler.y < cameraThreshold) {
-      const diff = cameraThreshold - game.doodler.y;
+    if (game.doodler.y < CAMERA_THRESHOLD) {
+      const diff = CAMERA_THRESHOLD - game.doodler.y;
       game.cameraY -= diff;
          
       // Update score immediately when the camera moves up
@@ -650,20 +657,18 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     
     // Generate more platforms if the highest platform is less than 
     // 2 times the visible height above the camera
-    const platformsNeeded = visibleTop - highestPlatform > -visibleHeight * 2;
+    const platformsNeeded = visibleTop - highestPlatform > -visibleHeight * PLATFORM_GENERATION_THRESHOLD;
 
     // If we need more platforms, add them
     if (platformsNeeded) {
       const newPlatformObj = newPlatform();
-      if (newPlatformObj) {
-      game.platforms.push(newPlatformObj);
-      }
+      if (newPlatformObj) game.platforms.push(newPlatformObj);
     }
 
     // Remove platforms that are no longer visible to improve performance
     while (
       game.platforms.length > 0 &&
-      game.platforms[0].worldY > game.cameraY + game.boardHeight * 1.5 // Margin to ensure visibility
+      game.platforms[0].worldY > game.cameraY + game.boardHeight * VISIBLE_PLATFORM_MARGIN // Margin to ensure visibility
     ) {
       const removedPlatform = game.platforms.shift();
       if (removedPlatform && removedPlatform.element && removedPlatform.element.parentNode) {
@@ -753,7 +758,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setTimeout(() => {
       game.running = true;
       game.animationFrameId = requestAnimationFrame(update);
-    }, 100);
+    }, RESET_GAME_DELAY);
     };
     
     // Effect to adjust game size and set up controls
