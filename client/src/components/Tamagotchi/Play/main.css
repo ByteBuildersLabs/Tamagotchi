@@ -1,16 +1,11 @@
+/* Estilos que SÍ se utilizan en el componente Play */
+
 .game-selection-container {
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 15px;
   height: 120px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-.game-selection-title {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #ECECDA;
 }
 
 .game-selection-grid {
@@ -72,207 +67,11 @@
 }
 
 .game-high-score {
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Kallisto', sans-serif;
+  color: #ECECDA;
   margin: 0;
 }
-
-/* Style to put the game in full screen */
-
-.doodle-game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100dvh; 
-  max-height: 100dvh;
-  overflow: hidden; 
-  padding: 0 !important; 
-  position: fixed; 
-  top: 0px;
-  left: 0;
-    z-index: 1000;
-  }
-
-/* Ensure the canvas container fits proportionally */
-div[style*="canvasContainerStyle"] {
-  height: 100% !important;
-  max-height: 95dvh; 
-  width: auto !important; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* The canvas must be adjusted maintaining its proportion */
-canvas {
-  height: auto !important;
-  max-height: 95dvh !important;
-  width: auto !important;
-  max-width: 100% !important;
-  object-fit: contain !important;
-}
-
-.game-container {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.game-score-display {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1100;
-}
-
-.return-button {
-  background: linear-gradient(to right, #85002A, #D1093D);
-  color: #ECECDA;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-family: 'Kallisto', sans-serif;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  font-size: 18px;
-  z-index: 1100;
-  min-width: unset;
-  background: rgba(133, 0, 42, 0.8);
-}
-
-.return-button:hover {
-  background: linear-gradient(to right, #95033A, #E11A4D);
-  transform: translateY(-2px);
-}
-
-.return-button:active {
-  background: linear-gradient(to right, #B00833, #6E0022);
-  transform: translateY(0);
-}
-
-@media (max-aspect-ratio: 1/1) {
-  canvas {
-    width: 100% !important;
-    height: auto !important;
-    max-height: 85dvh !important;
-  }
-}
-
-@media (min-aspect-ratio: 1/1) {
-  canvas {
-    height: 92dvh !important;
-    width: auto !important;
-  }
-}
-
-body.game-active {
-  overflow: hidden;
-}
-
-.game-result-container {
-  padding: 5px;
-  height: 120px;
-  background-color: rgba(0,0,0, 0.6); 
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  max-width: 400px;
-  margin: 0 auto;
-  animation: fade-in-up 0.5s ease-out forwards;
-}
-
-.game-result-title {
-  font-family: 'Kallisto', sans-serif;
-  font-size: 18px;
-  color: #ECECDA;
-  font-weight: bold;
-}
-
-.game-result-score {
-  font-family: 'Montserrat', serif;
-  font-size: 16px;
-  font-weight: bold;
-  color: #ECECDA;
-}
-
-.game-result-record {
-  font-family: 'Montserrat', serif;
-  font-size: 14px;
-  color: #ECECDA; 
-}
-
-.game-result-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.play-again-button {
-  background: linear-gradient(to right, #85002A, #D1093D);
-  color: #ECECDA;
-  border: none;
-  border-radius: 25px;
-  padding: 5px 10px;
-  font-size: 16px;
-  font-family: 'Kallisto', sans-serif;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
-}
-
-.play-again-button:hover {
-  background: linear-gradient(to right, #95033A, #E11A4D);
-  transform: translateY(-2px);
-}
-
-.play-again-button:active {
-  background: linear-gradient(to right, #B00833, #6E0022);
-  transform: translateY(0);
-}
-
-.game-error-container {
-  padding: 20px;
-  background-color: rgba(55, 0, 1, 0.8);
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.game-error-container p {
-  font-family: 'Montserrat', serif;
-  color: #ECECDA;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
 
 @media (max-width: 600px) {
   .game-selection-grid {
@@ -291,10 +90,10 @@ body.game-active {
   }
   
   .game-name {
-    font-size: 0.9rem;
+    font-size: 18px;
   }
   
   .game-description {
-    font-size: 0.7rem;
+    font-size: 14px;
   }
 }
