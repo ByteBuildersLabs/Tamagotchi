@@ -1,0 +1,370 @@
+/* Main styles of the game container */
+.dom-doodle-game {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  /* Styles for the main character (doodler) */
+  .doodler {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 50;
+    transform: translate(-13px, -24px); /* Visual offset to adjust the hitbox */
+  }
+  
+  /* Platform container */
+  .platforms-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 40;
+  }
+  
+  /* Style of each platform */
+  .platform {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 45;
+  }
+  
+  /* Styles for the punctuation marker */
+  .score-card {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    min-width: 60px;
+    height: 40px;
+    background-color: #ECECDA;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 0 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .score-text {
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #85002A;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Styles for control buttons on mobile devices */
+  .control-button {
+    color: #85002A;
+    position: absolute;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #ECECDA;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    touch-action: manipulation;
+    user-select: none;
+    z-index: 100;
+  }
+  
+  .left-button {
+    left: 20px;
+  }
+  
+  .right-button {
+    right: 20px;
+  }
+  
+  /* Style for the gyroscope button */
+  .gyro-button {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    background-color: #ECECDA;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 100;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+  
+  .gyro-button.active {
+    background-color: #ECECDA;
+  }
+
+  .lock-icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .lock-icon.unlocked {
+    transform: rotate(180deg); 
+    opacity: 0.7; 
+  }
+  
+  /* Game Over message */
+  .game-over-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ECECDA;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    z-index: 200;
+  }
+  
+  .game-over-message div:first-child {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  /* Styles for the exit button */
+  .exit-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #ECECDA;
+    border: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 100;
+  }
+  
+  /* Mobile-specific styles */
+  .mobile-game .control-button {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+  
+  /* Remove highlighting when tapping on mobile devices */
+  .mobile-gameplay {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  .modal-overlay {
+    pointer-events: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-overlay.closed {
+    pointer-events: none;
+  }
+  
+  /* Styles for the end-game modal */
+  .game-result-container {
+    position: fixed;
+    height: 140px;
+    top: 40%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: rgba(0,0,0, 0.6); 
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+    z-index: 10000;
+    animation: fade-in-up 0.5s ease-out forwards;
+  }
+  
+  .game-result-title {
+    font-family: 'Kallisto', sans-serif;
+    font-size: 24px;
+    color: #ECECDA;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .game-result-score {
+    font-family: 'Montserrat', serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ECECDA;
+    margin-bottom: 5px;
+  }
+  
+  .game-result-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .play-again-button {
+    background-color: #ECECDA;
+    color: #85002A;
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+  }
+
+  .restart-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Styles for full screen */
+  .fullscreen-game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 9999;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .fullscreen-mode {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .fullscreen-game-mode {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Hide unwanted interface elements in full screen mode */
+  .fullscreen-game-mode header,
+  .fullscreen-game-mode footer,
+  .fullscreen-game-mode nav {
+    display: none;
+  }
+  
+  .return-button {
+    background-color: #ECECDA;
+    color: #85002A;
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+  }
+  
+  .return-button:hover {
+    background: linear-gradient(to right, #95033A, #E11A4D);
+    transform: translateY(-2px);
+  }
+  
+  .return-button:active {
+    background: linear-gradient(to right, #B00833, #6E0022);
+    transform: translateY(0);
+  }
+  
+  /* Loading screen */
+  .game-loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background-color: black;
+    color: #ECECDA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-family: 'Kallisto', sans-serif;
+  }
+  
+  /* Animations */
+  @keyframes jump {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  /* Apply animations for spawn new platforms*/
+  .platform {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
