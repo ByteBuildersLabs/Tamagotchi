@@ -16,7 +16,7 @@ const FullscreenGame = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [gameState, setGameState] = useState<GameState | null>(null);
-  const [currentScore, setCurrentScore] = useState(0);
+  const [_currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [currentGameData, setCurrentGameData] = useState<GameData | null>(null);
 
