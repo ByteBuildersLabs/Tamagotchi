@@ -17,7 +17,6 @@ mod tests {
         let game_system = create_game_system(world);
         let player_system = create_player_system(world);
         
-
         cheat_caller_address(PLAYER());
         cheat_block_timestamp(7000000);
 
@@ -30,20 +29,24 @@ mod tests {
         // Get new timestamp calculated status
         cheat_block_timestamp(7005000);
         let decreased_status: BeastStatus = game_system.get_timestamp_based_status();
-        println!("Initial Status - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
+        println!("Initial Status SLEEP TEST - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
         decreased_status.happiness, decreased_status.energy,decreased_status.is_awake, decreased_status.is_alive);
 
         // Make beast sleep
         game_system.sleep();
+        
+        cheat_block_timestamp(7005500);
 
         // Get final status
-        let final_status: BeastStatus = world.read_model(1);
+        let final_status: BeastStatus = game_system.get_timestamp_based_status();
 
-        println!("Final Status - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
+        println!("Final Status SLEEP TEST - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
         final_status.happiness, final_status.energy,final_status.is_awake, final_status.is_alive);
 
         assert(final_status.energy > decreased_status.energy, 'energy not increased');
         assert(final_status.happiness > decreased_status.happiness, 'happiness not increased');
+        assert(final_status.hunger < decreased_status.hunger, 'hunger not decreased');
+        assert(final_status.hygiene < decreased_status.hygiene, 'hygiene not decreased');
         assert(!final_status.is_awake, 'beast should be sleeping');
     }
 
@@ -102,7 +105,6 @@ mod tests {
         println!("Initial Status - Happiness: {}, Energy: {}, Is Awake: {}, Is Alive {}", 
         decreased_status.happiness, decreased_status.energy,decreased_status.is_awake, decreased_status.is_alive);
 
-        // Play with beast
         game_system.play();
 
         // Get final status

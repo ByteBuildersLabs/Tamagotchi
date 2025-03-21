@@ -102,7 +102,7 @@ mod tests {
         player_system.set_current_beast(1);
 
         // We decrease the status to verify that they increase after feeding
-        cheat_block_timestamp(7005000);
+        cheat_block_timestamp(7000500);
 
         // Get initial status
         let initial_status: BeastStatus = game_system.get_timestamp_based_status();

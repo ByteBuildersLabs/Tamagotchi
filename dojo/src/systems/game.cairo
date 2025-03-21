@@ -94,7 +94,14 @@ pub mod game {
             // Update beast status and write it to the world
             let beast_id = player.current_beast_id;
             let mut beast_status: BeastStatus = store.read_beast_status(beast_id);
-            beast_status.calculate_timestamp_based_status(current_timestamp);   
+            
+            if beast_status.is_awake {
+                beast_status.calculate_timestamp_based_status_awake(current_timestamp);
+            }
+            else {
+                beast_status.calculate_timestamp_based_status_asleep(current_timestamp);
+            }
+ 
             store.write_beast_status(@beast_status);
             
             // Update beast and write it to the world
@@ -151,15 +158,7 @@ pub mod game {
             // Status retrieved by calculation
             let mut beast_status = self.get_timestamp_based_status();
 
-            if beast_status.is_alive == true {
-                beast_status.energy = beast_status.energy + constants::XL_UPDATE_POINTS;
-                if beast_status.energy > constants::MAX_ENERGY {
-                    beast_status.energy = constants::MAX_ENERGY;
-                }
-                beast_status.happiness = beast_status.happiness + constants::M_UPDATE_POINTS;
-                if beast_status.happiness > constants::MAX_HAPPINESS {
-                    beast_status.happiness = constants::MAX_HAPPINESS;
-                }
+            if beast_status.is_alive {
                 beast_status.is_awake = false;
                 store.write_beast_status(@beast_status);
             }
@@ -172,10 +171,10 @@ pub mod game {
             let player: Player = store.read_player();
             player.assert_exists();
 
-           // Status retrieved by calculation
+            // Status retrieved by calculation
             let mut beast_status = self.get_timestamp_based_status();
 
-            if beast_status.is_alive == true {
+            if beast_status.is_alive {
                 beast_status.is_awake = true;
                 store.write_beast_status(@beast_status);
             }
@@ -298,8 +297,14 @@ pub mod game {
             let mut beast_status = store.read_beast_status(beast_id);
             
             let current_timestampt = get_block_timestamp();
-            beast_status.calculate_timestamp_based_status(current_timestampt);
 
+            if beast_status.is_awake {
+                beast_status.calculate_timestamp_based_status_awake(current_timestampt);
+            }
+            else {
+                beast_status.calculate_timestamp_based_status_asleep(current_timestampt);
+            }
+            
             beast_status
         }
 
@@ -312,10 +317,16 @@ pub mod game {
 
             let beast_id = player.current_beast_id;
             let mut beast_status = store.read_beast_status(beast_id);
-            
-            let current_timestampt = get_block_timestamp();
-            beast_status.calculate_timestamp_based_status(current_timestampt);
 
+            let current_timestampt = get_block_timestamp();
+
+            if beast_status.is_awake {
+                beast_status.calculate_timestamp_based_status_awake(current_timestampt);
+            }
+            else {
+                beast_status.calculate_timestamp_based_status_asleep(current_timestampt);
+            }
+            
             beast_status
         }
 
@@ -329,8 +340,8 @@ pub mod game {
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
             
-            let current_timestampt = get_block_timestamp();
-            beast.calculate_age(current_timestampt);
+            let current_timestamp = get_block_timestamp();
+            beast.calculate_age(current_timestamp);
             
             beast.age
         }
@@ -345,8 +356,8 @@ pub mod game {
             let beast_id = player.current_beast_id;
             let mut beast: Beast = store.read_beast(beast_id);
 
-            let current_timestampt = get_block_timestamp();
-            beast.calculate_age(current_timestampt);
+            let current_timestamp = get_block_timestamp();
+            beast.calculate_age(current_timestamp);
             
             beast.age
         }

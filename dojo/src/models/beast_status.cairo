@@ -21,7 +21,6 @@ pub struct BeastStatus {
     pub hygiene: u8,
     pub clean_status: u8,
     pub last_timestamp: u64,
-    pub sleep_timestamp: u64,
 }
 
 // Traits implementations
@@ -38,7 +37,6 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             hygiene: PseudoRandom::generate_random_u8(beast_id, 4, constants::MIN_INITIAL_STATUS, constants::MAX_INITIAL_STATUS),
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: current_timestamp,
-            sleep_timestamp: current_timestamp,   
         }
     }
 
@@ -67,17 +65,17 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             }
     }
 
-    fn calculate_timestamp_based_status(ref self: BeastStatus, current_timestamp: u64){
+    fn calculate_timestamp_based_status_awake(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / constants::SECONDS_FOR_DECREASE;
+        let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES;
 
         if total_points < constants::MAX_POINTS {
-            let points_to_drecrease: u8 = total_points.try_into().unwrap();
+            let points_to_decrease: u8 = total_points.try_into().unwrap();
 
-            let multiplied_hunger_to_decrease = (points_to_drecrease * 3) / 2;
-            let multiplied_energy_to_decrease = (points_to_drecrease * 3) / 2; 
+            let multiplied_hunger_to_decrease = (points_to_decrease * 3) / 2;
+            let multiplied_energy_to_decrease = (points_to_decrease * 3) / 2; 
 
-            if self.is_alive == true {
+            if self.is_alive {
                 // Decrease energy based on conditions
                 if self.happiness == 0 || self.hygiene == 0 {
                     self.energy = if self.energy >= multiplied_energy_to_decrease {
@@ -86,8 +84,8 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                         0
                     };
                 } else {
-                    self.energy = if self.energy >= points_to_drecrease {
-                        self.energy - points_to_drecrease
+                    self.energy = if self.energy >= points_to_decrease {
+                        self.energy - points_to_decrease
                     } else {
                         0
                     };
@@ -101,15 +99,15 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                 };
 
                 // Decrease happiness safely 
-                self.happiness = if self.happiness >= points_to_drecrease {
-                    self.happiness - points_to_drecrease
+                self.happiness = if self.happiness >= points_to_decrease {
+                    self.happiness - points_to_decrease
                 } else {
                     0
                 };
 
                 // Decrease hygiene safely
-                self.hygiene = if self.hygiene >= points_to_drecrease {
-                    self.hygiene - points_to_drecrease
+                self.hygiene = if self.hygiene >= points_to_decrease {
+                    self.hygiene - points_to_decrease
                 } else {
                     0
                 };
@@ -129,8 +127,56 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             self.hunger = 0;
             self.is_alive = false;
         }
-        // updae timestamp
-        self.last_timestamp = current_timestamp;
+    }
+
+    fn calculate_timestamp_based_status_asleep(ref self: BeastStatus, current_timestamp: u64){
+        let total_seconds: u64 =  current_timestamp - self.last_timestamp; // Total seconds from the last timestamp to the current timestamp
+        let total_energy_points: u64 = total_seconds / constants::POINTS_PER_SECOND.try_into().unwrap();
+
+        if total_energy_points > 0 {
+            if total_energy_points < constants::MAX_POINTS {
+                let points_to_increase: u8 = total_energy_points.try_into().unwrap(); // Total points of energy and happiness to increase
+                let points_to_decrease: u8 = points_to_increase / 2; // Total points to decrease for the other status of the beast
+
+                if self.is_alive {
+                    if (self.energy + points_to_decrease) < constants::MAX_POINTS.try_into().unwrap() {
+                        // ----------- Increase energy and happiness ------------
+                        self.energy = self.energy + points_to_increase;
+                        self.happiness = self.happiness + points_to_increase;
+                        
+                        // ----------- Decrease hunger and hygiene ------------
+                        self.hunger = if self.hunger >= points_to_decrease {
+                            self.hunger - points_to_decrease
+                        } else {
+                            0
+                        };
+        
+                        self.hygiene = if self.hygiene >= points_to_decrease {
+                            self.hygiene - points_to_decrease
+                        } else {
+                            0
+                        };
+                        self.update_clean_status(self.hygiene);
+        
+                        // Check if beast dies
+                        if self.hunger == 0 {
+                            self.is_alive = false;
+                        }
+                    }
+                    else {
+                        self.happiness = 80;
+                        self.energy = 100;
+                        self.is_awake = true;
+                    }
+
+                }
+            }
+            else{
+                self.happiness = 80;
+                self.energy = 100;
+                self.is_awake = true;
+            }
+        }
     }
 }
 
@@ -153,7 +199,6 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
-            sleep_timestamp: 1,   
         };
 
         assert_eq!(beast_status.beast_id, 1, "Beast ID should be 1");
@@ -178,8 +223,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
-            last_timestamp: 1,
-            sleep_timestamp: 1,  
+            last_timestamp: 1, 
         };
 
         assert!(max_status_beast.hunger <= 100, "Hunger should not exceed 100");
@@ -202,7 +246,6 @@ mod tests {
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
-            sleep_timestamp: 1,  
         };
 
         let beast2 = BeastStatus {
@@ -214,8 +257,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
-            last_timestamp: 1,
-            sleep_timestamp: 1,  
+            last_timestamp: 1, 
         };
 
         assert!(
@@ -237,7 +279,6 @@ mod tests {
             hygiene: 0,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
-            sleep_timestamp: 1,  
         };
 
         assert!(!deceased_beast.is_alive, "Beast should be deceased");
@@ -259,7 +300,6 @@ mod tests {
             hygiene: 1,
             clean_status: CleanStatus::Clean.into(),
             last_timestamp: 1,
-            sleep_timestamp: 1,  
         };
 
         assert!(low_status_beast.hunger >= 0, "Hunger should never be negative");
@@ -286,7 +326,6 @@ mod tests {
             hygiene: 0,
             clean_status: CleanStatus::Filthy.into(),
             last_timestamp: 1,
-            sleep_timestamp: 1,  
         };
 
         assert_eq!(zero_status_beast.hunger, 0, "Minimum hunger should be 0");
