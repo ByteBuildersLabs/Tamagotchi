@@ -222,7 +222,7 @@ function Tamagotchi() {
               }
               <div className="scenario flex justify-center items-column">
                 {
-                  !status || status.length === 0 ? <Spinner /> :
+                  !status || status.length === 0 ? <Spinner message="Loading your beast..." /> :
                     <img
                       src={currentImage}
                       alt="Tamagotchi"

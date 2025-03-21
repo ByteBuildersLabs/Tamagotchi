@@ -1,10 +1,14 @@
 import './spinner.css';
 
-const Spinner = () => (
+interface SpinnerProps {
+  message?: string;
+}
+
+const Spinner: React.FC<SpinnerProps> = ({ message = "Loading..." }) => (
   <div className="spinner-overlay">
     <div className="spinner-content">
       <div className="loader"></div>
-      <div className="spinner-message">Loading your beast...</div>
+      <div className="spinner-message">{message}</div>
     </div>
   </div>
 );
