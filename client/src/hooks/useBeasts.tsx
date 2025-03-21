@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
-const TORII_URL = dojoConfig.toriiUrl+"/graphql";
+import { lookupAddresses } from '@cartridge/controller';
+const TORII_URL = dojoConfig.toriiUrl + "/graphql";
 
 interface Beast {
   player: string;
@@ -46,7 +47,20 @@ export const useBeasts = () => {
 
         const result = await response.json();
         if (result.data && result.data.tamagotchiBeastModels) {
-          setBeastsData(result.data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => edge.node));
+          const playerAddresses = result.data.tamagotchiBeastModels.edges
+            .map((edge: BeastEdge) => edge.node.player)
+            .filter((address: string, index: number, self: string[]) =>
+              self.indexOf(address) === index
+            );
+          const addressMap = await lookupAddresses(playerAddresses);
+          let playerData = result.data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => {
+            const beast = edge.node;
+            return {
+              ...beast,
+              userName: addressMap.get(beast.player)
+            };
+          });
+          setBeastsData(playerData);
         }
       } catch (error) {
         console.error("Error fetching beasts:", error);

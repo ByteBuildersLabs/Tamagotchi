@@ -5,6 +5,7 @@ import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
 import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 import beastsDex from "../../data/beastDex.tsx";
 import dead from '../../assets/img/dead.gif';
 import Actions from "./Actions/index.tsx";
@@ -17,6 +18,7 @@ import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
+import buttonClick from '../../assets/sounds/click.mp3';
 import Header from '../../components/Header';
 import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -25,6 +27,7 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
+import Egg from "../../assets/img/egg.gif";
 import './main.css';
 
 function Tamagotchi() {
@@ -32,6 +35,7 @@ function Tamagotchi() {
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
+  const navigate = useNavigate();
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -46,7 +50,7 @@ function Tamagotchi() {
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
     if (!foundBeast) return
-    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
+    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id);
   }
 
   useEffect(() => {
@@ -58,22 +62,24 @@ function Tamagotchi() {
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
     }
-  }, [zplayer, zbeasts]);
+  }, [zplayer, zbeasts, location]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
+  const [reborn, setReborn] = useLocalStorage('reborn', false);
 
   useEffect(() => {
     if (!zplayer || !account) return
     let response: any = fetchStatus(account);
-    
     if (!status || status.length === 0) setIsLoading(true);
     if(status[0] != zplayer.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
       if(status[1] == 0) return
       response = await fetchStatus(account);
-      if (response && Object.keys(response).length !== 0) setStatus(response);
+      if (response && Object.keys(response).length !== 0) {
+        setStatus(response);
+      }
       setIsLoading(false);
     }, 3000);
   }, [zcurrentBeast, location]);
@@ -86,16 +92,7 @@ function Tamagotchi() {
   const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
   const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
   const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-
-  useEffect(() => {
-    const updateBackground = () => {
-      const bodyElement = document.querySelector('.body') as HTMLElement;
-      if (bodyElement) {
-        bodyElement.classList.add('day');
-      }
-    };
-    updateBackground();
-  }, []);
+  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
 
   // Animations
   const [currentImage, setCurrentImage] = useState<any>('');
@@ -108,10 +105,17 @@ function Tamagotchi() {
   };
 
   useEffect(() => {
-    if (!status || !zcurrentBeast) return;
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) bodyElement.classList.add('day');
+
+    if(!status) return
+    if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
+  }, [status, zcurrentBeast, location])
+
+  useEffect(() => {
     if (status[1] == 0) setCurrentImage(dead);
     if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
-  }, [status, zcurrentBeast]);
+  }, [status, zcurrentBeast, location]);
 
   // Twitter Share
   const getShareableStats = () => {
@@ -129,6 +133,7 @@ function Tamagotchi() {
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
     showAnimation(animation);
+    buttonSound();
     // Trigger sound based on action
     switch (actionName) {
       case 'Feed': playFeed(); break;
@@ -173,6 +178,12 @@ function Tamagotchi() {
       console.error("Cuddle error:", error);
     }
   };
+  
+  const handleNewEgg = () => {
+    buttonSound();
+    if(!reborn) setReborn(true);
+    navigate('/spawn');
+  }
 
   return (
     <>
@@ -189,6 +200,18 @@ function Tamagotchi() {
               beastStatus={status}
             />
             <div className="game">
+              {
+                status[1] == 0 && 
+                <> 
+                  <button
+                    className="button"
+                    onClick={handleNewEgg}
+                  >
+                    Hatch a new Egg
+                    <img src={Egg} className="new-egg" alt="beast" />
+                  </button>
+                </>
+              }
               {
                 !status || status.length === 0 || !zcurrentBeast ? <></> :
                   <Whispers
@@ -244,6 +267,7 @@ function Tamagotchi() {
                       beast={zcurrentBeast}
                       account={account}
                       client={client}
+                      beastStatus={status}
                       showAnimation={showAnimation}
                     />
                   ) : currentView === 'play' ? (

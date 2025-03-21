@@ -8,6 +8,7 @@
   padding: 15px 0;
   border-radius: 25px;
   color: #ECECDA;
+  cursor: pointer;
 }
 
 .status .item {
@@ -35,8 +36,31 @@
   position: relative;
 }
 
+.status .status-name {
+  position: absolute;
+  transition: all 0.3s;
+  margin-top: 2px;
+  font-weight: bold;
+  width: 113px;
+  left: -23px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.status .status-name span {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 20%;
+}
+
 .status .item .value {
   margin: 0;
   font-weight: bold;
   font-size: 16px;
+}
+
+.progress-number {
+  font-size: 20px;
+  font-weight: bold;
 }

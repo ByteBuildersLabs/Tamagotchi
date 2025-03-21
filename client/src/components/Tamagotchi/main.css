@@ -4,7 +4,7 @@
   margin: auto;
   width: 100%;
   max-width: 400px;
-  height: 87dvh;
+  height: 85dvh;
   transform: translateY(50px);
   animation: fade-in-up 1s ease-out forwards;
 }
@@ -23,7 +23,7 @@
   width: 40%;
   object-fit: contain;
   position: absolute;
-  bottom: 30px;
+  bottom: 15px;
   right: 30%;
   margin: auto;
 }
