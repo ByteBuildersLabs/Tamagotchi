@@ -168,7 +168,6 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                         self.energy = 100;
                         self.is_awake = true;
                     }
-
                 }
             }
             else{
