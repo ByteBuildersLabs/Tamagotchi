@@ -256,7 +256,7 @@ mod tests {
             happiness: 100,
             hygiene: 100,
             clean_status: CleanStatus::Clean.into(),
-            last_timestamp: 1, 
+            last_timestamp: 1,
         };
 
         assert!(
