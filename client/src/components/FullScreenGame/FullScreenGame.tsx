@@ -12,6 +12,18 @@ interface GameState {
   gameId: string;
 }
 
+interface GameTemp {
+  handleAction: any;
+  client: any;
+  account: any;
+}
+
+declare global {
+  interface Window {
+    __gameTemp: GameTemp | null;
+  }
+}
+
 const FullscreenGame = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,11 +31,22 @@ const FullscreenGame = () => {
   const [_currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [currentGameData, setCurrentGameData] = useState<GameData | null>(null);
+  const [gameTemp, setGameTemp] = useState<GameTemp | null>(null);
 
   // Reference to the active game
   const gameRef = useRef<any>(null);
 
   useEffect(() => {
+    const tempData = window.__gameTemp;
+    
+    if (!tempData) {
+      console.error("Game data not found. Please start the game from the play screen.");
+      navigate('/play');
+      return;
+    }
+    
+    setGameTemp(tempData);
+    
     // Get game data from the location state
     if (location.state?.beastId && location.state?.specie && location.state?.gameId) {
       const gameId = location.state.gameId;
@@ -57,6 +80,7 @@ const FullscreenGame = () => {
     return () => {
       // Cleanup
       document.body.classList.remove('fullscreen-game-mode');
+      window.__gameTemp = null;
     };
   }, [location.state, navigate]);
 
@@ -68,8 +92,8 @@ const FullscreenGame = () => {
     setCurrentScore(score);
   };
 
-  // Show loader while game data is loading
-  if (!gameState || !currentGameData) {
+  // Show loader while game data is loading or if gameTemp is null
+  if (!gameState || !currentGameData || !gameTemp) {
     return <Spinner message="Loading mini game..." />;
   }
 
@@ -96,6 +120,9 @@ const FullscreenGame = () => {
         gameId={gameState.gameId}
         beastId={gameState.beastId}
         gameName={currentGameData.name}
+        handleAction={gameTemp.handleAction}
+        client={gameTemp.client}
+        account={gameTemp.account}
       />
       
       {/* Button to close the game */}
