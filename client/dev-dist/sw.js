@@ -82,7 +82,11 @@ define(['./workbox-20a2f87f'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "index.html",
+<<<<<<< HEAD
     "revision": "0.nnsu92qrupg"
+=======
+    "revision": "0.u5eqofogupo"
+>>>>>>> 42198cb (updated whispper and created chat component)
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
