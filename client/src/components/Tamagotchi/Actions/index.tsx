@@ -57,7 +57,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               await toast.promise(
                 handleAction(
                   label, 
-                  () => client.actions[action](account as Account), 
+                  () => client.game[action](account as Account), 
                   beastsDex[beast.specie - 1][pictureKey]
                 ),
                 {
@@ -67,7 +67,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
                 }
               );
 
-              await client.actions.updateBeast();
+              await client.game.updateBeast();
 
               let status:any = fetchStatus(account);
               if (status && Object.keys(status).length !== 0) setStatus(status);

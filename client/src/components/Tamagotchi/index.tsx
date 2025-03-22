@@ -54,7 +54,7 @@ function Tamagotchi() {
 
   async function setCurrentBeastInPlayer(foundBeast: any) {
     if (!foundBeast) return
-    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id);
+    await client.player.setCurrentBeast(account as Account, foundBeast?.beast_id);
   }
 
   useEffect(() => {
@@ -166,7 +166,7 @@ function Tamagotchi() {
         handleAction(
           "Cuddle",
           // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.pet(account as Account), //change sleep action to cuddle action
+          () => client.game.pet(account as Account), //change sleep action to cuddle action
           // Use the cuddle animation from your initials data
           beastsDex[zcurrentBeast.specie - 1].cuddlePicture
         ),
