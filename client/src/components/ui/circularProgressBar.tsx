@@ -15,7 +15,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   size = 68,
   strokeWidth = 7,
   progress,
-  color = '#000',
+  color = '#0000004d',
   pic,
   name
 }) => {
@@ -37,7 +37,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
     <div className="flex items-center justify-center circle-container" onClick={() => {showStatus()}}>
       <svg width={size} height={size} className="transform -rotate-90">
         <circle
-          stroke="#000"
+          stroke="#0000004d"
           fill="transparent"
           strokeWidth={strokeWidth}
           r={radius}

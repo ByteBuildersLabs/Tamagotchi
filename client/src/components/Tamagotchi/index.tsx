@@ -13,6 +13,7 @@ import Status from "./Status/index.tsx";
 import Food from "./Food/index.tsx";
 import Play from "./Play/index.tsx";
 import Whispers from "./Whispers/index.tsx";
+import Chat from "./Chat/index.tsx";
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
@@ -27,8 +28,10 @@ import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
+import chatIcon from '../../assets/img/chat.svg';
 import Egg from "../../assets/img/egg.gif";
 import './main.css';
+import { Message } from "../../hooks/useBeastChat.ts";
 
 function Tamagotchi() {
   const { account } = useAccount();
@@ -36,6 +39,7 @@ function Tamagotchi() {
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
+  const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' }); 
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -43,12 +47,12 @@ function Tamagotchi() {
   useEffect(() => {
     if (player) setPlayer(player);
   }, [player, setPlayer, location]);
-  
+
   useEffect(() => {
     if (beasts) setBeasts(beasts);
   }, [beasts, setBeasts, location]);
 
-  async function setCurrentBeastInPlayer(foundBeast:any) {
+  async function setCurrentBeastInPlayer(foundBeast: any) {
     if (!foundBeast) return
     await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id);
   }
@@ -56,7 +60,7 @@ function Tamagotchi() {
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
-    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
+    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) === zplayer.address);
     if (foundBeast) {
       setCurrentBeast(foundBeast);
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
@@ -72,10 +76,10 @@ function Tamagotchi() {
     if (!zplayer || !account) return
     let response: any = fetchStatus(account);
     if (!status || status.length === 0) setIsLoading(true);
-    if(status[0] != zplayer.current_beast_id) setIsLoading(true);
+    if (status[0] != zplayer.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
-      if(status[1] == 0) return
+      if (status[1] == 0) return
       response = await fetchStatus(account);
       if (response && Object.keys(response).length !== 0) {
         setStatus(response);
@@ -108,19 +112,22 @@ function Tamagotchi() {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) bodyElement.classList.add('day');
 
-    if(!status) return
+    if (!status) return
     if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
   }, [status, zcurrentBeast, location])
 
   useEffect(() => {
-    if (status[1] == 0) setCurrentImage(dead);
+    if (status[1] == 0) {
+      setCurrentImage(dead);
+      setCurrentView('actions');
+    }
     if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
   }, [status, zcurrentBeast, location]);
 
   // Twitter Share
   const getShareableStats = () => {
     if (!status || !zcurrentBeast) return undefined;
-  
+
     return {
       age: zcurrentBeast?.age || 0,
       energy: status[4] || 0,
@@ -178,16 +185,16 @@ function Tamagotchi() {
       console.error("Cuddle error:", error);
     }
   };
-  
+
   const handleNewEgg = () => {
     buttonSound();
-    if(!reborn) setReborn(true);
+    if (!reborn) setReborn(true);
     navigate('/spawn');
   }
 
   return (
     <>
-      <Header tamagotchiStats={getShareableStats()}/>
+      <Header tamagotchiStats={getShareableStats()} />
       <div className="tamaguchi">
         <>{zcurrentBeast &&
           <Card style={{
@@ -201,8 +208,8 @@ function Tamagotchi() {
             />
             <div className="game">
               {
-                status[1] == 0 && 
-                <> 
+                status[1] == 0 &&
+                <>
                   <button
                     className="button"
                     onClick={handleNewEgg}
@@ -213,8 +220,10 @@ function Tamagotchi() {
                 </>
               }
               {
-                !status || status.length === 0 || !zcurrentBeast ? <></> :
+                !status || status.length === 0 || !zcurrentBeast || status[1] == 0 ? <></> :
                   <Whispers
+                    botMessage={botMessage}
+                    setBotMessage={(setBotMessage)}
                     beast={zcurrentBeast}
                     expanded={currentView === 'chat'}
                     beastStatus={status}
@@ -233,16 +242,24 @@ function Tamagotchi() {
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
-                    {zcurrentBeast && (
+                  {zcurrentBeast && (
+                    <div className="d-flex">
                       <div className="age-indicator">
                         <span>{zcurrentBeast.age}</span>
                       </div>
-                    )}
-                  {(currentView === 'food' || currentView === 'play') && (
+                      {
+                        status[1] == 1 &&
+                        <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
+                          <img src={chatIcon} alt="chat with tamagotchi" />
+                        </div>
+                      }
+                    </div>
+                  )}
+                  {(currentView === 'food' || currentView === 'play' || currentView === 'chat') && (
                     <div className="back-button">
-                      <img 
-                        src={Close} 
-                        onClick={() => setCurrentView('actions')} 
+                      <img
+                        src={Close}
+                        onClick={() => setCurrentView('actions')}
                         alt="Back to actions"
                       />
                     </div>
@@ -270,12 +287,20 @@ function Tamagotchi() {
                       beastStatus={status}
                       showAnimation={showAnimation}
                     />
+
                   ) : currentView === 'play' ? (
                     <Play
                       handleAction={handleAction}
                       beast={zcurrentBeast}
                       account={account}
                       client={client}
+                    />
+                  ) : currentView === 'chat' ? (
+                    <Chat
+                      botMessage={botMessage}
+                      setBotMessage={(setBotMessage)}
+                      beast={zcurrentBeast}
+                      expanded={currentView === 'chat'}
                     />
                   ) : (
                     <></>

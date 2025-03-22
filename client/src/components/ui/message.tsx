@@ -5,11 +5,17 @@ export interface Message {
   text: string;
 }
 
-const MessageComponent = memo(({ message }: { message: Message }) => (
-  <div className={`message ${message.user === "System" ? "error-message" : `${message.user}`}`}>
-    <span className="user">{message.user}</span> 
-    <p>{message.text}</p>
-  </div>
-));
+const MessageComponent = memo(({ message }: { message: Message }) => {
+  if (!message.text) {
+    return null;
+  }
+
+  return (
+    <div className={`message ${message.user === "System" ? "error-message" : `${message.user}`}`}>
+      <span className="user">{message.user}</span> 
+      <p>{message.text}</p>
+    </div>
+  );
+});
 
 export default MessageComponent;
