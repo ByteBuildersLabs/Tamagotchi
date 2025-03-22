@@ -115,7 +115,10 @@ function Tamagotchi() {
   }, [status, zcurrentBeast, location])
 
   useEffect(() => {
-    if (status[1] == 0) setCurrentImage(dead);
+    if (status[1] == 0) {
+      setCurrentImage(dead);
+      setCurrentView('actions');
+    }
     if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
   }, [status, zcurrentBeast, location]);
 

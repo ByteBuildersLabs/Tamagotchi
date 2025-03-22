@@ -57,9 +57,9 @@ const Chat = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: any, 
             type="button"
             onClick={handleSendMessage}
             disabled={isLoading}
-            className={`button ${isLoading ? 'loading' : ''}`}
+            className={`send-button`}
           >
-            <img src={message} alt="Send message" />
+            {isLoading ? <div className="loader"></div> :<img src={isLoading ? '' : message} alt="Send message" />}
           </button>
         </div>
         {error && <div className="error-tooltip">{error.message}</div>}

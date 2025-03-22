@@ -45,24 +45,22 @@
 .whispers-chat .chat-input {
   display: flex;
   align-items: center;
-  padding: 0 15px;
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
 .whispers-chat .chat-input input {
   font-family: 'Kallisto';
-  padding: 10px;
+  padding: 0 10px 0 15px;
   margin: 0;
   width: 100%;
-  height: 60px;
+  height: 55px;
   font-size: 16px;
   background-color: transparent;
   color: #ECECDA;
   border: 0;
   border-radius: 10px;
   transition: all 0.25s ease;
-  backdrop-filter: blur(5px);
 }
 
 .whispers-chat .chat-input input:focus {
@@ -82,8 +80,18 @@
   color: #ECECDA;
 }
 
-.whispers-chat .button {
+.whispers-chat .send-button {
+  border-radius: 25%;
+  height: 55px;
   width: 30%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.whispers-chat .send-button img {
+  width: 25px;
 }
 
 .whispers-chat .message p {
