@@ -54,6 +54,9 @@ interface DOMDoodleGameProps {
   gameId: string;
   beastId: number;
   gameName: string;
+  handleAction: (actionName: string, actionFn: () => Promise<any>) => Promise<any>;
+  client: any;
+  account: any;
 }
 
 const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
@@ -67,6 +70,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   gameId,
   beastId,
   gameName,
+  handleAction, 
+  client,
+  account
 }, ref) => {
 
   // References and states
@@ -77,6 +83,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const currentScoreRef = useRef<number>(0);
   const maxHeightRef = useRef<number>(0);
   const lastMilestoneRef = useRef<number>(0);
+  const collectedFoodRef = useRef<number>(0);
 
   // States
   const [background, setBackground] = useState(0);
@@ -158,6 +165,37 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     },
   });
 
+  const saveGameResultsToDojo = async (gameData: {
+    score: number;
+    foodId: string;
+    foodCollected: number;
+  }) => {
+    const { score, foodId, foodCollected  } = gameData;
+    
+    try {
+      if (handleAction && client && account) {
+        await handleAction(
+          "SaveGameResults", 
+          () => client.actions.saveGameResults(
+            account,
+            score,
+            foodId || "",
+            foodCollected
+          )
+        );
+        console.log("Game results saved successfully");
+        return true;
+      } else {
+        console.warn("Cannot save game results - missing required props");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error saving game results:", error);
+      toast.error("Couldn't save your game results. Your progress might not be recorded.");
+      return false;
+    }
+  };
+
   // Function to handle game end
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
@@ -178,7 +216,14 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       });
     }
 
-    // Transition to sharing state
+    if (collectedFoodRef.current === 0) selectedFood.id = 0;
+    
+    console.log("score: " + score, "foodId: " + selectedFood?.id,"foodCollected: " + collectedFoodRef.current);
+    console.log(handleAction,account, client,);
+
+    //Remove comment to save the game results in Dojo
+    //saveGameResultsToDojo({score,foodId: selectedFood?.id || "",foodCollected: collectedFood});
+
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
@@ -253,12 +298,11 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   const collectFood = (platform: any) => {
     if (platform.hasFood && !platform.foodCollected && platform.foodElement) {
+
       platform.foodCollected = true;
-
+      collectedFoodRef.current += 1;
+      setCollectedFood(collectedFoodRef.current);
       platform.foodElement.style.opacity = '0';
-
-      // Increse the collected food counter
-      setCollectedFood(prev => prev + 1);
 
       toast.success(
         () => (
@@ -799,6 +843,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     currentScoreRef.current = 0;
     maxHeightRef.current = 0;
     lastMilestoneRef.current = 0;
+    collectedFoodRef.current = 0;
 
     // Reset states
     setScore(0);
