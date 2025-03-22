@@ -100,6 +100,7 @@
     position: absolute;
     top: 60px;
     right: 15px;
+    width: 40px;
     background-color: #ECECDA;
     padding: 8px;
     border-radius: 8px;
@@ -197,7 +198,7 @@
   /* Styles for the end-game modal */
   .game-result-container {
     position: fixed;
-    height: 140px;
+    height: 170px;
     top: 40%;
     left: 10%;
     transform: translate(-50%, -50%);
@@ -368,3 +369,41 @@
     animation: fadeIn 0.3s ease-in-out;
   }
   
+  .food-counter {
+    position: absolute;
+    top: 110px;
+    right: 15px;
+    width: 40px;
+    background-color: #ECECDA;
+    color: #85002A;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center; 
+    font-weight: bold;
+  }
+
+.platform-food {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-food-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
