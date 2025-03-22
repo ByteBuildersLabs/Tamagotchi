@@ -396,3 +396,14 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
+
+.toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-food-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
