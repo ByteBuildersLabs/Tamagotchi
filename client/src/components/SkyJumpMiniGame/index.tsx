@@ -218,11 +218,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
     if (collectedFoodRef.current === 0) selectedFood.id = 0;
     
-    console.log("score: " + score, "foodId: " + selectedFood?.id,"foodCollected: " + collectedFoodRef.current);
-    console.log(handleAction,account, client,);
+    //console.log("score: " + score, "foodId: " + selectedFood?.id,"foodCollected: " + collectedFoodRef.current);
+    //console.log(handleAction,account, client,);
 
-    //Remove comment to save the game results in Dojo
-    //saveGameResultsToDojo({score,foodId: selectedFood?.id || "",foodCollected: collectedFood});
+    saveGameResultsToDojo({score,foodId: selectedFood?.id || "",foodCollected: collectedFood});
 
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
