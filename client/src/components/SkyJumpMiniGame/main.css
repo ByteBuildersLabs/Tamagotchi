@@ -368,3 +368,27 @@
     animation: fadeIn 0.3s ease-in-out;
   }
   
+  /* Añadir a los estilos CSS */
+.food-counter {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.platform-food {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+  animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
