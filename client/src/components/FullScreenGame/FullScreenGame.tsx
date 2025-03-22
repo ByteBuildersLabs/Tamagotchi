@@ -12,7 +12,6 @@ interface GameState {
   gameId: string;
 }
 
-// Declarar el tipo para los datos temporales
 interface GameTemp {
   handleAction: any;
   client: any;
