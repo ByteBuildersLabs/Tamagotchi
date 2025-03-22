@@ -371,7 +371,7 @@
   /* Añadir a los estilos CSS */
 .food-counter {
   position: absolute;
-  top: 70px;
+  top: 900px;
   right: 20px;
   background: rgba(0, 0, 0, 0.5);
   color: white;
