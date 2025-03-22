@@ -1,4 +1,4 @@
-import { Beast, BeastStatus } from "../../../dojo/bindings";
+import { BeastStatus } from "../../../dojo/bindings";
 import { useEffect, useState, useRef } from "react";
 import MessageComponent, { Message } from "../../ui/message";
 import beastsDex from "../../../data/beastDex";
@@ -6,74 +6,14 @@ import { useBeastChat } from "../../../hooks/useBeastChat";
 import './main.css';
 
 const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: any, expanded: boolean }) => {
-  const { messages, isLoading, error, sendMessage, sendSystemPrompt } = useBeastChat({ beast });
-  
+  const { isLoading, error, sendSystemPrompt } = useBeastChat({ beast });
+
   const [whispers, setWhispers] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const MAX_MESSAGE_LENGTH = 300;
   const messageTimeoutRef = useRef<NodeJS.Timeout>();
-
-  const restoreFocus = () => {
-    inputRef.current?.focus();
-  };
-
-  const handleSendMessage = async () => {
-    if (input.trim() === "" || isLoading) return;
-
-    await sendMessage(input);
-    setInput("");
-    restoreFocus();
-    
-    if (messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.user !== "Me") {
-        setWhispers([lastMessage]);
-      }
-    }
-  };
 
   const clearWhisperMessage = () => {
     setWhispers([]);
   };
-
-  const chat = (beast: Beast) => {
-    return (
-      <div className="whispers-chat">
-        <div className='messages'>
-          {messages.map((message, index) => (
-            <MessageComponent key={index} message={message} />
-          ))}
-        </div>
-        <div className="chat-input">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={`Talk to ${beastsDex[beast?.specie - 1]?.name}`}
-            value={input}
-            disabled={isLoading}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage();
-              }
-            }}
-            maxLength={MAX_MESSAGE_LENGTH}
-          />
-          <button
-            type="button"
-            onClick={handleSendMessage}
-            disabled={isLoading}
-            className={`button ${isLoading ? 'loading' : ''}`}
-          >
-            {/* <img src={message} alt="Send message" /> */}
-          </button>
-        </div>
-        {error && <div className="error-tooltip">{error.message}</div>}
-      </div>
-    );
-  }
 
   const uniMessage = () => {
     return (
@@ -130,18 +70,18 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
     const response = await sendSystemPrompt(prompt);
     if (response) {
       setWhispers([response]);
-      
+
       // Configure new timeout to clear the message every 15 seconds
       messageTimeoutRef.current = setTimeout(() => {
         clearWhisperMessage();
-      }, 15000); 
+      }, 15000);
     }
   };
-  
+
 
   useEffect(() => {
     let intervalId: string | number | NodeJS.Timeout | undefined;
-    if(beastStatus && beast) {
+    if (beastStatus && beast) {
       const prompt = generatePrompt(beastStatus);
       createWhisper(prompt);
       intervalId = setInterval(() => {
@@ -149,7 +89,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
         createWhisper(prompt);
       }, 60000); // Changed to 1 minute for better interaction
     }
-    
+
     // Clear both the interval and the timeout when unmounting
     return () => {
       if (intervalId) clearInterval(intervalId);
@@ -157,7 +97,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
     };
   }, []);
 
-  return expanded ? chat(beast) : uniMessage();
+  return expanded ? <></> : uniMessage();
 }
 
 export default Whispers;
