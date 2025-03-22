@@ -12,13 +12,15 @@ export interface Message {
 interface UseBeastChatProps {
   beast: Beast | null;
   baseUrl?: string;
+  setBotMessage?: any;
 }
 
 export const useBeastChat = ({ 
   beast,
-  baseUrl = import.meta.env.VITE_ELIZA_URL
+  baseUrl = import.meta.env.VITE_ELIZA_URL,
+  setBotMessage,
 }: UseBeastChatProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [message, setMessage] = useState<Message>({ user: '', text: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -34,11 +36,6 @@ export const useBeastChat = ({
     setIsLoading(true);
     setError(null);
 
-    if (!isSystemPrompt) {
-      const userMessage: Message = { user: "Me", text, isSystem: false };
-      setMessages(prev => [...prev, userMessage]);
-    }
-
     try {
       const endpoint = getBeastEndpoint(beast.specie);
       const response = await axios.post(endpoint, { text });
@@ -50,7 +47,8 @@ export const useBeastChat = ({
           text: responseText,
           isSystem: isSystemPrompt 
         };
-        setMessages(prev => isSystemPrompt ? prev : [...prev, botMessage]);
+        setBotMessage(botMessage);
+        setMessage(botMessage);
         return botMessage; 
       } else {
         throw new Error("Received empty response from server");
@@ -63,7 +61,8 @@ export const useBeastChat = ({
           text: "Failed to get response. Please try again.",
           isSystem: true
         };
-        setMessages(prev => [...prev, errorMessage]);
+        setBotMessage(errorMessage)
+        setMessage(errorMessage);
       }
       setError(err instanceof Error ? err : new Error('Failed to send message'));
     } finally {
@@ -76,12 +75,12 @@ export const useBeastChat = ({
   }, [sendMessage]);
 
   const clearMessages = useCallback(() => {
-    setMessages([]);
+    setMessage({ user: '', text: '' });
     setError(null);
   }, []);
 
   return {
-    messages: messages.filter(m => !m.isSystem),
+    message,
     isLoading,
     error,
     sendMessage,

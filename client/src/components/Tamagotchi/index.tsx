@@ -31,6 +31,7 @@ import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
 import Egg from "../../assets/img/egg.gif";
 import './main.css';
+import { Message } from "../../hooks/useBeastChat.ts";
 
 function Tamagotchi() {
   const { account } = useAccount();
@@ -38,6 +39,7 @@ function Tamagotchi() {
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
+  const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' }); 
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -220,6 +222,8 @@ function Tamagotchi() {
               {
                 !status || status.length === 0 || !zcurrentBeast || status[1] == 0 ? <></> :
                   <Whispers
+                    botMessage={botMessage}
+                    setBotMessage={(setBotMessage)}
                     beast={zcurrentBeast}
                     expanded={currentView === 'chat'}
                     beastStatus={status}
@@ -293,9 +297,10 @@ function Tamagotchi() {
                     />
                   ) : currentView === 'chat' ? (
                     <Chat
+                      botMessage={botMessage}
+                      setBotMessage={(setBotMessage)}
                       beast={zcurrentBeast}
                       expanded={currentView === 'chat'}
-                      beastStatus={status}
                     />
                   ) : (
                     <></>

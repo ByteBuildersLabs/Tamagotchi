@@ -5,15 +5,15 @@ import beastsDex from "../../../data/beastDex";
 import { useBeastChat } from "../../../hooks/useBeastChat";
 import './main.css';
 
-const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: any, expanded: boolean }) => {
-  const { isLoading, error, sendSystemPrompt } = useBeastChat({ beast });
+const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: { beast: any, beastStatus: any, expanded: boolean, botMessage:any, setBotMessage:any }) => {
+  const { isLoading, error, sendSystemPrompt } = useBeastChat({ beast, setBotMessage });
 
   const [whispers, setWhispers] = useState<Message[]>([]);
   const messageTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const clearWhisperMessage = () => {
-    setWhispers([]);
-  };
+  useEffect(() => {
+    setWhispers([botMessage]);
+  },  [botMessage])
 
   const uniMessage = () => {
     return (
@@ -70,12 +70,13 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
     const response = await sendSystemPrompt(prompt);
     if (response) {
       setWhispers([response]);
-
-      // Configure new timeout to clear the message every 15 seconds
-      messageTimeoutRef.current = setTimeout(() => {
-        clearWhisperMessage();
-      }, 15000);
     }
+
+    // Configure new timeout to clear the message every 15 seconds
+    messageTimeoutRef.current = setTimeout(() => {
+      setBotMessage([{ user: '', text: '' }]);
+      setWhispers([{ user: '', text: '' }]);
+    }, 20000);
   };
 
 
@@ -87,7 +88,7 @@ const Whispers = ({ beast, expanded, beastStatus }: { beast: any, beastStatus: a
       intervalId = setInterval(() => {
         const prompt = generatePrompt(beastStatus);
         createWhisper(prompt);
-      }, 60000); // Changed to 1 minute for better interaction
+      }, 180000); // Changed to 1 minute for better interaction
     }
 
     // Clear both the interval and the timeout when unmounting
