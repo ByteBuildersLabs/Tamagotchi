@@ -43,6 +43,12 @@ const Play: React.FC<PlayProps> = ({
           error: 'Cannot start the game.',
         }
       );
+
+      window.__gameTemp = {
+        handleAction,
+        client,
+        account
+      };
       
       navigate('/fullscreen-game', {
         state: {
