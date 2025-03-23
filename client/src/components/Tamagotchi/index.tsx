@@ -167,6 +167,7 @@ function Tamagotchi() {
   const handleCuddle = async () => {
     if (!zcurrentBeast || !account) return;
     if (status[1] == 0) return;
+    if (status[2] == 0) return;
     try {
       await toast.promise(
         handleAction(
