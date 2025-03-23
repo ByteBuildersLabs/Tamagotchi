@@ -54,7 +54,7 @@ function Tamagotchi() {
 
   async function setCurrentBeastInPlayer(foundBeast: any) {
     if (!foundBeast) return
-    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id);
+    await client.player.setCurrentBeast(account as Account, foundBeast?.beast_id);
   }
 
   useEffect(() => {
@@ -120,8 +120,14 @@ function Tamagotchi() {
     if (status[1] == 0) {
       setCurrentImage(dead);
       setCurrentView('actions');
+      return
     }
-    if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
+    if (status[2] == 0) {
+      setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.sleepPicture : '');
+      setCurrentView('actions');
+      return
+    }
+    setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
   }, [status, zcurrentBeast, location]);
 
   // Twitter Share
@@ -166,7 +172,7 @@ function Tamagotchi() {
         handleAction(
           "Cuddle",
           // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.actions.pet(account as Account), //change sleep action to cuddle action
+          () => client.game.pet(account as Account), //change sleep action to cuddle action
           // Use the cuddle animation from your initials data
           beastsDex[zcurrentBeast.specie - 1].cuddlePicture
         ),
@@ -220,7 +226,7 @@ function Tamagotchi() {
                 </>
               }
               {
-                !status || status.length === 0 || !zcurrentBeast || status[1] == 0 ? <></> :
+                !status || status.length === 0 || !zcurrentBeast || status[1] == 0 || status[2] == 0 ? <></> :
                   <Whispers
                     botMessage={botMessage}
                     setBotMessage={(setBotMessage)}
@@ -248,7 +254,7 @@ function Tamagotchi() {
                         <span>{zcurrentBeast.age}</span>
                       </div>
                       {
-                        status[1] == 1 &&
+                        status[1] == 1 && status[2] == 1 &&
                         <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
                           <img src={chatIcon} alt="chat with tamagotchi" />
                         </div>

@@ -27,7 +27,7 @@ function SpawnBeast() {
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
     if (!foundBeast) return
-    await client.actions.setCurrentBeast(account as Account, foundBeast?.beast_id)
+    await client.player.setCurrentBeast(account as Account, foundBeast?.beast_id)
   }
   
   useEffect(() => {
@@ -77,12 +77,12 @@ function SpawnBeast() {
 
     if (!zplayer) {
       setLoading(true);
-      await client.actions.spawnPlayer(account as Account);
+      await client.player.spawnPlayer(account as Account);
       await new Promise(resolve => setTimeout(resolve, 2500));
       setLoading(false);
     }
 
-    await client.actions.addInitialFood(account as Account);
+    await client.player.addInitialFood(account as Account);
     notify();
     setLoading(true);
     await spawn(randomNumber);

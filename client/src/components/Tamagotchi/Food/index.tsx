@@ -52,7 +52,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
       if (!selectedFood) return;
 
       await toast.promise(
-        handleAction("Feed", () => client.actions.feed(account, selectedFood.id), eatAnimation),
+        handleAction("Feed", () => client.game.feed(account, selectedFood.id), eatAnimation),
         {
           loading: 'Feeding your beast...',
           success: 'Beast fed successfully!',

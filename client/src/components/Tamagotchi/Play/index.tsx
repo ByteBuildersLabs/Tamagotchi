@@ -34,7 +34,7 @@ const Play: React.FC<PlayProps> = ({
       await toast.promise(
         handleAction(
           "Play", 
-          () => client.actions.play(account), 
+          () => client.game.play(account), 
           beastsDex[beast.specie - 1].playPicture
         ),
         {
