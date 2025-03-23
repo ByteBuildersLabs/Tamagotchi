@@ -4,12 +4,8 @@ import { Connector } from "@starknet-react/core";
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x720d84833e281ce389a39ae44459036cf40d093e7a667721153c9e802d9d270']: {
+    ['0x626b14c4131c6019c80edeea6225f97ed46863e8e0c7dbc9cc8e1e10f450883']: {
       methods: [
-        {
-          name: "add_initial_food",
-          entrypoint: "add_initial_food"
-        },
         {
           name: "awake",
           entrypoint: "awake"
@@ -27,12 +23,16 @@ const policies: SessionPolicies = {
           entrypoint: "get_beast_age"
         },
         {
+          name: "get_beast_age_with_address",
+          entrypoint: "get_beast_age_with_address"
+        },
+        {
           name: "get_timestamp_based_status",
           entrypoint: "get_timestamp_based_status"
         },
         {
-          name: "init_tap_counter",
-          entrypoint: "init_tap_counter"
+          name: "get_timestamp_based_status_with_address",
+          entrypoint: "get_timestamp_based_status_with_address"
         },
         {
           name: "pet",
@@ -47,10 +47,6 @@ const policies: SessionPolicies = {
           entrypoint: "revive"
         },
         {
-          name: "set_current_beast",
-          entrypoint: "set_current_beast"
-        },
-        {
           name: "sleep",
           entrypoint: "sleep"
         },
@@ -59,17 +55,29 @@ const policies: SessionPolicies = {
           entrypoint: "spawn_beast"
         },
         {
-          name: "tap",
-          entrypoint: "tap"
+          name: "update_beast",
+          entrypoint: "update_beast"
+        },
+      ],
+    },
+    ['0x32fbf1eb254356f52ccd7ce14d99a691caa22c188fc84952b533224d103346a']: {
+      methods: [
+        {
+          name: "add_initial_food",
+          entrypoint: "add_initial_food"
         },
         {
-          name: "update_beast_status",
-          entrypoint: "update_beast_status"
+          name: "set_current_beast",
+          entrypoint: "set_current_beast"
         },
         {
           name: "spawn_player",
           entrypoint: "spawn_player"
-        }
+        },
+        {
+          name: "update_player_daily_streak",
+          entrypoint: "update_player_daily_streak"
+        },
       ],
     },
   },
@@ -78,7 +86,7 @@ const policies: SessionPolicies = {
 // Configuración básica del conector
 const cartridgeConnector = new ControllerConnector({
   policies,
-  rpc: 'https://api.cartridge.gg/x/bbtestrelease/katana'
+  rpc: 'https://api.cartridge.gg/x/bbtestprerelease/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;

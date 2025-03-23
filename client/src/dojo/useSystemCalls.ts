@@ -28,8 +28,8 @@ export const useSystemCalls = () => {
 
         try {
             // Execute the spawn action from the client
-            await client.actions.spawnBeast(account!, randomNumber, randomNumber);
-            await client.actions.setCurrentBeast(account!, randomNumber, randomNumber);
+            await client.game.spawnBeast(account!, randomNumber, randomNumber);
+            await client.player.setCurrentBeast(account!, randomNumber, randomNumber);
 
         } catch (error) {
             // Revert the optimistic update if an error occurs

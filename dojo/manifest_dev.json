@@ -1312,12 +1312,12 @@
   },
   "contracts": [
     {
-      "address": "0x720d84833e281ce389a39ae44459036cf40d093e7a667721153c9e802d9d270",
-      "class_hash": "0x3c9d97bdaeb2115a70737a3e8ee15642cefc90bd87aa55dc06c3f8473a129a8",
+      "address": "0x626b14c4131c6019c80edeea6225f97ed46863e8e0c7dbc9cc8e1e10f450883",
+      "class_hash": "0x63350cd611754b223aa2b0ad9b29405dbf62b9d0214e1f900001cd561e1035e",
       "abi": [
         {
           "type": "impl",
-          "name": "actions__ContractImpl",
+          "name": "game__ContractImpl",
           "interface_name": "dojo::contract::interface::IContract"
         },
         {
@@ -1327,7 +1327,7 @@
         },
         {
           "type": "impl",
-          "name": "actions__DeployedContractImpl",
+          "name": "game__DeployedContractImpl",
           "interface_name": "dojo::meta::interface::IDeployedResource"
         },
         {
@@ -1374,8 +1374,8 @@
         },
         {
           "type": "impl",
-          "name": "ActionsImpl",
-          "interface_name": "tamagotchi::systems::actions::IActions"
+          "name": "GameImpl",
+          "interface_name": "tamagotchi::systems::game::IGame"
         },
         {
           "type": "enum",
@@ -1435,7 +1435,7 @@
         },
         {
           "type": "interface",
-          "name": "tamagotchi::systems::actions::IActions",
+          "name": "tamagotchi::systems::game::IGame",
           "items": [
             {
               "type": "function",
@@ -1511,62 +1511,6 @@
               "type": "function",
               "name": "revive",
               "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "spawn_player",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "add_initial_food",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_current_beast",
-              "inputs": [
-                {
-                  "name": "beast_id",
-                  "type": "core::integer::u16"
-                }
-              ],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "update_player_daily_streak",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "init_tap_counter",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "tap",
-              "inputs": [
-                {
-                  "name": "specie",
-                  "type": "core::integer::u8"
-                },
-                {
-                  "name": "beast_type",
-                  "type": "core::integer::u8"
-                }
-              ],
               "outputs": [],
               "state_mutability": "external"
             },
@@ -1718,7 +1662,7 @@
         },
         {
           "type": "event",
-          "name": "tamagotchi::systems::actions::actions::Event",
+          "name": "tamagotchi::systems::game::game::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1735,8 +1679,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "tamagotchi-actions",
-      "selector": "0x6a3f87b1bc5ef116efb19b582b8cb03ae569dd55e62065c6d6213c352191f97",
+      "tag": "tamagotchi-game",
+      "selector": "0x4a5c67103ffbeccdf157b9872356a6adbd2f6088dac4e5a134cb159cf3ae72f",
       "systems": [
         "dojo_init",
         "spawn_beast",
@@ -1748,16 +1692,235 @@
         "pet",
         "clean",
         "revive",
-        "spawn_player",
-        "add_initial_food",
-        "set_current_beast",
-        "update_player_daily_streak",
-        "init_tap_counter",
-        "tap",
         "get_timestamp_based_status",
         "get_timestamp_based_status_with_address",
         "get_beast_age",
         "get_beast_age_with_address",
+        "upgrade"
+      ]
+    },
+    {
+      "address": "0x32fbf1eb254356f52ccd7ce14d99a691caa22c188fc84952b533224d103346a",
+      "class_hash": "0x21e2d81c2ef198083b24956f379da4eb4c7c7f8fd203ca4dc1f18bc1e46d99e",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "player__ContractImpl",
+          "interface_name": "dojo::contract::interface::IContract"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::interface::IContract",
+          "items": []
+        },
+        {
+          "type": "impl",
+          "name": "player__DeployedContractImpl",
+          "interface_name": "dojo::meta::interface::IDeployedResource"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::meta::interface::IDeployedResource",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dojo_init",
+          "inputs": [],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
+          "type": "impl",
+          "name": "PlayerImpl",
+          "interface_name": "tamagotchi::systems::player::IPlayer"
+        },
+        {
+          "type": "interface",
+          "name": "tamagotchi::systems::player::IPlayer",
+          "items": [
+            {
+              "type": "function",
+              "name": "spawn_player",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "add_initial_food",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "set_current_beast",
+              "inputs": [
+                {
+                  "name": "beast_id",
+                  "type": "core::integer::u16"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "update_player_daily_streak",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::contract::components::world_provider::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::iworld::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::world_provider::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world_dispatcher",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::iworld::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradeableImpl",
+          "interface_name": "dojo::contract::components::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::components::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
+          "name": "tamagotchi::systems::player::player::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::components::upgradeable::upgradeable_cpt::Event",
+              "kind": "nested"
+            },
+            {
+              "name": "WorldProviderEvent",
+              "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "init_calldata": [],
+      "tag": "tamagotchi-player",
+      "selector": "0x621cad8938521caee3e15a5a0043499650cbf2b47e05590d5c9697e09136ed6",
+      "systems": [
+        "dojo_init",
+        "spawn_player",
+        "add_initial_food",
+        "set_current_beast",
+        "update_player_daily_streak",
         "upgrade"
       ]
     }
