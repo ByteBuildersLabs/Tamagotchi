@@ -120,8 +120,14 @@ function Tamagotchi() {
     if (status[1] == 0) {
       setCurrentImage(dead);
       setCurrentView('actions');
+      return
     }
-    if (status[1] == 1) setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
+    if (status[2] == 0) {
+      setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.sleepPicture : '');
+      setCurrentView('actions');
+      return
+    }
+    setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '')
   }, [status, zcurrentBeast, location]);
 
   // Twitter Share
@@ -220,7 +226,7 @@ function Tamagotchi() {
                 </>
               }
               {
-                !status || status.length === 0 || !zcurrentBeast || status[1] == 0 ? <></> :
+                !status || status.length === 0 || !zcurrentBeast || status[1] == 0 || status[2] == 0 ? <></> :
                   <Whispers
                     botMessage={botMessage}
                     setBotMessage={(setBotMessage)}
@@ -248,7 +254,7 @@ function Tamagotchi() {
                         <span>{zcurrentBeast.age}</span>
                       </div>
                       {
-                        status[1] == 1 &&
+                        status[1] == 1 && status[2] == 1 &&
                         <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
                           <img src={chatIcon} alt="chat with tamagotchi" />
                         </div>
