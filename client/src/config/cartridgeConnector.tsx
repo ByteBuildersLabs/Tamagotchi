@@ -4,7 +4,7 @@ import { Connector } from "@starknet-react/core";
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x5798bccde56917074519dfa444d51bd2d3b6d30428f8c87c43aaa28d5875c8d']: {
+    ['0x1dbf35a77144221e1c08812e06e000376b209cf8cc5bcdb4b2fba3fce59ef12']: {
       methods: [
         {
           name: "awake",
@@ -86,7 +86,7 @@ const policies: SessionPolicies = {
 // Configuración básica del conector
 const cartridgeConnector = new ControllerConnector({
   policies,
-  rpc: 'https://api.cartridge.gg/x/bbtimestamp/katana'
+  rpc: 'https://api.cartridge.gg/x/bbsleep/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
