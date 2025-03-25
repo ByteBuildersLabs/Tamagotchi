@@ -14,6 +14,7 @@ import Food from "./Food/index.tsx";
 import Play from "./Play/index.tsx";
 import Whispers from "./Whispers/index.tsx";
 import Chat from "./Chat/index.tsx";
+import CleanlinessIndicator from "../CleanIndicator/index.tsx";
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
@@ -239,12 +240,16 @@ function Tamagotchi() {
               <div className="scenario flex justify-center items-column">
                 {
                   !status || status.length === 0 ? <Spinner message="Loading your beast..." /> :
+                  <div className="relative w-40 h-40">
                     <img
                       src={currentImage}
                       alt="Tamagotchi"
-                      className="w-40 h-40"
-                      onClick={handleCuddle} style={{ cursor: 'pointer' }}
+                      className="w-full h-full"
+                      onClick={handleCuddle} 
+                      style={{ cursor: 'pointer' }}
                     />
+                    {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}
+                  </div>
                 }
               </div>
               <div className="beast-interaction">
