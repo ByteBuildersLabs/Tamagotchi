@@ -1,6 +1,12 @@
 import { ControllerConnector}  from "@cartridge/connector";
-import { SessionPolicies } from "@cartridge/controller";
+import {
+  ColorMode,
+  SessionPolicies,
+} from "@cartridge/controller";
 import { Connector } from "@starknet-react/core";
+
+const colorMode: ColorMode = "dark";
+const theme = "bytebeasts-tamagotchi";
 
 const policies: SessionPolicies = {
   contracts: {
@@ -86,6 +92,8 @@ const policies: SessionPolicies = {
 // Configuración básica del conector
 const cartridgeConnector = new ControllerConnector({
   policies,
+  theme,
+  colorMode,
   rpc: 'https://api.cartridge.gg/x/bbsleep/katana'
 }) as never as Connector;
 
