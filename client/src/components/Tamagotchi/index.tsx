@@ -26,13 +26,14 @@ import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import { fetchStatus, getBirthDate } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
 import Egg from "../../assets/img/egg.gif";
-import './main.css';
+import Cake from "../../assets/img/cake.svg";
 import { Message } from "../../hooks/useBeastChat.ts";
+import './main.css';
 
 function Tamagotchi() {
   const { account } = useAccount();
@@ -40,7 +41,8 @@ function Tamagotchi() {
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
-  const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' }); 
+  const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
+  const [ age, setAge ] = useState<any>({ }); 
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -64,6 +66,7 @@ function Tamagotchi() {
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) === zplayer.address);
     if (foundBeast) {
       setCurrentBeast(foundBeast);
+      setAge(getBirthDate(zcurrentBeast.birth_date))
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
     }
@@ -200,6 +203,16 @@ function Tamagotchi() {
     navigate('/spawn');
   }
 
+  const [ displayBirthday, setDisplayBirthday ] = useState(false);
+
+  const showBirthday = () => {
+    buttonSound();
+    setDisplayBirthday(true);
+    setTimeout(() => {
+      setDisplayBirthday(false);
+    }, 5000);
+  }
+
   return (
     <>
       <Header tamagotchiStats={getShareableStats()} />
@@ -255,10 +268,17 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   {zcurrentBeast && (
-                    <div className="d-flex">
-                      <div className="age-indicator">
+                    <div className="d-flex position-relative">
+                      <div className="age-indicator" onClick={() => { showBirthday() }}>
                         <span>{zcurrentBeast.age}</span>
                       </div>
+                      {
+                        displayBirthday &&
+                        <div className="age-info">
+                          <img src={Cake} alt="cake" />
+                          <span>{age.hours}:{age.minutes}</span>
+                        </div>
+                      }
                       {
                         status[1] == 1 && status[2] == 1 &&
                         <div className="chat-toggle" onClick={() => setCurrentView('chat')}>

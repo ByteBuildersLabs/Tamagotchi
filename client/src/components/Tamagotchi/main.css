@@ -67,11 +67,33 @@
   margin-left: 0px;
   margin-right: 10px;
   pointer-events: auto;
+  cursor: pointer;
+}
+
+.age-info {
+  width: 100%;
+  position: absolute;
+  top: -50px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ECECDA;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  width: 100px;
+  text-align: center;
+}
+
+.age-info img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 
 .chat-toggle {
-  width: 35px;
-  height: 35px;
+  width: 37px;
+  height: 37px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   display: flex;
@@ -82,8 +104,8 @@
 }
 
 .chat-toggle img {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
 }
 
 .age-indicator span {
