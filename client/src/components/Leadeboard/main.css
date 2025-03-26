@@ -41,6 +41,44 @@
   width: 30px;
   margin-left: 4px;
 }
+
 .leaderboard-container .initial-info {
   background-color: transparent;
+}
+
+.leaderboard-container .current-user .col-3 {
+  color: #ECECDA; 
+  font-weight: bold;
+}
+
+@keyframes highlight-pulse {
+  0% { background-color: rgba(255, 0, 70, 0.05); }
+  50% { background-color: rgba(255, 0, 70, 0.15); }
+  100% { background-color: rgba(255, 0, 70, 0.05); }
+}
+
+.leaderboard-container .current-user {
+  animation: highlight-pulse 3s infinite;
+  border-radius: 5px;
+}
+
+.leaderboard-container .separator {
+  opacity: 0.6;
+  padding: 5px 0;
+}
+
+.leaderboard-container .separator span {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+
+@media (max-width: 400px) {
+  .leaderboard {
+    max-width: 320px;
+  }
+  
+  .leaderboard-container .beast {
+    width: 30px;
+    height: 30px;
+  }
 }
