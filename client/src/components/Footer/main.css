@@ -3,12 +3,24 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-top: 30px;
 }
 
 .footer-team {
   border-radius: 50%;
   height: 50px;
   border: 2px solid #ECECDA;
+}
+
+.carousel-item {
+  padding: 0 60px;
+  color: #ECECDA;
+  font-weight: 500;
+}
+
+.member-info {
+  width: 70%;
+  margin-left: 12px;
 }
 
 .bottom-footer {
@@ -18,13 +30,13 @@
   align-items: center;
   justify-content: center;
   margin-top: 1rem;
+  margin-bottom: 0;
   padding: 1rem 0;
-  border-top: 1px solid rgba(236, 236, 218, 0.2);
 }
 
 .bottom-footer img {
   width: 30px;
-  margin: 0 8px;
+  margin: 0 15px 0; 
   transition: transform 0.3s ease;
 }
 

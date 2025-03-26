@@ -1,29 +1,29 @@
-import './main.css';
+import { useEffect } from 'react';
 import Header from '../Header/index.tsx';
 import banner from '../../assets/img/original-dark.png'
 import Footer from '../Footer/index.tsx';
 import './main.css';
 
 const About: React.FC = () => {
+  useEffect(() => {
+    const bodyElement = document.querySelector('.body') as HTMLElement;
+    if (bodyElement) bodyElement.classList.remove('day');
+  }, []);
 
   return (
     <>
       <Header />
       <div className="team">
-        <div className='d-flex justify-content-between align-items-center'>
-          <p className={'title mb-4'}>
-            ByteBeasts Tamagotchi
-            <span className='d-block'>The First Game in the ByteBeasts Universe</span>
-          </p>
-        </div>
-
         <div className='lore-container'>
           <div className="banner-container">
-            <a href='https://x.com/0xByteBeasts/status/1889061717218673118' target='_blank'>
-              <img className="banner" src={banner} alt="ByteBeasts Banner" />
+            <a className="banner" href='https://x.com/0xByteBeasts/status/1889061717218673118' target='_blank'>
+              <img src={banner} alt="ByteBeasts Banner" />
             </a>
+            <p className={'title'}>
+              ByteBeasts Tamagotchi
+              <span className='d-block'>The First Game in the ByteBeasts Universe</span>
+            </p>
           </div>
-
           <div className="initial-info">
             <p className='mb-4'>
               In a world where digital and tangible converge, a new form of life has emerged: ByteBeasts, digital creatures that exist permanently on the blockchain, waiting to form lasting bonds with their keepers.
@@ -41,7 +41,6 @@ const About: React.FC = () => {
               Welcome to the dawn of a new era where your achievements and digital connections endure. Are you ready to raise, train, and form an eternal bond with your ByteBeast?
             </p>
           </div>
-
           <Footer />
         </div>
       </div>
