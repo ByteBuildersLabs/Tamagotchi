@@ -1,4 +1,3 @@
-import { BeastStatus } from "../../../dojo/bindings";
 import { useEffect, useState, useRef } from "react";
 import MessageComponent, { Message } from "../../ui/message";
 import beastsDex from "../../../data/beastDex";
@@ -28,35 +27,19 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
     );
   }
 
-  const analyzeStats = (beastStatus: BeastStatus) => {
-    const range = {
-      LOW: 30,
-      MEDIUM: 50,
-      HIGH: 80
-    };
-
-    return Object.entries(beastStatus)
-      .map(([stat, value]) => ({
-        stat,
-        value,
-        priority: value < range.LOW ? 3 :
-          value < range.MEDIUM ? 2 :
-            value > range.HIGH ? 1 : 0
-      }))
-      .sort((a, b) => b.priority - a.priority)[0];
-  };
-
-  const generatePrompt = (beastStatus: BeastStatus) => {
+  const generatePrompt = (beastStatus: any) => {
     if (!beast) return '';
-    const criticalStat = analyzeStats(beastStatus);
+    console.info('beastStatus', beastStatus);
+
     return `You are ${beastsDex[beast?.specie - 1]?.name}, with the following statistics:
-            Hunger: ${beastStatus.hunger}/100
-            Energy: ${beastStatus.energy}/100
-            Happiness: ${beastStatus.happiness}/100
-            Hygiene: ${beastStatus.hygiene}/100
+            Hunger: ${beastStatus[3]}
+            Energy: ${beastStatus[4]}
+            Happiness: ${beastStatus[5]}
+            Hygiene: ${beastStatus[6]}
             
             Respond in ONE short line (max 15 words). 
-            Focus on your ${criticalStat?.stat.toLowerCase()} being ${criticalStat?.value}%.`;
+            If the stats are close to 0, let me know so I can take care of you,
+            make sure to respond only with english words`;
   };
 
   const createWhisper = async (prompt: string) => {
