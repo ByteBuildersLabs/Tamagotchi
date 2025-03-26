@@ -72,42 +72,36 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         if total_points < constants::MAX_POINTS {
             let points_to_decrease: u8 = total_points.try_into().unwrap();
 
-            let multiplied_hunger_to_decrease = (points_to_decrease * 3) / 2;
-            let multiplied_energy_to_decrease = (points_to_decrease * 3) / 2; 
+            let energy_to_decrease = (points_to_decrease * 3) / 2;
+            let hunger_to_decrease = (points_to_decrease * 3) / 2;
+            let happiness_to_decrease = (points_to_decrease * 3) / 2;
+            let hygiene_to_decrease = (points_to_decrease * 3) / 2;
 
             if self.is_alive {
-                // Decrease energy based on conditions
-                if self.happiness == 0 || self.hygiene == 0 {
-                    self.energy = if self.energy >= multiplied_energy_to_decrease {
-                        self.energy - multiplied_energy_to_decrease
-                    } else {
-                        0
-                    };
+                // Decrease energy safely
+                self.energy = if self.energy >= energy_to_decrease {
+                    self.energy - energy_to_decrease
                 } else {
-                    self.energy = if self.energy >= points_to_decrease {
-                        self.energy - points_to_decrease
-                    } else {
-                        0
-                    };
-                }
-
+                    0
+                };
+                
                 // Decrease hunger safely
-                self.hunger = if self.hunger >= multiplied_hunger_to_decrease {
-                    self.hunger - multiplied_hunger_to_decrease
+                self.hunger = if self.hunger >= hunger_to_decrease {
+                    self.hunger - hunger_to_decrease
                 } else {
                     0
                 };
 
                 // Decrease happiness safely 
-                self.happiness = if self.happiness >= points_to_decrease {
-                    self.happiness - points_to_decrease
+                self.happiness = if self.happiness >= happiness_to_decrease {
+                    self.happiness - happiness_to_decrease
                 } else {
                     0
                 };
 
                 // Decrease hygiene safely
-                self.hygiene = if self.hygiene >= points_to_decrease {
-                    self.hygiene - points_to_decrease
+                self.hygiene = if self.hygiene >= hygiene_to_decrease {
+                    self.hygiene - hygiene_to_decrease
                 } else {
                     0
                 };
@@ -115,7 +109,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                 self.update_clean_status(self.hygiene);
 
                 // Check if beast dies
-                if self.energy == 0 || self.hunger == 0 {
+                if self.energy == 0 && self.hunger == 0 && self.happiness == 0 &&  self.hygiene == 0 {
                     self.is_alive = false;
                 }
             }
@@ -168,7 +162,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
                         self.update_clean_status(self.hygiene);
         
                         // Check if beast dies
-                        if self.hunger == 0 {
+                        if self.energy == 0 && self.hunger == 0 && self.happiness == 0 &&  self.hygiene == 0 {
                             self.is_alive = false;
                         }
 
