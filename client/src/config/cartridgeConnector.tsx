@@ -94,7 +94,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/bbnewstatus/katana'
+  rpc: 'https://api.cartridge.gg/x/bbtestrr/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
