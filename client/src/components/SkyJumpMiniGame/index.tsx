@@ -14,6 +14,7 @@ import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
 import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
+import { Account } from 'starknet';
 
 const HITBOX_MARGIN = 2;
 const CAMERA_THRESHOLD = 150;
@@ -176,13 +177,17 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       if (handleAction && client && account) {
         await handleAction(
           "SaveGameResults", 
-          () => client.actions.saveGameResults(
-            account,
-            score,
-            foodId || "",
-            foodCollected
-          )
-        );
+          async () => {
+            await client.player.updatePlayerTotalPoints(
+              account as Account,
+              score
+            )
+            await client.game.updateFoodAmount(
+              account as Account,
+              foodId,
+              foodCollected
+            )
+        });
         console.log("Game results saved successfully");
         return true;
       } else {

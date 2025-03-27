@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x13c34bed6a54be7696e032877469a40bed0f457ee5a49fc8baaa9e4c40376a4",
-      "class_hash": "0x14614a5b19853a539e837a4073ac81a584d82dd7d4b420bb64c3459484f3026",
+      "address": "0x79f55c679bb76b18e8e12f0b0f490de3079101eea8b5785171bd76f1af12e24",
+      "class_hash": "0x467feeb4685ad64e50a095dca8b577be0e9aac6ce5421b87074d6ebbde6879a",
       "abi": [
         {
           "type": "impl",
@@ -1516,6 +1516,22 @@
             },
             {
               "type": "function",
+              "name": "update_food_amount",
+              "inputs": [
+                {
+                  "name": "food_id",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "get_timestamp_based_status",
               "inputs": [],
               "outputs": [
@@ -1692,6 +1708,7 @@
         "pet",
         "clean",
         "revive",
+        "update_food_amount",
         "get_timestamp_based_status",
         "get_timestamp_based_status_with_address",
         "get_beast_age",
@@ -1700,8 +1717,8 @@
       ]
     },
     {
-      "address": "0x32fbf1eb254356f52ccd7ce14d99a691caa22c188fc84952b533224d103346a",
-      "class_hash": "0x21e2d81c2ef198083b24956f379da4eb4c7c7f8fd203ca4dc1f18bc1e46d99e",
+      "address": "0x5cb5588212364951995ef1006b64dd610a6f3ef6a264726dc5d4a2e6b57aa6e",
+      "class_hash": "0x72e85f05b8218ae2affef97de3240dbc081aefb788b61e405f81d39d1dc1c8c",
       "abi": [
         {
           "type": "impl",
@@ -1799,6 +1816,18 @@
               "type": "function",
               "name": "update_player_daily_streak",
               "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "update_player_total_points",
+              "inputs": [
+                {
+                  "name": "points",
+                  "type": "core::integer::u32"
+                }
+              ],
               "outputs": [],
               "state_mutability": "external"
             }
@@ -1921,6 +1950,7 @@
         "add_initial_food",
         "set_current_beast",
         "update_player_daily_streak",
+        "update_player_total_points",
         "upgrade"
       ]
     }
@@ -1947,7 +1977,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x43f4a65fffddae11c476aec7ff1802522aba44712b29219ceca1c3fea8d9dd7",
+      "class_hash": "0x1bfd905032b1b8038e294f034c687612589f370faf359312b55b6aad19d561b",
       "tag": "tamagotchi-Player",
       "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
