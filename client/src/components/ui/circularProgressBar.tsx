@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useSound from 'use-sound';
 import buttonClick from '../../assets/sounds/click.mp3';
 
