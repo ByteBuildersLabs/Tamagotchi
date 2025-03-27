@@ -14,6 +14,7 @@ import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
 import bgImage3 from '../../assets/SkyJump/night-bg.gif';
 import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
+import { Account } from 'starknet';
 
 const HITBOX_MARGIN = 2;
 const CAMERA_THRESHOLD = 150;
@@ -171,19 +172,22 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     foodCollected: number;
   }) => {
     const { score, foodId, foodCollected  } = gameData;
-    
+
     try {
       if (handleAction && client && account) {
         await handleAction(
           "SaveGameResults", 
-          () => client.actions.saveGameResults(
-            account,
-            score,
-            foodId || "",
-            foodCollected
-          )
-        );
-        console.log("Game results saved successfully");
+          async () => {
+            await client.player.updatePlayerTotalPoints(
+              account as Account,
+              score
+            )
+            await client.game.updateFoodAmount(
+              account as Account,
+              foodId,
+              foodCollected
+            )
+        });
         return true;
       } else {
         console.warn("Cannot save game results - missing required props");
@@ -218,10 +222,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
     if (collectedFoodRef.current === 0) selectedFood.id = 0;
     
-    //console.log("score: " + score, "foodId: " + selectedFood?.id,"foodCollected: " + collectedFoodRef.current);
-    //console.log(handleAction,account, client,);
-
-    saveGameResultsToDojo({score,foodId: selectedFood?.id || "",foodCollected: collectedFood});
+    saveGameResultsToDojo({score,foodId: selectedFood?.id || "", foodCollected: collectedFoodRef.current});
 
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);

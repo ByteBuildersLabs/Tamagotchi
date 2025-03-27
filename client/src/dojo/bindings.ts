@@ -60,6 +60,7 @@ export interface Player {
 	address: string;
 	current_beast_id: number;
 	daily_streak: number;
+	total_points: number;
 	last_active_day: number;
 	creation_day: number;
 }
@@ -68,6 +69,7 @@ export interface Player {
 export interface PlayerValue {
 	current_beast_id: number;
 	daily_streak: number;
+	total_points: number;
 	last_active_day: number;
 	creation_day: number;
 }
@@ -133,12 +135,14 @@ export const schema: SchemaType = {
 			address: "",
 			current_beast_id: 0,
 			daily_streak: 0,
+			total_points: 0,
 			last_active_day: 0,
 			creation_day: 0,
 		},
 		PlayerValue: {
 			current_beast_id: 0,
 			daily_streak: 0,
+			total_points: 0,
 			last_active_day: 0,
 			creation_day: 0,
 		},

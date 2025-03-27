@@ -98,4 +98,25 @@ mod tests {
         // Set a non existent beast id
         player_system.set_current_beast(999); // Should panic as beast doesn't exist
     }
+
+    #[test]
+    #[available_gas(40000000)]
+    fn test_update_player_total_points() {
+        let world = create_test_world();
+        let player_system = create_player_system(world);
+
+        cheat_caller_address(PLAYER());
+
+        // Initialize player
+        player_system.spawn_player();
+
+        // Update player total points
+        let points: u32 = 100;
+        player_system.update_player_total_points(points);
+
+        // Verify player total points
+        let player: Player = world.read_model(PLAYER());
+        assert(player.total_points == points, 'wrong total points');
+    }
+
 }

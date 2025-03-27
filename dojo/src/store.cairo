@@ -82,6 +82,7 @@ pub impl StoreImpl of StoreTrait {
         let new_player = Player {
             address: caller,
             current_beast_id: 0,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: Timestamp::unix_timestamp_to_day(current_timestamp),

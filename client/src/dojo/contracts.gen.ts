@@ -339,6 +339,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_updateFoodAmount_calldata = (foodId: number, amount: number): DojoCall => {
+		return {
+			contractName: "game",
+			entrypoint: "update_food_amount",
+			calldata: [foodId, amount],
+		};
+	};
+
+	const game_updateFoodAmount = async (snAccount: Account | AccountInterface, foodId: number, amount: number) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_game_updateFoodAmount_calldata(foodId, amount),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_player_updatePlayerDailyStreak_calldata = (): DojoCall => {
 		return {
 			contractName: "player",
@@ -360,6 +381,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_player_updatePlayerTotalPoints_calldata = (points: number): DojoCall => {
+		return {
+			contractName: "player",
+			entrypoint: "update_player_total_points",
+			calldata: [points],
+		};
+	};
+
+	const player_updatePlayerTotalPoints = async (snAccount: Account | AccountInterface, points: number) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_player_updatePlayerTotalPoints_calldata(points),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 
 
 	return {
@@ -372,6 +414,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildSpawnPlayerCalldata: build_player_spawnPlayer_calldata,
 			updatePlayerDailyStreak: player_updatePlayerDailyStreak,
 			buildUpdatePlayerDailyStreakCalldata: build_player_updatePlayerDailyStreak_calldata,
+			updatePlayerTotalPoints: player_updatePlayerTotalPoints,
+			buildUpdatePlayerTotalPointsCalldata: build_player_updatePlayerTotalPoints_calldata,
 		},
 		game: {
 			awake: game_awake,
@@ -400,6 +444,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildSpawnBeastCalldata: build_game_spawnBeast_calldata,
 			updateBeast: game_updateBeast,
 			buildUpdateBeastCalldata: build_game_updateBeast_calldata,
+			updateFoodAmount: game_updateFoodAmount,
+			buildUpdateFoodAmountCalldata: build_game_updateFoodAmount_calldata,
 		},
 	};
 }

@@ -27,9 +27,8 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
     );
   }
 
-  const generateLore = (beastStatus: any) => {
+  const generateLore = () => {
     if (!beast) return '';
-    console.info('beastStatus', beastStatus);
 
     return `You are ${beastsDex[beast?.specie - 1]?.name}, these the lore of the world:
             - In a distant future, humanity left behind the cities of metal and concrete to inhabit a reborn world: Terra Noctis, a planet where primordial energy flows like an invisible river, giving life to ancient creatures that emerge from mystical eggs
@@ -41,9 +40,8 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
             `;
   };
 
-  const generateAdvise = (beastStatus: any) => {
+  const generateAdvise = () => {
     if (!beast) return '';
-    console.info('beastStatus', beastStatus);
 
     return `You are ${beastsDex[beast?.specie - 1]?.name}, these are the rules of how to take care of you:
             - The Status will decrease every 3 minutes
@@ -59,7 +57,6 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
 
   const generateStatus = (beastStatus: any) => {
     if (!beast) return '';
-    console.info('beastStatus', beastStatus);
 
     return `You are ${beastsDex[beast?.specie - 1]?.name}, with the following statistics:
             Hunger: ${beastStatus[3]}
@@ -99,9 +96,9 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
       const randomFunction = Math.floor(Math.random() * 3);
       let initialPrompt = '';
       if (randomFunction === 0) {
-        initialPrompt = generateLore(beastStatus);
+        initialPrompt = generateLore();
       } else if (randomFunction === 1) {
-        initialPrompt = generateAdvise(beastStatus);
+        initialPrompt = generateAdvise();
       } else {
         initialPrompt = generateStatus(beastStatus);
       }
@@ -110,9 +107,9 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
         const randomFunction = Math.floor(Math.random() * 3);
         let prompt = '';
         if (randomFunction === 0) {
-          prompt = generateLore(beastStatus);
+          prompt = generateLore();
         } else if (randomFunction === 1) {
-          prompt = generateAdvise(beastStatus);
+          prompt = generateAdvise();
         } else {
           prompt = generateStatus(beastStatus);
         }
