@@ -12,6 +12,16 @@ pub struct Food {
     pub amount: u8,
 }
 
+// Traits Implementations
+#[generate_trait]
+pub impl FoodImpl of FoodTrait { 
+
+    fn update_food_total_amount(ref self: Food, new_amount: u8) {
+        self.amount += new_amount;
+    }
+
+}
+
 // Tests
 #[cfg(test)]
 mod tests {
