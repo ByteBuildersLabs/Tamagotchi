@@ -40,7 +40,8 @@
   padding-bottom: 5px;
 }
 
-.header-row .col-3 span {
+.header-row .col-3 span,
+.header-row .col-4 span {
   font-size: 14px;
   opacity: 0.8;
 }
@@ -48,6 +49,17 @@
 .col-3 {
   flex: 0 0 25%;
   max-width: 25%;
+  padding: 0 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ECECDA;
+}
+
+.col-4 {
+  flex: 0 0 33.333%;
+  max-width: 33.333%;
   padding: 0 5px;
   text-align: center;
   display: flex;
@@ -103,8 +115,9 @@
 }
 
 /* Styles to highlight the current user */
-.leaderboard-container .current-user .col-3 {
-  color: #FFD700; /* Gold color for the current user */
+.leaderboard-container .current-user .col-3,
+.leaderboard-container .current-user .col-4{
+  color: #ECECDA; 
   font-weight: bold;
 }
 
@@ -122,7 +135,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background-color: #FFD700;
+  background-color: #ECECDA;
   border-radius: 3px;
 }
 
@@ -149,18 +162,6 @@
   letter-spacing: 3px;
 }
 
-/* Styles for the games counter */
-.games-count {
-  background-color: rgba(255, 215, 0, 0.2);
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-}
-
 /* Leaderboard tabs */
 .leaderboard-tabs {
   display: flex;
@@ -178,11 +179,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
+  font-family: "Kallisto", serif;
 }
 
 .tab-button.active {
-  background-color: #FFD700;
-  color: #000;
+  background-color: #85002A;
+  color: #ECECDA;
   font-weight: bold;
 }
 
@@ -202,7 +204,6 @@
   }
 }
 
-/* Media queries for smaller devices */
 @media (max-width: 450px) {
   .leaderboard {
     max-width: 320px;

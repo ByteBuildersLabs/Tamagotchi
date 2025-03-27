@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import './main.css';
 import beastsDex from '../../data/beastDex.tsx';
 import { useBeasts } from '../../hooks/useBeasts.tsx';
+import { usePlayerData } from '../../hooks/usePlayersData.tsx';
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 import Spinner from '../ui/spinner.tsx';
@@ -18,27 +19,42 @@ interface Beast {
   specie: string;
 }
 
+interface Player {
+  address: string;
+  total_points: number;
+  userName: string;
+}
+
 type LeaderboardType = 'age' | 'minigames';
 
 const Leaderboard = () => {
   const [allBeasts, setAllBeasts] = useState<Beast[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [userPosition, setUserPosition] = useState<number | null>(null);
+  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
+  const [isLoadedBeasts, setIsLoadedBeasts] = useState(false);
+  const [isLoadedPlayers, setIsLoadedPlayers] = useState(false);
+  const [userPositionAge, setUserPositionAge] = useState<number | null>(null);
+  const [userPositionPoints, setUserPositionPoints] = useState<number | null>(null);
   const [userBeast, setUserBeast] = useState<Beast | null>(null);
+  const [userPlayer, setUserPlayer] = useState<Player | null>(null);
   const [activeLeaderboard, setActiveLeaderboard] = useState<LeaderboardType>('age');
   
   // Get the logged-in user's account
   const { account } = useAccount();
   const userAddress = account ? addAddressPadding(account.address) : '';
   
+  // Get beast and player data
   const { beastsData } = useBeasts();
+  const { playerData } = usePlayerData();
+  
   let beasts = beastsData as Beast[];
+  let players = playerData as Player[];
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) bodyElement.classList.remove('day');
   }, []);
 
+  // Effect to process beast data
   useEffect(() => {
     if (beasts && beasts.length > 0) {
       const sortedBeasts = [...beasts].sort((a, b) => (b?.age || 0) - (a?.age || 0));
@@ -50,24 +66,49 @@ const Leaderboard = () => {
         );
         
         if (userBeastIndex !== -1) {
-          setUserPosition(userBeastIndex + 1); // Position starts at 1
+          setUserPositionAge(userBeastIndex + 1); // Position starts at 1
           setUserBeast(sortedBeasts[userBeastIndex]);
         }
       }
       
       setAllBeasts(sortedBeasts);
-      setIsLoaded(true);
+      setIsLoadedBeasts(true);
     }
   }, [beasts, userAddress]);
 
-  // Determine which beasts to display (top 15 + user if outside the top 15)
+  // Effect to process player data
+  useEffect(() => {
+    if (players && players.length > 0) {
+      const sortedPlayers = [...players].sort((a, b) => (b?.total_points || 0) - (a?.total_points || 0));
+      
+      // Find the current user's position in scores
+      if (userAddress) {
+        const userPlayerIndex = sortedPlayers.findIndex(
+          player => addAddressPadding(player.address) === userAddress
+        );
+        
+        if (userPlayerIndex !== -1) {
+          setUserPositionPoints(userPlayerIndex + 1); // Position starts at 1
+          setUserPlayer(sortedPlayers[userPlayerIndex]);
+        }
+      }
+      
+      setAllPlayers(sortedPlayers);
+      setIsLoadedPlayers(true);
+    }
+  }, [players, userAddress]);
+
+  // Determine which beasts/players to display (top 15 + user if outside the top 15)
   const top15Beasts = allBeasts.slice(0, 15);
-  const showUserSeparately = userPosition !== null && userPosition > 15;
+  const top15Players = allPlayers.slice(0, 15);
+  
+  const showUserSeparatelyAge = userPositionAge !== null && userPositionAge > 15;
+  const showUserSeparatelyPoints = userPositionPoints !== null && userPositionPoints > 15;
 
   // Function to determine if a row belongs to the user
-  const isUserRow = (beastPlayer: string) => {
+  const isUserRow = (address: string) => {
     if (!userAddress) return false;
-    return addAddressPadding(beastPlayer) === userAddress;
+    return addAddressPadding(address) === userAddress;
   };
 
   // Switch between leaderboards
@@ -75,28 +116,44 @@ const Leaderboard = () => {
     setActiveLeaderboard(type);
   };
 
-  // Render column headers
-  const renderColumnHeaders = () => (
-    <div className='row mb-3 header-row'>
-      <div className='col-3'>
-        <span>Position</span>
-      </div>
-      <div className='col-3'>
-        <span>Player</span>
-      </div>
-      <div className='col-3'>
-        <span>{activeLeaderboard === 'age' ? 'Beast' : 'Games'}</span>
-      </div>
-      <div className='col-3'>
-        <span>{activeLeaderboard === 'age' ? 'Age' : 'Score'}</span>
-      </div>
-    </div>
-  );
+  const renderColumnHeaders = () => {
+    if (activeLeaderboard === 'age') {
+      return (
+        <div className='row mb-3 header-row'>
+          <div className='col-3'>
+            <span>Position</span>
+          </div>
+          <div className='col-3'>
+            <span>Player</span>
+          </div>
+          <div className='col-3'>
+            <span>Beast</span>
+          </div>
+          <div className='col-3'>
+            <span>Age</span>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className='row mb-3 header-row'>
+          <div className='col-4'>
+            <span>Position</span>
+          </div>
+          <div className='col-4'>
+            <span>Player</span>
+          </div>
+          <div className='col-4'>
+            <span>Score</span>
+          </div>
+        </div>
+      );
+    }
+  };
 
-  // Render the age leaderboard
   const renderAgeLeaderboard = () => (
     <div className="leaderboard-table">
-      {isLoaded && top15Beasts.length > 0 ? (
+      {isLoadedBeasts && top15Beasts.length > 0 ? (
         <>
           {top15Beasts.map((beast: Beast, index: number) => (
             <div 
@@ -126,14 +183,14 @@ const Leaderboard = () => {
             </div>
           ))}
           
-          {showUserSeparately && userBeast && (
+          {showUserSeparatelyAge && userBeast && (
             <>
               <div className='row mb-3 separator'>
                 <div className='col-12'><span>...</span></div>
               </div>
               <div className='row mb-3 current-user'>
                 <div className='col-3'>
-                  <span>{userPosition}</span>
+                  <span>{userPositionAge}</span>
                 </div>
                 <div className='col-3 username-col'>
                   <span>{userBeast.userName}</span>
@@ -166,50 +223,42 @@ const Leaderboard = () => {
     </div>
   );
 
-  // Render the minigames leaderboard (placeholder for now)
   const renderMinigamesLeaderboard = () => (
     <div className="leaderboard-table">
-      {/* This is a placeholder until the real scoring system is integrated */}
-      {isLoaded && top15Beasts.length > 0 ? (
+      {isLoadedPlayers && top15Players.length > 0 ? (
         <>
-          {top15Beasts.slice(0, 10).map((beast: Beast, index: number) => (
+          {top15Players.map((player: Player, index: number) => (
             <div 
-              className={`row mb-3 ${isUserRow(beast.player) ? 'current-user' : ''}`} 
+              className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
               key={`minigame-${index}`}
             >
-              <div className='col-3'>
+              <div className='col-4'>
                 <span>{index + 1}</span>
               </div>
-              <div className='col-3 username-col'>
-                <span>{beast.userName}</span>
+              <div className='col-4 username-col'>
+                <span>{player.userName}</span>
               </div>
-              <div className='col-3'>
-                <span className="games-count">{Math.floor(Math.random() * 10) + 1}</span>
-              </div>
-              <div className='col-3'>
-                <span>{Math.floor(Math.random() * 1000) + 100}</span>
+              <div className='col-4'>
+                <span>{player.total_points}</span>
               </div>
             </div>
           ))}
           
-          {/* Placeholder for the user if not in the top */}
-          {showUserSeparately && userBeast && (
+          {/* Show the user if they are outside the top 15 */}
+          {showUserSeparatelyPoints && userPlayer && (
             <>
               <div className='row mb-3 separator'>
                 <div className='col-12'><span>...</span></div>
               </div>
               <div className='row mb-3 current-user'>
-                <div className='col-3'>
-                  <span>{Math.floor(Math.random() * 20) + 16}</span>
+                <div className='col-4'>
+                  <span>{userPositionPoints}</span>
                 </div>
-                <div className='col-3 username-col'>
-                  <span>{userBeast.userName}</span>
+                <div className='col-4 username-col'>
+                  <span>{userPlayer.userName}</span>
                 </div>
-                <div className='col-3'>
-                  <span className="games-count">{Math.floor(Math.random() * 5) + 1}</span>
-                </div>
-                <div className='col-3'>
-                  <span>{Math.floor(Math.random() * 500) + 50}</span>
+                <div className='col-4'>
+                  <span>{userPlayer.total_points}</span>
                 </div>
               </div>
             </>
@@ -218,7 +267,7 @@ const Leaderboard = () => {
       ) : (
         <div className='row mb-3'>
           <div className='col-12 text-center'>
-            <span>No data to display</span>
+            <span>No scores available</span>
           </div>
         </div>
       )}
@@ -226,20 +275,38 @@ const Leaderboard = () => {
   );
 
   const renderContent = () => {
-    if (!isLoaded) {
-      return (
-        <Spinner message='Loading leaderboard...' />
-      );
-    }
-    
-    if (allBeasts.length === 0) {
-      return (
-        <div className='row mb-3'>
-          <div className='col-12 text-center'>
-            <span>No beasts available</span>
+    if (activeLeaderboard === 'age') {
+      if (!isLoadedBeasts) {
+        return (
+          <Spinner message='Loading beasts leaderboard...' />
+        );
+      }
+      
+      if (allBeasts.length === 0) {
+        return (
+          <div className='row mb-3'>
+            <div className='col-12 text-center'>
+              <span>No beasts available</span>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
+    } else {
+      if (!isLoadedPlayers) {
+        return (
+          <Spinner message='Loading minigames leaderboard...' />
+        );
+      }
+      
+      if (allPlayers.length === 0) {
+        return (
+          <div className='row mb-3'>
+            <div className='col-12 text-center'>
+              <span>No scores available</span>
+            </div>
+          </div>
+        );
+      }
     }
     
     return (
@@ -275,7 +342,7 @@ const Leaderboard = () => {
             <span className='d-block'>
               {activeLeaderboard === 'age' 
                 ? 'How old is your beast?' 
-                : 'Best players in minigames'}
+                : 'Best players by total points'}
             </span>
           </p>
           
