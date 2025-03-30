@@ -206,22 +206,18 @@ pub impl StoreImpl of StoreTrait {
     fn init_player_food(mut self: Store) {
         let caller = get_caller_address();
 
-        self.new_apples(caller);
-        self.new_bananas(caller);
-        self.new_cherries(caller);
-        self.new_burguers(caller);
-        self.new_cake_chocolates(caller);
-        self.new_cake_strawberries(caller);
-        self.new_cheeses(caller);
+        // Favorite for magic
         self.new_chickens(caller);
-        self.new_eggs(caller);
+        self.new_apples(caller);
+        // Favorite for light
+        self.new_cherries(caller);
         self.new_fish(caller);
-        self.new_french_fries(caller);
-        self.new_blue_berries(caller);
+        // Favorite for shadow
         self.new_beefs(caller);
-        self.new_pizzas(caller);
-        self.new_corns(caller);
         self.new_potatoes(caller);
+        // Common
+        self.new_bananas(caller);
+        self.new_blue_berries(caller);
     }
 
     fn new_beast_status(mut self: Store, beast_id: u16) {
