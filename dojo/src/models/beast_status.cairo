@@ -79,7 +79,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             let mut happiness_to_decrease = (points_to_decrease + 3);
             let mut hygiene_to_decrease = (points_to_decrease * 2);
 
-            // Faster decrease when energi is below 50
+            // Faster decrease when energy is below 50
             if self.energy < constants::HALF_POINTS {
                 hunger_to_decrease = (points_to_decrease * 3) / 2;
                 happiness_to_decrease = (points_to_decrease * 3) / 2;
