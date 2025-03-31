@@ -1,5 +1,4 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { toast, Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry'
 import initialFoodItems from '../../data/food';
@@ -32,10 +31,6 @@ const FOOD_APEARANCE_PROBABILITY = 0.3;
 
 const RESET_GAME_DELAY = 100;
 const DELETE_FOOD_ANIMATION_TIME = 300;
-const MILESTONE_TOAST_DURATION = 2000;
-const FOOD_TOAST_DURATION = 2000;
-const HIGH_SCORE_TOAST_DURATION = 4000;
-const GAME_OVER_TOAST_DURATION = 3000;
 
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
@@ -195,7 +190,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       }
     } catch (error) {
       console.error("Error saving game results:", error);
-      toast.error("Couldn't save your game results. Your progress might not be recorded.");
+      console.error("Couldn't save your game results. Your progress might not be recorded.");
       return false;
     }
   };
@@ -204,26 +199,24 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
     setFinalScore(score);
-
+  
     // Check if it's a new high score
     if (score > currentHighScore) {
       saveHighScore(gameId, beastId, score);
       setCurrentHighScore(score);
-
-      toast.success(`New high score: ${score}!`, {
-        icon: '🏆',
-        duration: HIGH_SCORE_TOAST_DURATION
-      });
-    } else {
-      toast.success(`Game over! Score: ${score}`, {
-        duration: GAME_OVER_TOAST_DURATION
-      });
+  
+      // We'll show this in the game over modal with animation
+      // instead of using a toast
     }
-
+  
     if (collectedFoodRef.current === 0) selectedFood.id = 0;
     
-    saveGameResultsToDojo({score,foodId: selectedFood?.id || "", foodCollected: collectedFoodRef.current});
-
+    saveGameResultsToDojo({
+      score,
+      foodId: selectedFood?.id || "", 
+      foodCollected: collectedFoodRef.current
+    });
+  
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
@@ -272,18 +265,42 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Check score milestones and show alerts
+  // Check score milestones and animate score display
   const checkScoreMilestones = (currentScore: number) => {
     const milestone = Math.floor(currentScore / SCORE_MILESTONE_INCREMENT) * SCORE_MILESTONE_INCREMENT;
 
     if (milestone > 0 && milestone > lastMilestoneRef.current) {
       // Update last milestone reached
       lastMilestoneRef.current = milestone;
-
-      // Show toast with milestone reached
-      toast.success(`Amazing! You've reached ${milestone} points`, {
-        position: "top-center",
-        duration: MILESTONE_TOAST_DURATION
-      });
+      
+      // Animate the score card
+      if (scoreCardRef.current) {
+        // Add milestone animation class
+        scoreCardRef.current.classList.add('score-milestone-animation');
+        
+        // Create and show "+50" indicator (or whatever the increment is)
+        const incrementIndicator = document.createElement('div');
+        incrementIndicator.className = 'increment-indicator';
+        incrementIndicator.textContent = `+${SCORE_MILESTONE_INCREMENT}`;
+        
+        // Position it near the score card
+        const scoreCardRect = scoreCardRef.current.getBoundingClientRect();
+        incrementIndicator.style.left = `${scoreCardRect.right + 5}px`;
+        incrementIndicator.style.top = `${scoreCardRect.top}px`;
+        
+        // Add to DOM
+        document.body.appendChild(incrementIndicator);
+        
+        // Remove class and element after animation completes
+        setTimeout(() => {
+          if (scoreCardRef.current) {
+            scoreCardRef.current.classList.remove('score-milestone-animation');
+          }
+          if (incrementIndicator.parentNode) {
+            incrementIndicator.parentNode.removeChild(incrementIndicator);
+          }
+        }, 1200);
+      }
     }
   };
 
@@ -298,26 +315,43 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   const collectFood = (platform: any) => {
     if (platform.hasFood && !platform.foodCollected && platform.foodElement) {
-
       platform.foodCollected = true;
       collectedFoodRef.current += 1;
       setCollectedFood(collectedFoodRef.current);
+      
+      // Animate food disappearing
+      platform.foodElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      platform.foodElement.style.transform = 'scale(1.5)';
       platform.foodElement.style.opacity = '0';
-
-      toast.success(
-        () => (
-          <div className="toast-content">
-            <img
-              src={selectedFood.img}
-              alt={selectedFood.name}
-              className="toast-food-icon"
-            />
-            <span>¡Collected: {selectedFood.name}!</span>
-          </div>
-        ),
-        { duration: FOOD_TOAST_DURATION }
-      );
-
+  
+      // Animate food counter
+      const foodCounterElement = document.querySelector('.food-counter');
+      if (foodCounterElement) {
+        foodCounterElement.classList.add('food-counter-animation');
+        
+        // Create floating food indicator
+        const foodIndicator = document.createElement('div');
+        foodIndicator.className = 'increment-indicator';
+        foodIndicator.textContent = '+1';
+        
+        // Position near food counter
+        const foodCounterRect = foodCounterElement.getBoundingClientRect();
+        foodIndicator.style.left = `${foodCounterRect.left - 20}px`;
+        foodIndicator.style.top = `${foodCounterRect.top + 10}px`;
+        
+        // Add to DOM
+        document.body.appendChild(foodIndicator);
+        
+        // Remove classes and elements after animation completes
+        setTimeout(() => {
+          foodCounterElement.classList.remove('food-counter-animation');
+          if (foodIndicator.parentNode) {
+            foodIndicator.parentNode.removeChild(foodIndicator);
+          }
+        }, 1000);
+      }
+  
+      // Remove food element from DOM after animation
       setTimeout(() => {
         if (platform.foodElement && platform.foodElement.parentNode) {
           platform.foodElement.parentNode.removeChild(platform.foodElement);
@@ -1173,14 +1207,24 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
           <p className="game-result-score">
             Food: {collectedFood} {selectedFood?.name || 'items'}
           </p>
-          <p className="game-result-score">
-            Score: {finalScore}
-          </p>
-          {currentHighScore > 0 && (
+          
+          {finalScore > currentHighScore ? (
+            <p className={`game-result-score high-score-animation`}>
+              <span role="img" aria-label="trophy" style={{ marginRight: '5px' }}>🏆</span>
+              New High Score: {finalScore}!
+            </p>
+          ) : (
+            <p className="game-result-score">
+              Score: {finalScore}
+            </p>
+          )}
+          
+          {currentHighScore > 0 && finalScore <= currentHighScore && (
             <p className="game-result-score">
               High Score: {currentHighScore}
             </p>
           )}
+          
           <div className="game-result-buttons">
             <button
               className="play-again-button"
@@ -1195,8 +1239,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
           </div>
         </div>
       )}
-
-      <Toaster position="bottom-center" />
     </div>
   );
 });
