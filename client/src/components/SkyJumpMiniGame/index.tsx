@@ -142,10 +142,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       current: 0,
       images: [
         { img: bgImage1, scoreThreshold: 0 },
-        { img: bgImage2, scoreThreshold: 50 },
-        { img: bgImage3, scoreThreshold: 150 },
-        { img: bgImage4, scoreThreshold: 300 },
-        { img: bgImage5, scoreThreshold: 450 },
+        { img: bgImage2, scoreThreshold: 500 },
+        { img: bgImage3, scoreThreshold: 1500 },
+        { img: bgImage4, scoreThreshold: 3000 },
+        { img: bgImage5, scoreThreshold: 6000 },
       ],
     },
 
