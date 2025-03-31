@@ -17,6 +17,7 @@ pub trait IGame<T> {
     fn pet(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
+    fn update_food_amount(ref self: T, food_id: u8, amount: u8);
 
     // ------------------------- Read Calls -------------------------
     fn get_timestamp_based_status(ref self: T) -> BeastStatus;
@@ -43,7 +44,7 @@ pub mod game {
     use tamagotchi::models::beast::{Beast, BeastTrait};
     use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
     use tamagotchi::models::player::{Player, PlayerAssert};
-    use tamagotchi::models::food::{Food};
+    use tamagotchi::models::food::{Food, FoodTrait};
 
     // Constants import
     use tamagotchi::constants;
@@ -283,6 +284,20 @@ pub mod game {
 
                 store.write_beast_status(@beast_status);
             }
+        }
+
+        fn update_food_amount(ref self: ContractState, food_id: u8, amount: u8) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+        
+            // Read the current food model using the provided ID
+            let mut food: Food = store.read_food(food_id);
+            
+            // Update the amount
+            food.update_food_total_amount(amount);
+            
+            // Write the updated model back to the world
+            store.write_food(@food);
         }
 
         // ------------------------- Read Calls -------------------------

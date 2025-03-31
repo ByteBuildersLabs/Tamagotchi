@@ -4,7 +4,7 @@
     margin: auto;
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-direction: column;
     transform: translateY(30px);
     animation: fade-in-up 1s ease-out forwards;
@@ -25,52 +25,61 @@
   /* Banner and hero section */
   .banner-container {
     position: relative;
-    margin-bottom: 2rem;
-    overflow: hidden;
-    border-radius: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
   }
-  
+
   .team .banner {
+    margin-right: 12px;
+    width: 70%;
+  }
+
+  .team .banner img {
+    border: 2px solid #ECECDA;
     width: 100%;
-    height: 220px;
     object-fit: cover;
     border-radius: 24px;
     transition: transform 0.5s ease;
   }
   
-  .banner-container:hover .banner {
+  .banner-container:hover .banner img {
     transform: scale(1.05);
   }
   
   /* Content styling */
   .lore-container {
-    padding: 0;
     text-align: left;
   }
-  
-  .initial-info {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: #ECECDA;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  .lore-container .title {
+    text-align: left;
+    margin: auto;
   }
   
-  .initial-info h4 {
+  .lore-container .initial-info {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    margin: 24px 0;
+    color: #ECECDA;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+    height: 40dvh;
+  }
+  
+  .lore-container .initial-info h4 {
     color: #ECECDA;
     font-size: 1.3rem;
     margin-bottom: 1rem;
     text-align: center;
   }
   
-  .initial-info p {
+  .lore-container .initial-info p {
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   
-  .initial-info p:last-child {
+  .lore-container .initial-info p:last-child {
     margin-bottom: 0;
   }
   

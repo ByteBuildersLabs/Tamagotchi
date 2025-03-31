@@ -4,15 +4,17 @@ function hexToDecimalArray(hexArray: string[] | undefined) {
 }
 
 const getBirthDate = (hexBirthDate:any) => {
-  const birthDate = parseInt(String(hexBirthDate), 16)
+  const birthDate = parseInt(String(hexBirthDate), 16);
   const transformedDate = new Date(birthDate * 1000);
+  const localTimeOffset = transformedDate.getTimezoneOffset() * 60000;
+  const localDate = new Date(transformedDate.getTime() - localTimeOffset);
   return {
-    year: transformedDate.getUTCFullYear(),
-    month: transformedDate.getUTCMonth() + 1,
-    day: transformedDate.getUTCDate(),
-    hours: transformedDate.getUTCHours(),
-    minutes: transformedDate.getUTCMinutes(),
-    seconds: transformedDate.getUTCSeconds(),
+    year: localDate.getUTCFullYear(),
+    month: localDate.getUTCMonth() + 1,
+    day: localDate.getUTCDate(),
+    hours: localDate.getUTCHours(),
+    minutes: localDate.getUTCMinutes(),
+    seconds: localDate.getUTCSeconds(),
     timezone: "GMT-0600 (hora estándar central)"
   };
 }
@@ -20,7 +22,7 @@ const getBirthDate = (hexBirthDate:any) => {
 const fetchStatus = async (account:any) => {
     try {
         const response = await account?.callContract({
-          contractAddress: "0x1dbf35a77144221e1c08812e06e000376b209cf8cc5bcdb4b2fba3fce59ef12",
+          contractAddress: "0x79f55c679bb76b18e8e12f0b0f490de3079101eea8b5785171bd76f1af12e24",
           entrypoint: "get_timestamp_based_status_with_address",
           calldata: [String(account?.address)],
         });

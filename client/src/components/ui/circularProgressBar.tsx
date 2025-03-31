@@ -57,13 +57,13 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
           style={{ transition: 'stroke-dashoffset 0.35s' }}
         />
       </svg>
-      <span className="pic">
+      <span className={`pic ${ progress == 100 ? 'full-stat' : progress <= 30 ? 'bad-stat ' : '' }`}>
         {
           statusInfo ? 
           <span className='progress-number'>
             {progress} 
           </span> :
-          <img src={pic} />
+          <img className='status-icon' src={pic} />
         }
       </span>
       {

@@ -24,7 +24,6 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
   setCurrentView: (view: string) => void,
   setStatus: (view: string) => void,
 }) => {
-  console.info('beastStatus', beastStatus);
 
   const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [
     { label: beastStatus[2] == 1 ? "Sleep" : "Awake", img: beastStatus[2] == 1 ? Sleep : Awake, action: beastStatus[2] == 1 ? "sleep" : "awake", pictureKey: beastStatus[2] == 1 ? "sleepPicture" : "idlePicture" },
@@ -77,7 +76,14 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               console.error("Action error:", error);
             }
           }}
-          disabled={ isLoading || !beastStatus || beastStatus[1] == 0 || (action != 'sleep' && action != 'awake') && beastStatus[2] == 0 || (action == 'sleep' || action == 'awake') && beastStatus[4] == 100}
+          disabled={ 
+            isLoading || 
+            !beastStatus ||
+            beastStatus[1] == 0 || 
+            (action != 'sleep' && action != 'awake') && beastStatus[2] == 0 || 
+            (action == 'sleep' || action == 'awake') && beastStatus[4] == 100 ||
+            (action == 'clean') && beastStatus[6] == 100
+          } 
         >
           {img && <img src={img} alt={label} />} {label}
         </Button>

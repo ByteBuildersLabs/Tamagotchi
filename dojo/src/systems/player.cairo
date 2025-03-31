@@ -6,6 +6,7 @@ pub trait IPlayer<T> {
     fn add_initial_food(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u16);
     fn update_player_daily_streak(ref self: T);
+    fn update_player_total_points(ref self: T, points: u32);
 }
 
 #[dojo::contract]
@@ -76,5 +77,18 @@ pub mod player {
 
             store.write_player(@player);
         }
+
+        fn update_player_total_points(ref self: ContractState, points: u32) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            player.update_total_points(points);
+
+            store.write_player(@player);
+        }
+
     }
 }

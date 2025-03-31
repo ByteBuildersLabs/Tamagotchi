@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  padding: 0 10px;
   height: calc(90dvh - 66px);
   display: flex;
   justify-content: space-between;
@@ -10,25 +11,84 @@
   animation: fade-in-up 1s ease-out forwards;
 }
 
+.leaderboard-inner-container {
+  width: 100%;
+  position: relative;
+}
+
 .leaderboard-container {
   text-align: center;
   min-height: 60dvh;
+  position: relative;
+}
+
+.leaderboard-table {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  flex-wrap: nowrap;
+}
+
+.header-row {
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(236, 236, 218, 0.2);
+  padding-bottom: 5px;
+}
+
+.header-row .col-3 span,
+.header-row .col-4 span {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.col-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 0 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ECECDA;
+}
+
+.col-4 {
+  flex: 0 0 33.333%;
+  max-width: 33.333%;
+  padding: 0 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ECECDA;
+}
+
+.username-col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.username-col span {
+  max-width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .leaderboard-container .beast {
   width: 40px;
   height: 40px;
+  object-fit: contain;
 }
 
 .leaderboard-container span {
   font-weight: bold;
-}
-
-.leaderboard-container .col-3 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ECECDA;
 }
 
 .leaderboard .bottom-footer {
@@ -41,6 +101,121 @@
   width: 30px;
   margin-left: 4px;
 }
+
 .leaderboard-container .initial-info {
   background-color: transparent;
+  max-height: 60dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 0 13px;
+  text-align: center;
+  border-radius: 15px;
+  width: 100%;
+}
+
+/* Styles to highlight the current user */
+.leaderboard-container .current-user .col-3,
+.leaderboard-container .current-user .col-4{
+  color: #ECECDA; 
+  font-weight: bold;
+}
+
+/* Refine the appearance of the current user to stand out more */
+.current-user {
+  background-color: rgba(255, 215, 0, 0.1);
+  border-radius: 5px;
+  position: relative;
+}
+
+.current-user::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #ECECDA;
+  border-radius: 3px;
+}
+
+/* Animation to highlight the user's row */
+@keyframes highlight-pulse {
+  0% { background-color: rgba(255, 215, 0, 0.05); }
+  50% { background-color: rgba(255, 215, 0, 0.15); }
+  100% { background-color: rgba(255, 215, 0, 0.05); }
+}
+
+.leaderboard-container .current-user {
+  animation: highlight-pulse 3s infinite;
+  border-radius: 5px;
+}
+
+/* Style for the separator line when the user is outside the top 15 */
+.leaderboard-container .separator {
+  opacity: 0.6;
+  padding: 5px 0;
+}
+
+.leaderboard-container .separator span {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+
+/* Leaderboard tabs */
+.leaderboard-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.tab-button {
+  background-color: rgba(20, 20, 20, 0.6);
+  color: #ECECDA;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-family: "Kallisto", serif;
+}
+
+.tab-button.active {
+  background-color: #85002A;
+  color: #ECECDA;
+  font-weight: bold;
+}
+
+.tab-button:hover:not(.active) {
+  background-color: rgba(40, 40, 40, 0.7);
+}
+
+/* Intro animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+}
+
+@media (max-width: 450px) {
+  .leaderboard {
+    max-width: 320px;
+  }
+  
+  .leaderboard-container .beast {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .tab-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }

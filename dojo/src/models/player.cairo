@@ -16,6 +16,7 @@ pub struct Player {
     pub address: ContractAddress, 
     pub current_beast_id: u16,
     pub daily_streak: u16,
+    pub total_points: u32,
     pub last_active_day: u32,
     pub creation_day: u32
 }
@@ -39,6 +40,10 @@ pub impl PlayerImpl of PlayerTrait {
         self.last_active_day = current_day;
     }
 
+    fn update_total_points(ref self: Player, points: u32) {
+        self.total_points += points;
+    }
+
 }
 
 #[generate_trait]
@@ -60,6 +65,7 @@ pub impl ZeroablePlayerTrait of Zero<Player> {
         Player {
             address: constants::ZERO_ADDRESS(),
             current_beast_id: 0,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: 1,
@@ -94,6 +100,7 @@ mod tests {
         let player = Player {
             address: mock_address,
             current_beast_id: initial_beast_id,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: 1,
@@ -146,6 +153,7 @@ mod tests {
         let player = Player {
             address: mock_address,
             current_beast_id: 0,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: 1,
@@ -167,6 +175,7 @@ mod tests {
         let player1 = Player {
             address: address1,
             current_beast_id: 1,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: 1,
@@ -175,6 +184,7 @@ mod tests {
         let player2 = Player {
             address: address2,
             current_beast_id: 2,
+            total_points: 0,
             daily_streak: 0,
             last_active_day: 0,
             creation_day: 1,

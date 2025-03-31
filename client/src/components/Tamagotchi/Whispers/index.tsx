@@ -1,4 +1,3 @@
-import { BeastStatus } from "../../../dojo/bindings";
 import { useEffect, useState, useRef } from "react";
 import MessageComponent, { Message } from "../../ui/message";
 import beastsDex from "../../../data/beastDex";
@@ -28,35 +27,46 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
     );
   }
 
-  const analyzeStats = (beastStatus: BeastStatus) => {
-    const range = {
-      LOW: 30,
-      MEDIUM: 50,
-      HIGH: 80
-    };
+  const generateLore = () => {
+    if (!beast) return '';
 
-    return Object.entries(beastStatus)
-      .map(([stat, value]) => ({
-        stat,
-        value,
-        priority: value < range.LOW ? 3 :
-          value < range.MEDIUM ? 2 :
-            value > range.HIGH ? 1 : 0
-      }))
-      .sort((a, b) => b.priority - a.priority)[0];
+    return `You are ${beastsDex[beast?.specie - 1]?.name}, these the lore of the world:
+            - In a distant future, humanity left behind the cities of metal and concrete to inhabit a reborn world: Terra Noctis, a planet where primordial energy flows like an invisible river, giving life to ancient creatures that emerge from mystical eggs
+            - These beings, known as Primordial Beasts, are the embodiment of the elements and the Earth's very emotions. Among them, Celestial Dragons soar through the skies with wings of fire and lightning, while Umbral Wolves roam the forests, shrouded in magical mist and living shadows.
+            - Humans (us), now divided into clans, compete for dominance over these beings, seeking to forge bonds with the beasts or subjugate them for war. In this world where technology and magic intertwine, the key to power lies with those who can truly understand the spirit of the Primordial Beasts.
+            - But deep within Terra Noctis, an ancient egg pulses with dark energy, waiting for the moment to awaken...
+            
+            Please tell me about the lore in your own way
+            `;
   };
 
-  const generatePrompt = (beastStatus: BeastStatus) => {
+  const generateAdvise = () => {
     if (!beast) return '';
-    const criticalStat = analyzeStats(beastStatus);
+
+    return `You are ${beastsDex[beast?.specie - 1]?.name}, these are the rules of how to take care of you:
+            - The Status will decrease every 3 minutes
+            - I have a favourite food that will boost my energy better than the other foods
+            - The purporse of the game is to stay alive as many days as possible, my birthday is every day
+            - If you don't keep me clean, there will be poop around
+            - If you die, the player will need to hatch a new egg and start all over
+            - When I go to sleep, I need to rest some hours to get all my energy back
+            
+            Please tell me one of these advices in your own way
+            `;
+  };
+
+  const generateStatus = (beastStatus: any) => {
+    if (!beast) return '';
+
     return `You are ${beastsDex[beast?.specie - 1]?.name}, with the following statistics:
-            Hunger: ${beastStatus.hunger}/100
-            Energy: ${beastStatus.energy}/100
-            Happiness: ${beastStatus.happiness}/100
-            Hygiene: ${beastStatus.hygiene}/100
+            Hunger: ${beastStatus[3]}
+            Energy: ${beastStatus[4]}
+            Happiness: ${beastStatus[5]}
+            Hygiene: ${beastStatus[6]}
             
             Respond in ONE short line (max 15 words). 
-            Focus on your ${criticalStat?.stat.toLowerCase()} being ${criticalStat?.value}%.`;
+            If the stats are close to 0, let me know so I can take care of you,
+            make sure to respond only with english words`;
   };
 
   const createWhisper = async (prompt: string) => {
@@ -83,10 +93,26 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
   useEffect(() => {
     let intervalId: string | number | NodeJS.Timeout | undefined;
     if (beastStatus && beast) {
-      const prompt = generatePrompt(beastStatus);
-      createWhisper(prompt);
+      const randomFunction = Math.floor(Math.random() * 3);
+      let initialPrompt = '';
+      if (randomFunction === 0) {
+        initialPrompt = generateLore();
+      } else if (randomFunction === 1) {
+        initialPrompt = generateAdvise();
+      } else {
+        initialPrompt = generateStatus(beastStatus);
+      }
+      createWhisper(initialPrompt);
       intervalId = setInterval(() => {
-        const prompt = generatePrompt(beastStatus);
+        const randomFunction = Math.floor(Math.random() * 3);
+        let prompt = '';
+        if (randomFunction === 0) {
+          prompt = generateLore();
+        } else if (randomFunction === 1) {
+          prompt = generateAdvise();
+        } else {
+          prompt = generateStatus(beastStatus);
+        }
         createWhisper(prompt);
       }, 180000); // Changed to 1 minute for better interaction
     }
