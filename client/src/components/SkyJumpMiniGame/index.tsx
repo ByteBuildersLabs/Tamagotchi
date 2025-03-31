@@ -433,7 +433,11 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Handle touch events for mobile controls
-  const handleTouchStart = (direction: number) => {
+  const handleTouchStart = (direction: number, e: React.TouchEvent) => {
+
+    // Prevent default to avoid text selection and other unwanted behaviors
+    e.preventDefault();
+
     const game = gameConfig.current;
     game.touchControls.isPressed = true;
     game.touchControls.direction = direction;
@@ -450,7 +454,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Stop movement on touch end
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
     const game = gameConfig.current;
     game.touchControls.isPressed = false;
     game.touchControls.direction = 0;
@@ -957,6 +962,114 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (scoreCardRef.current) {
       scoreCardRef.current.textContent = "0";
     }
+    
+    // Function to prevent default actions like text selection and context menu
+    const preventDefaultActions = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+    
+    // Function to prevent touch selection events
+    const preventTouchSelection = () => {
+      // Get all the game elements
+      const gameElements = [
+        gameContainer,
+        doodlerRef.current,
+        platformsRef.current,
+        scoreCardRef.current,
+        ...Array.from(document.querySelectorAll('.platform')),
+        ...Array.from(document.querySelectorAll('.platform-food')),
+        ...Array.from(document.querySelectorAll('.control-button')),
+      ].filter(Boolean); // Filter out null elements
+      
+      // Add event listeners to all game elements
+      gameElements.forEach(element => {
+        if (element) {
+          element.addEventListener('contextmenu', preventDefaultActions);
+          element.addEventListener('touchstart', (e) => {
+            // Check if the touch is on a modal or modal button
+            const target = e.target as HTMLElement;
+            const isInteractiveElement = 
+              target.closest('.modal-overlay') || 
+              target.closest('.game-result-container') ||
+              target.closest('.play-again-button') ||
+              target.closest('.game-result-buttons') ||
+              target.classList.contains('play-again-button') ||
+              target.classList.contains('restart-icon') ||
+              target.classList.contains('gyro-button') ||
+              target.closest('.gyro-button') ||
+              target.classList.contains('lock-icon');
+            
+            // Only prevent default if it's not an interactive element
+            if (!isInteractiveElement) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+          element.addEventListener('selectstart', preventDefaultActions);
+          element.addEventListener('dragstart', preventDefaultActions);
+        }
+      });
+      
+      // Add specific listener for the document to prevent selection
+      document.addEventListener('touchmove', (e) => {
+        // Check if the touch is on a modal or modal button
+        const target = e.target as HTMLElement;
+        const isInteractiveElement = 
+          target.closest('.modal-overlay') || 
+          target.closest('.game-result-container') ||
+          target.closest('.play-again-button') ||
+          target.closest('.game-result-buttons') ||
+          target.classList.contains('gyro-button') ||
+          target.closest('.gyro-button') ||
+          target.classList.contains('lock-icon');
+        
+        // Only prevent if we're in the game container and not in a modal
+        if (gameContainer.contains(target) && !isInteractiveElement) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+    };
+    
+    // Apply the selection prevention
+    preventTouchSelection();
+    
+    // Add a mutation observer to handle dynamically created platforms
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          // Apply prevention to newly added nodes
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              // Skip if it's a modal element
+              const isModalElement = 
+                node.classList.contains('modal-overlay') || 
+                node.classList.contains('game-result-container') ||
+                node.classList.contains('play-again-button') ||
+                node.closest('.modal-overlay') || 
+                node.closest('.game-result-container');
+              
+              if (!isModalElement) {
+                node.addEventListener('contextmenu', preventDefaultActions);
+                node.addEventListener('touchstart', (e) => {
+                  // Only prevent default if it's not a button
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button')) {
+                    e.preventDefault();
+                  }
+                }, { passive: false });
+                node.addEventListener('selectstart', preventDefaultActions);
+                node.addEventListener('dragstart', preventDefaultActions);
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    // Start observing the platforms container for added platforms
+    if (platformsRef.current) {
+      observer.observe(platformsRef.current, { childList: true, subtree: true });
+    }
 
     // Function to adjust game size based on the window
     const adjustGameSize = () => {
@@ -993,6 +1106,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
       // Redistribute platforms
       placePlatforms();
+      
+      // Re-apply text selection prevention after resize
+      preventTouchSelection();
     };
 
     adjustGameSize();
@@ -1076,10 +1192,35 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       if (isMobile) {
         document.body.classList.remove('mobile-gameplay');
       }
+      
+      // Clean up the selection prevention events
+      const gameElements = [
+        gameContainer,
+        doodlerRef.current,
+        platformsRef.current,
+        scoreCardRef.current,
+        ...Array.from(document.querySelectorAll('.platform')),
+        ...Array.from(document.querySelectorAll('.platform-food')),
+        ...Array.from(document.querySelectorAll('.control-button')),
+      ].filter(Boolean);
+      
+      gameElements.forEach(element => {
+        if (element) {
+          element.removeEventListener('contextmenu', preventDefaultActions);
+          element.removeEventListener('touchstart', preventDefaultActions);
+          element.removeEventListener('selectstart', preventDefaultActions);
+          element.removeEventListener('dragstart', preventDefaultActions);
+        }
+      });
+      
+      document.removeEventListener('touchmove', preventDefaultActions);
+      
+      // Disconnect observer
+      observer.disconnect();
 
       game.running = false;
     };
-  }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
+  }, [beastImageRight, beastImageLeft, isMobile, gameOver, isShareModalOpen, showGameOverModal]);
 
   // Handle the gyroscope
   useEffect(() => {
@@ -1142,15 +1283,19 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         <>
           <div
             className="control-button left-button"
-            onTouchStart={() => handleTouchStart(-1)}
+            onTouchStart={(e) => handleTouchStart(-1, e)}
             onTouchEnd={handleTouchEnd}
+            onContextMenu={(e) => e.preventDefault()}
+            aria-label="Move left"
           >
             ←
           </div>
           <div
             className="control-button right-button"
-            onTouchStart={() => handleTouchStart(1)}
+            onTouchStart={(e) => handleTouchStart(1, e)}
             onTouchEnd={handleTouchEnd}
+            onContextMenu={(e) => e.preventDefault()}
+            aria-label="Move right"
           >
             →
           </div>
@@ -1172,6 +1317,15 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         <div
           className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
           onClick={toggleGyroscope}
+          onTouchStart={(e) => {
+            // Make sure this event propagates normally
+            e.stopPropagation();
+          }}
+          onTouchEnd={(e) => {
+            // Handle touch end explicitly
+            e.stopPropagation();
+            toggleGyroscope();
+          }}
         >
           <img
             src={usingGyroscope ? Unlock : Lock}
