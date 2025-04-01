@@ -51,7 +51,8 @@
 }
 
 .header-row .col-3 span,
-.header-row .col-4 span {
+.header-row .col-4 span,
+.header-row .col-5 span {
   font-size: 14px;
   opacity: 0.8;
   display: inline-block;
@@ -113,6 +114,45 @@
   color: #ECECDA;
 }
 
+.col-5 {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 0 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ECECDA;
+}
+
+.row .col-5:nth-child(1) {
+  flex: 0 0 15%;
+  max-width: 15%;
+  justify-content: center;
+}
+
+.row .col-5:nth-child(2) {
+  flex: 0 0 30%;
+  max-width: 30%;
+  justify-content: flex-start;
+  padding-left: 15px;
+  text-align: left;
+}
+
+.row .col-5:nth-child(3) {
+  flex: 0 0 25%;
+  max-width: 25%;
+  justify-content: center;
+}
+
+.row .col-5:nth-child(4) {
+  flex: 0 0 20%;
+  max-width: 20%;
+  justify-content: center;
+}
+
+
+
 .row .col-4:nth-child(1) {
   flex: 0 0 20%;
   max-width: 20%;
@@ -134,7 +174,8 @@
 }
 
 .header-row .col-3:nth-child(2),
-.header-row .col-4:nth-child(2) {
+.header-row .col-4:nth-child(2),
+.header-row .col-5:nth-child(2) {
   justify-content: flex-start;
   padding-left: 15px;
   text-align: left;

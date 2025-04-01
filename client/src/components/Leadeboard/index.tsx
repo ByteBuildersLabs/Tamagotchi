@@ -5,7 +5,7 @@ import beastsDex from '../../data/beastDex.tsx';
 import { useBeasts } from '../../hooks/useBeasts.tsx';
 import { usePlayerData } from '../../hooks/usePlayersData.tsx';
 import { useAccount } from "@starknet-react/core";
-import { addAddressPadding } from "starknet";
+import { addAddressPadding, BigNumberish } from "starknet";
 import Spinner from '../ui/spinner.tsx';
 
 interface Beast {
@@ -137,18 +137,28 @@ const Leaderboard = () => {
     } else {
       return (
         <div className='row mb-3 header-row'>
-          <div className='col-4'>
+          <div className='col-5'>
             <span>Position</span>
           </div>
-          <div className='col-4'>
+          <div className='col-5'>
             <span>Player</span>
           </div>
-          <div className='col-4'>
+          <div className='col-5'>
+            <span>Beast</span>
+          </div>
+          <div className='col-5'>
             <span>Score</span>
           </div>
         </div>
       );
     }
+  };
+
+  const findPlayerBeast = (playerAddress: BigNumberish) => {
+    if (!allBeasts || allBeasts.length === 0) return null;
+    return allBeasts.find(beast => 
+      addAddressPadding(beast.player) === addAddressPadding(playerAddress)
+    );
   };
 
   const renderAgeLeaderboard = () => (
@@ -227,22 +237,39 @@ const Leaderboard = () => {
     <div className="leaderboard-table">
       {isLoadedPlayers && top15Players.length > 0 ? (
         <>
-          {top15Players.map((player: Player, index: number) => (
-            <div 
-              className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
-              key={`minigame-${index}`}
-            >
-              <div className='col-4'>
-                <span>{index + 1}</span>
+          {top15Players.map((player: Player, index: number) => {
+            // Find player's beast
+            const playerBeast = findPlayerBeast(player.address);
+            const beastType = playerBeast?.beast_type || null;
+            
+            return (
+              <div 
+                className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
+                key={`minigame-${index}`}
+              >
+                <div className='col-5'>
+                  <span>{index + 1}</span>
+                </div>
+                <div className='col-5 username-col'>
+                  <span>{player.userName}</span>
+                </div>
+                <div className='col-5'>
+                  {beastType && beastsDex[beastType - 1]?.idlePicture ? (
+                    <img 
+                      src={beastsDex[beastType - 1]?.idlePicture} 
+                      className='beast' 
+                      alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
+                    />
+                  ) : (
+                    <span>-</span>
+                  )}
+                </div>
+                <div className='col-5'>
+                  <span>{player.total_points}</span>
+                </div>
               </div>
-              <div className='col-4 username-col'>
-                <span>{player.userName}</span>
-              </div>
-              <div className='col-4'>
-                <span>{player.total_points}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
           
           {/* Show the user if they are outside the top 15 */}
           {showUserSeparatelyPoints && userPlayer && (
@@ -251,13 +278,24 @@ const Leaderboard = () => {
                 <div className='col-12'><span>...</span></div>
               </div>
               <div className='row mb-3 current-user'>
-                <div className='col-4'>
+                <div className='col-5'>
                   <span>{userPositionPoints}</span>
                 </div>
-                <div className='col-4 username-col'>
+                <div className='col-5 username-col'>
                   <span>{userPlayer.userName}</span>
                 </div>
-                <div className='col-4'>
+                <div className='col-5'>
+                  {userBeast?.beast_type && beastsDex[userBeast.beast_type - 1]?.idlePicture ? (
+                    <img 
+                      src={beastsDex[userBeast.beast_type - 1]?.idlePicture} 
+                      className='beast' 
+                      alt={userBeast.name || `Beast #${userBeast.beast_id}`} 
+                    />
+                  ) : (
+                    <span>-</span>
+                  )}
+                </div>
+                <div className='col-5'>
                   <span>{userPlayer.total_points}</span>
                 </div>
               </div>
