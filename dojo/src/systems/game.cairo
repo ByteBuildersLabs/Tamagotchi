@@ -9,7 +9,6 @@ use starknet::ContractAddress;
 pub trait IGame<T> {
     // ------------------------- Beast methods -------------------------
     fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
-    fn add_initial_food(ref self: T, beast_id: u16);
     fn update_beast(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -18,7 +17,6 @@ pub trait IGame<T> {
     fn pet(ref self: T);
     fn clean(ref self: T);
     fn revive(ref self: T);
-    fn add_or_update_food_amount(ref self: T, food_id: u8, amount: u8);
 
     // ------------------------- Read Calls -------------------------
     fn get_timestamp_based_status(ref self: T) -> BeastStatus;
@@ -45,7 +43,7 @@ pub mod game {
     use tamagotchi::models::beast::{Beast, BeastTrait};
     use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
     use tamagotchi::models::player::{Player, PlayerAssert};
-    use tamagotchi::models::food::{Food, FoodTrait};
+    use tamagotchi::models::food::{Food};
 
     // Constants import
     use tamagotchi::constants;
@@ -56,6 +54,11 @@ pub mod game {
     // Dojo Imports
     #[allow(unused_imports)]
     use dojo::model::{ModelStorage};
+    #[allow(unused_imports)]
+    use dojo::world::{WorldStorage, WorldStorageTrait};
+
+    // Player imports
+    use tamagotchi::systems::player::{IPlayerDispatcher, IPlayerDispatcherTrait};
 
      // Storage
      #[storage]
@@ -81,16 +84,11 @@ pub mod game {
             store.new_beast_status(current_beast_id);
             store.new_beast(current_beast_id, specie, beast_type);
 
-            self.add_initial_food(current_beast_id);
+            let (contract_address,_ ) = world.dns(@"player").unwrap();
+            let player_system_dispatcher = IPlayerDispatcher { contract_address };
+            player_system_dispatcher.add_initial_food(current_beast_id);
 
             self.beast_counter.write(current_beast_id+1);
-        }
-
-        fn add_initial_food(ref self: ContractState, beast_id: u16) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            store.init_player_food(beast_id);
         }
 
          // This method is used to update the beast related data and write it to the world
@@ -293,24 +291,6 @@ pub mod game {
                 beast_status.hygiene = 100;
 
                 store.write_beast_status(@beast_status);
-            }
-        }
-
-        fn add_or_update_food_amount(ref self: ContractState, food_id: u8, amount: u8) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-        
-            // Read the current food model using the provided ID
-            let mut food: Food = store.read_food(food_id);
-
-            if food.amount == 0 {
-                // If the food does not exist, create a new one
-                store.new_food(food_id, amount);
-            }
-            else {
-                // If the food already exists, update the amount
-                food.update_food_total_amount(amount);
-                store.write_food(@food);
             }
         }
 

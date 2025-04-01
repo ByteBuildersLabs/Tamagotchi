@@ -32,7 +32,7 @@ mod tests {
         game_system.spawn_beast(1, 1); 
         player_system.set_current_beast(1);
 
-        game_system.add_initial_food(1);
+        player_system.add_initial_food(1);
 
         let mut food_count = 0;
         let mut k: u8 = 1; 
@@ -68,7 +68,7 @@ mod tests {
         player_system.set_current_beast(1);
 
         // Add initial food after we have a player, a beast and the beast associated with the player
-        game_system.add_initial_food(1);
+        player_system.add_initial_food(1);
 
         // Get initial status
         let initial_status: BeastStatus = game_system.get_timestamp_based_status();
@@ -109,7 +109,7 @@ mod tests {
         player_system.set_current_beast(1);
 
         // Add initial food after we have a player, a beast and the beast associated with the player
-        game_system.add_initial_food(1);
+        player_system.add_initial_food(1);
 
         // We decrease the status to verify that they increase after feeding
         cheat_block_timestamp(7000500);
@@ -156,7 +156,7 @@ mod tests {
         let test_food_id: u8 = 5; // CakeChocolate
         let initial_amount: u8 = 10;
 
-        game_system.add_or_update_food_amount(test_food_id, initial_amount);
+        player_system.add_or_update_food_amount(test_food_id, initial_amount);
 
         // Verify that the food was created correctly
         let initial_food: Food = world.read_model((PLAYER(), test_food_id));
@@ -164,7 +164,7 @@ mod tests {
 
         // Update the food amount (add 5 more)
         let additional_amount: u8 = 5;
-        game_system.add_or_update_food_amount(test_food_id, additional_amount);
+        player_system.add_or_update_food_amount(test_food_id, additional_amount);
 
         // Read the updated food amount
         let updated_food: Food = world.read_model((PLAYER(), test_food_id));
@@ -195,7 +195,7 @@ mod tests {
         let test_food_id: u8 = 1; // Apple
         let initial_amount: u8 = 1;
 
-        game_system.add_or_update_food_amount(test_food_id, initial_amount);
+        player_system.add_or_update_food_amount(test_food_id, initial_amount);
 
         // Verify that the food was created correctly
         let initial_food: Food = world.read_model((PLAYER(), test_food_id));
@@ -212,7 +212,7 @@ mod tests {
 
         // Case 2: Try to add more food after reaching 0
         let new_amount: u8 = 3;
-        game_system.add_or_update_food_amount(test_food_id, new_amount);
+        player_system.add_or_update_food_amount(test_food_id, new_amount);
 
         // // Verify that the amount was updated correctly
         let updated_food: Food = world.read_model((PLAYER(), test_food_id));
@@ -222,7 +222,7 @@ mod tests {
 
         // // Case 3: Create a different food and verify that both exist
         let another_food_id: u8 = 7; // Cheese
-        game_system.add_or_update_food_amount(another_food_id, 8);
+        player_system.add_or_update_food_amount(another_food_id, 8);
 
         // // Verify that both foods exist with correct amounts
         let final_first_food: Food = world.read_model((PLAYER(), test_food_id));
@@ -261,9 +261,9 @@ mod tests {
         let beef_initial: u8 = 3;
 
         // Create the foods
-        game_system.add_or_update_food_amount(apple_id, apple_initial);
-        game_system.add_or_update_food_amount(banana_id, banana_initial);
-        game_system.add_or_update_food_amount(beef_id, beef_initial);
+        player_system.add_or_update_food_amount(apple_id, apple_initial);
+        player_system.add_or_update_food_amount(banana_id, banana_initial);
+        player_system.add_or_update_food_amount(beef_id, beef_initial);
 
         // Verify initial amounts
         let initial_apple: Food = world.read_model((PLAYER(), apple_id));
@@ -279,9 +279,9 @@ mod tests {
         let banana_add: u8 = 7;
         let beef_add: u8 = 2;
 
-        game_system.add_or_update_food_amount(apple_id, apple_add); // Add apples
-        game_system.add_or_update_food_amount(banana_id, banana_add); // Add bananas
-        game_system.add_or_update_food_amount(beef_id, beef_add); // Add beefs
+        player_system.add_or_update_food_amount(apple_id, apple_add); // Add apples
+        player_system.add_or_update_food_amount(banana_id, banana_add); // Add bananas
+        player_system.add_or_update_food_amount(beef_id, beef_add); // Add beefs
 
         // Read updated amounts
         let updated_apple: Food = world.read_model((PLAYER(), apple_id));

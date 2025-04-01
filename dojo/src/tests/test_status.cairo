@@ -26,7 +26,7 @@ mod tests {
         player_system.set_current_beast(1);
 
         // Add initial food after we have a player, a beast and the beast associated with the player
-        game_system.add_initial_food(1);
+        player_system.add_initial_food(1);
 
         // Get new timestamp calculated status
         cheat_block_timestamp(7005000);
@@ -101,7 +101,7 @@ mod tests {
         player_system.set_current_beast(1);
 
         // Add initial food after we have a player, a beast and the beast associated with the player
-        game_system.add_initial_food(1);
+        player_system.add_initial_food(1);
 
         // Get new timestamp calculated status
         cheat_block_timestamp(7005000);
