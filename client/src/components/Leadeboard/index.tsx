@@ -137,16 +137,16 @@ const Leaderboard = () => {
     } else {
       return (
         <div className='row mb-3 header-row'>
-          <div className='col-5'>
+          <div className='col-3'>
             <span>Position</span>
           </div>
-          <div className='col-5'>
+          <div className='col-3'>
             <span>Player</span>
           </div>
-          <div className='col-5'>
+          <div className='col-3'>
             <span>Beast</span>
           </div>
-          <div className='col-5'>
+          <div className='col-3'>
             <span>Score</span>
           </div>
         </div>
@@ -238,7 +238,7 @@ const Leaderboard = () => {
       {isLoadedPlayers && top15Players.length > 0 ? (
         <>
           {top15Players.map((player: Player, index: number) => {
-            // Find player's beast
+            // Encontrar la bestia de este jugador
             const playerBeast = findPlayerBeast(player.address);
             const beastType = playerBeast?.beast_type || null;
             
@@ -247,13 +247,13 @@ const Leaderboard = () => {
                 className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
                 key={`minigame-${index}`}
               >
-                <div className='col-5'>
+                <div className='col-3'>
                   <span>{index + 1}</span>
                 </div>
-                <div className='col-5 username-col'>
+                <div className='col-3 username-col'>
                   <span>{player.userName}</span>
                 </div>
-                <div className='col-5'>
+                <div className='col-3'>
                   {beastType && beastsDex[beastType - 1]?.idlePicture ? (
                     <img 
                       src={beastsDex[beastType - 1]?.idlePicture} 
@@ -264,27 +264,27 @@ const Leaderboard = () => {
                     <span>-</span>
                   )}
                 </div>
-                <div className='col-5'>
+                <div className='col-3'>
                   <span>{player.total_points}</span>
                 </div>
               </div>
             );
           })}
           
-          {/* Show the user if they are outside the top 15 */}
+          {/* Mostrar al usuario si está fuera del top 15 */}
           {showUserSeparatelyPoints && userPlayer && (
             <>
               <div className='row mb-3 separator'>
                 <div className='col-12'><span>...</span></div>
               </div>
               <div className='row mb-3 current-user'>
-                <div className='col-5'>
+                <div className='col-3'>
                   <span>{userPositionPoints}</span>
                 </div>
-                <div className='col-5 username-col'>
+                <div className='col-3 username-col'>
                   <span>{userPlayer.userName}</span>
                 </div>
-                <div className='col-5'>
+                <div className='col-3'>
                   {userBeast?.beast_type && beastsDex[userBeast.beast_type - 1]?.idlePicture ? (
                     <img 
                       src={beastsDex[userBeast.beast_type - 1]?.idlePicture} 
@@ -295,7 +295,7 @@ const Leaderboard = () => {
                     <span>-</span>
                   )}
                 </div>
-                <div className='col-5'>
+                <div className='col-3'>
                   <span>{userPlayer.total_points}</span>
                 </div>
               </div>
