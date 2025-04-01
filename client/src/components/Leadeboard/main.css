@@ -1,8 +1,8 @@
 .leaderboard {
   width: 100%;
-  max-width: 400px;
+  max-width: 800px; 
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 15px; 
   height: calc(90dvh - 66px);
   display: flex;
   justify-content: space-between;
@@ -32,18 +32,38 @@
   margin-left: 0;
   margin-right: 0;
   flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .header-row {
   margin-bottom: 10px;
   border-bottom: 1px solid rgba(236, 236, 218, 0.2);
   padding-bottom: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-row .col-3:first-child,
+.header-row .col-4:first-child {
+  padding-left: 5px; /* Add some left padding */
+  justify-content: center; /* Center the text */
+  text-align: center;
 }
 
 .header-row .col-3 span,
-.header-row .col-4 span {
+.header-row .col-4 span,
+.header-row .col-5 span {
   font-size: 14px;
   opacity: 0.8;
+  display: inline-block;
+  white-space: nowrap; 
+}
+
+.row .col-3:first-child,
+.row .col-4:first-child {
+  padding-left: 5px; /* Match the header padding */
+  justify-content: center;
 }
 
 .col-3 {
@@ -57,15 +77,109 @@
   color: #ECECDA;
 }
 
+.row .col-3:nth-child(1) {
+  flex: 0 0 20%;
+  max-width: 20%;
+  overflow: visible;
+}
+
+.row .col-3:nth-child(2),
+.username-col {
+  flex: 0 0 35%; 
+  max-width: 35%;
+  justify-content: flex-start; 
+  padding-left: 15px;
+  text-align: left;
+}
+
+.row .col-3:nth-child(3) {
+  flex: 0 0 20%;
+  max-width: 20%;
+  justify-content: center;
+}
+
+.row .col-3:nth-child(4) {
+  flex: 0 0 15%;
+  max-width: 15%;
+  justify-content: center;
+}
+
 .col-4 {
   flex: 0 0 33.333%;
   max-width: 33.333%;
+  padding: 0 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ECECDA;
+}
+
+.col-5 {
+  flex: 0 0 25%;
+  max-width: 25%;
   padding: 0 5px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ECECDA;
+}
+
+.row .col-5:nth-child(1) {
+  flex: 0 0 15%;
+  max-width: 15%;
+  justify-content: center;
+}
+
+.row .col-5:nth-child(2) {
+  flex: 0 0 30%;
+  max-width: 30%;
+  justify-content: flex-start;
+  padding-left: 15px;
+  text-align: left;
+}
+
+.row .col-5:nth-child(3) {
+  flex: 0 0 25%;
+  max-width: 25%;
+  justify-content: center;
+}
+
+.row .col-5:nth-child(4) {
+  flex: 0 0 20%;
+  max-width: 20%;
+  justify-content: center;
+}
+
+
+
+.row .col-4:nth-child(1) {
+  flex: 0 0 20%;
+  max-width: 20%;
+  justify-content: center;
+}
+
+.row .col-4:nth-child(2) {
+  flex: 0 0 50%; 
+  max-width: 50%;
+  justify-content: flex-start;
+  padding-left: 15px;
+  text-align: left;
+}
+
+.row .col-4:nth-child(3) {
+  flex: 0 0 30%;
+  max-width: 30%;
+  justify-content: center;
+}
+
+.header-row .col-3:nth-child(2),
+.header-row .col-4:nth-child(2),
+.header-row .col-5:nth-child(2) {
+  justify-content: flex-start;
+  padding-left: 15px;
+  text-align: left;
 }
 
 .username-col {
@@ -79,6 +193,8 @@
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
 }
 
 .leaderboard-container .beast {
@@ -204,9 +320,28 @@
   }
 }
 
+/* Update responsive styles for better scaling */
+@media (max-width: 850px) {
+  .leaderboard {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .leaderboard {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 576px) {
+  .leaderboard {
+    max-width: 500px;
+  }
+}
+
 @media (max-width: 450px) {
   .leaderboard {
-    max-width: 320px;
+    max-width: 400px; /* Increased from 320px */
   }
   
   .leaderboard-container .beast {
