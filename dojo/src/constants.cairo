@@ -7,6 +7,7 @@ pub const MAX_ENERGY: u8 = 100;
 pub const MAX_HAPPINESS: u8 = 100;
 pub const MAX_HYGIENE: u8 = 100;
 pub const MAX_POINTS: u64 = 100;
+pub const HALF_POINTS: u8 = 50;
 
 // Status values to init a Beast
 pub const MIN_INITIAL_STATUS: u8 = 70;
@@ -41,6 +42,9 @@ pub const SECONDS_PER_DAY: u64 = 86400;
 
 // Total seconds in 3,6 minutes
 pub const SECONDS_IN_3_MINUTES: u64 = 220;
+// total seconds in 5 minutes
+pub const SECONDS_IN_5_MINUTES: u64 = 300;
+
 
 // Sleeping mechanics
 pub const POINTS_PER_SECOND: u8 = 80; 

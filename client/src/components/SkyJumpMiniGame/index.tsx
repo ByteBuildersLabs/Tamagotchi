@@ -1,5 +1,4 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { toast, Toaster } from 'react-hot-toast';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry'
 import initialFoodItems from '../../data/food';
@@ -32,10 +31,6 @@ const FOOD_APEARANCE_PROBABILITY = 0.3;
 
 const RESET_GAME_DELAY = 100;
 const DELETE_FOOD_ANIMATION_TIME = 300;
-const MILESTONE_TOAST_DURATION = 2000;
-const FOOD_TOAST_DURATION = 2000;
-const HIGH_SCORE_TOAST_DURATION = 4000;
-const GAME_OVER_TOAST_DURATION = 3000;
 
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
@@ -147,10 +142,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       current: 0,
       images: [
         { img: bgImage1, scoreThreshold: 0 },
-        { img: bgImage2, scoreThreshold: 50 },
-        { img: bgImage3, scoreThreshold: 150 },
-        { img: bgImage4, scoreThreshold: 300 },
-        { img: bgImage5, scoreThreshold: 450 },
+        { img: bgImage2, scoreThreshold: 500 },
+        { img: bgImage3, scoreThreshold: 1500 },
+        { img: bgImage4, scoreThreshold: 3000 },
+        { img: bgImage5, scoreThreshold: 6000 },
       ],
     },
 
@@ -195,7 +190,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       }
     } catch (error) {
       console.error("Error saving game results:", error);
-      toast.error("Couldn't save your game results. Your progress might not be recorded.");
+      console.error("Couldn't save your game results. Your progress might not be recorded.");
       return false;
     }
   };
@@ -204,26 +199,24 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
     setFinalScore(score);
-
+  
     // Check if it's a new high score
     if (score > currentHighScore) {
       saveHighScore(gameId, beastId, score);
       setCurrentHighScore(score);
-
-      toast.success(`New high score: ${score}!`, {
-        icon: '🏆',
-        duration: HIGH_SCORE_TOAST_DURATION
-      });
-    } else {
-      toast.success(`Game over! Score: ${score}`, {
-        duration: GAME_OVER_TOAST_DURATION
-      });
+  
+      // We'll show this in the game over modal with animation
+      // instead of using a toast
     }
-
+  
     if (collectedFoodRef.current === 0) selectedFood.id = 0;
     
-    saveGameResultsToDojo({score,foodId: selectedFood?.id || "", foodCollected: collectedFoodRef.current});
-
+    saveGameResultsToDojo({
+      score,
+      foodId: selectedFood?.id || "", 
+      foodCollected: collectedFoodRef.current
+    });
+  
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
@@ -272,18 +265,42 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Check score milestones and show alerts
+  // Check score milestones and animate score display
   const checkScoreMilestones = (currentScore: number) => {
     const milestone = Math.floor(currentScore / SCORE_MILESTONE_INCREMENT) * SCORE_MILESTONE_INCREMENT;
 
     if (milestone > 0 && milestone > lastMilestoneRef.current) {
       // Update last milestone reached
       lastMilestoneRef.current = milestone;
-
-      // Show toast with milestone reached
-      toast.success(`Amazing! You've reached ${milestone} points`, {
-        position: "top-center",
-        duration: MILESTONE_TOAST_DURATION
-      });
+      
+      // Animate the score card
+      if (scoreCardRef.current) {
+        // Add milestone animation class
+        scoreCardRef.current.classList.add('score-milestone-animation');
+        
+        // Create and show "+50" indicator (or whatever the increment is)
+        const incrementIndicator = document.createElement('div');
+        incrementIndicator.className = 'increment-indicator';
+        incrementIndicator.textContent = `+${SCORE_MILESTONE_INCREMENT}`;
+        
+        // Position it near the score card
+        const scoreCardRect = scoreCardRef.current.getBoundingClientRect();
+        incrementIndicator.style.left = `${scoreCardRect.right + 5}px`;
+        incrementIndicator.style.top = `${scoreCardRect.top}px`;
+        
+        // Add to DOM
+        document.body.appendChild(incrementIndicator);
+        
+        // Remove class and element after animation completes
+        setTimeout(() => {
+          if (scoreCardRef.current) {
+            scoreCardRef.current.classList.remove('score-milestone-animation');
+          }
+          if (incrementIndicator.parentNode) {
+            incrementIndicator.parentNode.removeChild(incrementIndicator);
+          }
+        }, 1200);
+      }
     }
   };
 
@@ -298,26 +315,43 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   const collectFood = (platform: any) => {
     if (platform.hasFood && !platform.foodCollected && platform.foodElement) {
-
       platform.foodCollected = true;
       collectedFoodRef.current += 1;
       setCollectedFood(collectedFoodRef.current);
+      
+      // Animate food disappearing
+      platform.foodElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      platform.foodElement.style.transform = 'scale(1.5)';
       platform.foodElement.style.opacity = '0';
-
-      toast.success(
-        () => (
-          <div className="toast-content">
-            <img
-              src={selectedFood.img}
-              alt={selectedFood.name}
-              className="toast-food-icon"
-            />
-            <span>¡Collected: {selectedFood.name}!</span>
-          </div>
-        ),
-        { duration: FOOD_TOAST_DURATION }
-      );
-
+  
+      // Animate food counter
+      const foodCounterElement = document.querySelector('.food-counter');
+      if (foodCounterElement) {
+        foodCounterElement.classList.add('food-counter-animation');
+        
+        // Create floating food indicator
+        const foodIndicator = document.createElement('div');
+        foodIndicator.className = 'increment-indicator';
+        foodIndicator.textContent = '+1';
+        
+        // Position near food counter
+        const foodCounterRect = foodCounterElement.getBoundingClientRect();
+        foodIndicator.style.left = `${foodCounterRect.left - 20}px`;
+        foodIndicator.style.top = `${foodCounterRect.top + 10}px`;
+        
+        // Add to DOM
+        document.body.appendChild(foodIndicator);
+        
+        // Remove classes and elements after animation completes
+        setTimeout(() => {
+          foodCounterElement.classList.remove('food-counter-animation');
+          if (foodIndicator.parentNode) {
+            foodIndicator.parentNode.removeChild(foodIndicator);
+          }
+        }, 1000);
+      }
+  
+      // Remove food element from DOM after animation
       setTimeout(() => {
         if (platform.foodElement && platform.foodElement.parentNode) {
           platform.foodElement.parentNode.removeChild(platform.foodElement);
@@ -399,7 +433,11 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Handle touch events for mobile controls
-  const handleTouchStart = (direction: number) => {
+  const handleTouchStart = (direction: number, e: React.TouchEvent) => {
+
+    // Prevent default to avoid text selection and other unwanted behaviors
+    e.preventDefault();
+
     const game = gameConfig.current;
     game.touchControls.isPressed = true;
     game.touchControls.direction = direction;
@@ -416,7 +454,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Stop movement on touch end
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
     const game = gameConfig.current;
     game.touchControls.isPressed = false;
     game.touchControls.direction = 0;
@@ -923,6 +962,114 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (scoreCardRef.current) {
       scoreCardRef.current.textContent = "0";
     }
+    
+    // Function to prevent default actions like text selection and context menu
+    const preventDefaultActions = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+    
+    // Function to prevent touch selection events
+    const preventTouchSelection = () => {
+      // Get all the game elements
+      const gameElements = [
+        gameContainer,
+        doodlerRef.current,
+        platformsRef.current,
+        scoreCardRef.current,
+        ...Array.from(document.querySelectorAll('.platform')),
+        ...Array.from(document.querySelectorAll('.platform-food')),
+        ...Array.from(document.querySelectorAll('.control-button')),
+      ].filter(Boolean); // Filter out null elements
+      
+      // Add event listeners to all game elements
+      gameElements.forEach(element => {
+        if (element) {
+          element.addEventListener('contextmenu', preventDefaultActions);
+          element.addEventListener('touchstart', (e) => {
+            // Check if the touch is on a modal or modal button
+            const target = e.target as HTMLElement;
+            const isInteractiveElement = 
+              target.closest('.modal-overlay') || 
+              target.closest('.game-result-container') ||
+              target.closest('.play-again-button') ||
+              target.closest('.game-result-buttons') ||
+              target.classList.contains('play-again-button') ||
+              target.classList.contains('restart-icon') ||
+              target.classList.contains('gyro-button') ||
+              target.closest('.gyro-button') ||
+              target.classList.contains('lock-icon');
+            
+            // Only prevent default if it's not an interactive element
+            if (!isInteractiveElement) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+          element.addEventListener('selectstart', preventDefaultActions);
+          element.addEventListener('dragstart', preventDefaultActions);
+        }
+      });
+      
+      // Add specific listener for the document to prevent selection
+      document.addEventListener('touchmove', (e) => {
+        // Check if the touch is on a modal or modal button
+        const target = e.target as HTMLElement;
+        const isInteractiveElement = 
+          target.closest('.modal-overlay') || 
+          target.closest('.game-result-container') ||
+          target.closest('.play-again-button') ||
+          target.closest('.game-result-buttons') ||
+          target.classList.contains('gyro-button') ||
+          target.closest('.gyro-button') ||
+          target.classList.contains('lock-icon');
+        
+        // Only prevent if we're in the game container and not in a modal
+        if (gameContainer.contains(target) && !isInteractiveElement) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+    };
+    
+    // Apply the selection prevention
+    preventTouchSelection();
+    
+    // Add a mutation observer to handle dynamically created platforms
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          // Apply prevention to newly added nodes
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              // Skip if it's a modal element
+              const isModalElement = 
+                node.classList.contains('modal-overlay') || 
+                node.classList.contains('game-result-container') ||
+                node.classList.contains('play-again-button') ||
+                node.closest('.modal-overlay') || 
+                node.closest('.game-result-container');
+              
+              if (!isModalElement) {
+                node.addEventListener('contextmenu', preventDefaultActions);
+                node.addEventListener('touchstart', (e) => {
+                  // Only prevent default if it's not a button
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button')) {
+                    e.preventDefault();
+                  }
+                }, { passive: false });
+                node.addEventListener('selectstart', preventDefaultActions);
+                node.addEventListener('dragstart', preventDefaultActions);
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    // Start observing the platforms container for added platforms
+    if (platformsRef.current) {
+      observer.observe(platformsRef.current, { childList: true, subtree: true });
+    }
 
     // Function to adjust game size based on the window
     const adjustGameSize = () => {
@@ -959,6 +1106,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
       // Redistribute platforms
       placePlatforms();
+      
+      // Re-apply text selection prevention after resize
+      preventTouchSelection();
     };
 
     adjustGameSize();
@@ -1042,10 +1192,35 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       if (isMobile) {
         document.body.classList.remove('mobile-gameplay');
       }
+      
+      // Clean up the selection prevention events
+      const gameElements = [
+        gameContainer,
+        doodlerRef.current,
+        platformsRef.current,
+        scoreCardRef.current,
+        ...Array.from(document.querySelectorAll('.platform')),
+        ...Array.from(document.querySelectorAll('.platform-food')),
+        ...Array.from(document.querySelectorAll('.control-button')),
+      ].filter(Boolean);
+      
+      gameElements.forEach(element => {
+        if (element) {
+          element.removeEventListener('contextmenu', preventDefaultActions);
+          element.removeEventListener('touchstart', preventDefaultActions);
+          element.removeEventListener('selectstart', preventDefaultActions);
+          element.removeEventListener('dragstart', preventDefaultActions);
+        }
+      });
+      
+      document.removeEventListener('touchmove', preventDefaultActions);
+      
+      // Disconnect observer
+      observer.disconnect();
 
       game.running = false;
     };
-  }, [beastImageRight, beastImageLeft, isMobile, gameOver]);
+  }, [beastImageRight, beastImageLeft, isMobile, gameOver, isShareModalOpen, showGameOverModal]);
 
   // Handle the gyroscope
   useEffect(() => {
@@ -1108,15 +1283,19 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         <>
           <div
             className="control-button left-button"
-            onTouchStart={() => handleTouchStart(-1)}
+            onTouchStart={(e) => handleTouchStart(-1, e)}
             onTouchEnd={handleTouchEnd}
+            onContextMenu={(e) => e.preventDefault()}
+            aria-label="Move left"
           >
             ←
           </div>
           <div
             className="control-button right-button"
-            onTouchStart={() => handleTouchStart(1)}
+            onTouchStart={(e) => handleTouchStart(1, e)}
             onTouchEnd={handleTouchEnd}
+            onContextMenu={(e) => e.preventDefault()}
+            aria-label="Move right"
           >
             →
           </div>
@@ -1138,6 +1317,15 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         <div
           className={`gyro-button ${usingGyroscope ? 'active' : ''}`}
           onClick={toggleGyroscope}
+          onTouchStart={(e) => {
+            // Make sure this event propagates normally
+            e.stopPropagation();
+          }}
+          onTouchEnd={(e) => {
+            // Handle touch end explicitly
+            e.stopPropagation();
+            toggleGyroscope();
+          }}
         >
           <img
             src={usingGyroscope ? Unlock : Lock}
@@ -1173,14 +1361,24 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
           <p className="game-result-score">
             Food: {collectedFood} {selectedFood?.name || 'items'}
           </p>
-          <p className="game-result-score">
-            Score: {finalScore}
-          </p>
-          {currentHighScore > 0 && (
+          
+          {finalScore > currentHighScore ? (
+            <p className={`game-result-score high-score-animation`}>
+              <span role="img" aria-label="trophy" style={{ marginRight: '5px' }}>🏆</span>
+              New High Score: {finalScore}!
+            </p>
+          ) : (
+            <p className="game-result-score">
+              Score: {finalScore}
+            </p>
+          )}
+          
+          {currentHighScore > 0 && finalScore <= currentHighScore && (
             <p className="game-result-score">
               High Score: {currentHighScore}
             </p>
           )}
+          
           <div className="game-result-buttons">
             <button
               className="play-again-button"
@@ -1195,8 +1393,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
           </div>
         </div>
       )}
-
-      <Toaster position="bottom-center" />
     </div>
   );
 });

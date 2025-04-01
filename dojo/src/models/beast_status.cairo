@@ -67,15 +67,24 @@ pub impl BeastStatusImpl of BeastStatusTrait {
 
     fn calculate_timestamp_based_status_awake(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
-        let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES;
+        let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 3 minutes
+        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_5_MINUTES; // one point every 5 minutes | 96 points in 8 hours
 
         if total_points < constants::MAX_POINTS {
             let points_to_decrease: u8 = total_points.try_into().unwrap();
+            let mut energy_to_decrease = total_energy_points.try_into().unwrap();
+            
+            // Slow decrease when energy is above 50
+            let mut hunger_to_decrease = (points_to_decrease + 2);
+            let mut happiness_to_decrease = (points_to_decrease + 3);
+            let mut hygiene_to_decrease = (points_to_decrease * 2);
 
-            let energy_to_decrease = (points_to_decrease * 3) / 2;
-            let hunger_to_decrease = (points_to_decrease * 3) / 2;
-            let happiness_to_decrease = (points_to_decrease * 3) / 2;
-            let hygiene_to_decrease = (points_to_decrease * 3) / 2;
+            // Faster decrease when energy is below 50
+            if self.energy < constants::HALF_POINTS {
+                hunger_to_decrease = (points_to_decrease * 3) / 2;
+                happiness_to_decrease = (points_to_decrease * 3) / 2;
+                hygiene_to_decrease = (points_to_decrease * 3) / 2;
+            }
 
             if self.is_alive {
                 // Decrease energy safely

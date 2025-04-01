@@ -6,12 +6,12 @@ import wasm from "vite-plugin-wasm";
 //import fs from "fs";
 
 export default defineConfig({
-  //  server: {
-  //    https: {
-  //    key: fs.readFileSync("mkcert+1-key.pem"), // Path to private key file
-  //    cert: fs.readFileSync("mkcert+1.pem"),   // Path to certificate file
-  //    },
-  // },
+  //   server: {
+  //     https: {
+  //     key: fs.readFileSync("mkcert+1-key.pem"), // Path to private key file
+  //     cert: fs.readFileSync("mkcert+1.pem"),   // Path to certificate file
+  //     },
+  //  },
   plugins: [
     react(),
     wasm(),
