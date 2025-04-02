@@ -57,9 +57,6 @@ pub mod game {
     #[allow(unused_imports)]
     use dojo::world::{WorldStorage, WorldStorageTrait};
 
-    // Player imports
-    use tamagotchi::systems::player::{IPlayerDispatcher, IPlayerDispatcherTrait};
-
      // Storage
      #[storage]
      struct Storage {
@@ -84,9 +81,7 @@ pub mod game {
             store.new_beast_status(current_beast_id);
             store.new_beast(current_beast_id, specie, beast_type);
 
-            let (contract_address,_ ) = world.dns(@"player").unwrap();
-            let player_system_dispatcher = IPlayerDispatcher { contract_address };
-            player_system_dispatcher.add_initial_food(current_beast_id);
+            store.init_player_food(current_beast_id);
 
             self.beast_counter.write(current_beast_id+1);
         }

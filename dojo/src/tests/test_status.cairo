@@ -25,9 +25,6 @@ mod tests {
         game_system.spawn_beast(1, 1); // Spawn beast with specie 1
         player_system.set_current_beast(1);
 
-        // Add initial food after we have a player, a beast and the beast associated with the player
-        player_system.add_initial_food(1);
-
         // Get new timestamp calculated status
         cheat_block_timestamp(7005000);
         let decreased_status: BeastStatus = game_system.get_timestamp_based_status();
@@ -99,9 +96,6 @@ mod tests {
         player_system.spawn_player();
         game_system.spawn_beast(1, 1); // Spawn beast with specie 1
         player_system.set_current_beast(1);
-
-        // Add initial food after we have a player, a beast and the beast associated with the player
-        player_system.add_initial_food(1);
 
         // Get new timestamp calculated status
         cheat_block_timestamp(7005000);

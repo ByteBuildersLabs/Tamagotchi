@@ -3,7 +3,6 @@
 pub trait IPlayer<T> {
     // ------------------------- Player methods -------------------------
     fn spawn_player(ref self: T);
-    fn add_initial_food(ref self: T, beast_id: u16);
     fn set_current_beast(ref self: T, beast_id: u16);
     fn update_player_daily_streak(ref self: T);
     fn update_player_total_points(ref self: T, points: u32);
@@ -44,13 +43,6 @@ pub mod player {
             let store = StoreTrait::new(world);
 
             store.new_player();
-        }
-
-        fn add_initial_food(ref self: ContractState, beast_id: u16) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            store.init_player_food(beast_id);
         }
         
         fn set_current_beast(ref self: ContractState, beast_id: u16) {

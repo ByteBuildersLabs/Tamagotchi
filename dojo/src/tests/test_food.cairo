@@ -29,22 +29,20 @@ mod tests {
 
         // Initialize player
         player_system.spawn_player();
-        game_system.spawn_beast(1, 1); 
+        game_system.spawn_beast(1, 1);
         player_system.set_current_beast(1);
 
-        player_system.add_initial_food(1);
-
         let mut food_count = 0;
-        let mut k: u8 = 1; 
+        let mut k: u8 = 1;
 
         while k <= 16 {
             let food: Food = world.read_model((PLAYER(), k));
-            
+
             if food.amount > 0 {
                 food_count += 1;
                 println!("Found food with ID {} and amount {}", k, food.amount);
             }
-            
+
             k += 1;
         };
 
@@ -66,9 +64,6 @@ mod tests {
         player_system.spawn_player();
         game_system.spawn_beast(1, 3); // Spawn beast with specie 1
         player_system.set_current_beast(1);
-
-        // Add initial food after we have a player, a beast and the beast associated with the player
-        player_system.add_initial_food(1);
 
         // Get initial status
         let initial_status: BeastStatus = game_system.get_timestamp_based_status();
@@ -107,9 +102,6 @@ mod tests {
         player_system.spawn_player();
         game_system.spawn_beast(1, 1); // Spawn beast with specie 1
         player_system.set_current_beast(1);
-
-        // Add initial food after we have a player, a beast and the beast associated with the player
-        player_system.add_initial_food(1);
 
         // We decrease the status to verify that they increase after feeding
         cheat_block_timestamp(7000500);
@@ -175,6 +167,52 @@ mod tests {
         );
 
         println!("Initial amount: {}, Updated amount: {}", initial_amount, updated_food.amount);
+    }
+
+    #[test]
+    #[available_gas(60000000)]
+    fn test_food_initialization_flow() {
+        // Initialize test environment
+        let world = create_test_world();
+        let player_system = create_player_system(world);
+        let game_system = create_game_system(world);
+
+        cheat_caller_address(PLAYER());
+
+        // Initialize player
+        player_system.spawn_player();
+
+        // Verify no food exists before beast creation
+        let mut initial_food_count = 0;
+        let mut k: u8 = 1;
+        while k <= 16 {
+            let food: Food = world.read_model((PLAYER(), k));
+            // println!("Debug: Before beast - Food ID {}, Amount: {}", k, food.amount);
+            if food.amount > 0 {
+                initial_food_count += 1;
+            }
+            k += 1;
+        };
+        assert(initial_food_count == 0, 'Food exists before beast');
+
+        // Create beast (which should trigger food initialization internally)
+        game_system.spawn_beast(1, 1); // Spawn beast with specie 1
+        player_system.set_current_beast(1);
+
+        // Verify that food was created after beast creation
+        let mut post_beast_food_count = 0;
+        let mut j: u8 = 1;
+        while j <= 16 {
+            let food: Food = world.read_model((PLAYER(), j));
+            println!("Debug: After beast - Food ID {}, Amount: {}", j, food.amount);
+            if food.amount > 0 {
+                post_beast_food_count += 1;
+            }
+            j += 1;
+        };
+
+        // We should have exactly 2 foods (one favorite and one common)
+        assert(post_beast_food_count == 2, 'Food not created in beast');
     }
 
     #[test]
