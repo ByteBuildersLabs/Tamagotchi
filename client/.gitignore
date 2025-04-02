@@ -30,4 +30,3 @@ dist-ssr
 # Service Worker
 sw.js
 
-.env
