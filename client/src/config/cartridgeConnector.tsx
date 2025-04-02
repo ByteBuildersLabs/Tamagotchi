@@ -7,6 +7,8 @@ import {
 import { Connector } from "@starknet-react/core";
 import { constants } from "starknet";
 
+const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
+
 const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da'
 const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5cb5588212364951995ef1006b64dd610a6f3ef6a264726dc5d4a2e6b57aa6e'
 
@@ -46,16 +48,31 @@ const policies: SessionPolicies = {
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
 const namespace = "tamagotchi";
-const slot = `bytebeasts-tamagotchi-${import.meta.env.VITE_PUBLIC_DEPLOY_TYPE}`;
+const slot = `bytebeasts-tamagotchi-${VITE_PUBLIC_DEPLOY_TYPE || 'dev'}`;
+
+const RPC_SEPOLIA = "https://api.cartridge.gg/x/starknet/sepolia";
+const RPC_MAINNET = "https://api.cartridge.gg/x/starknet/mainnet";
+const RPC_DEV = "https://api.cartridge.gg/x/bbslotfood/katana";
+
+const getDefaultChainId = () => {
+  switch (VITE_PUBLIC_DEPLOY_TYPE) {
+    case "mainnet":
+      return constants.StarknetChainId.SN_MAIN;
+    case "sepolia":
+      return constants.StarknetChainId.SN_SEPOLIA;
+    default:
+      return undefined; // Local development
+  }
+};
 
 // Define connector options
 const options: ControllerOptions = {
   chains: [
-    { rpcUrl: "https://api.cartridge.gg/x/starknet/sepolia" },
-    { rpcUrl: "https://api.cartridge.gg/x/starknet/mainnet" },
-    { rpcUrl: "https://api.cartridge.gg/x/bbslotfood/katana" }
+    { rpcUrl: RPC_SEPOLIA },
+    { rpcUrl: RPC_MAINNET },
+    { rpcUrl: RPC_DEV }
   ],
-  defaultChainId: constants.StarknetChainId.SN_SEPOLIA,
+  defaultChainId: getDefaultChainId(),
   namespace,
   slot,
   policies,

@@ -5,20 +5,37 @@ import {
     StarknetConfig,
     starkscan,
 } from "@starknet-react/core";
-import { dojoConfig } from "./dojoConfig";
-import cartridgeConnector from "../config/cartridgeConnector.tsx";
+import cartridgeConnector from "../config/cartridgeConnector";
 
 export default function StarknetProvider({ children }: PropsWithChildren) {
     const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 
+    // Get RPC URL based on environment
+    const getRpcUrl = () => {
+        switch (VITE_PUBLIC_DEPLOY_TYPE) {
+            case "mainnet":
+                return "https://api.cartridge.gg/x/starknet/mainnet";
+            case "sepolia":
+                return "https://api.cartridge.gg/x/starknet/sepolia";
+            default:
+                return "https://api.cartridge.gg/x/bbslotfood/katana"; 
+        }
+    };
+
+    // Create provider with the correct RPC URL
     const provider = jsonRpcProvider({
-        rpc: () => ({ nodeUrl: dojoConfig.rpcUrl as string }),
+        rpc: () => ({ nodeUrl: getRpcUrl() }),
     });
+
+    // Determine which chain to use
+    const chains = VITE_PUBLIC_DEPLOY_TYPE === "mainnet" 
+        ? [mainnet] 
+        : [sepolia];
 
     return (
         <StarknetConfig
             autoConnect
-            chains={[VITE_PUBLIC_DEPLOY_TYPE === "mainnet" ? mainnet : sepolia]}
+            chains={chains}
             connectors={[cartridgeConnector]}
             explorer={starkscan}
             provider={provider}
