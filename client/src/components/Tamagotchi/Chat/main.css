@@ -1,6 +1,8 @@
 .whispers {
   height: 70px;
   margin: 0 0 10px;
+  position: relative;
+  top: -15px;
 }
 
 .whispers .message span,
@@ -85,6 +87,8 @@
   color: #ECECDA;
   margin: 0 15px;
   text-align: center;
+  position: relative;
+  top: -15px;
 }
 
 .whispers-chat .chat-input {

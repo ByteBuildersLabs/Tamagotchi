@@ -177,7 +177,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
               account as Account,
               score
             )
-            await client.game.updateFoodAmount(
+            await client.player.addOrUpdateFoodAmount(
               account as Account,
               foodId,
               foodCollected

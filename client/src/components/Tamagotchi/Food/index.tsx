@@ -21,8 +21,8 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
 
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
-  const [ loading, setLoading ] = useState(true);
-  const [ buttonSound ] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [loading, setLoading] = useState(true);
+  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
 
   useEffect(() => {
     if (!loadingFood && foods.length > 0) {
@@ -66,24 +66,26 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
 
   return (
     <>
-      <div className="food-carousel">
-        {!beastStatus || beastStatus[1] == 0 ? <></> :
-        loading ? 'Loading Food' :
-          zfoods.map(({ name, img, count }: { name:any, img:any, count:any }) => (
-            <button
-              key={name}
-              className="button"
-              onClick={() => feedTamagotchi(name)}
-              disabled={count === 0}
-            >
-              <span>
-                x{count}
-              </span>
-              <img alt="option" src={img} />
-              <p>{name}</p>
-            </button>
-          ))
-        }
+      <div className="food-carousel-container">
+        <div className='food-carousel'>
+          {!beastStatus || beastStatus[1] == 0 ? <></> :
+            loading ? 'Loading Food' :
+              zfoods.map(({ name, img, count }: { name: any, img: any, count: any }) => (
+                <button
+                  key={name}
+                  className="button"
+                  onClick={() => feedTamagotchi(name)}
+                  disabled={count === 0}
+                >
+                  <span>
+                    x{count}
+                  </span>
+                  <img alt="option" src={img} />
+                  <p>{name}</p>
+                </button>
+              ))
+          }
+        </div>
       </div>
       <Toaster position="bottom-center" />
     </>

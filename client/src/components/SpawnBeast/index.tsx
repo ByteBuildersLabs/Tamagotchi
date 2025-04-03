@@ -82,7 +82,6 @@ function SpawnBeast() {
       setLoading(false);
     }
 
-    await client.player.addInitialFood(account as Account);
     notify();
     setLoading(true);
     await spawn(randomNumber);

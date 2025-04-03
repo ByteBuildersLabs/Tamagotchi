@@ -3,19 +3,19 @@ import { Account, AccountInterface } from "starknet";
 
 export function setupWorld(provider: DojoProvider) {
 
-	const build_player_addInitialFood_calldata = (): DojoCall => {
+	const build_player_addOrUpdateFoodAmount_calldata = (foodId: number, amount: number): DojoCall => {
 		return {
 			contractName: "player",
-			entrypoint: "add_initial_food",
-			calldata: [],
+			entrypoint: "add_or_update_food_amount",
+			calldata: [foodId, amount],
 		};
 	};
 
-	const player_addInitialFood = async (snAccount: Account | AccountInterface) => {
+	const player_addOrUpdateFoodAmount = async (snAccount: Account | AccountInterface, foodId: number, amount: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_player_addInitialFood_calldata(),
+				build_player_addOrUpdateFoodAmount_calldata(foodId, amount),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -339,27 +339,6 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_game_updateFoodAmount_calldata = (foodId: number, amount: number): DojoCall => {
-		return {
-			contractName: "game",
-			entrypoint: "update_food_amount",
-			calldata: [foodId, amount],
-		};
-	};
-
-	const game_updateFoodAmount = async (snAccount: Account | AccountInterface, foodId: number, amount: number) => {
-		try {
-			return await provider.execute(
-				snAccount as any,
-				build_game_updateFoodAmount_calldata(foodId, amount),
-				"tamagotchi",
-			);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
 	const build_player_updatePlayerDailyStreak_calldata = (): DojoCall => {
 		return {
 			contractName: "player",
@@ -406,8 +385,8 @@ export function setupWorld(provider: DojoProvider) {
 
 	return {
 		player: {
-			addInitialFood: player_addInitialFood,
-			buildAddInitialFoodCalldata: build_player_addInitialFood_calldata,
+			addOrUpdateFoodAmount: player_addOrUpdateFoodAmount,
+			buildAddOrUpdateFoodAmountCalldata: build_player_addOrUpdateFoodAmount_calldata,
 			setCurrentBeast: player_setCurrentBeast,
 			buildSetCurrentBeastCalldata: build_player_setCurrentBeast_calldata,
 			spawnPlayer: player_spawnPlayer,
@@ -444,8 +423,6 @@ export function setupWorld(provider: DojoProvider) {
 			buildSpawnBeastCalldata: build_game_spawnBeast_calldata,
 			updateBeast: game_updateBeast,
 			buildUpdateBeastCalldata: build_game_updateBeast_calldata,
-			updateFoodAmount: game_updateFoodAmount,
-			buildUpdateFoodAmountCalldata: build_game_updateFoodAmount_calldata,
 		},
 	};
 }

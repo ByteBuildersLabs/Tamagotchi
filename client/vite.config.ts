@@ -3,7 +3,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
-//import fs from "fs";
+// import fs from "fs";
 
 export default defineConfig({
     //  server: {
@@ -21,7 +21,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-DCgLxktZ.svg"],
+      includeAssets: ["/assets/logo-Cwg6g-uB.jpg"],
       manifest: {
         name: "Byte Beasts Tamagotchi",
         short_name: "Byte Beasts Tamagotchi",
@@ -32,7 +32,7 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-DCgLxktZ.svg",
+            src: "/assets/logo-Cwg6g-uB.jpg",
             sizes: "180x180",
             type: "image/svg",
           },
