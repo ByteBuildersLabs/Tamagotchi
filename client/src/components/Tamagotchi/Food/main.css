@@ -1,37 +1,40 @@
-.food-carousel {
+.food-carousel-container {
   width: 100%;
-  height: 190px;
+  overflow-x: auto;
+  white-space: nowrap;
+  height: 120px;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px;
   border-radius: 15px;
+}
+
+.food-carousel {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  color: #ECECDA;
-  position: relative;
-  overflow: hidden;
-  border-radius: 15px;
- overflow-y: scroll;
- height: 120px;
+  gap: 10px;
+  padding: 15px;
+  width: 100%;
 }
 
 .food-carousel button {
-  position: relative;
+  font-family: "Montserrat", serif;
+  overflow: hidden;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
   width: 23%;
-  height: 90%;
-  margin: 0 auto;
+  height: 80px;
   background-color: #ECECDA;
-  margin-bottom: 10px;
-  overflow: hidden;
-  font-size: 13px;
-  font-family: "Montserrat", serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: 10px;
+  flex-shrink: 0;
   text-transform: capitalize;
   cursor: pointer;
+  position: relative;
+  font-size: 13px;
+  margin: 5px auto;
 }
 
 .food-carousel span {
@@ -44,6 +47,8 @@
 .food-carousel p {
   text-align: center;
   margin: 0 auto;
+  font-size: 12px;
+  white-space: normal;
 }
 
 .food-carousel button img {
