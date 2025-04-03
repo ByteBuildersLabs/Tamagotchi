@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev:sepolia": "vite --mode sepolia",
+    "dev:mainnet": "vite --mode mainnet",
+    "build": "tsc && vite build",
+    "build:sepolia": "vite build --mode sepolia",
+    "build:mainnet": "vite build --mode mainnet"
   },
   "dependencies": {
-    "@cartridge/connector": "0.5.7",
-    "@cartridge/controller": "0.5.7",
+    "@cartridge/connector": "0.5.9",
+    "@cartridge/controller": "0.5.9",
     "@dojoengine/core": "1.2.1",
     "@dojoengine/create-burner": "1.2.1",
     "@dojoengine/predeployed-connector": "1.2.1",
