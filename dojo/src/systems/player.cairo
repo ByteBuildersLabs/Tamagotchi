@@ -3,10 +3,10 @@
 pub trait IPlayer<T> {
     // ------------------------- Player methods -------------------------
     fn spawn_player(ref self: T);
-    fn add_initial_food(ref self: T);
     fn set_current_beast(ref self: T, beast_id: u16);
     fn update_player_daily_streak(ref self: T);
     fn update_player_total_points(ref self: T, points: u32);
+    fn add_or_update_food_amount(ref self: T, food_id: u8, amount: u8);
 }
 
 #[dojo::contract]
@@ -21,6 +21,7 @@ pub mod player {
     #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
     use tamagotchi::models::player::{Player, PlayerAssert, PlayerTrait};
+    use tamagotchi::models::food::{Food, FoodTrait};
 
     // Store import
     use tamagotchi::store::{StoreTrait};
@@ -42,15 +43,6 @@ pub mod player {
             let store = StoreTrait::new(world);
 
             store.new_player();
-
-            self.add_initial_food();
-        }
-
-        fn add_initial_food(ref self: ContractState) {
-            let mut world = self.world(@"tamagotchi");
-            let store = StoreTrait::new(world);
-
-            store.init_player_food();
         }
         
         fn set_current_beast(ref self: ContractState, beast_id: u16) {
@@ -88,6 +80,24 @@ pub mod player {
             player.update_total_points(points);
 
             store.write_player(@player);
+        }
+
+        fn add_or_update_food_amount(ref self: ContractState, food_id: u8, amount: u8) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+        
+            // Read the current food model using the provided ID
+            let mut food: Food = store.read_food(food_id);
+
+            if food.amount == 0 {
+                // If the food does not exist, create a new one
+                store.new_food(food_id, amount);
+            }
+            else {
+                // If the food already exists, update the amount
+                food.update_food_total_amount(amount);
+                store.write_food(@food);
+            }
         }
 
     }

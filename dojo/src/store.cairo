@@ -6,7 +6,7 @@ use dojo::world::WorldStorage;
 use dojo::model::ModelStorage;
 
 // Models imports
-use tamagotchi::models::beast::{Beast};
+use tamagotchi::models::beast::{Beast, BeastTrait};
 use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
 use tamagotchi::models::player::{Player};
 use tamagotchi::models::food::{Food};
@@ -91,137 +91,158 @@ pub impl StoreImpl of StoreTrait {
         self.world.write_model(@new_player)
     }
 
-    fn new_apples(mut self: Store, caller: ContractAddress) {
+    fn new_food(mut self: Store, food_id: u8, amount: u8) {
+        let caller = get_caller_address();
+
+        let food_type: FoodType = food_id.into(); // Convert u8 to FoodType
+
+        match food_type {
+            FoodType::Apple => self.new_apples(caller, amount),
+            FoodType::Banana => self.new_bananas(caller, amount),
+            FoodType::Cherry => self.new_cherries(caller, amount),
+            FoodType::Burguer => self.new_burguers(caller, amount),
+            FoodType::CakeChocolate => self.new_cake_chocolates(caller, amount),
+            FoodType::CakeStrawberry => self.new_cake_strawberries(caller, amount),
+            FoodType::Cheese => self.new_cheeses(caller, amount),
+            FoodType::Chicken => self.new_chickens(caller, amount),
+            FoodType::Eggs => self.new_eggs(caller, amount),
+            FoodType::Fish => self.new_fish(caller, amount),
+            FoodType::FrenchFries => self.new_french_fries(caller, amount),
+            FoodType::BlueBerry => self.new_blue_berries(caller, amount),
+            FoodType::Beef => self.new_beefs(caller, amount),
+            FoodType::Pizza => self.new_pizzas(caller, amount),
+            FoodType::Corn => self.new_corns(caller, amount),
+            FoodType::Potato => self.new_potatoes(caller, amount),
+            _ => {}
+        }
+
+    }
+
+    fn new_apples(mut self: Store, caller: ContractAddress, amount: u8) {
         let apples = Food {
-            player: caller, id: FoodType::Apple.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Apple.into(), amount: amount,
         };
         self.world.write_model(@apples);
     }
 
-    fn new_bananas(mut self: Store, caller: ContractAddress) {
+    fn new_bananas(mut self: Store, caller: ContractAddress, amount: u8) {
         let bananas = Food {
-            player: caller, id: FoodType::Banana.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Banana.into(), amount: amount,
         };
         self.world.write_model(@bananas);
     }
 
-    fn new_cherries(mut self: Store, caller: ContractAddress) {
+    fn new_cherries(mut self: Store, caller: ContractAddress, amount: u8) {
         let cherries = Food {
-            player: caller, id: FoodType::Cherry.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Cherry.into(), amount: amount,
         };
         self.world.write_model(@cherries);
     }
 
-    fn new_burguers(mut self: Store, caller: ContractAddress) {
+    fn new_burguers(mut self: Store, caller: ContractAddress, amount: u8) {
         let burguers = Food {
-            player: caller, id: FoodType::Burguer.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Burguer.into(), amount: amount,
         };
         self.world.write_model(@burguers);
     }
 
-    fn new_cake_chocolates(mut self: Store, caller: ContractAddress) {
+    fn new_cake_chocolates(mut self: Store, caller: ContractAddress, amount: u8) {
         let cake_chocolates = Food {
-            player: caller, id: FoodType::CakeChocolate.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::CakeChocolate.into(), amount: amount,
         };
         self.world.write_model(@cake_chocolates);
     }
 
-    fn new_cake_strawberries(mut self: Store, caller: ContractAddress) {
+    fn new_cake_strawberries(mut self: Store, caller: ContractAddress, amount: u8) {
         let cake_strawberries = Food {
-            player: caller, id: FoodType::CakeStrawberry.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::CakeStrawberry.into(), amount: amount,
         };
         self.world.write_model(@cake_strawberries);
     }
 
-    fn new_cheeses(mut self: Store, caller: ContractAddress) {
+    fn new_cheeses(mut self: Store, caller: ContractAddress, amount: u8) {
         let cheeses = Food {
-            player: caller, id: FoodType::Cheese.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Cheese.into(), amount: amount,
         };
         self.world.write_model(@cheeses);
     }
 
-    fn new_chickens(mut self: Store, caller: ContractAddress) {
+    fn new_chickens(mut self: Store, caller: ContractAddress, amount: u8) {
         let chickens = Food {
-            player: caller, id: FoodType::Chicken.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Chicken.into(), amount: amount,
         };
         self.world.write_model(@chickens);
     }
 
-    fn new_eggs(mut self: Store, caller: ContractAddress) {
+    fn new_eggs(mut self: Store, caller: ContractAddress, amount: u8) {
         let eggs = Food {
-            player: caller, id: FoodType::Eggs.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Eggs.into(), amount: amount,
         };
         self.world.write_model(@eggs);
     }
 
-    fn new_fish(mut self: Store, caller: ContractAddress) {
+    fn new_fish(mut self: Store, caller: ContractAddress, amount: u8) {
         let fish = Food {
-            player: caller, id: FoodType::Fish.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Fish.into(), amount: amount,
         };
         self.world.write_model(@fish);
     }
 
-    fn new_french_fries(mut self: Store, caller: ContractAddress) {
+    fn new_french_fries(mut self: Store, caller: ContractAddress, amount: u8) {
         let french_fries = Food {
-            player: caller, id: FoodType::FrenchFries.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::FrenchFries.into(), amount: amount,
         };
         self.world.write_model(@french_fries);
     }
 
-    fn new_blue_berries(mut self: Store, caller: ContractAddress) {
+    fn new_blue_berries(mut self: Store, caller: ContractAddress, amount: u8) {
         let blue_berries = Food {
-            player: caller, id: FoodType::BlueBerry.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::BlueBerry.into(), amount: amount,
         };
         self.world.write_model(@blue_berries);
     }
 
-    fn new_beefs(mut self: Store, caller: ContractAddress) {
+    fn new_beefs(mut self: Store, caller: ContractAddress, amount: u8) {
         let beefs = Food {
-            player: caller, id: FoodType::Beef.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Beef.into(), amount: amount,
         };
         self.world.write_model(@beefs);
     }
 
-    fn new_pizzas(mut self: Store, caller: ContractAddress) {
+    fn new_pizzas(mut self: Store, caller: ContractAddress, amount: u8) {
         let pizzas = Food {
-            player: caller, id: FoodType::Pizza.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Pizza.into(), amount: amount,
         };
         self.world.write_model(@pizzas);
     }
 
-    fn new_corns(mut self: Store, caller: ContractAddress) {
+    fn new_corns(mut self: Store, caller: ContractAddress, amount: u8) {
         let corns = Food {
-            player: caller, id: FoodType::Corn.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Corn.into(), amount: amount,
         };
         self.world.write_model(@corns);
     }
 
-    fn new_potatoes(mut self: Store, caller: ContractAddress) {
+    fn new_potatoes(mut self: Store, caller: ContractAddress, amount: u8) {
         let potatoes = Food {
-            player: caller, id: FoodType::Potato.into(), amount: constants::MAX_FOOD_AMOUNT,
+            player: caller, id: FoodType::Potato.into(), amount: amount,
         };
         self.world.write_model(@potatoes);
     }
 
-    fn init_player_food(mut self: Store) {
-        let caller = get_caller_address();
+    fn init_player_food(mut self: Store, beast_id: u16) {
+        // Read the beast instance
+        let beast = self.read_beast(beast_id);
+    
+        // Get a random favorite food for this beast
+        let favorite_food_id = beast.get_random_favorite_food(beast_id);
 
-        self.new_apples(caller);
-        self.new_bananas(caller);
-        self.new_cherries(caller);
-        self.new_burguers(caller);
-        self.new_cake_chocolates(caller);
-        self.new_cake_strawberries(caller);
-        self.new_cheeses(caller);
-        self.new_chickens(caller);
-        self.new_eggs(caller);
-        self.new_fish(caller);
-        self.new_french_fries(caller);
-        self.new_blue_berries(caller);
-        self.new_beefs(caller);
-        self.new_pizzas(caller);
-        self.new_corns(caller);
-        self.new_potatoes(caller);
+        // Get a random common food for this beast
+        let common_food_id = beast.get_random_common_food(beast_id);
+    
+        // Create both foods for the player with the initial amount
+        self.new_food(favorite_food_id, constants::MAX_FOOD_AMOUNT);
+        self.new_food(common_food_id, constants::MAX_FOOD_AMOUNT);
     }
 
     fn new_beast_status(mut self: Store, beast_id: u16) {

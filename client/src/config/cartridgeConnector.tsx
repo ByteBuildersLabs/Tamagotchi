@@ -10,7 +10,7 @@ const theme = "bytebeasts-tamagotchi";
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x79f55c679bb76b18e8e12f0b0f490de3079101eea8b5785171bd76f1af12e24']: {
+    ['0x289e9af5a5ee971c5e10ebf72fae4d6ad47d64268e4a04a969cd383b38c52f2']: {
       methods: [
         {
           name: "awake",
@@ -64,13 +64,9 @@ const policies: SessionPolicies = {
           name: "update_beast",
           entrypoint: "update_beast"
         },
-        {
-          name: "update_food_amount",
-          entrypoint: "update_food_amount"
-        },
       ],
     },
-    ['0x5cb5588212364951995ef1006b64dd610a6f3ef6a264726dc5d4a2e6b57aa6e']: {
+    ['0x46c402a1a4ef204a135e08b81ad3c741e355ef6a3eaae8fcc01a3ef22594eb7']: {
       methods: [
         {
           name: "add_initial_food",
@@ -92,6 +88,10 @@ const policies: SessionPolicies = {
           name: "update_player_total_points",
           entrypoint: "update_player_total_points"
         },
+        {
+          name: "add_or_update_food_amount",
+          entrypoint: "add_or_update_food_amount"
+        },
       ],
     },
   },
@@ -102,7 +102,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/bbslotfood/katana'
+  rpc: 'https://api.cartridge.gg/x/bbstatusmigration/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;

@@ -17,7 +17,7 @@ pub const MAX_INITIAL_STATUS: u8 = 90;
 pub const MAX_TAP_COUNTER: u8 = 10;
 
 // Max food amount per player
-pub const MAX_FOOD_AMOUNT: u8 = 50;
+pub const MAX_FOOD_AMOUNT: u8 = 5;
 
 // Max level as babybeast
 pub const MAX_BABY_LEVEL: u8 = 15;

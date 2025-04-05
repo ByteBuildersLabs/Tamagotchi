@@ -22,7 +22,6 @@ mod tests {
 
         // Create player, food, and beast
         player_system.spawn_player();
-        player_system.add_initial_food();
         game_system.spawn_beast(1, 1); // Spawn beast with specie 1
         player_system.set_current_beast(1);
 
@@ -95,7 +94,6 @@ mod tests {
 
         // Create player, food, and beast
         player_system.spawn_player();
-        player_system.add_initial_food();
         game_system.spawn_beast(1, 1); // Spawn beast with specie 1
         player_system.set_current_beast(1);
 
