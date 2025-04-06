@@ -44,8 +44,8 @@ pub const SECONDS_PER_DAY: u64 = 86400;
 pub const SECONDS_IN_3_MINUTES: u64 = 220;
 // total seconds in 5 minutes
 pub const SECONDS_IN_5_MINUTES: u64 = 300;
-
+// total seconds in 2 minutes
+pub const SECONDS_IN_2_MINUTES: u64 = 120;
 
 // Sleeping mechanics
-pub const POINTS_PER_SECOND: u8 = 80; 
-pub const MAX_RECOVER_TIME: u32 = 8000;
+pub const TOTAL_RECOVER_TIME: u32 = 12000; // Based on 1 point every 2 minutes increase rate

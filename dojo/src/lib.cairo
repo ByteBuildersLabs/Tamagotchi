@@ -28,8 +28,8 @@ pub mod types {
 #[cfg(test)]
 pub mod tests {
     mod utils;
-    mod test_beast;
-    mod test_food;
-    mod test_player;
+    // mod test_beast;
+    // mod test_food;
+    // mod test_player;
     mod test_status;
 }

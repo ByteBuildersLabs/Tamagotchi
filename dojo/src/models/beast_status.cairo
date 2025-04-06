@@ -152,58 +152,115 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         self.last_timestamp = current_timestamp;
     }
 
+    // add to this a way to know how long it takes to fully recover
+    // if the time is under the fully recover time then calculate as asleep
+    // if not calculate as awake after recovered the energy
     fn calculate_timestamp_based_status_asleep(ref self: BeastStatus, current_timestamp: u64){
-        let total_seconds: u64 =  current_timestamp - self.last_timestamp; // Total seconds from the last timestamp to the current timestamp
-        let total_points_to_increase: u64 = total_seconds / constants::POINTS_PER_SECOND.try_into().unwrap();
+        let total_seconds: u64 =  current_timestamp - self.last_timestamp;
+        let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 3 minutes
+        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_2_MINUTES; // one point every 2 minutes
 
-        if total_points_to_increase != 0 {
-            if total_points_to_increase < constants::MAX_POINTS {
-                let points_to_increase: u8 = total_points_to_increase.try_into().unwrap(); // Total points of energy and happiness to increase
-                let points_to_decrease: u8 = points_to_increase / 2; // Total points to decrease for the other status of the beast
-
-                if self.is_alive {
-                        // ----------- Increase energy and happiness ------------
-                        self.energy = if (self.energy + points_to_increase) < constants::MAX_POINTS.try_into().unwrap() {
-                            self.energy + points_to_increase
-                        } else {
-                            100
-                        };
-
-                        self.happiness = if (self.happiness + points_to_increase) < constants::MAX_POINTS.try_into().unwrap() {
-                            self.happiness + points_to_increase
-                        } else {
-                            100
-                        };
-                        
-                        // ----------- Decrease hunger and hygiene ------------
-                        self.hunger = if self.hunger >= points_to_decrease {
-                            self.hunger - points_to_decrease
-                        } else {
-                            0
-                        };
-        
-                        self.hygiene = if self.hygiene >= points_to_decrease {
-                            self.hygiene - points_to_decrease
-                        } else {
-                            0
-                        };
-                        self.update_clean_status(self.hygiene);
-        
-                        // Check if beast dies
-                        if self.energy == 0 && self.hunger == 0 && self.happiness == 0 &&  self.hygiene == 0 {
-                            self.is_alive = false;
-                        }
-
-                        // Check if beast is fully recovered to wake up
-                        if self.energy == 100 {
-                            self.is_awake = true;
-                        }
+        // Case: when is required to calculate the points to increase since they are less than 100
+        if total_energy_points < constants::MAX_POINTS {
+            let mut energy_to_increase = total_energy_points.try_into().unwrap();
+            let mut happiness_to_increase = total_energy_points.try_into().unwrap();
+            
+            // Decrease all points 
+            let mut hunger_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            let mut hygiene_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            
+            let points_to_decrease: u8 = total_points.try_into().unwrap();
+            // If the total points to decrease are less than 100 then calculate
+            if total_points < constants::MAX_POINTS {
+                // Slow decrease when energy is above 50
+                hunger_to_decrease = (points_to_decrease + 2);
+                hygiene_to_decrease = (points_to_decrease * 2);
+    
+                // Faster decrease when energy is below 50
+                if self.energy < constants::HALF_POINTS {
+                    hunger_to_decrease = (points_to_decrease * 3) / 2;
+                    hygiene_to_decrease = (points_to_decrease * 3) / 2;
                 }
             }
-            else{
-                self.energy = 100;
-                self.is_awake = true;
+
+            if self.is_alive {
+                // ------------------- Increase -------------------
+                // Increase energy safely
+                self.energy = if (self.energy + energy_to_increase) < constants::MAX_POINTS.try_into().unwrap() {
+                    self.energy + energy_to_increase
+                } else {
+                    100
+                };
+
+                self.happiness = if (self.happiness + happiness_to_increase) < constants::MAX_POINTS.try_into().unwrap() {
+                    self.happiness + happiness_to_increase
+                } else {
+                    100
+                };
+                
+                // ------------------- Decrease -------------------
+                // Decrease hunger safely
+                self.hunger = if self.hunger >= hunger_to_decrease {
+                    self.hunger - hunger_to_decrease
+                } else {
+                    0
+                };
+
+                // Decrease hygiene safely
+                self.hygiene = if self.hygiene >= hygiene_to_decrease {
+                    self.hygiene - hygiene_to_decrease
+                } else {
+                    0
+                };
+                
+                self.update_clean_status(self.hygiene);
+
+                // Check if beast dies
+                if self.energy == 0 && self.hunger == 0 && self.happiness == 0 &&  self.hygiene == 0 {
+                    self.is_alive = false;
+                }
             }
+        }
+        else{ // Case when the points to increase are more than 100
+            self.happiness = 100;
+            self.energy = 100;
+            // Decrease all points 
+            let mut hunger_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            let mut hygiene_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+
+            let points_to_decrease: u8 = total_points.try_into().unwrap();
+            // If the total points to decrease are less than 100 then calculate
+            if total_points < constants::MAX_POINTS {
+                // Slow decrease when energy is above 50
+                hunger_to_decrease = (points_to_decrease + 2);
+                hygiene_to_decrease = (points_to_decrease * 2);
+    
+                // Faster decrease when energy is below 50
+                if self.energy < constants::HALF_POINTS {
+                    hunger_to_decrease = (points_to_decrease * 3) / 2;
+                    hygiene_to_decrease = (points_to_decrease * 3) / 2;
+                }
+            }
+            // ------------------- Decrease -------------------
+            // Decrease hunger safely
+            self.hunger = if self.hunger >= hunger_to_decrease {
+                self.hunger - hunger_to_decrease
+            } else {
+                0
+            };
+
+            // Decrease hygiene safely
+            self.hygiene = if self.hygiene >= hygiene_to_decrease {
+                self.hygiene - hygiene_to_decrease
+            } else {
+                0
+            };
+            
+            self.update_clean_status(self.hygiene);
+            self.is_awake = true;
+        }
+        if self.energy == constants::MAX_POINTS.try_into().unwrap() {
+            self.is_awake = true;
         }
         self.last_timestamp = current_timestamp;
     }
