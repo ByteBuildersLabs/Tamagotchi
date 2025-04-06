@@ -10,7 +10,7 @@ const theme = "bytebeasts-tamagotchi";
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x289e9af5a5ee971c5e10ebf72fae4d6ad47d64268e4a04a969cd383b38c52f2']: {
+    ['0x7015bd014ba692dcb31fa80ff8b515ab9f767d1445111896415debb07aec0c4']: {
       methods: [
         {
           name: "awake",
@@ -102,7 +102,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/bbstatusmigration/katana'
+  rpc: 'https://api.cartridge.gg/x/bbslotr/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
