@@ -1,5 +1,6 @@
 // Types imports
 use tamagotchi::types::clean_status::CleanStatus;
+use tamagotchi::types::beast_status_custom::BeastStatusCustom;
 
 // Constants import
 use tamagotchi::constants;
@@ -40,8 +41,18 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         }
     }
 
-    fn calculate_recover_time(ref self: BeastStatus, current_timestamp: u64) -> u64 {
-        return ((constants::MAX_POINTS.try_into().unwrap() - self.energy) * constants::POINTS_PER_SECOND).try_into().unwrap();
+    fn new_beast_status_custom_values(beast_status_custom: BeastStatusCustom) -> BeastStatus {
+        BeastStatus {
+            beast_id: beast_status_custom.beast_id,
+            is_alive: beast_status_custom.is_alive,
+            is_awake: beast_status_custom.is_awake,
+            hunger: beast_status_custom.hunger,
+            energy: beast_status_custom.energy,
+            happiness: beast_status_custom.happiness,
+            hygiene: beast_status_custom.hygiene,
+            clean_status: beast_status_custom.clean_status.into(),
+            last_timestamp: beast_status_custom.last_timestamp,
+        }
     }
 
     fn update_clean_status(ref self: BeastStatus, hygiene: u8){
@@ -70,20 +81,28 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 3 minutes
         let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_5_MINUTES; // one point every 5 minutes | 96 points in 8 hours
 
-        if total_points < constants::MAX_POINTS {
+        if total_energy_points < constants::MAX_POINTS {
             let points_to_decrease: u8 = total_points.try_into().unwrap();
             let mut energy_to_decrease = total_energy_points.try_into().unwrap();
-            
-            // Slow decrease when energy is above 50
-            let mut hunger_to_decrease = (points_to_decrease + 2);
-            let mut happiness_to_decrease = (points_to_decrease + 3);
-            let mut hygiene_to_decrease = (points_to_decrease * 2);
 
-            // Faster decrease when energy is below 50
-            if self.energy < constants::HALF_POINTS {
-                hunger_to_decrease = (points_to_decrease * 3) / 2;
-                happiness_to_decrease = (points_to_decrease * 3) / 2;
-                hygiene_to_decrease = (points_to_decrease * 3) / 2;
+            // Decrease all points 
+            let mut hunger_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            let mut happiness_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            let mut hygiene_to_decrease: u8 = constants::MAX_POINTS.try_into().unwrap();
+            
+            // If the total points to decrease are less than 100 then calculate
+            if total_points < constants::MAX_POINTS {
+                // Slow decrease when energy is above 50
+                hunger_to_decrease = (points_to_decrease + 2);
+                happiness_to_decrease = (points_to_decrease + 3);
+                hygiene_to_decrease = (points_to_decrease * 2);
+    
+                // Faster decrease when energy is below 50
+                if self.energy < constants::HALF_POINTS {
+                    hunger_to_decrease = (points_to_decrease * 3) / 2;
+                    happiness_to_decrease = (points_to_decrease * 3) / 2;
+                    hygiene_to_decrease = (points_to_decrease * 3) / 2;
+                }
             }
 
             if self.is_alive {

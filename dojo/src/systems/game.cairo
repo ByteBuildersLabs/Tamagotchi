@@ -1,5 +1,8 @@
-// Types import
+// Models import
 use tamagotchi::models::beast_status::BeastStatus;
+
+// Types import
+use tamagotchi::types::beast_status_custom::{BeastStatusCustom};
 
 // Starknet import
 use starknet::ContractAddress;
@@ -9,6 +12,7 @@ use starknet::ContractAddress;
 pub trait IGame<T> {
     // ------------------------- Beast methods -------------------------
     fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
+    fn spawn_beast_custom_status(ref self: T, specie: u8, beast_type: u8, beast_status: BeastStatusCustom);
     fn update_beast(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -28,7 +32,7 @@ pub trait IGame<T> {
 #[dojo::contract]
 pub mod game {
     // Local import
-    use super::{IGame};
+    use super::{IGame, BeastStatusCustom};
 
     // Starknet imports
     use starknet::{ContractAddress};
@@ -78,7 +82,21 @@ pub mod game {
             
             let current_beast_id = self.beast_counter.read();
 
-            store.new_beast_status(current_beast_id);
+            store.new_beast_status_random_values(current_beast_id);
+            store.new_beast(current_beast_id, specie, beast_type);
+
+            store.init_player_food(current_beast_id);
+
+            self.beast_counter.write(current_beast_id+1);
+        }
+
+        fn spawn_beast_custom_status(ref self: ContractState, specie: u8, beast_type: u8, beast_status: BeastStatusCustom) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let current_beast_id = self.beast_counter.read();
+
+            store.new_beast_status_custom_values(beast_status);
             store.new_beast(current_beast_id, specie, beast_type);
 
             store.init_player_food(current_beast_id);

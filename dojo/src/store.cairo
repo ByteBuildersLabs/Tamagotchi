@@ -13,6 +13,7 @@ use tamagotchi::models::food::{Food};
 
 // types import
 use tamagotchi::types::food::{FoodType};
+use tamagotchi::types::beast_status_custom::{BeastStatusCustom};
 
 // Constants import
 use tamagotchi::constants;
@@ -245,10 +246,16 @@ pub impl StoreImpl of StoreTrait {
         self.new_food(common_food_id, constants::MAX_FOOD_AMOUNT);
     }
 
-    fn new_beast_status(mut self: Store, beast_id: u16) {
+    fn new_beast_status_random_values(mut self: Store, beast_id: u16) {
         let current_timestamp = get_block_timestamp();
 
         let mut beast_status = BeastStatusTrait::new_beast_status_random_values(beast_id, current_timestamp);
+
+        self.world.write_model(@beast_status);
+    }
+
+    fn new_beast_status_custom_values(mut self: Store, beast_status_custom: BeastStatusCustom) {
+        let mut beast_status = BeastStatusTrait::new_beast_status_custom_values(beast_status_custom);
 
         self.world.write_model(@beast_status);
     }

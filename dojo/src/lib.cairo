@@ -22,6 +22,7 @@ pub mod types {
     pub mod food;
     pub mod beast;
     pub mod clean_status;
+    pub mod beast_status_custom;
 }
 
 #[cfg(test)]
