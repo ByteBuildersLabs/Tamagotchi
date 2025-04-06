@@ -152,13 +152,31 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         self.last_timestamp = current_timestamp;
     }
 
-    // add to this a way to know how long it takes to fully recover
-    // if the time is under the fully recover time then calculate as asleep
-    // if not calculate as awake after recovered the energy
     fn calculate_timestamp_based_status_asleep(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
+
+        if total_seconds < constants::TOTAL_RECOVER_TIME {
+            // Calculate not fully recovered
+            self.calculate_timestamp_based_status_asleep_not_recovered(current_timestamp); // This function stores the last timestamp
+        }
+        else{
+            // Calculate recovered first
+            self.calculate_timestamp_based_status_asleep_not_recovered(current_timestamp); // This function stores the last timestamp
+            
+            // Update the last timestamp to calculate properly the status based on the last timestamp + the recover time
+            self.last_timestamp = self.last_timestamp + constants::TOTAL_RECOVER_TIME;
+
+            // Calculate status after sleep recover
+            self.calculate_timestamp_based_status_awake(current_timestamp); // This function stores the last timestamp
+        }
+        self.last_timestamp = current_timestamp;
+    }
+
+    fn calculate_timestamp_based_status_asleep_not_recovered(ref self: BeastStatus, current_timestamp: u64){
+        let total_seconds: u64 =  current_timestamp - self.last_timestamp;
+
         let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 3 minutes
-        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_2_MINUTES; // one point every 2 minutes
+        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 2 minutes
 
         // Case: when is required to calculate the points to increase since they are less than 100
         if total_energy_points < constants::MAX_POINTS {
@@ -262,8 +280,8 @@ pub impl BeastStatusImpl of BeastStatusTrait {
         if self.energy == constants::MAX_POINTS.try_into().unwrap() {
             self.is_awake = true;
         }
-        self.last_timestamp = current_timestamp;
     }
+
 }
 
 // Tests
