@@ -133,3 +133,9 @@
   width: 25px;
   height: 25px;
 }
+
+.drag-over {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
