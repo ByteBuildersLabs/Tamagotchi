@@ -72,6 +72,53 @@ function Tamagotchi() {
     }
   }, [zplayer, zbeasts, location]);
 
+  const handleDragOver = (e: React.DragEvent) => {
+    // Prevent default to allow drop
+    e.preventDefault();
+    
+    // Add visual indication that this is a drop target
+    if (e.currentTarget.classList) {
+      e.currentTarget.classList.add('drag-over');
+    }
+  };
+  
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Remove visual indication when drag leaves
+    if (e.currentTarget.classList) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+  };
+  
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    
+    // Remove drag-over class
+    if (e.currentTarget.classList) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+    
+    // Check if beast is alive and awake
+    if (!zcurrentBeast || status[1] != 1 || status[2] != 1) return;
+    
+    try {
+      // Get the food data from dataTransfer
+      const foodData = e.dataTransfer.getData('application/json');
+      if (!foodData) return;
+      
+      const { name } = JSON.parse(foodData);
+      
+      // Find the food in the DOM and trigger its click event
+      const foodItem = Array.from(document.querySelectorAll('.food-item'))
+        .find(item => item.textContent?.includes(name));
+        
+      if (foodItem) {
+        (foodItem as HTMLElement).click();
+      }
+    } catch (error) {
+      console.error("Error handling drop:", error);
+    }
+  };
+
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
   const [reborn, setReborn] = useLocalStorage('reborn', false);
@@ -257,8 +304,11 @@ function Tamagotchi() {
                     <img
                       src={currentImage}
                       alt="Tamagotchi"
-                      className="w-full h-full"
-                      onClick={handleCuddle} 
+                      className="w-full h-full" 
+                      onClick={handleCuddle}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
                       style={{ cursor: 'pointer' }}
                     />
                     {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}

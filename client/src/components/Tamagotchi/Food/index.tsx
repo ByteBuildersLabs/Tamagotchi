@@ -10,15 +10,23 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
 
-const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: {
-  handleAction: any,
-  beast: any,
-  account: any,
-  client: any,
-  beastStatus: any,
-  showAnimation: (gifPath: string) => void,
-}) => {
+interface FoodItem {
+  id: string;
+  name: string;
+  img: string;
+  count: number;
+}
 
+interface FoodProps {
+  handleAction: any;
+  beast: any;
+  account: any;
+  client: any;
+  beastStatus: any;
+  showAnimation: (gifPath: string) => void;
+}
+
+const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: FoodProps) => {
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
   const [loading, setLoading] = useState(true);
@@ -64,32 +72,55 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     }
   };
 
+  // Drag handlers
+  const handleDragStart = (e: React.DragEvent, food: FoodItem) => {
+    if (food.count === 0) return;
+    
+    // Create a custom drag image
+    const dragImg = new Image();
+    dragImg.src = food.img;
+    dragImg.width = 25;
+    e.dataTransfer.setDragImage(dragImg, 12, 12);
+    
+    // Set food data for the drop target
+    e.dataTransfer.setData('application/json', JSON.stringify({
+      id: food.id,
+      name: food.name
+    }));
+    
+    buttonSound();
+  };
+
   return (
     <>
-      <div className="food-carousel-container">
-        <div className='food-carousel'>
-          {!beastStatus || beastStatus[1] == 0 ? <></> :
-            loading ? 'Loading Food' :
-              zfoods.map(({ name, img, count }: { name: any, img: any, count: any }) => (
-                <button
-                  key={name}
-                  className="button"
-                  onClick={() => feedTamagotchi(name)}
-                  disabled={count === 0}
-                >
-                  <span>
-                    x{count}
-                  </span>
-                  <img alt="option" src={img} />
-                  <p>{name}</p>
-                </button>
-              ))
-          }
+      <div className="food-container">
+        <div className="food-carousel-container">
+        <div className="food-instructions">
+          <p>Drag food to your beast to feed it!</p>
+        </div>
+          <div className='food-carousel'>
+            {!beastStatus || beastStatus[1] == 0 ? <></> :
+              loading ? 'Loading Food' :
+                zfoods.map((food: FoodItem) => (
+                  <div 
+                    key={food.name}
+                    className={`food-item ${food.count === 0 ? 'disabled' : ''}`}
+                    draggable={food.count > 0}
+                    onDragStart={(e) => handleDragStart(e, food)}
+                    onClick={() => food.count > 0 && feedTamagotchi(food.name)}
+                  >
+                    <span>x{food.count}</span>
+                    <img alt={food.name} src={food.img} />
+                    <p>{food.name}</p>
+                  </div>
+                ))
+            }
+          </div>
         </div>
       </div>
       <Toaster position="bottom-center" />
     </>
-  )
+  );
 };
 
 export default Food;

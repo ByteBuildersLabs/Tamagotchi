@@ -10,12 +10,14 @@
 .food-carousel {
   display: flex;
   gap: 10px;
-  padding: 15px;
+  padding: 0px 15px 0px 15px;
   width: 100%;
 }
 
-.food-carousel button {
+.food-carousel .food-item {
   font-family: "Montserrat", serif;
+  color: #85002A;
+  font-weight: bold;
   overflow: hidden;
   text-align: center;
   display: flex;
@@ -31,10 +33,18 @@
   border-radius: 10px;
   flex-shrink: 0;
   text-transform: capitalize;
-  cursor: pointer;
+  cursor: grab; 
   position: relative;
   font-size: 13px;
   margin: 5px auto;
+  transition: all 0.2s ease;
+}
+
+.food-carousel::after {
+  content: "";
+  min-width: 5px;
+  height: 1px;
+  flex-shrink: 0;
 }
 
 .food-carousel span {
@@ -46,15 +56,35 @@
 
 .food-carousel p {
   text-align: center;
-  margin: 0 auto;
+  margin: 0 auto 10px;
   font-size: 12px;
   white-space: normal;
 }
 
-.food-carousel button img {
+.food-carousel .food-item img {
   width: 30px;
   height: 30px;
   margin: auto;
+}
+
+.food-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.food-item:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+.food-item:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.drag-over {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
 
 @keyframes aura {
@@ -79,4 +109,30 @@
   100% {
     transform: translateY(-25%);
   }
+}
+
+@keyframes foodDrop {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.food-dropped {
+  animation: foodDrop 0.5s ease;
+}
+
+.food-instructions {
+  text-align: center;
+  font-size: 12px;
+  color: #ECECDA;
+  font-family: "Montserrat", serif;
+  font-weight: bold;
+  margin: 0; 
+  padding: 0; 
+  position: relative;
+  top: 3px;
+}
+
+.food-instructions p {
+  margin: 0; 
+  padding: 0 0 3px 0;
 }
