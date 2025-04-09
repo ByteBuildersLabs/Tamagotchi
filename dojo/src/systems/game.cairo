@@ -104,7 +104,7 @@ pub mod game {
             self.beast_counter.write(current_beast_id+1);
         }
 
-         // This method is used to update the beast related data and write it to the world
+        // This method is used to update the beast related data and write it to the world
         fn update_beast(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
@@ -123,7 +123,6 @@ pub mod game {
             else {
                 beast_status.calculate_timestamp_based_status_asleep(current_timestamp);
             }
- 
             store.write_beast_status(@beast_status);
             
             // Update beast and write it to the world

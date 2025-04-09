@@ -36,8 +36,9 @@ mod tests {
         assert(beast.beast_id == 1, 'wrong beast id');
         assert(beast.specie == 1, 'wrong specie');
     }
+
     #[test]
-    fn test_beast_age() {
+    fn test_beast_age_reading_model() {
         // Initialize test environment
         let world = create_test_world();
         let game_system = create_game_system(world);
@@ -50,20 +51,22 @@ mod tests {
         game_system.spawn_beast(1, 1);
         player_system.set_current_beast(1);
 
-        // Get beast age
-        cheat_block_timestamp(7172000);
-        let age: u16 = game_system.get_beast_age();
-        assert(age == 1, 'wrong beast age');
+        // Get beast age before 24 hours
+        game_system.update_beast();
+        let mut beast: Beast = world.read_model((PLAYER(), 1));
+        assert(beast.age == 0, 'wrong beast age');
+
+        // Get beast age after 24 hours
+        cheat_block_timestamp(7086500);
+        game_system.update_beast();
+        let mut beast: Beast = world.read_model((PLAYER(), 1));
+        assert(beast.age == 1, 'wrong beast age');
 
         // Get beast age
-        cheat_block_timestamp(7173000);
-        let age: u16 = game_system.get_beast_age();
-        assert(age == 2, 'wrong beast age');
-
-        // Get beast age
-        cheat_block_timestamp(7260000);
-        let age: u16 = game_system.get_beast_age();
-        assert(age == 3, 'wrong beast age');
+        cheat_block_timestamp(7172900);
+        game_system.update_beast();
+        beast = world.read_model((PLAYER(), 1));
+        assert(beast.age == 2, 'wrong beast age');
     }
 
     #[test]
