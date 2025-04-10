@@ -1,5 +1,4 @@
 import { fetchStatus } from '../../../utils/tamagotchi';
-import toast, { Toaster } from 'react-hot-toast';
 import { Account } from '@dojoengine/torii-wasm';
 import { Button } from '../../../components/ui/button';
 import buttonClick from '../../../assets/sounds/click.mp3';
@@ -54,19 +53,11 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
             }
 
             try {
-              // Wrap the action call with toast.promise to show notifications.
-              await toast.promise(
-                handleAction(
-                  label, 
-                  () => client.game[action](account as Account), 
-                  beastsDex[beast.specie - 1][pictureKey]
-                ),
-                {
-                  loading: `${label} in progress...`,
-                  success: `${label} executed successfully!`,
-                  error: `Failed to ${label.toLowerCase()}.`,
-                }
-              );
+              handleAction(
+                label, 
+                async () => await client.game[action](account as Account), 
+                beastsDex[beast.specie - 1][pictureKey]
+              )
 
               await client.game.updateBeast(account as Account);
 
@@ -88,8 +79,6 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
           {img && <img src={img} alt={label} />} {label}
         </Button>
       ))}
-      {/* Render the Toaster to display toast notifications */}
-      <Toaster position="bottom-center" />
     </div>
   );
 }

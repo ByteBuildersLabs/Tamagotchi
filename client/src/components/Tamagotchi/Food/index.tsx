@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
-import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
 import buttonClick from '../../../assets/sounds/click.mp3';
@@ -50,15 +49,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     try {
       const selectedFood = zfoods.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
-
-      await toast.promise(
-        handleAction("Feed", () => client.game.feed(account, selectedFood.id), eatAnimation),
-        {
-          loading: 'Feeding your beast...',
-          success: 'Beast fed successfully!',
-          error: 'Failed to feed beast.',
-        }
-      );
+      handleAction("Feed", async () => await client.game.feed(account, selectedFood.id), eatAnimation)
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
@@ -87,7 +78,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
           }
         </div>
       </div>
-      <Toaster position="bottom-center" />
     </>
   )
 };

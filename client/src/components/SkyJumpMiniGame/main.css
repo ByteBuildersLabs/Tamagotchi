@@ -489,17 +489,6 @@
   50% { transform: translateY(-5px); }
 }
 
-.toast-content {
-  display: flex;
-  align-items: center;
-}
-
-.toast-food-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-}
-
 /* Score milestone animation */
 @keyframes score-milestone-pulse {
   0% { transform: scale(1); filter: brightness(1); }

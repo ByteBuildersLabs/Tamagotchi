@@ -225,16 +225,6 @@ p, span {
   margin-left: 10px;
 }
 
-#_rht_toaster div div {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  color: #ECECDA;
-  border-radius: 3px !important;
-  font-weight: bold !important;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
 .go-back-container {
   position: absolute;
   bottom: 20px; 

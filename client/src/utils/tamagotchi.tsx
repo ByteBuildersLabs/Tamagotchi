@@ -12,8 +12,8 @@ const getBirthDate = (hexBirthDate:any) => {
     year: localDate.getUTCFullYear(),
     month: localDate.getUTCMonth() + 1,
     day: localDate.getUTCDate(),
-    hours: localDate.getUTCHours(),
-    minutes: localDate.getUTCMinutes(),
+    hours: String(localDate.getUTCHours()).padStart(2, '0'),
+    minutes: String(localDate.getUTCMinutes()).padStart(2, '0'),
     seconds: localDate.getUTCSeconds(),
     timezone: "GMT-0600 (hora estándar central)"
   };

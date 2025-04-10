@@ -4,7 +4,6 @@ import useAppStore from "../../context/store.ts";
 import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
-import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import beastsDex from "../../data/beastDex.tsx";
 import dead from '../../assets/img/dead.gif';
@@ -146,7 +145,7 @@ function Tamagotchi() {
       clean: status[6] || 0
     };
   };
-  // Helper to wrap Dojo actions with toast
+  // Helper to wrap Dojo actions
   const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
     setIsLoading(true);
     showAnimation(animation);
@@ -172,21 +171,15 @@ function Tamagotchi() {
     if (!zcurrentBeast || !account) return;
     if (status[1] == 0) return;
     if (status[2] == 0) return;
+
     try {
-      await toast.promise(
-        handleAction(
-          "Cuddle",
-          // Call the cuddle action on the client (ensure it's defined in your SDK)
-          () => client.game.pet(account as Account), //change sleep action to cuddle action
-          // Use the cuddle animation from your initials data
-          beastsDex[zcurrentBeast.specie - 1].cuddlePicture
-        ),
-        {
-          loading: "Cuddling...",
-          success: "Your Baby Beast is enjoying!",
-          error: "Cuddle action failed!",
-        }
-      );
+      handleAction(
+        "Cuddle",
+        // Call the cuddle action on the client (ensure it's defined in your SDK)
+        async () => await client.game.pet(account as Account), //change sleep action to cuddle action
+        // Use the cuddle animation from your initials data
+        beastsDex[zcurrentBeast.specie - 1].cuddlePicture
+      )
       // Disable the button for 5 seconds
       setIsLoading(true);
       setTimeout(() => {

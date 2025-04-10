@@ -204,9 +204,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     if (score > currentHighScore) {
       saveHighScore(gameId, beastId, score);
       setCurrentHighScore(score);
-  
-      // We'll show this in the game over modal with animation
-      // instead of using a toast
     }
   
     if (collectedFoodRef.current === 0) selectedFood.id = 0;

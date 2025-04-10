@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import useAppStore from "../../context/store.ts";
-import toast, { Toaster } from 'react-hot-toast';
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
@@ -68,10 +67,6 @@ function SpawnBeast() {
 
   const randomNumber = getRandomNumber(1, 3);
 
-  const notify = () => {
-    toast("Your egg is hatching!", { duration: 5000 });
-  }
-
   const spawnPlayer = async () => {
     if (!account) return
 
@@ -82,7 +77,6 @@ function SpawnBeast() {
       setLoading(false);
     }
 
-    notify();
     setLoading(true);
     await spawn(randomNumber);
     await new Promise(resolve => setTimeout(resolve, 5000));
@@ -130,7 +124,6 @@ function SpawnBeast() {
                 }
             </button>}
           <Hints />
-          <Toaster position="bottom-center" />
         </div>
       </div>
     </>
