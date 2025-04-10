@@ -8,6 +8,7 @@ import useSound from 'use-sound';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
+import OnlyLoading from '../../OnlyLoading/index.tsx';
 
 const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: {
   handleAction: any,
@@ -24,6 +25,14 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     if (!loadingFood && foods.length > 0) {
       const updatedFoods = foods.map((food) => {
         const initialFood = initialFoodItems.find(item => item.id === food.id);
@@ -35,7 +44,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
         };
       });
       setFoods(updatedFoods);
-      setLoading(false);
     }
   }, [loadingFood, foods]);
 
@@ -53,6 +61,12 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }
+    , 1000);
   };
 
   return (
@@ -60,7 +74,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
       <div className="food-carousel-container">
         <div className='food-carousel'>
           {!beastStatus || beastStatus[1] == 0 ? <></> :
-            loading ? 'Loading Food' :
+            loading ? <OnlyLoading /> :
               zfoods.map(({ name, img, count }: { name: any, img: any, count: any }) => (
                 <button
                   key={name}
