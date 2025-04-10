@@ -274,7 +274,7 @@ pub mod game {
                 if beast_status.hygiene > constants::MAX_HYGIENE{
                     beast_status.hygiene = constants::MAX_HYGIENE;
                 }
-                beast_status.happiness = beast_status.happiness + constants::L_UPDATE_POINTS;
+                beast_status.happiness = beast_status.happiness + constants::M_UPDATE_POINTS;
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
