@@ -37,7 +37,7 @@ import './main.css';
 function Tamagotchi() {
   const { account } = useAccount();
   const { client } = useDojoSDK();
-  const { beastsData: beasts } = useBeasts();
+  const { beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
   const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
