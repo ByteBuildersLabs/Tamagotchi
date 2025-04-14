@@ -31,6 +31,7 @@ const FOOD_APEARANCE_PROBABILITY = 0.3;
 
 const RESET_GAME_DELAY = 100;
 const DELETE_FOOD_ANIMATION_TIME = 300;
+const ENERGY_TOAST_DURATION = 3000;
 
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
@@ -90,6 +91,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [score, setScore] = useState(0);
   const [collectedFood, setCollectedFood] = useState(0);
   const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [showEnergyToast, setShowEnergyToast] = useState(false);
 
   // States for modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -195,6 +197,22 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
 
+  // Function to directly get the beast's energy
+  const fetchBeastEnergy = async () => {
+    if (!client || !account) return null;
+    
+    try {
+      const beastData = await client.beast.getBeastStatus(account as Account, beastId);
+      const energy = beastData ? beastData[4] : 0;
+      
+      console.log("Beast energy level:", energy);
+      return energy;
+    } catch (error) {
+      console.error("Error fetching beast energy:", error);
+      return null;
+    }
+  };
+
   // Function to handle game end
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
@@ -219,11 +237,25 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Function to handle "play again"
-  const handlePlayAgain = () => {
+  const handlePlayAgain = async () => {
 
+    // Get the energy refreshed before playing again
+    const currentEnergy = await fetchBeastEnergy();
+    
+    // Check if there is enough power
+    if (currentEnergy === null || currentEnergy < 30) {
+      console.log("Not enough energy to play again");
+      setShowEnergyToast(true);
+      
+      setTimeout(() => {
+        setShowEnergyToast(false);
+      }, ENERGY_TOAST_DURATION);
+      
+      return;
+    }
     try {
       if (handleAction && client && account) {
-        handleAction(
+        await handleAction(
           "Play",
           async () => await client.game.play(account as Account),
         );
@@ -1402,6 +1434,13 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
               />
             </button>
           </div>
+        </div>
+      )}
+      {/* Toast with insufficient energy */}
+      {showEnergyToast && (
+        <div className="energy-toast">
+          <span className="toast-icon">⚠️</span>
+          <span className="toast-message">Your beast's energy is under 30%, it's time to rest.</span>
         </div>
       )}
     </div>
