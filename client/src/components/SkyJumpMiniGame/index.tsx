@@ -220,9 +220,23 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   // Function to handle "play again"
   const handlePlayAgain = () => {
-    setShowGameOverModal(false);
-    setCurrentScreen('playing');  // Change screen state first
-    resetGame();
+
+    try {
+      if (handleAction && client && account) {
+        handleAction(
+          "Play",
+          async () => await client.game.play(account as Account),
+        );
+        console.log("Play action completed");
+      }
+
+      setShowGameOverModal(false);
+      setCurrentScreen('playing'); 
+      resetGame();
+    }
+    catch (error) {
+      console.error("Error playing again:", error);
+    }
   };
 
   // HEIGHT-BASED SCORING SYSTEM
