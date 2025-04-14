@@ -84,8 +84,6 @@
   }
 }
 
-/* Add these styles to your main.css or create a new CSS file */
-
 /* Styles for mobile drag visual */
 .mobile-drag-image {
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));

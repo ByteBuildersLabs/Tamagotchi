@@ -1,5 +1,3 @@
-// Integrated drag-and-drop features from NewFood.tsx and NewMainForFood.css
-
 import { useEffect, useState, useRef } from 'react';
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
