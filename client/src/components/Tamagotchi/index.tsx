@@ -42,6 +42,7 @@ function Tamagotchi() {
   const navigate = useNavigate();
   const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
   const [ age, setAge ] = useState<any>({ }); 
+  const [isMobileDragging, setIsMobileDragging] = useState(false);
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -117,6 +118,44 @@ function Tamagotchi() {
       console.error("Error handling drop:", error);
     }
   };
+
+  // Listen for messages from the Food component about mobile drag state
+  useEffect(() => {
+    const handleMobileDragMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'MOBILE_DRAG_STATE') {
+        setIsMobileDragging(e.data.isDragging);
+        
+        // Apply body class to prevent scrolling during drag
+        if (e.data.isDragging) {
+          document.body.classList.add('preventing-scroll');
+        } else {
+          document.body.classList.remove('preventing-scroll');
+        }
+      }
+    };
+    
+    window.addEventListener('message', handleMobileDragMessage);
+    
+    return () => {
+      window.removeEventListener('message', handleMobileDragMessage);
+    };
+  }, []);
+
+  // Prevent scrolling issues during mobile drag
+  useEffect(() => {
+    const preventScroll = (e: TouchEvent) => {
+      if (isMobileDragging) {
+        e.preventDefault();
+      }
+    };
+    
+    // Add with passive: false to ensure preventDefault works
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+    
+    return () => {
+      document.removeEventListener('touchmove', preventScroll);
+    };
+  }, [isMobileDragging]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
