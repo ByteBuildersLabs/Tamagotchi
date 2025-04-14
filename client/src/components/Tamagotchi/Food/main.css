@@ -108,27 +108,12 @@
   transition: all 0.3s ease;
 }
 
-/* Make food items look draggable */
-.food-item {
-  cursor: grab;
-  -webkit-tap-highlight-color: transparent;
-  /* Add a subtle glow effect to indicate draggability */
-  transition: all 0.3s ease;
-}
-
-.food-item:not(:disabled):hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-}
-
 .food-item:active {
   cursor: grabbing;
 }
 
 .food-item:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
-  filter: grayscale(70%);
 }
 
 /* Prevent text selection during drag operations */
