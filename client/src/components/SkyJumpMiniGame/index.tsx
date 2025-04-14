@@ -315,8 +315,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
 
-  const getRandomFood = () => {
-    if (!selectedFood) {
+  const getRandomFood = (forceNew = false) => {
+    if (!selectedFood || forceNew) {
       const randomIndex = Math.floor(Math.random() * initialFoodItems.length);
       setSelectedFood(initialFoodItems[randomIndex]);
       return initialFoodItems[randomIndex];
@@ -909,7 +909,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Reset food collection
     setCollectedFood(0);
     // Seleccionar una nueva comida aleatoria
-    const newFood = initialFoodItems[Math.floor(Math.random() * initialFoodItems.length)];
+    const newFood = getRandomFood(true);
     setSelectedFood(newFood);
 
     // Update the scorecard directly
