@@ -93,8 +93,16 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             // If the total points to decrease are less than 100 then calculate
             if total_points < constants::MAX_POINTS {
                 // Slow decrease when energy is above 50
-                hunger_to_decrease = (points_to_decrease + 2);
-                happiness_to_decrease = (points_to_decrease + 3);
+                hunger_to_decrease =  if points_to_decrease != 0 {
+                    points_to_decrease + 2 
+                } else { 
+                    0 
+                };
+                happiness_to_decrease = if points_to_decrease != 0 {
+                    points_to_decrease + 2 
+                } else { 
+                    0 
+                };
                 hygiene_to_decrease = (points_to_decrease * 2);
     
                 // Faster decrease when energy is below 50
@@ -191,7 +199,11 @@ pub impl BeastStatusImpl of BeastStatusTrait {
             // If the total points to decrease are less than 100 then calculate
             if total_points < constants::MAX_POINTS {
                 // Slow decrease when energy is above 50
-                hunger_to_decrease = (points_to_decrease + 2);
+                hunger_to_decrease =  if points_to_decrease != 0 {
+                    points_to_decrease + 2 
+                } else { 
+                    0 
+                };
                 hygiene_to_decrease = (points_to_decrease * 2);
     
                 // Faster decrease when energy is below 50

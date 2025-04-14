@@ -1,4 +1,3 @@
-import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
 import { getAvailableGames, getHighScore } from '../../../data/gamesMiniGamesRegistry.tsx';
@@ -31,18 +30,11 @@ const Play: React.FC<PlayProps> = ({
     }
 
     try {
-      await toast.promise(
-        handleAction(
-          "Play", 
-          () => client.game.play(account), 
-          beastsDex[beast.specie - 1].playPicture
-        ),
-        {
-          loading: 'Loading the game...',
-          success: '¡Game started!',
-          error: 'Cannot start the game.',
-        }
-      );
+      handleAction(
+        "Play", 
+        async () => await client.game.play(account), 
+        beastsDex[beast.specie - 1].playPicture
+      )
 
       window.__gameTemp = {
         handleAction,
@@ -82,7 +74,6 @@ const Play: React.FC<PlayProps> = ({
           </div>
         ))}
       </div>
-      <Toaster position="bottom-center" />
     </div>
   );
 };

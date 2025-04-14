@@ -1,0 +1,15 @@
+.only-loading {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 8px solid #ECECDA;
+  border-top-color: #6E0022;
+  animation: loading 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}

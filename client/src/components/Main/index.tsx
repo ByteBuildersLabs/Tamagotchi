@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import FullscreenGame from "../FullScreenGame/FullScreenGame";
 import Leaderboard from "../Leadeboard";
 import NewCover from "../NewCover";

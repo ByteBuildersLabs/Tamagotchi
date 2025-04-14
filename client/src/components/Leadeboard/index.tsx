@@ -57,8 +57,15 @@ const Leaderboard = () => {
   // Effect to process beast data
   useEffect(() => {
     if (beasts && beasts.length > 0) {
-      const sortedBeasts = [...beasts].sort((a, b) => (b?.age || 0) - (a?.age || 0));
-      
+      const sortedBeasts = [...beasts].sort((a, b) => {
+        const ageDiff = (b?.age || 0) - (a?.age || 0);
+        if (ageDiff !== 0) {
+          return ageDiff;
+        }
+        const birthDateA = parseInt(a?.birth_date, 16);
+        const birthDateB = parseInt(b?.birth_date, 16);
+        return birthDateA - birthDateB;
+      });
       // Find the current user's position and their beast
       if (userAddress) {
         const userBeastIndex = sortedBeasts.findIndex(

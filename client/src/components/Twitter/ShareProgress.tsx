@@ -40,7 +40,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
         `🛁 Cleanliness: ${stats.clean} \n\n` +
         `These are my current values! 🌟\n\n` +
         `Ready to raise your own Beast? 🚀\n` +
-        `👉 https://www.babybeasts.games \n` +
+        `👉 https://www.bytebeasts.games \n` +
         `@0xByteBeasts`
       );
     } else if (type === 'minigame' && minigameData) {
@@ -48,7 +48,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
         `🎮 I just played ${minigameData.name} mini-game in ByteBeasts Tamagotchi\n\n` +
         `My score: ${minigameData.score} 🏆\n\n` +
         `Think you can beat it? Bring it on!🔥\n` +
-        `👉 https://www.babybeasts.games \n` +
+        `👉 https://www.bytebeasts.games \n` +
         `@0xByteBeasts`
       );
     }

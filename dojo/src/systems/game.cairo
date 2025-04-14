@@ -104,7 +104,7 @@ pub mod game {
             self.beast_counter.write(current_beast_id+1);
         }
 
-         // This method is used to update the beast related data and write it to the world
+        // This method is used to update the beast related data and write it to the world
         fn update_beast(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
@@ -123,7 +123,6 @@ pub mod game {
             else {
                 beast_status.calculate_timestamp_based_status_asleep(current_timestamp);
             }
- 
             store.write_beast_status(@beast_status);
             
             // Update beast and write it to the world
@@ -275,7 +274,7 @@ pub mod game {
                 if beast_status.hygiene > constants::MAX_HYGIENE{
                     beast_status.hygiene = constants::MAX_HYGIENE;
                 }
-                beast_status.happiness = beast_status.happiness + constants::L_UPDATE_POINTS;
+                beast_status.happiness = beast_status.happiness + constants::M_UPDATE_POINTS;
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }

@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x289e9af5a5ee971c5e10ebf72fae4d6ad47d64268e4a04a969cd383b38c52f2",
-      "class_hash": "0x7a4ea86f065b1339f64954d27ea137a5b60d81aff54bf4e655efe781df0c84",
+      "address": "0x47c69f5b590c726a95c8c5d1d125618dacdb2ae574818814bf4f74a696e0a34",
+      "class_hash": "0x36832742a615bbd7625041479656d9af9c57d50146ba600c00cb76737c5728f",
       "abi": [
         {
           "type": "impl",
@@ -1393,6 +1393,48 @@
         },
         {
           "type": "struct",
+          "name": "tamagotchi::types::beast_status_custom::BeastStatusCustom",
+          "members": [
+            {
+              "name": "beast_id",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "is_alive",
+              "type": "core::bool"
+            },
+            {
+              "name": "is_awake",
+              "type": "core::bool"
+            },
+            {
+              "name": "hunger",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "energy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "happiness",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hygiene",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "clean_status",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "last_timestamp",
+              "type": "core::integer::u64"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "tamagotchi::models::beast_status::BeastStatus",
           "members": [
             {
@@ -1448,6 +1490,26 @@
                 {
                   "name": "beast_type",
                   "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "spawn_beast_custom_status",
+              "inputs": [
+                {
+                  "name": "specie",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "beast_type",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "beast_status",
+                  "type": "tamagotchi::types::beast_status_custom::BeastStatusCustom"
                 }
               ],
               "outputs": [],
@@ -1684,6 +1746,7 @@
       "systems": [
         "dojo_init",
         "spawn_beast",
+        "spawn_beast_custom_status",
         "update_beast",
         "feed",
         "sleep",

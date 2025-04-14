@@ -267,7 +267,7 @@ pub impl StoreImpl of StoreTrait {
         let mut new_beast = Beast {
             player: player,
             beast_id: beast_id,
-            age: 1,
+            age: 0,
             birth_date: current_timestamp,
             specie: specie,
             beast_type: beast_type,

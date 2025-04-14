@@ -27,7 +27,7 @@ export const useBeasts = () => {
           body: JSON.stringify({
             query: `
               query GetBeast {
-                tamagotchiBeastModels(first: 100) {
+                tamagotchiBeastModels(first: 1000) {
                   edges {
                     node {
                       player

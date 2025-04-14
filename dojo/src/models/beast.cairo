@@ -122,11 +122,11 @@ pub impl BeastImpl of BeastTrait {
     fn feed(ref self: Beast, food_id: u8) -> (u8, u8, u8) {
         if self.is_favorite_meal(food_id){
             // (hunger, happiness, energy)
-            (constants::XL_UPDATE_POINTS, constants::XL_UPDATE_POINTS, constants::XL_UPDATE_POINTS)
+            (constants::L_UPDATE_POINTS, constants::S_UPDATE_POINTS, constants::XS_UPDATE_POINTS)
         }
         else{
             // (hunger, happiness, energy)
-            (constants::S_UPDATE_POINTS, constants::S_UPDATE_POINTS, constants::S_UPDATE_POINTS)
+            (constants::S_UPDATE_POINTS, constants::S_UPDATE_POINTS, constants::XS_UPDATE_POINTS)
         }
     }
 }

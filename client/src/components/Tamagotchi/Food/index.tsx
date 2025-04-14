@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
-import toast, { Toaster } from 'react-hot-toast';
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
 import buttonClick from '../../../assets/sounds/click.mp3';
@@ -29,8 +28,16 @@ interface FoodProps {
 const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: FoodProps) => {
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoadingFood] = useState(true);
   const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingFood(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (!loadingFood && foods.length > 0) {
@@ -44,7 +51,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
         };
       });
       setFoods(updatedFoods);
-      setLoading(false);
     }
   }, [loadingFood, foods]);
 
@@ -58,18 +64,16 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     try {
       const selectedFood = zfoods.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
-
-      await toast.promise(
-        handleAction("Feed", () => client.game.feed(account, selectedFood.id), eatAnimation),
-        {
-          loading: 'Feeding your beast...',
-          success: 'Beast fed successfully!',
-          error: 'Failed to feed beast.',
-        }
-      );
+      handleAction("Feed", async () => await client.game.feed(account, selectedFood.id), eatAnimation)
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
+
+    setLoadingFood(true);
+    setTimeout(() => {
+      setLoadingFood(false);
+    }
+    , 1000);
   };
 
   // Drag handlers
@@ -93,32 +97,26 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
 
   return (
     <>
-      <div className="food-container">
-        <div className="food-carousel-container">
-        <div className="food-instructions">
-          <p>Drag food to your beast to feed it!</p>
-        </div>
-          <div className='food-carousel'>
-            {!beastStatus || beastStatus[1] == 0 ? <></> :
-              loading ? 'Loading Food' :
-                zfoods.map((food: FoodItem) => (
-                  <div 
-                    key={food.name}
-                    className={`food-item ${food.count === 0 ? 'disabled' : ''}`}
-                    draggable={food.count > 0}
-                    onDragStart={(e) => handleDragStart(e, food)}
-                    onClick={() => food.count > 0 && feedTamagotchi(food.name)}
-                  >
-                    <span>x{food.count}</span>
-                    <img alt={food.name} src={food.img} />
-                    <p>{food.name}</p>
-                  </div>
-                ))
-            }
-          </div>
+      <div className={`food-carousel-container ${loading ? 'loading-aura' : ''}`}>
+        <div className='food-carousel'>
+          {!beastStatus || beastStatus[1] == 0 ? <></> :
+            zfoods.map(({ name, img, count }: { name: any, img: any, count: any }) => (
+              <button
+                key={name}
+                className="button"
+                onClick={() => feedTamagotchi(name)}
+                disabled={loading || count === 0}
+              >
+                <span>
+                  x{count}
+                </span>
+                <img alt="option" src={img} />
+                <p>{name}</p>
+              </button>
+            ))
+          }
         </div>
       </div>
-      <Toaster position="bottom-center" />
     </>
   );
 };
