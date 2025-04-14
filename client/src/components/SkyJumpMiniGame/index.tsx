@@ -31,6 +31,7 @@ const FOOD_APEARANCE_PROBABILITY = 0.3;
 
 const RESET_GAME_DELAY = 100;
 const DELETE_FOOD_ANIMATION_TIME = 300;
+const ENERGY_TOAST_DURATION = 3000;
 
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
@@ -90,6 +91,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [score, setScore] = useState(0);
   const [collectedFood, setCollectedFood] = useState(0);
   const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [showEnergyToast, setShowEnergyToast] = useState(false);
 
   // States for modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -195,6 +197,22 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
 
+  // Function to directly get the beast's energy
+  const fetchBeastEnergy = async () => {
+    if (!client || !account) return null;
+    
+    try {
+      const beastData = await client.beast.getBeastStatus(account as Account, beastId);
+      const energy = beastData ? beastData[4] : 0;
+      
+      console.log("Beast energy level:", energy);
+      return energy;
+    } catch (error) {
+      console.error("Error fetching beast energy:", error);
+      return null;
+    }
+  };
+
   // Function to handle game end
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
@@ -219,10 +237,38 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   // Function to handle "play again"
-  const handlePlayAgain = () => {
-    setShowGameOverModal(false);
-    setCurrentScreen('playing');  // Change screen state first
-    resetGame();
+  const handlePlayAgain = async () => {
+
+    // Get the energy refreshed before playing again
+    const currentEnergy = await fetchBeastEnergy();
+    
+    // Check if there is enough power
+    if (currentEnergy === null || currentEnergy < 30) {
+      console.log("Not enough energy to play again");
+      setShowEnergyToast(true);
+      
+      setTimeout(() => {
+        setShowEnergyToast(false);
+      }, ENERGY_TOAST_DURATION);
+      
+      return;
+    }
+    try {
+      if (handleAction && client && account) {
+        await handleAction(
+          "Play",
+          async () => await client.game.play(account as Account),
+        );
+        console.log("Play action completed");
+      }
+
+      setShowGameOverModal(false);
+      setCurrentScreen('playing'); 
+      resetGame();
+    }
+    catch (error) {
+      console.error("Error playing again:", error);
+    }
   };
 
   // HEIGHT-BASED SCORING SYSTEM
@@ -301,8 +347,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
 
-  const getRandomFood = () => {
-    if (!selectedFood) {
+  const getRandomFood = (forceNew = false) => {
+    if (!selectedFood || forceNew) {
       const randomIndex = Math.floor(Math.random() * initialFoodItems.length);
       setSelectedFood(initialFoodItems[randomIndex]);
       return initialFoodItems[randomIndex];
@@ -895,7 +941,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Reset food collection
     setCollectedFood(0);
     // Seleccionar una nueva comida aleatoria
-    const newFood = initialFoodItems[Math.floor(Math.random() * initialFoodItems.length)];
+    const newFood = getRandomFood(true);
     setSelectedFood(newFood);
 
     // Update the scorecard directly
@@ -1388,6 +1434,13 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
               />
             </button>
           </div>
+        </div>
+      )}
+      {/* Toast with insufficient energy */}
+      {showEnergyToast && (
+        <div className="energy-toast">
+          <span className="toast-icon">⚠️</span>
+          <span className="toast-message">Your beast's energy is under 30%, it's time to rest.</span>
         </div>
       )}
     </div>
