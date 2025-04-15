@@ -44,6 +44,8 @@ pub const SECONDS_PER_DAY: u64 = 86400;
 pub const SECONDS_IN_3_6_MINUTES: u64 = 220;
 // Total seconds in 5 minutes
 pub const SECONDS_IN_5_MINUTES: u64 = 300;
+// Total seconds in 5 minutes
+pub const SECONDS_IN_6_MINUTES: u64 = 360;
 // Total seconds in 3 minutes
 pub const SECONDS_IN_3_MINUTES: u64 = 180;
 

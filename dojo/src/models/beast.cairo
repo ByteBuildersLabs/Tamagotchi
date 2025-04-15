@@ -32,7 +32,7 @@ pub impl BeastImpl of BeastTrait {
     fn calculate_age(ref self: Beast, current_timestamp: u64) {
         let total_seconds: u64 =  current_timestamp - self.birth_date;
         
-        let total_days: u64 = total_seconds / 86400; // 86400: total seconds in a day
+        let total_days: u64 = total_seconds / 3600; // 86400: total seconds in a day
         
         self.age = total_days.try_into().unwrap();
     }
