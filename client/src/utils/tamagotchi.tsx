@@ -32,4 +32,17 @@ const fetchStatus = async (account:any) => {
       }
 };
 
-export { fetchStatus, getBirthDate };
+const fetchAge = async (account:any) => {
+  try {
+      const response = await account?.callContract({
+        contractAddress: "0xf644f78b8f33d3c329ad505cd80ccbd00e59f5bffca41de9a6a4fe386862a",
+        entrypoint: "get_beast_age_with_address",
+        calldata: [String(account?.address)],
+      });
+      return hexToDecimalArray(response);
+    } catch (err) {
+      console.log(err)
+    }
+};
+
+export { fetchStatus, fetchAge, getBirthDate };
