@@ -375,7 +375,7 @@ pub mod game {
             player.assert_exists();
 
             let beast_id = player.current_beast_id;
-            let mut beast: Beast = store.read_beast(beast_id);
+            let mut beast: Beast = store.read_beast_from_address(beast_id, address);
 
             let current_timestamp = get_block_timestamp();
             beast.calculate_age(current_timestamp);
