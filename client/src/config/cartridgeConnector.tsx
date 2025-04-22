@@ -102,7 +102,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/ageread/katana'
+  rpc: 'https://api.cartridge.gg/x/toriiconfigbb/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
