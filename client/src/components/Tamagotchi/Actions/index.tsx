@@ -44,12 +44,18 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
               if (action === 'feed') {
                 buttonSound();
                 setCurrentView('food');
+                await client.game.updateBeast(account as Account);
+                let status:any = fetchStatus(account);
+                if (status && Object.keys(status).length !== 0) setStatus(status);
                 return;
               }
 
               if (action === 'play') {
                 buttonSound();
                 setCurrentView('play');
+                await client.game.updateBeast(account as Account);
+                let status:any = fetchStatus(account);
+                if (status && Object.keys(status).length !== 0) setStatus(status);
                 return;
               }
 
@@ -62,7 +68,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
 
                 await client.game.updateBeast(account as Account);
 
-                let status:any = fetchStatus(account);
+                const status:any = fetchStatus(account);
                 if (status && Object.keys(status).length !== 0) setStatus(status);
               } catch (error) {
                 console.error("Action error:", error);

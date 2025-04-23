@@ -6,6 +6,7 @@ pub trait IPlayer<T> {
     fn set_current_beast(ref self: T, beast_id: u16);
     fn update_player_daily_streak(ref self: T);
     fn update_player_total_points(ref self: T, points: u32);
+    fn update_player_minigame_highest_score(ref self: T, points: u32, minigame_id: u16);
     fn add_or_update_food_amount(ref self: T, food_id: u8, amount: u8);
 }
 
@@ -22,6 +23,7 @@ pub mod player {
     use tamagotchi::models::beast::{Beast, BeastTrait};
     use tamagotchi::models::player::{Player, PlayerAssert, PlayerTrait};
     use tamagotchi::models::food::{Food, FoodTrait};
+    use tamagotchi::models::highest_score::{HighestScore};
 
     // Store import
     use tamagotchi::store::{StoreTrait};
@@ -80,6 +82,18 @@ pub mod player {
             player.update_total_points(points);
 
             store.write_player(@player);
+        }
+
+        fn update_player_minigame_highest_score(ref self: ContractState, points: u32, minigame_id: u16) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+
+            let mut highest_score: HighestScore = store.read_highest_score(minigame_id);
+            
+            if points > highest_score.score {
+                highest_score.score = points;
+                store.write_new_highest_score(@highest_score);
+            }
         }
 
         fn add_or_update_food_amount(ref self: ContractState, food_id: u8, amount: u8) {

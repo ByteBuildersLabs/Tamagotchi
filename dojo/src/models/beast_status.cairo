@@ -79,7 +79,7 @@ pub impl BeastStatusImpl of BeastStatusTrait {
     fn calculate_timestamp_based_status_awake(ref self: BeastStatus, current_timestamp: u64){
         let total_seconds: u64 =  current_timestamp - self.last_timestamp;
         let total_points: u64 = total_seconds / constants::SECONDS_IN_3_MINUTES; // one point every 3 minutes
-        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_5_MINUTES; // one point every 5 minutes | 96 points in 8 hours
+        let total_energy_points: u64 = total_seconds / constants::SECONDS_IN_6_MINUTES; // one point every 6 minutes | 100 points in 10 hours
 
         if total_energy_points < constants::MAX_POINTS {
             let points_to_decrease: u8 = total_points.try_into().unwrap();

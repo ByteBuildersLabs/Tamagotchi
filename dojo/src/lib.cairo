@@ -14,6 +14,7 @@ pub mod systems {
 pub mod models {
     pub mod beast;
     pub mod beast_status;
+    pub mod highest_score;
     pub mod player;
     pub mod food;
 }
