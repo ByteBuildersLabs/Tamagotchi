@@ -41,7 +41,6 @@ function Tamagotchi() {
   const { player } = usePlayer();
   const navigate = useNavigate();
   const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
-  const [ age, setAge ] = useState<any>({ }); 
   const [isMobileDragging, setIsMobileDragging] = useState(false);
   const [ birthday, setBirthday ] = useState<any>({ }); 
   const [ age, setAge ] = useState<any>(); 
