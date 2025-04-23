@@ -10,6 +10,7 @@ use tamagotchi::models::beast::{Beast, BeastTrait};
 use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
 use tamagotchi::models::player::{Player};
 use tamagotchi::models::food::{Food};
+use tamagotchi::models::highest_score::{HighestScore};
 
 // types import
 use tamagotchi::types::food::{FoodType};
@@ -62,6 +63,11 @@ pub impl StoreImpl of StoreTrait {
         self.world.read_model(beast_id)
     }
 
+    fn read_highest_score(self: Store, minigame_id: u16) -> HighestScore {
+        let player_address = get_caller_address();
+        self.world.read_model((minigame_id, player_address))
+    }    
+
     // --------- Setters ---------
     fn write_player(mut self: Store, mut player: @Player) {
         self.world.write_model(player)
@@ -79,6 +85,10 @@ pub impl StoreImpl of StoreTrait {
         self.world.write_model(food)
     }
 
+    fn write_new_highest_score(mut self: Store, highest_score: @HighestScore){
+        self.world.write_model(highest_score)
+    }
+    
     // --------- New entities ---------
     fn new_player(mut self: Store) {
         let caller = get_caller_address();
