@@ -44,6 +44,10 @@ pub impl StoreImpl of StoreTrait {
         self.world.read_model(player_address)
     }
 
+    fn read_beast_from_address(self: Store, beast_id: u16, player_address: ContractAddress) -> Beast {
+        self.world.read_model((player_address, beast_id))
+    }
+
     fn read_beast(self: Store, beast_id: u16) -> Beast {
         let player_address = get_caller_address();
         self.world.read_model((player_address, beast_id))

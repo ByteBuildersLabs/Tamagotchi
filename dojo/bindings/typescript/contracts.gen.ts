@@ -298,6 +298,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_game_spawnBeastCustomStatus_calldata = (specie: BigNumberish, beastType: BigNumberish, beastStatus: models.BeastStatusCustom): DojoCall => {
+		return {
+			contractName: "game",
+			entrypoint: "spawn_beast_custom_status",
+			calldata: [specie, beastType, beastStatus],
+		};
+	};
+
+	const game_spawnBeastCustomStatus = async (snAccount: Account | AccountInterface, specie: BigNumberish, beastType: BigNumberish, beastStatus: models.BeastStatusCustom) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_game_spawnBeastCustomStatus_calldata(specie, beastType, beastStatus),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_player_spawnPlayer_calldata = (): DojoCall => {
 		return {
 			contractName: "player",
@@ -422,6 +443,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildSleepCalldata: build_game_sleep_calldata,
 			spawnBeast: game_spawnBeast,
 			buildSpawnBeastCalldata: build_game_spawnBeast_calldata,
+			spawnBeastCustomStatus: game_spawnBeastCustomStatus,
+			buildSpawnBeastCustomStatusCalldata: build_game_spawnBeastCustomStatus_calldata,
 			updateBeast: game_updateBeast,
 			buildUpdateBeastCalldata: build_game_updateBeast_calldata,
 		},

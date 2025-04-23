@@ -25,7 +25,7 @@ import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { fetchStatus, getBirthDate } from "../../utils/tamagotchi.tsx";
+import { fetchStatus, fetchAge, getBirthDate } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
@@ -41,7 +41,8 @@ function Tamagotchi() {
   const { player } = usePlayer();
   const navigate = useNavigate();
   const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
-  const [ age, setAge ] = useState<any>({ }); 
+  const [ birthday, setBirthday ] = useState<any>({ }); 
+  const [ age, setAge ] = useState<any>(); 
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -65,7 +66,7 @@ function Tamagotchi() {
     const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) === zplayer.address);
     if (foundBeast) {
       setCurrentBeast(foundBeast);
-      setAge(getBirthDate(zcurrentBeast.birth_date))
+      setBirthday(getBirthDate(zcurrentBeast.birth_date))
       if (zcurrentBeast.beast_id === zplayer.current_beast_id) return
       setCurrentBeastInPlayer(foundBeast);
     }
@@ -77,15 +78,20 @@ function Tamagotchi() {
 
   useEffect(() => {
     if (!zplayer || !account) return
-    let response: any = fetchStatus(account);
+    let statusResponse: any = fetchStatus(account);
+    let ageResponse: any = fetchAge(account);
     if (!status || status.length === 0) setIsLoading(true);
     if (status[0] != zplayer.current_beast_id) setIsLoading(true);
 
     setInterval(async () => {
       if (status[1] == 0) return
-      response = await fetchStatus(account);
-      if (response && Object.keys(response).length !== 0) {
-        setStatus(response);
+      statusResponse = await fetchStatus(account);
+      ageResponse = await fetchAge(account);
+      if (statusResponse && Object.keys(statusResponse).length !== 0) {
+        setStatus(statusResponse);
+      }
+      if (ageResponse) {
+        setAge(ageResponse);
       }
       setIsLoading(false);
     }, 3000);
@@ -263,13 +269,13 @@ function Tamagotchi() {
                   {zcurrentBeast && (
                     <div className="d-flex position-relative">
                       <div className="age-indicator" onClick={() => { showBirthday() }}>
-                        <span>{zcurrentBeast.age}</span>
+                        <span>{age}</span>
                       </div>
                       {
                         displayBirthday &&
                         <div className="age-info">
                           <img src={Cake} alt="cake" />
-                          <span>{age.hours}:{age.minutes}</span>
+                          <span>{birthday.hours}:{birthday.minutes}</span>
                         </div>
                       }
                       {
