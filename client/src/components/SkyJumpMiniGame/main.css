@@ -482,11 +482,22 @@
 .platform-food {
   filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
   animation: float 2s infinite ease-in-out;
+  z-index: 46; /* Make sure this is higher than platforms but lower than player */
+  transform: translateZ(0); /* Force hardware acceleration */
+  pointer-events: auto !important; /* Override global pointer-events */
 }
 
+.platform-food img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* Keep images non-interactive */
+}
+
+/* Make sure animations use hardware acceleration */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-5px) translateZ(0); }
 }
 
 /* Score milestone animation */

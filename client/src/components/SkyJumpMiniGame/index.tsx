@@ -236,6 +236,26 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setIsShareModalOpen(true);
   };
 
+  // Add this function to your component
+  const preloadFoodImages = () => {
+    const preloadedImages: HTMLImageElement[] = [];
+    
+    initialFoodItems.forEach(food => {
+      const img = new Image();
+      
+      // Set up load event to track when it's loaded
+      img.onload = () => {console.log(`Preloaded: ${food.name}`);};
+      
+      // Trigger the loading of the image
+      img.src = food.img;
+      
+      // Store the image object to prevent garbage collection
+      preloadedImages.push(img);
+    });
+    
+    return preloadedImages;
+  };
+
   // Function to handle "play again"
   const handlePlayAgain = async () => {
 
@@ -364,7 +384,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       
       // Animate food disappearing
       platform.foodElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-      platform.foodElement.style.transform = 'scale(1.5)';
+      platform.foodElement.style.transform = 'scale(1.5) translateZ(0)';
       platform.foodElement.style.opacity = '0';
   
       // Animate food counter
@@ -674,19 +694,34 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // if the platform has food, add it to the visual container
     if (platform.hasFood) {
       const food = getRandomFood();
-      const foodElement = document.createElement('div');
-      foodElement.className = 'platform-food';
-      foodElement.style.width = '30px';
-      foodElement.style.height = '30px';
-      foodElement.style.position = 'absolute';
-      foodElement.style.left = `${platform.width / 2 - 15}px`;
-      foodElement.style.top = '-30px';
-      foodElement.style.backgroundImage = `url(${food.img})`;
-      foodElement.style.backgroundSize = 'contain';
-      foodElement.style.backgroundRepeat = 'no-repeat';
 
-      platform.foodElement = foodElement;
-      platformElement.appendChild(foodElement);
+      const foodContainer = document.createElement('div');
+      foodContainer.className = 'platform-food';
+      foodContainer.style.width = '30px';
+      foodContainer.style.height = '30px';
+      foodContainer.style.position = 'absolute';
+      foodContainer.style.left = `${platform.width / 2 - 15}px`;
+      foodContainer.style.top = '-30px';
+
+      // Create an actual img element (this is the key change)
+      const foodImg = document.createElement('img');
+      foodImg.src = food.img;
+      foodImg.alt = food.name || 'Food';
+      foodImg.style.width = '100%';
+      foodImg.style.height = '100%';
+      foodImg.style.objectFit = 'contain';
+
+       // Force hardware acceleration
+      foodContainer.style.transform = 'translateZ(0)';
+      
+      // Add the img to the container
+      foodContainer.appendChild(foodImg);
+      
+      // Store the container as the foodElement
+      platform.foodElement = foodContainer;
+      
+      // Add to the platform
+      platform.element.appendChild(foodContainer);
     }
 
     // Add the platform to the visual container
@@ -996,6 +1031,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
     if (!gameContainer) return;
 
+    const preloadedImagesRef = preloadFoodImages();
+
     // Initialize the reference counter
     currentScoreRef.current = 0;
     maxHeightRef.current = 0;
@@ -1158,9 +1195,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     window.addEventListener('resize', adjustGameSize);
     window.addEventListener('orientationchange', adjustGameSize);
 
-    if (isMobile) {
-      document.body.classList.add('mobile-gameplay');
-    }
+    if (isMobile) document.body.classList.add('mobile-gameplay');
 
     // Initialize doodler position
     game.doodler.x = game.boardWidth / 2 - game.doodlerWidth / 2;
@@ -1219,6 +1254,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
     // Cleanup on unmount
     return () => {
+      preloadedImagesRef.length = 0;
       document.removeEventListener('keydown', moveDoodler);
       document.removeEventListener('keyup', stopDoodler);
       window.removeEventListener('resize', adjustGameSize);
