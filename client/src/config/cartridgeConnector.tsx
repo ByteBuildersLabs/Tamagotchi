@@ -92,6 +92,10 @@ const policies: SessionPolicies = {
           name: "add_or_update_food_amount",
           entrypoint: "add_or_update_food_amount"
         },
+        {
+          name: "update_player_minigame_highest_score",
+          entrypoint: "update_player_minigame_highest_score"
+        },
       ],
     },
   },
