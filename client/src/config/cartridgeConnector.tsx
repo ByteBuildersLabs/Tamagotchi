@@ -10,7 +10,7 @@ const theme = "bytebeasts-tamagotchi";
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x693e68bfee0f06686656e94ed524a080dec35d211a021e08e8481c14096026e']: {
+    ['0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790']: {
       methods: [
         {
           name: "awake",
@@ -66,7 +66,7 @@ const policies: SessionPolicies = {
         },
       ],
     },
-    ['0x46c402a1a4ef204a135e08b81ad3c741e355ef6a3eaae8fcc01a3ef22594eb7']: {
+    ['0x79ab5a01453c02c2f95bea46f8abec4e350a2e0cf0c7e8141b833f746cd9654']: {
       methods: [
         {
           name: "add_initial_food",
@@ -102,7 +102,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/toriiconfigbb/katana'
+  rpc: 'https://api.cartridge.gg/x/highscorebb/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;

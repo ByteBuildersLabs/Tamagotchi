@@ -382,6 +382,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_player_updatePlayerMinigameHighestScore_calldata = (points: BigNumberish, minigameId: BigNumberish): DojoCall => {
+		return {
+			contractName: "player",
+			entrypoint: "update_player_minigame_highest_score",
+			calldata: [points, minigameId],
+		};
+	};
+
+	const player_updatePlayerMinigameHighestScore = async (snAccount: Account | AccountInterface, points: BigNumberish, minigameId: BigNumberish) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_player_updatePlayerMinigameHighestScore_calldata(points, minigameId),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_player_updatePlayerTotalPoints_calldata = (points: BigNumberish): DojoCall => {
 		return {
 			contractName: "player",
@@ -415,6 +436,8 @@ export function setupWorld(provider: DojoProvider) {
 			buildSpawnPlayerCalldata: build_player_spawnPlayer_calldata,
 			updatePlayerDailyStreak: player_updatePlayerDailyStreak,
 			buildUpdatePlayerDailyStreakCalldata: build_player_updatePlayerDailyStreak_calldata,
+			updatePlayerMinigameHighestScore: player_updatePlayerMinigameHighestScore,
+			buildUpdatePlayerMinigameHighestScoreCalldata: build_player_updatePlayerMinigameHighestScore_calldata,
 			updatePlayerTotalPoints: player_updatePlayerTotalPoints,
 			buildUpdatePlayerTotalPointsCalldata: build_player_updatePlayerTotalPoints_calldata,
 		},

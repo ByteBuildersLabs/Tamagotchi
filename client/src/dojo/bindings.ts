@@ -55,6 +55,18 @@ export interface FoodValue {
 	amount: number;
 }
 
+// Type definition for `tamagotchi::models::highest_score::HighestScore` struct
+export interface HighestScore {
+	minigame_id: number;
+	player: string;
+	score: number;
+}
+
+// Type definition for `tamagotchi::models::highest_score::HighestScoreValue` struct
+export interface HighestScoreValue {
+	score: number;
+}
+
 // Type definition for `tamagotchi::models::player::Player` struct
 export interface Player {
 	address: string;
@@ -82,6 +94,8 @@ export interface SchemaType extends ISchemaType {
 		BeastStatusValue: BeastStatusValue,
 		Food: Food,
 		FoodValue: FoodValue,
+		HighestScore: HighestScore,
+		HighestScoreValue: HighestScoreValue,
 		Player: Player,
 		PlayerValue: PlayerValue,
 	},
@@ -131,6 +145,14 @@ export const schema: SchemaType = {
 		FoodValue: {
 			amount: 0,
 		},
+		HighestScore: {
+			minigame_id: 0,
+			player: "",
+			score: 0,
+		},
+		HighestScoreValue: {
+			score: 0,
+		},
 		Player: {
 			address: "",
 			current_beast_id: 0,
@@ -155,6 +177,8 @@ export enum ModelsMapping {
 	BeastStatusValue = 'tamagotchi-BeastStatusValue',
 	Food = 'tamagotchi-Food',
 	FoodValue = 'tamagotchi-FoodValue',
+	HighestScore = 'tamagotchi-HighestScore',
+	HighestScoreValue = 'tamagotchi-HighestScoreValue',
 	Player = 'tamagotchi-Player',
 	PlayerValue = 'tamagotchi-PlayerValue',
 }

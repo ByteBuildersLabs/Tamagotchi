@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x693e68bfee0f06686656e94ed524a080dec35d211a021e08e8481c14096026e",
-      "class_hash": "0x63638d2c77321af475554eec934344002227e65303b3f7ae4398371210f1a37",
+      "address": "0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790",
+      "class_hash": "0x556b2f41a2089ffc197491ca97c66f4f6f8a8c6ec6acb4bcf9c8fec2250df39",
       "abi": [
         {
           "type": "impl",
@@ -1763,8 +1763,8 @@
       ]
     },
     {
-      "address": "0x46c402a1a4ef204a135e08b81ad3c741e355ef6a3eaae8fcc01a3ef22594eb7",
-      "class_hash": "0x7522c2faa371ac553274d55342169b550148e8100cd3a7421bd9126d16b00a6",
+      "address": "0x79ab5a01453c02c2f95bea46f8abec4e350a2e0cf0c7e8141b833f746cd9654",
+      "class_hash": "0x41f9602a64cfe1265f1ec445df6f6bf1025ae3e82a17301c62f250994515d34",
       "abi": [
         {
           "type": "impl",
@@ -1865,6 +1865,22 @@
                 {
                   "name": "points",
                   "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "update_player_minigame_highest_score",
+              "inputs": [
+                {
+                  "name": "points",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "minigame_id",
+                  "type": "core::integer::u16"
                 }
               ],
               "outputs": [],
@@ -2005,6 +2021,7 @@
         "set_current_beast",
         "update_player_daily_streak",
         "update_player_total_points",
+        "update_player_minigame_highest_score",
         "add_or_update_food_amount",
         "upgrade"
       ]
@@ -2029,6 +2046,12 @@
       "class_hash": "0x5ddefda5a5873f3195172aa809b35954af1c6e36f393d359ca01b031522ff45",
       "tag": "tamagotchi-Food",
       "selector": "0x515fa0d107ea8c7ab17045bdd20faae7193cc1ea09750d35f74ebb0a94da3cc"
+    },
+    {
+      "members": [],
+      "class_hash": "0x3ed5b7e51e018429d1355998ba752417f92c70ce9e510f07f4f19915cdb1684",
+      "tag": "tamagotchi-HighestScore",
+      "selector": "0x5deb2bdb1a82577394936a27d58d8a644c1665719915e10fdb8e993021a6604"
     },
     {
       "members": [],
