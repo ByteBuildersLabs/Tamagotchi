@@ -5,6 +5,7 @@ import initialFoodItems from '../../data/food';
 import Restart from '../../assets/img/restart.svg';
 import Lock from '../../assets/img/lock.svg';
 import Unlock from '../../assets/img/unlock.svg';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import './main.css';
 
 import platformImg from '../../assets/SkyJump/platform.png';
@@ -101,6 +102,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
+
+  // ---for random food selection---
+  const recentSelections = useRef<number[]>([]); // Store recent selections to avoid repetition
+  const MAX_HISTORY_LENGTH = 6; // Default max length of recent history to consider
 
   // Game configuration
   const gameConfig = useRef({
@@ -199,14 +204,20 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   // Function to directly get the beast's energy
   const fetchBeastEnergy = async () => {
-    if (!client || !account) return null;
+    if (!account) return null;
     
     try {
-      const beastData = await client.beast.getBeastStatus(account as Account, beastId);
-      const energy = beastData ? beastData[4] : 0;
+      const statusResponse = await fetchStatus(account);
       
-      console.log("Beast energy level:", energy);
-      return energy;
+      // Check if we have a valid response
+      if (statusResponse && statusResponse.length > 0) {
+        // energy appears to be at index 4
+        const energy = statusResponse[4] || 0;
+        return energy;
+      } else {
+        console.log("No valid status response");
+        return 0;
+      }
     } catch (error) {
       console.error("Error fetching beast energy:", error);
       return null;
@@ -262,11 +273,9 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     // Get the energy refreshed before playing again
     const currentEnergy = await fetchBeastEnergy();
     
-    // Check if there is enough power
+    // Check if there is enough energy to play again. If not, show a toast alert
     if (currentEnergy === null || currentEnergy < 30) {
-      console.log("Not enough energy to play again");
       setShowEnergyToast(true);
-      
       setTimeout(() => {
         setShowEnergyToast(false);
       }, ENERGY_TOAST_DURATION);
@@ -279,7 +288,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
           "Play",
           async () => await client.game.play(account as Account),
         );
-        console.log("Play action completed");
       }
 
       setShowGameOverModal(false);
@@ -368,12 +376,54 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   };
 
   const getRandomFood = (forceNew = false) => {
-    if (!selectedFood || forceNew) {
-      const randomIndex = Math.floor(Math.random() * initialFoodItems.length);
+    // If there's already a selection and we're not forcing new, return it
+    if (selectedFood && !forceNew) {
+      return selectedFood;
+    }
+  
+    const totalFoods = initialFoodItems.length;
+    
+    // If we have very few food items, use simple randomization
+    if (totalFoods <= 3) {
+      const randomIndex = Math.floor(Math.random() * totalFoods);
       setSelectedFood(initialFoodItems[randomIndex]);
       return initialFoodItems[randomIndex];
     }
-    return selectedFood;
+  
+    // Anti-repetition logic for more natural randomness
+    let candidates = [...Array(totalFoods).keys()];
+    
+    // Filter out recently used indices if we have history
+    if (recentSelections.current.length > 0) {
+      // Calculate how many recent items to avoid
+      const avoidCount = Math.min(
+        recentSelections.current.length,
+        Math.floor(totalFoods * 0.4), // Avoid up to 40% of recent items
+        MAX_HISTORY_LENGTH
+      );
+      
+      // Get the most recent items to avoid
+      const recentToAvoid = recentSelections.current.slice(0, avoidCount);
+      
+      // Filter out recent selections from candidates
+      candidates = candidates.filter(index => !recentToAvoid.includes(index));
+    }
+    
+    // Ensure we have at least one candidate
+    if (candidates.length === 0) {
+      candidates = [Math.floor(Math.random() * totalFoods)];
+    }
+    
+    // Select a random item from the filtered candidates
+    const selectedIndex = candidates[Math.floor(Math.random() * candidates.length)];
+    
+    // Update the selection history
+    recentSelections.current = [selectedIndex, ...recentSelections.current]
+      .slice(0, MAX_HISTORY_LENGTH);
+    
+    // Set and return the selected food
+    setSelectedFood(initialFoodItems[selectedIndex]);
+    return initialFoodItems[selectedIndex];
   };
 
   const collectFood = (platform: any) => {
