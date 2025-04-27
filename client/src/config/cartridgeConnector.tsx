@@ -66,7 +66,7 @@ const policies: SessionPolicies = {
         },
       ],
     },
-    ['0x79ab5a01453c02c2f95bea46f8abec4e350a2e0cf0c7e8141b833f746cd9654']: {
+    ['0x6e47b0efbbd1240a986ccd078eb461f49e15e825cb8046fd1a12a38e47be06f']: {
       methods: [
         {
           name: "add_initial_food",
@@ -96,6 +96,10 @@ const policies: SessionPolicies = {
           name: "update_player_minigame_highest_score",
           entrypoint: "update_player_minigame_highest_score"
         },
+        {
+          name: "emit_player_push_token",
+          entrypoint: "emit_player_push_token"
+        },
       ],
     },
   },
@@ -106,7 +110,7 @@ const cartridgeConnector = new ControllerConnector({
   policies,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/highscorebb/katana'
+  rpc: 'https://api.cartridge.gg/x/notibb/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;

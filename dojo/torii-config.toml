@@ -2,7 +2,7 @@
 world_address = "0x06ab051c6e8ddf7fd3481b7e09f681116948dc7e9a960023c985484c85630302"
  
 # Default RPC URL configuration
-rpc = "https://api.cartridge.gg/x/highscorebb/katana"
+rpc = "https://api.cartridge.gg/x/notibb/katana"
 
 # Indexing Options
 [indexing]

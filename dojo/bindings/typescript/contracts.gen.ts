@@ -67,6 +67,27 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
+	const build_player_emitPlayerPushToken_calldata = (token: ByteArray): DojoCall => {
+		return {
+			contractName: "player",
+			entrypoint: "emit_player_push_token",
+			calldata: [token],
+		};
+	};
+
+	const player_emitPlayerPushToken = async (snAccount: Account | AccountInterface, token: ByteArray) => {
+		try {
+			return await provider.execute(
+				snAccount,
+				build_player_emitPlayerPushToken_calldata(token),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
 	const build_game_feed_calldata = (foodId: BigNumberish): DojoCall => {
 		return {
 			contractName: "game",
@@ -430,6 +451,8 @@ export function setupWorld(provider: DojoProvider) {
 		player: {
 			addOrUpdateFoodAmount: player_addOrUpdateFoodAmount,
 			buildAddOrUpdateFoodAmountCalldata: build_player_addOrUpdateFoodAmount_calldata,
+			emitPlayerPushToken: player_emitPlayerPushToken,
+			buildEmitPlayerPushTokenCalldata: build_player_emitPlayerPushToken_calldata,
 			setCurrentBeast: player_setCurrentBeast,
 			buildSetCurrentBeastCalldata: build_player_setCurrentBeast_calldata,
 			spawnPlayer: player_spawnPlayer,

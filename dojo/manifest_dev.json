@@ -1763,8 +1763,8 @@
       ]
     },
     {
-      "address": "0x79ab5a01453c02c2f95bea46f8abec4e350a2e0cf0c7e8141b833f746cd9654",
-      "class_hash": "0x41f9602a64cfe1265f1ec445df6f6bf1025ae3e82a17301c62f250994515d34",
+      "address": "0x6e47b0efbbd1240a986ccd078eb461f49e15e825cb8046fd1a12a38e47be06f",
+      "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
       "abi": [
         {
           "type": "impl",
@@ -1901,6 +1901,18 @@
               ],
               "outputs": [],
               "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "emit_player_push_token",
+              "inputs": [
+                {
+                  "name": "token",
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
             }
           ]
         },
@@ -2023,6 +2035,7 @@
         "update_player_total_points",
         "update_player_minigame_highest_score",
         "add_or_update_food_amount",
+        "emit_player_push_token",
         "upgrade"
       ]
     }
@@ -2060,6 +2073,13 @@
       "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "members": [],
+      "class_hash": "0x5ba467d714df9e1d85391e0660a13608d50ef9bca1704d6a452ecf2ca790b24",
+      "tag": "tamagotchi-PushToken",
+      "selector": "0x4e3bbf322d0cb081bf00ecf1d10a39c0d3aabd0cc5a930f68529b6beff15ee2"
+    }
+  ],
   "external_contracts": []
 }

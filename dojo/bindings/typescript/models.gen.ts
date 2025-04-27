@@ -88,6 +88,17 @@ export interface PlayerValue {
 	creation_day: BigNumberish;
 }
 
+// Type definition for `tamagotchi::events::push::PushToken` struct
+export interface PushToken {
+	player_address: string;
+	token: string;
+}
+
+// Type definition for `tamagotchi::events::push::PushTokenValue` struct
+export interface PushTokenValue {
+	token: string;
+}
+
 export interface SchemaType extends ISchemaType {
 	tamagotchi: {
 		Beast: Beast,
@@ -100,6 +111,8 @@ export interface SchemaType extends ISchemaType {
 		HighestScoreValue: HighestScoreValue,
 		Player: Player,
 		PlayerValue: PlayerValue,
+		PushToken: PushToken,
+		PushTokenValue: PushTokenValue,
 	},
 }
 export const schema: SchemaType = {
@@ -170,6 +183,13 @@ export const schema: SchemaType = {
 			last_active_day: 0,
 			creation_day: 0,
 		},
+		PushToken: {
+			player_address: "",
+		token: "",
+		},
+		PushTokenValue: {
+		token: "",
+		},
 	},
 };
 export enum ModelsMapping {
@@ -183,4 +203,6 @@ export enum ModelsMapping {
 	HighestScoreValue = 'tamagotchi-HighestScoreValue',
 	Player = 'tamagotchi-Player',
 	PlayerValue = 'tamagotchi-PlayerValue',
+	PushToken = 'tamagotchi-PushToken',
+	PushTokenValue = 'tamagotchi-PushTokenValue',
 }
