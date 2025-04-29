@@ -7,7 +7,6 @@ import { usePlayerData } from '../../hooks/usePlayersData.tsx';
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding, BigNumberish } from "starknet";
 import Spinner from '../ui/spinner.tsx';
-import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 interface Beast {
   userName: string;
@@ -46,8 +45,6 @@ const Leaderboard = () => {
   // Get beast and player data
   const { beastsData } = useBeasts();
   const { playerData } = usePlayerData();
-  const { scores } = useHighScores();
-  console.log('Scores:', scores);
   
   let beasts = beastsData as Beast[];
   let players = playerData as Player[];

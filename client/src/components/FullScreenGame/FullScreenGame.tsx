@@ -3,8 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Spinner from '../ui/spinner.tsx';
 import './main.css';
 
-import { GAMES_REGISTRY, GameData, getHighScore } from '../../data/gamesMiniGamesRegistry.tsx';
+import { GAMES_REGISTRY, GameData } from '../../data/gamesMiniGamesRegistry.tsx';
 import beastsDex from '../../data/beastDex.tsx';
+import { useAccount } from '@starknet-react/core';
+import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 interface GameState {
   beastId: number;
@@ -26,6 +28,9 @@ declare global {
 
 const FullscreenGame = () => {
   const navigate = useNavigate();
+  const { account } = useAccount();
+  const { myScore } = useHighScores(account);
+
   const location = useLocation();
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [_currentScore, setCurrentScore] = useState(0);
@@ -68,7 +73,7 @@ const FullscreenGame = () => {
       setCurrentGameData(GAMES_REGISTRY[gameId]);
       
       // Get high score
-      const savedHighScore = getHighScore(gameId, state.beastId);
+      const savedHighScore = myScore[0]?.score || ''
       setHighScore(savedHighScore);
     } else {
       navigate('/play');

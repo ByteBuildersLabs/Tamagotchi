@@ -1,6 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
-import { saveHighScore } from '../../data/gamesMiniGamesRegistry'
 import initialFoodItems from '../../data/food';
 import Restart from '../../assets/img/restart.svg';
 import Lock from '../../assets/img/lock.svg';
@@ -236,7 +235,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   
     // Check if it's a new high score
     if (score > currentHighScore) {
-      saveHighScore(gameId, beastId, score);
       setCurrentHighScore(score);
     }
   
