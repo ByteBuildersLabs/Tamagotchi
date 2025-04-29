@@ -287,7 +287,7 @@ p, span {
 }
 
 .loading-aura {
-  animation: loading-aura 1.5s ease-in-out infinite;
+  animation: loading-aura 3s ease-in-out infinite;
 }
 
 @keyframes loading-aura {
@@ -295,7 +295,7 @@ p, span {
     box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);
   }
   50% {
-    box-shadow: 0 0 20px 4px rgba(133, 0, 40, 0.6);
+    box-shadow: 0 0 20px 4px rgba(133, 0, 40, 0.2);
   }
   100% {
     box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);

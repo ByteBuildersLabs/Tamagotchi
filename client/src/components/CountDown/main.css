@@ -1,0 +1,24 @@
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ECECDA;
+  padding: 10px;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.countdown p {
+  margin: auto;
+  margin-right: 5px;
+}
+
+.countdown img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  fill: #ECECDA !important;
+}
