@@ -8,3 +8,6 @@ rpc = "https://api.cartridge.gg/x/notibb/katana"
 [indexing]
 transactions = true
 pending = true
+
+[sql] 
+historical = ["tamagotchi-TrophyProgression"] 

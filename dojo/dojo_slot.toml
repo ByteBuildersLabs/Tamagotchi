@@ -22,3 +22,5 @@ private_key = "0x33003003001800009900180300d206308b0070db00121318d17b5e6262150b"
 
 [writers]
 "tamagotchi" = ["tamagotchi-game", "tamagotchi-player"]
+"tamagotchi-TrophyCreation" = ["tamagotchi-Actions"]
+"tamagotchi-TrophyProgression" = ["tamagotchi-Actions"]
