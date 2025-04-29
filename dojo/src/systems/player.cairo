@@ -19,6 +19,13 @@ pub mod player {
     // Starknet imports
     use starknet::{get_block_timestamp, ContractAddress};
     
+    // Achievements imports
+    use arcade_trophy::store::{Store, StoreTrait};
+    use arcade_trophy::components::achievable::AchievableComponent; 
+    use arcade_trophy::types::task::{Task, TaskTrait}; 
+    component!(path: AchievableComponent, storage: achievable, event: AchievableEvent); 
+    impl AchievableInternalImpl = AchievableComponent::InternalImpl<ContractState>; 
+
     // Model imports
     #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
@@ -38,8 +45,45 @@ pub mod player {
     #[allow(unused_imports)]
     use dojo::event::EventStorage;
 
+    #[storage]
+    struct Storage {
+        #[substorage(v0)]
+        achievable: AchievableComponent::Storage, 
+    }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        #[flat]
+        AchievableEvent: AchievableComponent::Event, 
+    }
+
     // Constructor
     fn dojo_init( ref self: ContractState) {
+        // [Event] Emit all Achievement creation events
+        let mut world = self.world(@"tamagotchi");
+        let task_id = '1';
+        let task_target = 100;
+        let task = TaskTrait::new(task_id, task_target, "Reach 100 pts in the minigame");
+        let tasks: Span<Task> = array![task].span();
+ 
+        self.achievable 
+            .create( 
+                world, 
+                id: '1', 
+                hidden: false, 
+                index: 0, 
+                points: 10, 
+                start: 0, 
+                end: 0, 
+                group: 'Minigame', 
+                title: "Master of the minigame", 
+                description: "Has reached 100 pts in the minigame", 
+                tasks: tasks, 
+                data: "", 
+                icon: 'fa-trophy',
+            );
+        }
     }
 
     // Implementation of the interface methods
@@ -88,6 +132,18 @@ pub mod player {
             player.update_total_points(points);
 
             store.write_player(@player);
+
+            // Emit progress event when the player reaches 100 points in the minigame
+            if player.total_points >= 100 {
+                let task_id = '1'; // Should be the same as the one in dojo_init
+                let player_id = get_caller_address(); // Address of the player
+                let count = points; // Quantity of points to add
+                let time = get_block_timestamp(); // Current timestamp
+
+                store.progress(player_id.into(), task_id, count, time);
+            }
+
+
         }
 
         fn update_player_minigame_highest_score(ref self: ContractState, points: u32, minigame_id: u16) {
