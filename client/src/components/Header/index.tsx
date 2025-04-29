@@ -81,7 +81,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
           <img src={monster} alt="Logo" />
         </Link>
 
-        <CountDown targetDate={"2025-08-10T00:00:00"}  />
+        <CountDown targetDate={"2025-05-05T12:00:00"}  />
         
         <div className="side-menu-container">
           <button 

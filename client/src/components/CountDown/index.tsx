@@ -42,7 +42,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
   return (
     <div className='countdown loading-aura'>
       <img src={trophy} alt="trophy" />
-      <p>Tournament ends in</p>
+      <p>Tournament starts in</p>
       <p>{timeLeft.days}d</p>
       <p>{timeLeft.hours}h</p>
       <p>{timeLeft.minutes}m</p>
