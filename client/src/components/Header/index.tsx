@@ -80,9 +80,10 @@ function Header({ tamagotchiStats }: HeaderProps) {
         <Link to={route} className="logo">
           <img src={monster} alt="Logo" />
         </Link>
+
+        <CountDown targetDate={"2025-08-10T00:00:00"}  />
         
         <div className="side-menu-container">
-          <CountDown targetDate={"2025-08-10T00:00:00"}  />
           <button 
             onClick={toggleMenu}
             className="menu-toggle"
