@@ -12,6 +12,7 @@ import { usePlayer } from "../../hooks/usePlayers";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import "./main.css";
+import CountDown from "../CountDown/index.tsx";
 
 interface HeaderProps {
   tamagotchiStats?: {
@@ -81,6 +82,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
         </Link>
         
         <div className="side-menu-container">
+          <CountDown targetDate={"2025-08-10T00:00:00"}  />
           <button 
             onClick={toggleMenu}
             className="menu-toggle"

@@ -42,6 +42,7 @@
 }
 
 .side-menu-container {
+  display: flex;
   position: relative;
 }
 
