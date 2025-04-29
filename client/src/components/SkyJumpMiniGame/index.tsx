@@ -48,8 +48,6 @@ interface DOMDoodleGameProps {
   beastImageLeft?: string;
   onExitGame?: () => void;
   highScore: number;
-  gameId: string;
-  beastId: number;
   gameName: string;
   handleAction: (actionName: string, actionFn: () => Promise<any>) => Promise<any>;
   client: any;
@@ -64,8 +62,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   beastImageLeft,
   onExitGame,
   highScore,
-  gameId,
-  beastId,
   gameName,
   handleAction, 
   client,
