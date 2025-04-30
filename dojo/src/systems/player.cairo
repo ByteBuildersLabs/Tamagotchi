@@ -15,16 +15,14 @@ pub trait IPlayer<T> {
 pub mod player {
     // Local import
     use super::{IPlayer};
-    
+
     // Starknet imports
     use starknet::{get_block_timestamp, ContractAddress};
-    
+
     // Achievements imports
-    use arcade_trophy::store::{Store, StoreTrait};
-    use arcade_trophy::components::achievable::AchievableComponent; 
-    use arcade_trophy::types::task::{Task, TaskTrait}; 
-    component!(path: AchievableComponent, storage: achievable, event: AchievableEvent); 
-    impl AchievableInternalImpl = AchievableComponent::InternalImpl<ContractState>; 
+    use achievement::components::achievable::AchievableComponent;
+    use achievement::types::task::{Task, TaskTrait}; 
+    use achievement::store::{StoreTrait as AchievementStoreTrait};
 
     // Model imports
     #[allow(unused_imports)]
@@ -48,42 +46,41 @@ pub mod player {
     #[storage]
     struct Storage {
         #[substorage(v0)]
-        achievable: AchievableComponent::Storage, 
+        achievable: AchievableComponent::Storage,
     }
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AchievableEvent: AchievableComponent::Event, 
+        AchievableEvent: AchievableComponent::Event,
     }
 
     // Constructor
-    fn dojo_init( ref self: ContractState) {
+    fn dojo_init(ref self: ContractState) {
         // [Event] Emit all Achievement creation events
         let mut world = self.world(@"tamagotchi");
         let task_id = '1';
         let task_target = 100;
         let task = TaskTrait::new(task_id, task_target, "Reach 100 pts in the minigame");
         let tasks: Span<Task> = array![task].span();
- 
-        self.achievable 
-            .create( 
-                world, 
-                id: '1', 
-                hidden: false, 
-                index: 0, 
-                points: 10, 
-                start: 0, 
-                end: 0, 
-                group: 'Minigame', 
-                title: "Master of the minigame", 
-                description: "Has reached 100 pts in the minigame", 
-                tasks: tasks, 
-                data: "", 
-                icon: 'fa-trophy',
-            );
-        }
+
+        // Create the achievement
+        let store = AchievementStoreTrait::new(world);
+        store.create(
+            id: '1',
+            hidden: false,
+            index: 0,
+            points: 10,
+            start: 0,
+            end: 0,
+            group: 'Minigame',
+            icon: 'fa-trophy',
+            title: 'Master of the minigame',
+            description: "Has reached 100 pts in the minigame",
+            tasks: tasks,
+            data: "",
+        );
     }
 
     // Implementation of the interface methods
@@ -96,7 +93,7 @@ pub mod player {
 
             store.new_player();
         }
-        
+
         fn set_current_beast(ref self: ContractState, beast_id: u16) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
@@ -136,22 +133,21 @@ pub mod player {
             // Emit progress event when the player reaches 100 points in the minigame
             if player.total_points >= 100 {
                 let task_id = '1'; // Should be the same as the one in dojo_init
-                let player_id = get_caller_address(); // Address of the player
                 let count = points; // Quantity of points to add
-                let time = get_block_timestamp(); // Current timestamp
-
-                store.progress(player_id.into(), task_id, count, time);
+                let achievement_store = AchievementStoreTrait::new(world); // Achievement store
+                let time = starknet::get_block_timestamp(); // Current timestamp
+                achievement_store.progress(player.address.into(), task_id, count, time); 
             }
-
-
         }
 
-        fn update_player_minigame_highest_score(ref self: ContractState, points: u32, minigame_id: u16) {
+        fn update_player_minigame_highest_score(
+            ref self: ContractState, points: u32, minigame_id: u16,
+        ) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 
             let mut highest_score: HighestScore = store.read_highest_score(minigame_id);
-            
+
             if points > highest_score.score {
                 highest_score.score = points;
                 store.write_new_highest_score(@highest_score);
@@ -161,15 +157,14 @@ pub mod player {
         fn add_or_update_food_amount(ref self: ContractState, food_id: u8, amount: u8) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
-        
+
             // Read the current food model using the provided ID
             let mut food: Food = store.read_food(food_id);
 
             if food.amount == 0 {
                 // If the food does not exist, create a new one
                 store.new_food(food_id, amount);
-            }
-            else {
+            } else {
                 // If the food already exists, update the amount
                 food.update_food_total_amount(amount);
                 store.write_food(@food);
@@ -185,7 +180,7 @@ pub mod player {
 
             let player_address: ContractAddress = player.address;
 
-            world.emit_event(@PushToken { player_address, token});
+            world.emit_event(@PushToken { player_address, token });
         }
     }
 }
