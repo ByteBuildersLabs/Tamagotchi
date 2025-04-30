@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import Restart from '../../assets/img/restart.svg';
 import './syles.css';
 
@@ -158,20 +159,28 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     }
   };
 
-  // Function to fetch beast energy from Dojo
   const fetchBeastEnergy = async () => {
-    try {
-      // Implementación real requerirá actualización según tu estructura
-      if (client && account) {
-        // Esto es un placeholder - actualizar con la función real
-        const statusResponse = await client.game.getStatus(account);
-        return statusResponse ? statusResponse[4] || 0 : 0;
-      }
-      return 100; // Valor predeterminado para desarrollo
-    } catch (error) {
-      console.error("Error fetching beast energy:", error);
-      return null;
-    }
+    if (!account) return null;
+
+    const testValue = 50;
+    return testValue;
+
+    // try {
+    //   const statusResponse = await fetchStatus(account);
+
+    //   // Check if we have a valid response
+    //   if (statusResponse && statusResponse.length > 0) {
+    //     // energy appears to be at index 4
+    //     const energy = statusResponse[4] || 0;
+    //     return energy;
+    //   } else {
+    //     console.log("No valid status response");
+    //     return 0;
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching beast energy:", error);
+    //   return null;
+    // }
   };
 
   // Handle game over
