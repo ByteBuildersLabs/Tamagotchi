@@ -1,5 +1,3 @@
-
-# ByteBeasts-Tamagotchi
 - ![3](https://github.com/user-attachments/assets/e30e3a5e-7b10-4295-9c44-a7c0d5782d58)
 
 ## 🌟 Overview
