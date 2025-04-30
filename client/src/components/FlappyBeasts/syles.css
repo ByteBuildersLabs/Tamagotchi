@@ -193,64 +193,6 @@
     z-index: 1000;
   }
   
-  .flappy-bird-game .game-result-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    padding: 20px;
-    color: white;
-    text-align: center;
-    z-index: 400;
-    max-width: 300px;
-    width: 80%;
-  }
-  
-  .flappy-bird-game .game-result-title {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-  
-  .flappy-bird-game .game-result-score {
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  .flappy-bird-game .high-score-animation {
-    color: gold;
-    animation: pulse 1s infinite alternate;
-  }
-  
-  .flappy-bird-game .game-result-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-  
-  .flappy-bird-game .play-again-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .flappy-bird-game .play-again-button:hover {
-    background-color: #45a049;
-  }
-  
-  .flappy-bird-game .restart-icon {
-    width: 20px;
-    height: 20px;
-  }
-  
   .flappy-bird-game .energy-toast {
     position: absolute;
     bottom: 20px;
@@ -273,11 +215,6 @@
   }
   
   /* Animations */
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.1); }
-  }
-  
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -296,4 +233,4 @@
   @keyframes animCeiling {
     0% { background-position: 0px 0px; }
     100% { background-position: -63px 0px;}
-}
+  }

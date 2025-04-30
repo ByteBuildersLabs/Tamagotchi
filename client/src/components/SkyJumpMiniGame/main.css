@@ -17,8 +17,7 @@
 .score-card,
 .food-counter,
 .gyro-button,
-.return-button,
-.play-again-button {
+.return-button {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -42,10 +41,7 @@
 
 /* Ensure modal elements are interactive */
 .modal-overlay,
-.game-result-container,
 .modal-overlay button,
-.game-result-container button,
-.play-again-button,
 .ShareProgress {
   pointer-events: auto !important;
   -webkit-touch-callout: default !important;
@@ -58,9 +54,7 @@
 }
 
 /* Make sure buttons within modals look clickable */
-.modal-overlay button,
-.game-result-container button,
-.play-again-button {
+.modal-overlay button {
   cursor: pointer !important;
 }
 
@@ -287,72 +281,6 @@
     pointer-events: none;
   }
   
-  /* Styles for the end-game modal */
-  .game-result-container {
-    position: fixed;
-    height: 170px;
-    top: 40%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: rgba(0,0,0, 0.6); 
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    text-align: center;
-    max-width: 400px;
-    width: 80%;
-    z-index: 10000;
-    animation: fade-in-up 0.5s ease-out forwards;
-  }
-  
-  .game-result-title {
-    font-family: 'Kallisto', sans-serif;
-    font-size: 24px;
-    color: #ECECDA;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .game-result-score {
-    font-family: 'Montserrat', serif;
-    font-size: 20px;
-    font-weight: bold;
-    color: #ECECDA;
-    margin-bottom: 5px;
-  }
-  
-  .game-result-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .play-again-button {
-    background-color: #ECECDA;
-    color: #85002A;
-    border: 0;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    font-weight: bold;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10001;
-  }
-
-  .restart-icon {
-    width: 20px;
-    height: 20px;
-  }
-  
   /* Styles for full screen */
   .fullscreen-game-container {
     position: fixed;
@@ -540,19 +468,6 @@
   text-shadow: 0px 0px 5px rgba(133, 0, 42, 0.8);
   pointer-events: none;
   animation: value-increment 1.2s ease-out forwards;
-}
-
-/* High score animation */
-@keyframes high-score-celebration {
-  0% { transform: scale(1); filter: brightness(1); }
-  25% { transform: scale(1.2); filter: brightness(1.5); box-shadow: 0 0 20px gold; }
-  50% { transform: scale(1.1); filter: brightness(1.3); box-shadow: 0 0 15px gold; }
-  75% { transform: scale(1.15); filter: brightness(1.4); box-shadow: 0 0 18px gold; }
-  100% { transform: scale(1); filter: brightness(1); }
-}
-
-.high-score-animation {
-  animation: high-score-celebration 1.5s ease-in-out;
 }
 
 /* Energy toast notification styles */

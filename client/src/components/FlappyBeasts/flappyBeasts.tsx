@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import './syles.css';
 
@@ -851,41 +852,15 @@ return (
     )}
     
     {/* Game Over Modal */}
-    {currentScreen === 'gameover' && (
-      <div className="game-result-container">
-        <h2 className="game-result-title">Game over!</h2>
-        
-        {finalScore > currentHighScore ? (
-          <p className="game-result-score high-score-animation">
-            <span role="img" aria-label="trophy" style={{ marginRight: '5px' }}>🏆</span>
-            New High Score: {finalScore}!
-          </p>
-        ) : (
-          <p className="game-result-score">
-            Score: {finalScore}
-          </p>
-        )}
-        
-        {currentHighScore > 0 && finalScore <= currentHighScore && (
-          <p className="game-result-score">
-            High Score: {currentHighScore}
-          </p>
-        )}
-        
-        <div className="game-result-buttons">
-          <button
-            className="play-again-button"
-            onClick={handlePlayAgain}
-          >
-            <img
-              src={Restart}
-              alt="Restart icon"
-              className="restart-icon"
-            />
-          </button>
-        </div>
-      </div>
-    )}
+    <GameOverModal 
+        currentScreen={currentScreen}
+        finalScore={finalScore}
+        currentHighScore={currentHighScore}
+        //collectedFood={collectedFood}
+        //selectedFood={selectedFood}
+        handlePlayAgain={handlePlayAgain}
+        restartIcon={Restart}
+    />
     
     {/* Energy Toast */}
     {showEnergyToast && (
