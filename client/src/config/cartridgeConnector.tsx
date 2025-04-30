@@ -8,7 +8,7 @@ import { Connector } from "@starknet-react/core";
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
 const namespace = "tamagotchi";
-const slot = "achievbb";
+const slot = "newachievbb";
 
 const policies: SessionPolicies = {
   contracts: {
@@ -68,7 +68,7 @@ const policies: SessionPolicies = {
         },
       ],
     },
-    ['0x13801221ec4b571df593b354c3dbd9bb15b6e31293695666908105b27affb9e']: {
+    ['0x7084d6cb34087711c53bb53ac8cf6e28d7141ac387d8f23162413bcf8eccd13']: {
       methods: [
         {
           name: "add_initial_food",
@@ -114,7 +114,7 @@ const cartridgeConnector = new ControllerConnector({
   slot,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/achievbb/katana'
+  rpc: 'https://api.cartridge.gg/x/newachievbb/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
