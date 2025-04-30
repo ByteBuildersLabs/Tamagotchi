@@ -8,7 +8,7 @@ import { Connector } from "@starknet-react/core";
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
 const namespace = "tamagotchi";
-const slot = "notibb";
+const slot = "achievbb";
 
 const policies: SessionPolicies = {
   contracts: {
