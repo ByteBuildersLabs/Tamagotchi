@@ -23,7 +23,7 @@
   width: 40%;
   object-fit: contain;
   position: absolute;
-  bottom: 15px;
+  bottom: 30px;
   right: 30%;
   margin: auto;
 }
@@ -73,8 +73,7 @@
 .age-info {
   width: 100%;
   position: absolute;
-  top: -50px;
-  left: 0;
+  left: 35px;
   background-color: rgba(0, 0, 0, 0.5);
   color: #ECECDA;
   padding: 5px 10px;
@@ -127,6 +126,8 @@
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
   pointer-events: auto; 
+  position: absolute;
+  right: 40px
 }
 
 .beast-interaction .icon-circle .actions-icon {
