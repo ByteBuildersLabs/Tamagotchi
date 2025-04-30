@@ -23,6 +23,8 @@ pub mod player {
     use achievement::components::achievable::AchievableComponent;
     use achievement::types::task::{Task, TaskTrait}; 
     use achievement::store::{StoreTrait as AchievementStoreTrait};
+    component!(path: AchievableComponent, storage: achievable, event: AchievableEvent);
+    impl AchievableInternalImpl = AchievableComponent::InternalImpl<ContractState>;
 
     // Model imports
     #[allow(unused_imports)]
@@ -61,13 +63,13 @@ pub mod player {
         // [Event] Emit all Achievement creation events
         let mut world = self.world(@"tamagotchi");
         let task_id = '1';
-        let task_target = 100;
-        let task = TaskTrait::new(task_id, task_target, "Reach 100 pts in the minigame");
+        let task_target = 5;
+        let task = TaskTrait::new(task_id, task_target, "Reach 5 pts in the minigame");
         let tasks: Span<Task> = array![task].span();
 
         // Create the achievement
-        let store = AchievementStoreTrait::new(world);
-        store.create(
+        let achievement_store = AchievementStoreTrait::new(world);
+        achievement_store.create(
             id: '1',
             hidden: false,
             index: 0,
@@ -76,8 +78,8 @@ pub mod player {
             end: 0,
             group: 'Minigame',
             icon: 'fa-trophy',
-            title: 'Master of the minigame',
-            description: "Has reached 100 pts in the minigame",
+            title: 'Beginner of the minigame',
+            description: "Has reached 5 pts in the minigame",
             tasks: tasks,
             data: "",
         );
@@ -130,14 +132,13 @@ pub mod player {
 
             store.write_player(@player);
 
-            // Emit progress event when the player reaches 100 points in the minigame
-            if player.total_points >= 100 {
-                let task_id = '1'; // Should be the same as the one in dojo_init
-                let count = points; // Quantity of points to add
-                let achievement_store = AchievementStoreTrait::new(world); // Achievement store
-                let time = starknet::get_block_timestamp(); // Current timestamp
-                achievement_store.progress(player.address.into(), task_id, count, time); 
-            }
+            // Emit progress event when the player earns points in the minigame
+            let task_id = '1'; // Should be the same as the one in dojo_init
+            let count = points; // Quantity of points to add
+            let achievement_store = AchievementStoreTrait::new(world); // Achievement store
+            let time = starknet::get_block_timestamp(); // Current timestamp
+
+            achievement_store.progress(player.address.into(), task_id, count, time); 
         }
 
         fn update_player_minigame_highest_score(
