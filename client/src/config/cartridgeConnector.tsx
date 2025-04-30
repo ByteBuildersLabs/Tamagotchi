@@ -68,7 +68,7 @@ const policies: SessionPolicies = {
         },
       ],
     },
-    ['0x6e47b0efbbd1240a986ccd078eb461f49e15e825cb8046fd1a12a38e47be06f']: {
+    ['0x13801221ec4b571df593b354c3dbd9bb15b6e31293695666908105b27affb9e']: {
       methods: [
         {
           name: "add_initial_food",
@@ -114,7 +114,7 @@ const cartridgeConnector = new ControllerConnector({
   slot,
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/notibb/katana'
+  rpc: 'https://api.cartridge.gg/x/achievbb/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
