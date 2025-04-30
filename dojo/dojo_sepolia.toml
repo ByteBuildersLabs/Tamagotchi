@@ -19,3 +19,5 @@ rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 
 [writers]
 "tamagotchi" = ["tamagotchi-game", "tamagotchi-player"]
+"tamagotchi-TrophyCreation" = ["tamagotchi-player"]
+"tamagotchi-TrophyProgression" = ["tamagotchi-player"]
