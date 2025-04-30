@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Account, addAddressPadding } from "starknet";
 import useAppStore from "../../context/store.ts";
 import { useAccount } from "@starknet-react/core";
@@ -29,13 +29,14 @@ import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/t
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
+import achievementIcon from '../../assets/img/trophy2.svg';
 import Egg from "../../assets/img/egg.gif";
 import Cake from "../../assets/img/cake.svg";
 import { Message } from "../../hooks/useBeastChat.ts";
 import './main.css';
 
 function Tamagotchi() {
-  const { account } = useAccount();
+  const { account, connector } = useAccount();
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
@@ -83,6 +84,14 @@ function Tamagotchi() {
     }
   };
   
+  const handleAchievements = useCallback (() => {
+    if (!connector?.controller) {
+      console.error("Connector not initialized");
+      return;
+    }
+    connector.controller.openProfile("achievements");
+  }, [connector]);
+
   const handleDragLeave = (e: React.DragEvent) => {
     // Remove visual indication when drag leaves
     if (e.currentTarget.classList) {
@@ -360,7 +369,7 @@ function Tamagotchi() {
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   {zcurrentBeast && (
-                    <div className="d-flex position-relative">
+                    <div className="d-flex justify-content-between position-relative w-100">
                       <div className="age-indicator" onClick={() => { showBirthday() }}>
                         <span>{age}</span>
                       </div>
@@ -375,6 +384,11 @@ function Tamagotchi() {
                         status[1] == 1 && status[2] == 1 &&
                         <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
                           <img src={chatIcon} alt="chat with tamagotchi" />
+                        </div>
+                      }
+                      {
+                        <div className="chat-toggle" onClick={() => handleAchievements()}>
+                          <img src={achievementIcon} alt="achievements" />
                         </div>
                       }
                     </div>
