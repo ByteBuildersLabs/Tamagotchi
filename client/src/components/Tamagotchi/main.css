@@ -23,7 +23,7 @@
   width: 40%;
   object-fit: contain;
   position: absolute;
-  bottom: 15px;
+  bottom: 30px;
   right: 30%;
   margin: auto;
 }
@@ -127,6 +127,8 @@
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
   pointer-events: auto; 
+  position: absolute;
+  right: 40px
 }
 
 .beast-interaction .icon-circle .actions-icon {
