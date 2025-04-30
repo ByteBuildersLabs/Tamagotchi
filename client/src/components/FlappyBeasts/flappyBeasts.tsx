@@ -605,40 +605,77 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
 
   // Keyboard handler
   useEffect(() => {
-    const gameContainer = gameContainerRef.current;
-    if (!gameContainer) return;
-    
-    const handleClick = (e: { preventDefault: () => void; }) => {
-      e.preventDefault();
-      console.log("Click detectado");
-      jump();
-    };
-    
-    const handleTouch = (e: { preventDefault: () => void; }) => {
-      e.preventDefault();
-      console.log("Toque detectado");
-      jump();
-    };
-    
-    const handleKeyDown = (e: { code: string; preventDefault: () => void; }) => {
-      if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
-        e.preventDefault();
-        console.log("Tecla detectada:", e.code);
-        jump();
-      }
-    };
-    
-    // Agregar manejadores de eventos explícitamente al contenedor del juego
-    gameContainer.addEventListener('click', handleClick);
-    gameContainer.addEventListener('touchstart', handleTouch);
-    window.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      gameContainer.removeEventListener('click', handleClick);
-      gameContainer.removeEventListener('touchstart', handleTouch);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [gameActive, gameOver]);
+        const gameContainer = gameContainerRef.current;
+        if (!gameContainer) return;
+        
+        const handleClick = (e: MouseEvent) => {
+            // Verificar si el click es sobre el modal o sus elementos
+            const target = e.target as HTMLElement;
+            const isModalElement = 
+                target.closest('.modal-overlay') || 
+                target.closest('.modal-content') ||
+                target.closest('.close-button') ||
+                target.closest('.share-button');
+            
+            if (isModalElement) {
+                // No prevenir eventos en elementos del modal
+                return;
+            }
+            
+            e.preventDefault();
+            console.log("Click detectado");
+            jump();
+        };
+        
+        const handleTouch = (e: TouchEvent) => {
+            // Verificar si el toque es sobre el modal o sus elementos
+            const target = e.target as HTMLElement;
+            const isModalElement = 
+                target.closest('.modal-overlay') || 
+                target.closest('.modal-content') ||
+                target.closest('.close-button') ||
+                target.closest('.share-button') ||
+                // Incluir también elementos del modal Game Over
+                target.closest('.game-result-container') ||
+                target.closest('.play-again-button') ||
+                target.closest('.restart-icon');
+            
+            if (isModalElement) {
+                // No prevenir eventos en elementos del modal
+                return;
+            }
+            
+            // Solo prevenir y manejar el salto para elementos del juego
+            e.preventDefault();
+            console.log("Toque detectado en el juego");
+            jump();
+        };
+        
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+                // Verificar si algún modal está abierto
+                if (isShareModalOpen || showGameOverModal) {
+                    return; // No hacer nada si un modal está abierto
+                }
+                
+                e.preventDefault();
+                console.log("Tecla detectada:", e.code);
+                jump();
+            }
+        };
+        
+        // Solo agregar los event listeners si ningún modal está abierto
+        // O configurarlos para que verifiquen si el modal está abierto antes de actuar
+        gameContainer.addEventListener('click', handleClick);
+        gameContainer.addEventListener('touchstart', handleTouch);
+        window.addEventListener('keydown', handleKeyDown);
+        
+        return () => {
+            gameContainer.removeEventListener('click', handleClick);
+            gameContainer.removeEventListener('touchstart', handleTouch);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [gameActive, gameOver, isShareModalOpen, showGameOverModal, jump]); // Añadí jump a las dependencias
 
   // Adjust game size based on container
   useEffect(() => {

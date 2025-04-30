@@ -22,7 +22,7 @@ export const GAMES_REGISTRY: Record<string, GameData> = {
   },
   'flappyBirdGame': {
     id: 'flappyBirdGame',
-    name: 'Flappy Beast',
+    name: 'Flappy Beasts',
     description: 'Tap to fly through obstacles!',
     component: FlappyBirdMiniGame,
     icon: doodleGameIcon

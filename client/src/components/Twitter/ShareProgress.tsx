@@ -63,11 +63,20 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay"
+      onClick={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}>
+
       <div className="modal-content">
         <div className="modal-header">
           <h2>Share on X</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button 
+            className="close-button" 
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+          >×</button>
         </div>
         
         <div className="modal-body">
@@ -85,6 +94,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             target="_blank"
             rel="noreferrer"
             className="share-button"
+            onClick={(e) => e.stopPropagation()}
           >
             Share
           </a>
