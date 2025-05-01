@@ -25,7 +25,7 @@
   justify-content: space-between;
   transition: background-color 0.25s, background-image 0.25s;
   background-color: #000;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/img/daybackground.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/img/hours/day-min.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
