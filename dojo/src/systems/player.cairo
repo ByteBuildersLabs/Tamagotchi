@@ -63,8 +63,8 @@ pub mod player {
         // [Event] Emit all Achievement creation events
         let mut world = self.world(@"tamagotchi");
         let task_id = '1';
-        let task_target = 10;
-        let task = TaskTrait::new(task_id, task_target, "Reach 10 pts in the minigame");
+        let task_target = 1; // The amount of times needed to complete a task
+        let task = TaskTrait::new(task_id, task_target, "Reach 10 pts in the minigame 1 time");
         let tasks: Span<Task> = array![task].span();
 
         // Create the achievement
@@ -73,7 +73,7 @@ pub mod player {
             id: '1',
             hidden: false,
             index: 0,
-            points: 10,
+            points: 10, // This set the total points to reach in order to complete the achievement
             start: 0,
             end: 0,
             group: 'Minigame',
@@ -134,7 +134,7 @@ pub mod player {
 
             // Emit progress event when the player earns points in the minigame
             let task_id = '1'; // Should be the same as the one in dojo_init
-            let count = 10; // Quantity of points to add
+            let count = 1; // This is the times a task is completed in order to complete the achievement
             let achievement_store = AchievementStoreTrait::new(world); // Achievement store
             let time = starknet::get_block_timestamp(); // Current timestamp
 
