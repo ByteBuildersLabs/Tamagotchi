@@ -830,7 +830,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
         {/* Game instructions */}
         {!gameActive && !gameOver && (
             <div className="game-instructions">
-            <h2>FLAPPY BEAST</h2>
+            <h2>FLAPPY BEASTS</h2>
             <p>Tap or click to fly</p>
             <p>Avoid obstacles</p>
             <button

@@ -1,4 +1,4 @@
-/* FlappyBird Mini Game Styles */
+/* FlappyBeasts Mini Game Styles */
 
 .flappy-bird-game {
     position: relative;
@@ -17,7 +17,6 @@
     bottom: 0;
     background-image: url(../../assets/FlappyBeasts/sky.png);
     background-repeat: repeat-x;
-    /* ¿Quieres que escale a toda la pantalla? */
     background-size: cover;
     z-index: 1;
     animation: animSky 7s linear infinite;
@@ -26,8 +25,8 @@
   .flappy-bird-game .fly-area {
     position: absolute;
     bottom: 0;
-    top: 16px;      /* altura del ceiling */
-    bottom: 64px;   /* altura del land */
+    top: 16px;     
+    bottom: 64px;   
     width: 100%;
   }
   
@@ -36,7 +35,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 16px; /* altura real de ceiling.png */
+    height: 16px; 
     background-image: url(../../assets/FlappyBeasts/ceiling.png);
     background-repeat: repeat-x;
     background-size: auto 100%;
@@ -49,7 +48,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px; /* altura real de land.png */
+    height: 64px;
     background-image: url(../../assets/FlappyBeasts/land.png);
     background-repeat: repeat-x;
     background-size: auto 100%;
@@ -117,7 +116,7 @@
     font-family: 'Arial', sans-serif;
     font-size: 36px;
     font-weight: bold;
-    color: white;
+    color: #ECECDA;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
   
@@ -131,7 +130,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: #ECECDA;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -150,14 +149,15 @@
   }
   
   .flappy-bird-game .start-button {
-    background-color: #4CAF50;
+    background-color: #ECECDA;
     border: none;
-    color: white;
+    color: #85002A;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    font-weight: bold;
     margin: 15px 0 5px;
     cursor: pointer;
     border-radius: 5px;
@@ -165,7 +165,7 @@
   }
   
   .flappy-bird-game .start-button:hover {
-    background-color: #45a049;
+    background-color: #ECECDA;
   }
   
   .flappy-bird-game .return-button {
@@ -173,7 +173,7 @@
     top: 10px;
     right: 10px;
     background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    color: #ECECDA;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -209,7 +209,7 @@
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    color: #ECECDA;
     padding: 10px 15px;
     border-radius: 5px;
     font-size: 14px;
