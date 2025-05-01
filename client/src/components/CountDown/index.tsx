@@ -42,10 +42,10 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   useEffect(() => {
-    const statusElement = document.querySelector('.status');
-    if (statusElement) {
-      statusElement.classList.toggle('opacity-0', !showStatus);
-    }
+    ['status', 'leaderboard .title', 'leaderboard-tabs', 'banner-container'].forEach(className => {
+      const element = document.querySelector(`.${className}`);
+      element?.classList.toggle('opacity-0', !showStatus);
+    });
   }, [showStatus]);
 
   const handleClick = () => {
@@ -63,9 +63,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
       <div className='countdown loading-aura' onClick={handleClick}>
         <img src={trophy} alt="trophy" />
         <p>Tournament starts in</p>
-        <p>{timeLeft.days}d</p>
-        <p>{timeLeft.hours}h</p>
-        <p>{timeLeft.minutes}m</p>
+        <p>{timeLeft.days}d{timeLeft.hours}h</p>
       </div>
       {showInfo && (
         <div className='countdown-info'>

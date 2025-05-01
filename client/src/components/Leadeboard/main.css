@@ -18,8 +18,11 @@
 
 .leaderboard-container {
   text-align: center;
-  min-height: 60dvh;
+  min-height: 56dvh;
   position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 35px auto 0;
 }
 
 .leaderboard-table {

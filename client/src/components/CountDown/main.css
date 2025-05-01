@@ -6,7 +6,7 @@
   font-weight: bold;
   background-color: var(--overlay-dark-medium);
   color: var(--text-light);
-  padding: 10px;
+  padding: 10px 5px;
   border-radius: 20px;
   margin: auto;
 }
