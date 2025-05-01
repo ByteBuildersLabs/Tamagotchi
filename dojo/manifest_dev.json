@@ -1763,8 +1763,8 @@
       ]
     },
     {
-      "address": "0x6e47b0efbbd1240a986ccd078eb461f49e15e825cb8046fd1a12a38e47be06f",
-      "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
+      "address": "0x78bb6113e7dc5956cd3b630fdb22f227674f8c7997b1e798cec628c01672c62",
+      "class_hash": "0xfe2642e55ea7efca3b14c2e8a6c496e57126dc71649dbd8dc2c6e7adc7b5cc",
       "abi": [
         {
           "type": "impl",
@@ -2008,6 +2008,12 @@
         },
         {
           "type": "event",
+          "name": "achievement::components::achievable::AchievableComponent::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
           "name": "tamagotchi::systems::player::player::Event",
           "kind": "enum",
           "variants": [
@@ -2020,6 +2026,11 @@
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
               "kind": "nested"
+            },
+            {
+              "name": "AchievableEvent",
+              "type": "achievement::components::achievable::AchievableComponent::Event",
+              "kind": "flat"
             }
           ]
         }
@@ -2079,6 +2090,18 @@
       "class_hash": "0x5ba467d714df9e1d85391e0660a13608d50ef9bca1704d6a452ecf2ca790b24",
       "tag": "tamagotchi-PushToken",
       "selector": "0x4e3bbf322d0cb081bf00ecf1d10a39c0d3aabd0cc5a930f68529b6beff15ee2"
+    },
+    {
+      "members": [],
+      "class_hash": "0x19a5c06b3a8417ff3f9883be3acb0e33c835795bd81fb87a5a47e6ed7d2d3af",
+      "tag": "tamagotchi-TrophyCreation",
+      "selector": "0x1454ef6269d8e20ab6a43686489082aa1525c0a46623f4670b0866c30e19eac"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1922d2cd8b63eccf66321673234a52126cd9f0ab1bf6298c5abee6ee80c8990",
+      "tag": "tamagotchi-TrophyProgression",
+      "selector": "0x6dcb5b11df802989384a789be9f9ae0bd934b8bbee1e3e1f8e6d2544e3eea65"
     }
   ],
   "external_contracts": []

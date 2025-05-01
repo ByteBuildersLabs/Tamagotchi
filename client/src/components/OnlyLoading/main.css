@@ -2,8 +2,8 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  border: 8px solid #ECECDA;
-  border-top-color: #6E0022;
+  border: 8px solid var(--text-light);
+  border-top-color: var(--primary-red-dark);
   animation: loading 1s linear infinite;
   margin: auto;
 }

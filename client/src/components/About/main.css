@@ -13,7 +13,7 @@
   .team .title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ECECDA;
+    color: var(--text-light);
     margin-bottom: 1.5rem;
   }
   
@@ -36,7 +36,7 @@
   }
 
   .team .banner img {
-    border: 2px solid #ECECDA;
+    border: 2px solid var(--text-light);
     width: 100%;
     object-fit: cover;
     border-radius: 24px;
@@ -58,17 +58,17 @@
   }
   
   .lore-container .initial-info {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--overlay-dark-light);
     border-radius: 16px;
     margin: 24px 0;
-    color: #ECECDA;
+    color: var(--text-light);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     font-weight: 500;
-    height: 40dvh;
+    height: 44dvh;
   }
   
   .lore-container .initial-info h4 {
-    color: #ECECDA;
+    color: var(--text-light);
     font-size: 1.3rem;
     margin-bottom: 1rem;
     text-align: center;

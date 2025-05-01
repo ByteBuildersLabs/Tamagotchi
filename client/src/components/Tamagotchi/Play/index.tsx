@@ -1,7 +1,8 @@
 import React from 'react';
 import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
-import { getAvailableGames, getHighScore } from '../../../data/gamesMiniGamesRegistry.tsx';
+import { getAvailableGames } from '../../../data/gamesMiniGamesRegistry.tsx';
+import { useHighScores } from '../../../hooks/useHighScore.tsx';
 import './main.css';
 
 const availableGames = getAvailableGames();
@@ -22,7 +23,7 @@ const Play: React.FC<PlayProps> = ({
   showAnimation
 }) => {
   const navigate = useNavigate();
-
+  const { myScore } = useHighScores(account);
   const startGame = async (gameId: string) => {
     if (!beast) return;
 
@@ -68,9 +69,9 @@ const Play: React.FC<PlayProps> = ({
             <img src={game.icon} alt={game.name} className="game-icon" />
             <div className="game-card-content">
               <h3 className="game-name">{game.name}</h3>
-              <p className="game-description">{game.description}</p>
-              <div className="game-high-score">
-                Record: {getHighScore(game.id, beast?.beast_id || 0)}
+              <p className="game-description" >{game.description}</p>
+              <div className="game-high-score" >
+                Record: {myScore[0]?.score || '0'}
               </div>
             </div>
           </div>

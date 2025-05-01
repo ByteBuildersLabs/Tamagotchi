@@ -31,7 +31,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
     { label: "Play", img: Play, action: "play", pictureKey: "playPicture" },
   ];
 
-  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
   return (
     <div className={`actions mb-0 ${isLoading ? 'loading-aura' : ''}`}>

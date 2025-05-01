@@ -38,6 +38,8 @@ pub mod utils {
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),
                 TestResource::Event(e_PushToken::TEST_CLASS_HASH),
+                TestResource::Event(achievement::events::index::e_TrophyCreation::TEST_CLASS_HASH),
+                TestResource::Event(achievement::events::index::e_TrophyProgression::TEST_CLASS_HASH),
                 TestResource::Contract(player::TEST_CLASS_HASH),
                 TestResource::Contract(game::TEST_CLASS_HASH),
             ].span(),

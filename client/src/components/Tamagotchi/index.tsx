@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Account, addAddressPadding } from "starknet";
 import useAppStore from "../../context/store.ts";
 import { useAccount } from "@starknet-react/core";
@@ -25,25 +25,26 @@ import Spinner from "../ui/spinner.tsx";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { fetchStatus, fetchAge, getBirthDate } from "../../utils/tamagotchi.tsx";
+import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/tamagotchi.tsx";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
+import achievementIcon from '../../assets/img/trophy2.svg';
 import Egg from "../../assets/img/egg.gif";
 import Cake from "../../assets/img/cake.svg";
 import { Message } from "../../hooks/useBeastChat.ts";
 import './main.css';
 
 function Tamagotchi() {
-  const { account } = useAccount();
+  const { account, connector } = useAccount();
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
   const navigate = useNavigate();
-  const [ botMessage, setBotMessage ] = useState<Message>({ user: '', text: '' });
+  const [botMessage, setBotMessage] = useState<Message>({ user: '', text: '' });
   const [isMobileDragging, setIsMobileDragging] = useState(false);
-  const [ birthday, setBirthday ] = useState<any>({ }); 
-  const [ age, setAge ] = useState<any>(); 
+  const [birthday, setBirthday] = useState<any>({});
+  const [age, setAge] = useState<any>();
 
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
@@ -76,42 +77,56 @@ function Tamagotchi() {
   const handleDragOver = (e: React.DragEvent) => {
     // Prevent default to allow drop
     e.preventDefault();
-    
+
     // Add visual indication that this is a drop target
     if (e.currentTarget.classList) {
       e.currentTarget.classList.add('drag-over');
     }
   };
-  
+
+  const handleAchievements = useCallback(() => {
+    buttonSound();
+    if (!connector || !('controller' in connector)) {
+      console.error("Connector not initialized");
+      return;
+    }
+    if (connector.controller && typeof connector.controller === 'object' && 'openProfile' in connector.controller) {
+      (connector.controller as { openProfile: (profile: string) => void }).openProfile("achievements");
+    } else {
+      console.error("Connector controller is not properly initialized");
+    }
+  }, [connector]);
+
+
   const handleDragLeave = (e: React.DragEvent) => {
     // Remove visual indication when drag leaves
     if (e.currentTarget.classList) {
       e.currentTarget.classList.remove('drag-over');
     }
   };
-  
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    
+
     // Remove drag-over class
     if (e.currentTarget.classList) {
       e.currentTarget.classList.remove('drag-over');
     }
-    
+
     // Check if beast is alive and awake
     if (!zcurrentBeast || status[1] != 1 || status[2] != 1) return;
-    
+
     try {
       // Get the food data from dataTransfer
       const foodData = e.dataTransfer.getData('application/json');
       if (!foodData) return;
-      
+
       const { name } = JSON.parse(foodData);
-      
+
       // Find the food in the DOM and trigger its click event
       const foodItem = Array.from(document.querySelectorAll('.food-item'))
         .find(item => item.textContent?.includes(name));
-        
+
       if (foodItem) {
         (foodItem as HTMLElement).click();
       }
@@ -125,7 +140,7 @@ function Tamagotchi() {
     const handleMobileDragMessage = (e: MessageEvent) => {
       if (e.data && e.data.type === 'MOBILE_DRAG_STATE') {
         setIsMobileDragging(e.data.isDragging);
-        
+
         // Apply body class to prevent scrolling during drag
         if (e.data.isDragging) {
           document.body.classList.add('preventing-scroll');
@@ -134,9 +149,9 @@ function Tamagotchi() {
         }
       }
     };
-    
+
     window.addEventListener('message', handleMobileDragMessage);
-    
+
     return () => {
       window.removeEventListener('message', handleMobileDragMessage);
     };
@@ -149,10 +164,10 @@ function Tamagotchi() {
         e.preventDefault();
       }
     };
-    
+
     // Add with passive: false to ensure preventDefault works
     document.addEventListener('touchmove', preventScroll, { passive: false });
-    
+
     return () => {
       document.removeEventListener('touchmove', preventScroll);
     };
@@ -186,12 +201,12 @@ function Tamagotchi() {
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('actions');
-  const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
-  const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
-  const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
-  const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
-  const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [playFeed] = useSound(feedSound, { volume: 0.6, preload: true });
+  const [playClean] = useSound(cleanSound, { volume: 0.6, preload: true });
+  const [playSleep] = useSound(sleepSound, { volume: 0.6, preload: true });
+  const [playPlay] = useSound(playSound, { volume: 0.6, preload: true });
+  const [playRevive] = useSound(reviveSound, { volume: 0.6, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
   // Animations
   const [currentImage, setCurrentImage] = useState<any>('');
@@ -205,7 +220,11 @@ function Tamagotchi() {
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
-    if (bodyElement) bodyElement.classList.add('day');
+    const time = getDayPeriod();
+    time == 'day' ? bodyElement.classList.add('day') :
+      time == 'sunrise' ? bodyElement.classList.add('sunrise') :
+        time == 'sunset' ? bodyElement.classList.add('sunset') :
+          bodyElement.classList.add('night');
 
     if (!status) return
     if (bodyElement && status[1] == 0) bodyElement.classList.remove('day');
@@ -288,7 +307,7 @@ function Tamagotchi() {
     navigate('/spawn');
   }
 
-  const [ displayBirthday, setDisplayBirthday ] = useState(false);
+  const [displayBirthday, setDisplayBirthday] = useState(false);
 
   const showBirthday = () => {
     buttonSound();
@@ -338,25 +357,25 @@ function Tamagotchi() {
               <div className="scenario flex justify-center items-column">
                 {
                   !status || status.length === 0 ? <Spinner message="Loading your beast..." /> :
-                  <div className="relative w-40 h-40">
-                    <img
-                      src={currentImage}
-                      alt="Tamagotchi"
-                      className="w-full h-full" 
-                      onClick={handleCuddle}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      style={{ cursor: 'pointer' }}
-                    />
-                    {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}
-                  </div>
+                    <div className="relative w-40 h-40">
+                      <img
+                        src={currentImage}
+                        alt="Tamagotchi"
+                        className="w-full h-full"
+                        onClick={handleCuddle}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        style={{ cursor: 'pointer' }}
+                      />
+                      {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}
+                    </div>
                 }
               </div>
               <div className="beast-interaction">
                 <div className="beast-buttons">
                   {zcurrentBeast && (
-                    <div className="d-flex position-relative">
+                    <div className="d-flex justify-content-between position-relative w-100">
                       <div className="age-indicator" onClick={() => { showBirthday() }}>
                         <span>{age}</span>
                       </div>
@@ -369,21 +388,33 @@ function Tamagotchi() {
                       }
                       {
                         status[1] == 1 && status[2] == 1 &&
-                        <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
+                        <div className="chat-toggle" onClick={() => {
+                          buttonSound();
+                          setCurrentView('chat');
+                        }}>
                           <img src={chatIcon} alt="chat with tamagotchi" />
                         </div>
                       }
+                      <div className="d-flex">
+                        {(currentView === 'food' || currentView === 'play' || currentView === 'chat') && (
+                          <div className="back-button">
+                            <img
+                              src={Close}
+                              onClick={() => setCurrentView('actions')}
+                              alt="Back to actions"
+                            />
+                          </div>
+                        )}
+                        {
+                          <div className="chat-toggle" onClick={() => handleAchievements()}>
+                            <img src={achievementIcon} alt="achievements" />
+                          </div>
+                        }
+                      </div>
+
                     </div>
                   )}
-                  {(currentView === 'food' || currentView === 'play' || currentView === 'chat') && (
-                    <div className="back-button">
-                      <img
-                        src={Close}
-                        onClick={() => setCurrentView('actions')}
-                        alt="Back to actions"
-                      />
-                    </div>
-                  )}
+
                 </div>
               </div>
               {

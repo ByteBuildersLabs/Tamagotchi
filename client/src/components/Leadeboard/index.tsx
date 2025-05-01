@@ -46,8 +46,7 @@ const Leaderboard = () => {
   // Get beast and player data
   const { beastsData } = useBeasts();
   const { playerData } = usePlayerData();
-  const { scores } = useHighScores();
-  console.log('Scores:', scores);
+  const { scores } = useHighScores(account);
   
   let beasts = beastsData as Beast[];
   let players = playerData as Player[];
@@ -110,7 +109,6 @@ const Leaderboard = () => {
 
   // Determine which beasts/players to display (top 15 + user if outside the top 15)
   const top15Beasts = allBeasts.slice(0, 15);
-  const top15Players = allPlayers.slice(0, 15);
   
   const showUserSeparatelyAge = userPositionAge !== null && userPositionAge > 15;
   const showUserSeparatelyPoints = userPositionPoints !== null && userPositionPoints > 15;
@@ -243,84 +241,90 @@ const Leaderboard = () => {
     </div>
   );
 
-  const renderMinigamesLeaderboard = () => (
-    <div className="leaderboard-table">
-      {isLoadedPlayers && top15Players.length > 0 ? (
-        <>
-          {top15Players.map((player: Player, index: number) => {
-            // Encontrar la bestia de este jugador
-            const playerBeast = findPlayerBeast(player.address);
-            const beastType = playerBeast?.beast_type || null;
+  const renderMinigamesLeaderboard = () => {
+    // Ordenar los scores de mayor a menor
+    const sortedScores = scores.sort((a, b) => b.score - a.score);
+    const top15Scores = sortedScores.slice(0, 15);
+
+    return (
+      <div className="leaderboard-table">
+        {isLoadedPlayers && top15Scores.length > 0 ? (
+          <>
+            {top15Scores.map((scoreData, index) => {
+              // Encontrar la bestia de este jugador
+              const playerBeast = findPlayerBeast(scoreData.player);
+              const beastType = playerBeast?.beast_type || null;
+              
+              return (
+                <div 
+                  className={`row mb-3 ${isUserRow(scoreData.player) ? 'current-user' : ''}`} 
+                  key={`minigame-${index}`}
+                >
+                  <div className='col-3'>
+                    <span>{index + 1}</span>
+                  </div>
+                  <div className='col-3 username-col'>
+                    <span>{playerBeast?.userName || scoreData.player.slice(0, 8)}</span>
+                  </div>
+                  <div className='col-3'>
+                    {beastType && beastsDex[beastType - 1]?.idlePicture ? (
+                      <img 
+                        src={beastsDex[beastType - 1]?.idlePicture} 
+                        className='beast' 
+                        alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
+                      />
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </div>
+                  <div className='col-3'>
+                    <span>{scoreData.score}</span>
+                  </div>
+                </div>
+              );
+            })}
             
-            return (
-              <div 
-                className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
-                key={`minigame-${index}`}
-              >
-                <div className='col-3'>
-                  <span>{index + 1}</span>
+            {/* Mostrar al usuario si está fuera del top 15 */}
+            {showUserSeparatelyPoints && userPlayer && (
+              <>
+                <div className='row mb-3 separator'>
+                  <div className='col-12'><span>...</span></div>
                 </div>
-                <div className='col-3 username-col'>
-                  <span>{player.userName}</span>
+                <div className='row mb-3 current-user'>
+                  <div className='col-3'>
+                    <span>{userPositionPoints}</span>
+                  </div>
+                  <div className='col-3 username-col'>
+                    <span>{userPlayer.userName}</span>
+                  </div>
+                  <div className='col-3'>
+                    {userBeast?.beast_type && beastsDex[userBeast.beast_type - 1]?.idlePicture ? (
+                      <img 
+                        src={beastsDex[userBeast.beast_type - 1]?.idlePicture} 
+                        className='beast' 
+                        alt={userBeast.name || `Beast #${userBeast.beast_id}`} 
+                      />
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </div>
+                  <div className='col-3'>
+                    <span>{userPlayer.total_points}</span>
+                  </div>
                 </div>
-                <div className='col-3'>
-                  {beastType && beastsDex[beastType - 1]?.idlePicture ? (
-                    <img 
-                      src={beastsDex[beastType - 1]?.idlePicture} 
-                      className='beast' 
-                      alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
-                    />
-                  ) : (
-                    <span>-</span>
-                  )}
-                </div>
-                <div className='col-3'>
-                  <span>{player.total_points}</span>
-                </div>
-              </div>
-            );
-          })}
-          
-          {/* Mostrar al usuario si está fuera del top 15 */}
-          {showUserSeparatelyPoints && userPlayer && (
-            <>
-              <div className='row mb-3 separator'>
-                <div className='col-12'><span>...</span></div>
-              </div>
-              <div className='row mb-3 current-user'>
-                <div className='col-3'>
-                  <span>{userPositionPoints}</span>
-                </div>
-                <div className='col-3 username-col'>
-                  <span>{userPlayer.userName}</span>
-                </div>
-                <div className='col-3'>
-                  {userBeast?.beast_type && beastsDex[userBeast.beast_type - 1]?.idlePicture ? (
-                    <img 
-                      src={beastsDex[userBeast.beast_type - 1]?.idlePicture} 
-                      className='beast' 
-                      alt={userBeast.name || `Beast #${userBeast.beast_id}`} 
-                    />
-                  ) : (
-                    <span>-</span>
-                  )}
-                </div>
-                <div className='col-3'>
-                  <span>{userPlayer.total_points}</span>
-                </div>
-              </div>
-            </>
-          )}
-        </>
-      ) : (
-        <div className='row mb-3'>
-          <div className='col-12 text-center'>
-            <span>No scores available</span>
+              </>
+            )}
+          </>
+        ) : (
+          <div className='row mb-3'>
+            <div className='col-12 text-center'>
+              <span>No scores available</span>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   const renderContent = () => {
     if (activeLeaderboard === 'age') {

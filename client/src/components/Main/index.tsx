@@ -21,7 +21,7 @@ function Main() {
 
   useEffect(() => {
     if (player?.address) {
-      requestNotificationPermission(account,client,player.address);
+      requestNotificationPermission(account,client);
     } else {
       console.log("Player address not available yet.");
     }

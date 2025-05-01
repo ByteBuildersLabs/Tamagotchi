@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   height: 120px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--overlay-dark-light);
   padding: 15px 10px;
   border-radius: 20px;
 }
@@ -20,8 +20,8 @@
   text-transform: uppercase;
   position: relative;
   transition: all 0.5s;
-  background-color: #ececda;
-  color: #85002A !important;
+  background-color: var(--text-light);
+  color: var(--primary-red) !important;
   border: 0;
   transition: all 0.5s;
   cursor: pointer;
@@ -32,9 +32,8 @@
 }
 
 .actions button:hover {
-  background-color: #ececdadf;
+  background-color: rgba(236, 236, 218, 0.9);
 }
-
 
 .actions button:disabled {
   opacity: 0.4;

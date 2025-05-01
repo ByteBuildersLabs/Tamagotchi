@@ -45,4 +45,12 @@ const fetchAge = async (account:any) => {
     }
 };
 
-export { fetchStatus, fetchAge, getBirthDate };
+const getDayPeriod = () => {
+  const currentHours = new Date().getHours();
+  if (currentHours >= 4 && currentHours < 7) return "sunrise";
+  if (currentHours >= 7 && currentHours < 16) return "day";
+  if (currentHours >= 16 && currentHours < 19) return "sunset";
+  return "night";
+};
+
+export { fetchStatus, fetchAge, getBirthDate, getDayPeriod };

@@ -9,7 +9,7 @@
   padding: 0 15px 0;
   text-align: center;
   margin: 0;
-  color: #ECECDA;
+  color: var(--text-light);
 }
 
 .whispers .message span {
@@ -21,8 +21,8 @@
   font-size: 14px;
   font-weight: bold;
   background: unset;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--overlay-dark-light);
   border-radius: 15px;
-  color: #ECECDA;
+  color: var(--text-light);
   margin: 0;
 }

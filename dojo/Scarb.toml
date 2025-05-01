@@ -12,9 +12,14 @@ sepolia = "sozo --profile sepolia clean && sozo --profile sepolia build && sozo 
 
 [dependencies]
 dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }
+achievement = { git = "https://github.com/cartridge-gg/arcade", tag = "v1.2.1" }
 
 [[target.starknet-contract]]
-build-external-contracts = ["dojo::world::world_contract::world"]
+build-external-contracts = [
+    "dojo::world::world_contract::world",
+    "achievement::events::index::e_TrophyCreation", 
+    "achievement::events::index::e_TrophyProgression", 
+]
 
 [dev-dependencies]
 cairo_test = "=2.9.2"
