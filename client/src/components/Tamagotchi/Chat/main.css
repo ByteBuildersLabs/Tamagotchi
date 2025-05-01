@@ -21,6 +21,8 @@
 }
 
 .whispers .message p {
+  position: absolute;
+  bottom: 38px;
   padding: 10px;
   font-size: 14px;
   font-weight: bold;
@@ -88,7 +90,7 @@
   margin: 0 15px;
   text-align: center;
   position: relative;
-  top: -15px;
+  top: -60px;
 }
 
 .whispers-chat .chat-input {

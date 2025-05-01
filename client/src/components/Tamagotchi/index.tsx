@@ -85,6 +85,7 @@ function Tamagotchi() {
   };
 
   const handleAchievements = useCallback(() => {
+    buttonSound();
     if (!connector || !('controller' in connector)) {
       console.error("Connector not initialized");
       return;
@@ -200,12 +201,12 @@ function Tamagotchi() {
   const loadingTime = 6000;
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('actions');
-  const [playFeed] = useSound(feedSound, { volume: 0.7, preload: true });
-  const [playClean] = useSound(cleanSound, { volume: 0.7, preload: true });
-  const [playSleep] = useSound(sleepSound, { volume: 0.7, preload: true });
-  const [playPlay] = useSound(playSound, { volume: 0.7, preload: true });
-  const [playRevive] = useSound(reviveSound, { volume: 0.7, preload: true });
-  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [playFeed] = useSound(feedSound, { volume: 0.6, preload: true });
+  const [playClean] = useSound(cleanSound, { volume: 0.6, preload: true });
+  const [playSleep] = useSound(sleepSound, { volume: 0.6, preload: true });
+  const [playPlay] = useSound(playSound, { volume: 0.6, preload: true });
+  const [playRevive] = useSound(reviveSound, { volume: 0.6, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
   // Animations
   const [currentImage, setCurrentImage] = useState<any>('');
@@ -387,7 +388,10 @@ function Tamagotchi() {
                       }
                       {
                         status[1] == 1 && status[2] == 1 &&
-                        <div className="chat-toggle" onClick={() => setCurrentView('chat')}>
+                        <div className="chat-toggle" onClick={() => {
+                          buttonSound();
+                          setCurrentView('chat');
+                        }}>
                           <img src={chatIcon} alt="chat with tamagotchi" />
                         </div>
                       }
