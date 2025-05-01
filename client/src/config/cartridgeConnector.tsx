@@ -7,8 +7,6 @@ import { Connector } from "@starknet-react/core";
 
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
-const namespace = "tamagotchi";
-const slot = "achievments";
 
 const policies: SessionPolicies = {
   contracts: {
@@ -110,8 +108,8 @@ const policies: SessionPolicies = {
 // Configuración básica del conector
 const cartridgeConnector = new ControllerConnector({
   policies,
-  namespace,
-  slot,
+  namespace: "tamagotchi",
+  slot: "achievmentsbal", 
   theme,
   colorMode,
   rpc: 'https://api.cartridge.gg/x/achievments/katana'
