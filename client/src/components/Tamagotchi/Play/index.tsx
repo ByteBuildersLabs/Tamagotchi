@@ -1,3 +1,4 @@
+import React from 'react';
 import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
 import { getAvailableGames } from '../../../data/gamesMiniGamesRegistry.tsx';
@@ -5,6 +6,7 @@ import { useHighScores } from '../../../hooks/useHighScore.tsx';
 import './main.css';
 
 const availableGames = getAvailableGames();
+
 interface PlayProps {
   handleAction: any;
   beast: any;
@@ -13,19 +15,18 @@ interface PlayProps {
   showAnimation?: (gifPath: string) => void;
 }
 
-const Play: React.FC<PlayProps> = ({ 
-  handleAction, 
-  beast, 
-  account, 
+const Play: React.FC<PlayProps> = ({
+  handleAction,
+  beast,
+  account,
   client,
-  showAnimation 
+  showAnimation
 }) => {
   const navigate = useNavigate();
   const { myScore } = useHighScores(account);
-  
   const startGame = async (gameId: string) => {
     if (!beast) return;
-    
+
     if (showAnimation) {
       const playAnimation = beastsDex[beast.specie - 1].playPicture;
       showAnimation(playAnimation);
@@ -33,22 +34,22 @@ const Play: React.FC<PlayProps> = ({
 
     try {
       handleAction(
-        "Play", 
-        async () => await client.game.play(account), 
+        "Play",
+        async () => await client.game.play(account),
         beastsDex[beast.specie - 1].playPicture
-      )
+      );
 
       window.__gameTemp = {
         handleAction,
         client,
         account
       };
-      
+
       navigate('/fullscreen-game', {
         state: {
           beastId: beast.beast_id,
           specie: beast.specie,
-          gameId: gameId
+          gameId
         }
       });
     } catch (error) {
@@ -78,6 +79,7 @@ const Play: React.FC<PlayProps> = ({
       </div>
     </div>
   );
+  
 };
 
 export default Play;
