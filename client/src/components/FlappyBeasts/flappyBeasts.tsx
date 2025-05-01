@@ -28,11 +28,26 @@ const gameAssets = {
 const PIPE_GAP = 160; // Espacio entre las tuberías
 const PIPE_INTERVAL = 1700;
 const GRAVITY = 9.8;
-const JUMP_FORCE = -5.5;
-const BIRD_WIDTH = 46;
-const BIRD_HEIGHT = 46;
+const JUMP_FORCE = -6.5;
+const BIRD_WIDTH = 52;
+const BIRD_HEIGHT = 52;
 const PIPE_WIDTH = 52;
 const ENERGY_TOAST_DURATION = 3000;
+
+// Tamaños visuales originales
+const BIRD_VISUAL_WIDTH = 46;
+const BIRD_VISUAL_HEIGHT = 46;
+const PIPE_VISUAL_WIDTH = 52;
+const COLLIDER_MARGIN = 10;
+
+// Nuevos tamaños para los colliders
+const BIRD_COLLIDER_WIDTH = 30;  // Reducir el ancho del collider
+const BIRD_COLLIDER_HEIGHT = 30; // Reducir la altura del collider
+const PIPE_COLLIDER_WIDTH = PIPE_WIDTH - (COLLIDER_MARGIN * 2);  // Reducir el ancho del collider de las tuberías
+
+// Offset para centrar el collider en el sprite
+const BIRD_COLLIDER_OFFSET_X = (BIRD_WIDTH - BIRD_COLLIDER_WIDTH) / 2;
+const BIRD_COLLIDER_OFFSET_Y = (BIRD_HEIGHT - BIRD_COLLIDER_HEIGHT) / 2;
 
 // Interfaces
 export interface FlappyBirdRefHandle {
@@ -79,6 +94,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
   const [isMobile, setIsMobile] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
+  const [showColliders, setShowColliders] = useState(false);
   
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
@@ -323,6 +339,60 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     console.log(`Tubería creada. Total tuberías: ${game.pipes.length}`);
   };
 
+  const updateColliderVisualizers = () => {
+    const game = gameConfig.current;
+    
+    // Eliminar visualizadores anteriores
+    const oldVisualizers = document.querySelectorAll('.debug-collider');
+    oldVisualizers.forEach(v => v.remove());
+    
+    // Crear visualizador para el beast/personaje con el nuevo tamaño
+    const beastCollider = document.createElement('div');
+    beastCollider.className = 'debug-collider beast-collider';
+    beastCollider.style.position = 'absolute';
+    // Ajustar posición para centrar el collider
+    beastCollider.style.left = `${game.birdX + BIRD_COLLIDER_OFFSET_X}px`;
+    beastCollider.style.top = `${game.birdY + BIRD_COLLIDER_OFFSET_Y}px`;
+    beastCollider.style.width = `${BIRD_COLLIDER_WIDTH}px`;
+    beastCollider.style.height = `${BIRD_COLLIDER_HEIGHT}px`;
+    beastCollider.style.border = '2px solid red';
+    beastCollider.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
+    beastCollider.style.zIndex = '999';
+    gameContainerRef.current?.appendChild(beastCollider);
+    
+    // Crear visualizadores para las tuberías con el nuevo ancho
+    game.pipes.forEach(pipe => {
+      // Calcular offset para centrar el collider de la tubería
+      const pipeColliderOffsetX = (PIPE_WIDTH - PIPE_COLLIDER_WIDTH) / 2;
+      
+      // Collider para tubería superior
+      const topPipeCollider = document.createElement('div');
+      topPipeCollider.className = 'debug-collider pipe-collider';
+      topPipeCollider.style.position = 'absolute';
+      topPipeCollider.style.left = `${pipe.x + pipeColliderOffsetX}px`;
+      topPipeCollider.style.top = '0';
+      topPipeCollider.style.width = `${PIPE_COLLIDER_WIDTH}px`;
+      topPipeCollider.style.height = `${pipe.topHeight - COLLIDER_MARGIN}px`; 
+      topPipeCollider.style.border = '2px solid green';
+      topPipeCollider.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
+      topPipeCollider.style.zIndex = '999';
+      gameContainerRef.current?.appendChild(topPipeCollider);
+      
+      // Collider para tubería inferior (con altura reducida y posición ajustada)
+        const bottomPipeCollider = document.createElement('div');
+        bottomPipeCollider.className = 'debug-collider pipe-collider';
+        bottomPipeCollider.style.position = 'absolute';
+        bottomPipeCollider.style.left = `${pipe.x + pipeColliderOffsetX}px`;
+        bottomPipeCollider.style.top = `${pipe.bottomY + COLLIDER_MARGIN}px`; // Ajustar posición
+        bottomPipeCollider.style.width = `${PIPE_COLLIDER_WIDTH}px`;
+        bottomPipeCollider.style.height = `${game.gameHeight - pipe.bottomY - COLLIDER_MARGIN}px`; // Reducir altura
+        bottomPipeCollider.style.border = '2px solid blue';
+        bottomPipeCollider.style.backgroundColor = 'rgba(0, 0, 255, 0.2)';
+        bottomPipeCollider.style.zIndex = '999';
+        gameContainerRef.current?.appendChild(bottomPipeCollider);
+    });
+  };
+
   // Remove pipes that are off screen
   const removePipes = () => {
     const game = gameConfig.current;
@@ -364,15 +434,23 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     if (beastRef.current) {
       beastRef.current.style.transform = `translateY(${game.birdY}px) rotate(${Math.min(Math.max(game.velocity * 3, -30), 90)}deg)`;
     }
-    
+
+    // Actualizar el collider del beast si está visible
+    if (showColliders) {
+        const beastCollider = document.querySelector('.beast-collider');
+        if (beastCollider) {
+          (beastCollider as HTMLElement).style.top = `${game.birdY + BIRD_COLLIDER_OFFSET_Y}px`;
+        }
+    }
+
     // Comprobar colisiones con los límites
     if (game.birdY < 0) {
-      game.birdY = 0;
-      game.velocity = 0;
-    } else if (game.birdY > game.gameHeight - BIRD_HEIGHT) {
-      console.log("Colisión con el suelo");
-      endGame();
-    }
+        game.birdY = 0;
+        game.velocity = 0;
+      } else if (game.birdY > game.gameHeight - BIRD_HEIGHT) {
+        console.log("Colisión con el suelo");
+        endGame();
+      }
   };
 
   // Update pipes position
@@ -407,15 +485,28 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       }
       
       // Check collision with pipe
-      if (
-        // Bird is within pipe's horizontal bounds
-        game.birdX + BIRD_WIDTH > pipe.x && 
-        game.birdX < pipe.x + PIPE_WIDTH &&
-        // Bird is within pipe's vertical bounds (colliding with top or bottom pipe)
-        (game.birdY < pipe.topHeight || game.birdY + BIRD_HEIGHT > pipe.bottomY)
-      ) {
-        endGame();
-      }
+      // Verificar colisión con tuberías usando los colliders ajustados
+        const birdColliderLeft = game.birdX + BIRD_COLLIDER_OFFSET_X;
+        const birdColliderTop = game.birdY + BIRD_COLLIDER_OFFSET_Y;
+        const birdColliderRight = birdColliderLeft + BIRD_COLLIDER_WIDTH;
+        const birdColliderBottom = birdColliderTop + BIRD_COLLIDER_HEIGHT;
+        
+        const pipeColliderLeft = pipe.x + (PIPE_WIDTH - PIPE_COLLIDER_WIDTH) / 2;
+        const pipeColliderRight = pipeColliderLeft + PIPE_COLLIDER_WIDTH;
+
+        const topPipeColliderBottom = pipe.topHeight - COLLIDER_MARGIN;
+        const bottomPipeColliderTop = pipe.bottomY + COLLIDER_MARGIN;
+        
+        if (
+            // Bird collider está dentro de los límites horizontales del pipe collider
+            birdColliderRight > pipeColliderLeft && 
+            birdColliderLeft < pipeColliderRight &&
+            // Bird collider está dentro de los límites verticales de los pipe colliders ajustados
+            (birdColliderTop < topPipeColliderBottom || birdColliderBottom > bottomPipeColliderTop)
+          ) {
+            console.log("Colisión con tubería detectada");
+            endGame();
+          }
     });
   };
 
@@ -461,6 +552,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     // Actualizar tuberías
     updatePipes(dt);
     removePipes();
+
+    if (showColliders) updateColliderVisualizers();
     
     // Continuar ciclo
     animationFrameId.current = requestAnimationFrame(update);
@@ -523,6 +616,9 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
   // Reset the game
   const resetGame = () => {
     const game = gameConfig.current;
+
+    const oldVisualizers = document.querySelectorAll('.debug-collider');
+    oldVisualizers.forEach(v => v.remove());
     
     // Stop the current game loop
     if (animationFrameId.current) {
@@ -826,6 +922,28 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             X
             </button>
         )}
+
+        <button 
+            className="debug-button"
+            onClick={(e) => {
+            e.stopPropagation(); // Prevenir que el click se propague al contenedor
+            setShowColliders(!showColliders);
+            }}
+            style={{
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            zIndex: 1000,
+            background: '#333',
+            color: 'white',
+            border: 'none',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            cursor: 'pointer'
+            }}
+        >
+            {showColliders ? 'Hide Colliders' : 'Show Colliders'}
+        </button>
     
         {/* Game instructions */}
         {!gameActive && !gameOver && (

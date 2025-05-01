@@ -223,6 +223,26 @@
   .flappy-bird-game .toast-icon {
     font-size: 18px;
   }
+
+  .debug-collider {
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+  
+  .beast-collider {
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  
+  .pipe-collider.top {
+    border: 2px solid green;
+    background-color: rgba(0, 255, 0, 0.2);
+  }
+  
+  .pipe-collider.bottom {
+    border: 2px solid blue;
+    background-color: rgba(0, 0, 255, 0.2);
+  }
   
   /* Animations */
   @keyframes fadeIn {
