@@ -63,8 +63,8 @@ pub mod player {
         // [Event] Emit all Achievement creation events
         let mut world = self.world(@"tamagotchi");
         let task_id = '1';
-        let task_target = 5;
-        let task = TaskTrait::new(task_id, task_target, "Reach 5 pts in the minigame");
+        let task_target = 10;
+        let task = TaskTrait::new(task_id, task_target, "Reach 10 pts in the minigame");
         let tasks: Span<Task> = array![task].span();
 
         // Create the achievement
