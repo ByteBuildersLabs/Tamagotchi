@@ -112,7 +112,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ECECDA;
+  color: var(--text-light);
 }
 
 .col-5 {
@@ -123,7 +123,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ECECDA;
+  color: var(--text-light);
 }
 
 .row .col-5:nth-child(1) {
@@ -151,8 +151,6 @@
   max-width: 20%;
   justify-content: center;
 }
-
-
 
 .row .col-4:nth-child(1) {
   flex: 0 0 20%;
@@ -208,7 +206,7 @@
 }
 
 .leaderboard .bottom-footer {
-  color: #ECECDA;
+  color: var(--text-light);
   font-weight: bold;
   display: column;
 }
@@ -233,7 +231,7 @@
 /* Styles to highlight the current user */
 .leaderboard-container .current-user .col-3,
 .leaderboard-container .current-user .col-4{
-  color: #ECECDA; 
+  color: var(--text-light); 
   font-weight: bold;
 }
 
@@ -251,7 +249,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background-color: #ECECDA;
+  background-color: var(--text-light);
   border-radius: 3px;
 }
 
@@ -287,7 +285,7 @@
 
 .tab-button {
   background-color: rgba(20, 20, 20, 0.6);
-  color: #ECECDA;
+  color: var(--text-light);
   border: none;
   padding: 8px 16px;
   margin: 0 5px;
@@ -299,8 +297,8 @@
 }
 
 .tab-button.active {
-  background-color: #85002A;
-  color: #ECECDA;
+  background-color: var(--primary-red);
+  color: var(--text-light);
   font-weight: bold;
 }
 

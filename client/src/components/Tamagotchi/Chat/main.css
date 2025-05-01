@@ -107,7 +107,7 @@
   height: 55px;
   font-size: 16px;
   background-color: transparent;
-  color: #ECECDA;
+  color: var(--text-light);
   border: 0;
   border-radius: 10px;
   transition: all 0.25s ease;
@@ -118,7 +118,7 @@
 }
 
 .whispers-chat .chat-input input::placeholder {
-  color: #ECECDA;
+  color: var(--text-light);
   transition: all 0.25s ease;
 }
 

@@ -4,8 +4,8 @@
   align-items: center;
   font-size: 12px;
   font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ECECDA;
+  background-color: var(--overlay-dark-medium);
+  color: var(--text-light);
   padding: 10px;
   border-radius: 20px;
   margin: auto;
@@ -20,5 +20,5 @@
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  fill: #ECECDA !important;
+  fill: var(--text-light) !important;
 }

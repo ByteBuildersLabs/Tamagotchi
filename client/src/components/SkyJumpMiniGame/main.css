@@ -203,7 +203,7 @@
   }
   
   .gyro-button.active {
-    background-color: #ECECDA;
+    background-color: var(--text-light);
   }
 
   .lock-icon {
@@ -223,8 +223,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #ECECDA;
+    background-color: var(--overlay-dark-medium);
+    color: var(--text-light);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -245,7 +245,7 @@
     width: 30px;
     height: 30px;
     background-color: rgba(255, 0, 0, 0.7);
-    color: #ECECDA;
+    color: var(--text-light);
     border: 0;
     border-radius: 50%;
     display: flex;
@@ -276,7 +276,7 @@
     left: 0;
     width: 100vw;
     height: 100dvh;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--overlay-dark);
     z-index: 9999;
     display: flex;
     justify-content: center;
@@ -295,7 +295,7 @@
     left: 10%;
     transform: translate(-50%, -50%);
     padding: 20px;
-    background-color: rgba(0,0,0, 0.6); 
+    background-color: var(--overlay-dark-medium);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     text-align: center;
@@ -308,7 +308,7 @@
   .game-result-title {
     font-family: 'Kallisto', sans-serif;
     font-size: 24px;
-    color: #ECECDA;
+    color: var(--text-light);
     font-weight: bold;
     margin-bottom: 5px;
   }
@@ -317,7 +317,7 @@
     font-family: 'Montserrat', serif;
     font-size: 20px;
     font-weight: bold;
-    color: #ECECDA;
+    color: var(--text-light);
     margin-bottom: 5px;
   }
   
@@ -329,8 +329,8 @@
   }
   
   .play-again-button {
-    background-color: #ECECDA;
-    color: #85002A;
+    background-color: var(--text-light);
+    color: var(--primary-red);
     border: 0;
     border-radius: 50%;
     width: 40px;
@@ -360,7 +360,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: black;
+    background-color: var(--bg-dark);
     z-index: 9999;
     margin: 0;
     padding: 0;
@@ -388,8 +388,8 @@
   }
   
   .return-button {
-    background-color: #ECECDA;
-    color: #85002A;
+    background-color: var(--text-light);
+    color: var(--primary-red);
     border: 0;
     border-radius: 50%;
     width: 40px;
@@ -408,12 +408,12 @@
   }
   
   .return-button:hover {
-    background: linear-gradient(to right, #95033A, #E11A4D);
+    background: var(--gradient-primary-hover);
     transform: translateY(-2px);
   }
   
   .return-button:active {
-    background: linear-gradient(to right, #B00833, #6E0022);
+    background: var(--gradient-primary-active);
     transform: translateY(0);
   }
   
@@ -424,8 +424,8 @@
     left: 0;
     width: 100vw;
     height: 100dvh;
-    background-color: black;
-    color: #ECECDA;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -466,8 +466,8 @@
     top: 110px;
     right: 15px;
     width: 40px;
-    background-color: #ECECDA;
-    color: #85002A;
+    background-color: var(--text-light);
+    color: var(--primary-red);
     padding: 8px;
     border-radius: 8px;
     font-size: 20px;
@@ -534,7 +534,7 @@
 
 .increment-indicator {
   position: absolute;
-  color: #ECECDA;
+  color: var(--text-light);
   font-weight: bold;
   font-size: 18px;
   text-shadow: 0px 0px 5px rgba(133, 0, 42, 0.8);
@@ -561,8 +561,8 @@
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #ECECDA;
+  background-color: var(--overlay-dark);
+  color: var(--text-light);
   padding: 12px 20px;
   border-radius: 8px;
   font-size: 16px;
