@@ -20,7 +20,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const { foods, loadingFood } = useFood(account);
   const { zfoods, setFoods } = useAppStore();
   const [loading, setLoadingFood] = useState(true);
-  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
   const [draggedFood, setDraggedFood] = useState<any>(null);
   const [isDragging, setIsDragging] = useState(false);

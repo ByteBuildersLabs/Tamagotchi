@@ -7,7 +7,7 @@
 .thinking-dots span {
   width: 8px;
   height: 8px;
-  background-color: #ECECDA;
+  background-color: var(--text-light);
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out;
   opacity: 1;

@@ -70,7 +70,7 @@ const Play: React.FC<PlayProps> = ({
               <h3 className="game-name">{game.name}</h3>
               <p className="game-description" >{game.description}</p>
               <div className="game-high-score" >
-                Record: {myScore[0]?.score || ''}
+                Record: {myScore[0]?.score || '0'}
               </div>
             </div>
           </div>

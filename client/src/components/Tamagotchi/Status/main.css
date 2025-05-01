@@ -1,4 +1,3 @@
-
 .status {
   display: flex;
   align-items: center;
@@ -7,7 +6,7 @@
   width: 100%;
   padding: 15px 0;
   border-radius: 25px;
-  color: #ECECDA;
+  color: var(--text-light);
   cursor: pointer;
 }
 
@@ -19,7 +18,7 @@
   position: absolute;
   top: 6px;
   left: 7px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--overlay-dark-light);
   border-radius: 50%;
   height:55px;
   width: 55px;
@@ -30,7 +29,7 @@
 }
 
 .status .item .pic.full-stat {
-  background-color: rgba(28, 150, 1, 0.437);
+  background-color: var(--status-good);
 }
 
 .status .item .pic.bad-stat {
@@ -38,9 +37,9 @@
 }
 
 @keyframes badStat {
-	0% { background-color: rgba(0, 0, 0, 0.1); }
-  50% { background-color: rgba(150, 1, 1, 0.5); }
-	100% { background-color: rgba(0, 0, 0, 0.1); }
+  0% { background-color: var(--overlay-dark-light); }
+  50% { background-color: var(--status-bad); }
+  100% { background-color: var(--overlay-dark-light); }
 }
 
 .status .item p {
@@ -64,7 +63,7 @@
 }
 
 .status .status-name span {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--overlay-dark-light);
   padding: 10px;
   border-radius: 20%;
 }

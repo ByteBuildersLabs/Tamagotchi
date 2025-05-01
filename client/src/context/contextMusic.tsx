@@ -13,7 +13,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [isMuted, setIsMuted] = useState(false);
   const [play, { stop, sound }] = useSound(backgroundMusic, {
     loop: true,
-    volume: isMuted ? 0 : 0.3,
+    volume: isMuted ? 0 : 0.6,
   });
   useEffect(() => {
     play();

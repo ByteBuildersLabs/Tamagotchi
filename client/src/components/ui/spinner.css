@@ -19,8 +19,8 @@
 }
 
 .loader {
-  border: 8px solid #ECECDA;
-  border-top: 8px solid #85002A;
+  border: 8px solid var(--text-light);
+  border-top: 8px solid var(--primary-red);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -28,7 +28,7 @@
 }
 
 .spinner-message {
-  color: #ECECDA;
+  color: var(--text-light);
   font-family: 'Kallisto', sans-serif;
   font-weight: bold;
   font-size: 18px;

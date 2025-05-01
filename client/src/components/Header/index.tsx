@@ -11,6 +11,8 @@ import { useBeasts } from "../../hooks/useBeasts";
 import { usePlayer } from "../../hooks/usePlayers";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
 import { ShareProgress } from '../Twitter/ShareProgress.tsx';
+import useSound from 'use-sound';
+import buttonClick from '../../assets/sounds/click.mp3';
 import "./main.css";
 import CountDown from "../CountDown/index.tsx";
 
@@ -40,6 +42,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
   const { player } = usePlayer();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
   
   const isTamagotchiRoute = location.pathname === '/play';
 
@@ -49,13 +52,20 @@ function Header({ tamagotchiStats }: HeaderProps) {
     if (foundBeast) setRoute('/play');
   }, [beasts, player]);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const handleShareClick = () => setIsShareModalOpen(true);
+  const toggleMenu = () => {
+    buttonSound();
+    setIsOpen(!isOpen);
+  };
+  
+  const handleShareClick = () => {
+    buttonSound();
+    setIsShareModalOpen(true);
+  };
 
   // Define menu items in a standardized way
   const menuItems: MenuItem[] = [
-    { to: '/leaderboard', icon: trophy, alt: "Leaderboard", label: "Leaderboard" },
-    { to: '/about', icon: book, alt: "Book", label: "About" }
+    { to: '/leaderboard', icon: trophy, alt: "Leaderboard", label: "Leaderboard", onClick: () => buttonSound() },
+    { to: '/about', icon: book, alt: "Book", label: "About", onClick: () => buttonSound() }
   ];
 
   // Conditionally add Share option if on tamagotchi route
@@ -70,18 +80,20 @@ function Header({ tamagotchiStats }: HeaderProps) {
 
   // Add Music and Controller as regular menu items
   menuItems.push(
-    { component: <Music />, label: "Music" },
-    { component: <ControllerConnectButton /> }
+    { component: <Music />, label: "Music", onClick: () => buttonSound() },
+    { component: <ControllerConnectButton />, onClick: () => buttonSound() }
   );
 
   return (
     <>
       <nav className="navbar">
-        <Link to={route} className="logo">
+        <Link to={route} className="logo" onClick={() => buttonSound()}>
           <img src={monster} alt="Logo" />
         </Link>
 
-        <CountDown targetDate={"2025-05-05T12:00:00"}  />
+        <div onClick={() => buttonSound()}>
+          <CountDown targetDate={"2025-05-05T12:00:00"}  />
+        </div>
         
         <div className="side-menu-container">
           <button 

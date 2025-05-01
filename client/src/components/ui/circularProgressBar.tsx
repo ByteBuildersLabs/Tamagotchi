@@ -22,7 +22,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
-  const [buttonSound] = useSound(buttonClick, { volume: 0.7, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
   const [statusInfo, setStatusInfo] = useState(false);
 
   const showStatus = () => {
