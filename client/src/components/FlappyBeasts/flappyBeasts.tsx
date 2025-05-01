@@ -28,7 +28,7 @@ const gameAssets = {
 const PIPE_GAP = 160; // Espacio entre las tuberías
 const PIPE_INTERVAL = 1700;
 const GRAVITY = 9.8;
-const JUMP_FORCE = -6;
+const JUMP_FORCE = -5.5;
 const BIRD_WIDTH = 46;
 const BIRD_HEIGHT = 46;
 const PIPE_WIDTH = 52;
@@ -740,137 +740,147 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-}, [gameActive, isMobile]);
+    }, [gameActive, isMobile]);
 
-return (
-    <div
-      ref={gameContainerRef}
-      className={`flappy-bird-game ${className} ${isMobile ? 'mobile-game' : ''}`}
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#4ec0ca',
-        ...style
-      }}
-      onClick={() => {
-        console.log("Click en el contenedor del juego");
-        jump();
-      }}
-      onTouchStart={(e) => {
-        console.log("Touch en el contenedor del juego");
-        e.preventDefault();
-        jump();
-      }}
-    >
-    {/* Sky background */}
-    <div className="sky" style={{ backgroundImage: `url(${gameAssets.sky})` }}>
-      <div className="fly-area">
-        {/* Beast character */}
+    return (
         <div
-          ref={beastRef}
-          className="bird"
-          style={{
-            width: `${BIRD_WIDTH}px`,
-            height: `${BIRD_HEIGHT}px`,
-            backgroundImage: `url(${beastImageRight})`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            position: 'absolute',
-            left: `${gameConfig.current.birdX}px`,
-            transition: 'transform 0.1s',
-            transform: `translateY(${gameConfig.current.birdY}px) rotate(0deg)`,
-            zIndex: 100
-          }}
-        />
-        
-        {/* Pipes container */}
-        <div ref={pipesRef} style={{ position: 'relative' }} />
-        
-        {/* Score display */}
-        <div className="score-card">
-          <div ref={scoreRef} className="score-text">0</div>
-        </div>
-        
-        {/* Land background */}
-        <div 
-          className="land animated" 
-          style={{ backgroundImage: `url(${gameAssets.land})` }}
-        />
-        
-        {/* Ceiling */}
-        <div 
-          className="ceiling animated" 
-          style={{ backgroundImage: `url(${gameAssets.ceiling})` }}
-        />
-      </div>
-    </div>
-    
-    {/* Exit button */}
-    {onExitGame && (
-      <button
-        className="return-button"
-        onClick={onExitGame}
-      >
-        X
-      </button>
-    )}
-    
-    {/* Game instructions */}
-    {!gameActive && !gameOver && (
-      <div className="game-instructions">
-        <h2>FLAPPY BEAST</h2>
-        <p>Tap or click to fly</p>
-        <p>Avoid obstacles</p>
-        <button 
-          className="start-button"
-          onClick={startGame}
+        ref={gameContainerRef}
+        className={`flappy-bird-game ${className} ${isMobile ? 'mobile-game' : ''}`}
+        style={{
+            position: 'relative',
+            overflow: 'hidden',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#4ec0ca',
+            ...style
+        }}
+        onClick={() => {
+            console.log("Click en el contenedor del juego");
+            jump();
+        }}
+        onTouchStart={(e) => {
+            console.log("Touch en el contenedor del juego");
+            e.preventDefault();
+            jump();
+        }}
         >
-          START
-        </button>
-      </div>
-    )}
-    
-    {/* Share Modal */}
-    {currentScreen === 'sharing' && (
-      <div className="modal-overlay">
-        <ShareProgress
-          isOpen={isShareModalOpen}
-          onClose={() => {
-            setIsShareModalOpen(false);
-            setCurrentScreen('gameover');
-            setShowGameOverModal(true);
-          }}
-          type="minigame"
-          minigameData={{
-            name: gameName,
-            score: finalScore
-          }}
+        {/* Sky background */}
+        <div
+            className="sky"
+            style={{ backgroundImage: `url(${gameAssets.sky})` }}
         />
-      </div>
-    )}
     
-    {/* Game Over Modal */}
-    <GameOverModal 
-        currentScreen={currentScreen}
-        finalScore={finalScore}
-        currentHighScore={currentHighScore}
-        //collectedFood={collectedFood}
-        //selectedFood={selectedFood}
-        handlePlayAgain={handlePlayAgain}
-        restartIcon={Restart}
-    />
+        {/* Ceiling (ladrillos) */}
+        <div
+            className="ceiling animated"
+            style={{ backgroundImage: `url(${gameAssets.ceiling})` }}
+        />
     
-    {/* Energy Toast */}
-    {showEnergyToast && (
-      <div className="energy-toast">
-        <span className="toast-icon">⚠️</span>
-        <span className="toast-message">Your beast's energy is under 30%, it's time to rest.</span>
-      </div>
-    )}
-  </div>
-);
+        {/* Fly-area: beast, pipes y score */}
+        <div className="fly-area">
+            {/* Beast character */}
+            <div
+            ref={beastRef}
+            className="bird"
+            style={{
+                width: `${BIRD_WIDTH}px`,
+                height: `${BIRD_HEIGHT}px`,
+                backgroundImage: `url(${beastImageRight})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                position: 'absolute',
+                left: `${gameConfig.current.birdX}px`,
+                transition: 'transform 0.1s',
+                transform: `translateY(${gameConfig.current.birdY}px) rotate(0deg)`,
+                zIndex: 100
+            }}
+            />
+    
+            {/* Pipes container */}
+            <div
+            ref={pipesRef}
+            className="pipes-container"
+            style={{ position: 'relative' }}
+            />
+    
+            {/* Score display */}
+            <div className="score-card">
+            <div ref={scoreRef} className="score-text">
+                0
+            </div>
+            </div>
+        </div>
+    
+        {/* Land (tierra + hierba) */}
+        <div
+            className="land animated"
+            style={{ backgroundImage: `url(${gameAssets.land})` }}
+        />
+    
+        {/* Exit button */}
+        {onExitGame && (
+            <button
+            className="return-button"
+            onClick={onExitGame}
+            >
+            X
+            </button>
+        )}
+    
+        {/* Game instructions */}
+        {!gameActive && !gameOver && (
+            <div className="game-instructions">
+            <h2>FLAPPY BEAST</h2>
+            <p>Tap or click to fly</p>
+            <p>Avoid obstacles</p>
+            <button
+                className="start-button"
+                onClick={startGame}
+            >
+                START
+            </button>
+            </div>
+        )}
+    
+        {/* Share Modal */}
+        {currentScreen === 'sharing' && (
+            <div className="modal-overlay">
+            <ShareProgress
+                isOpen={isShareModalOpen}
+                onClose={() => {
+                setIsShareModalOpen(false);
+                setCurrentScreen('gameover');
+                setShowGameOverModal(true);
+                }}
+                type="minigame"
+                minigameData={{
+                name: gameName,
+                score: finalScore
+                }}
+            />
+            </div>
+        )}
+    
+        {/* Game Over Modal */}
+        <GameOverModal 
+            currentScreen={currentScreen}
+            finalScore={finalScore}
+            currentHighScore={currentHighScore}
+            handlePlayAgain={handlePlayAgain}
+            restartIcon={Restart}
+        />
+    
+        {/* Energy Toast */}
+        {showEnergyToast && (
+            <div className="energy-toast">
+            <span className="toast-icon">⚠️</span>
+            <span className="toast-message">
+                Your beast's energy is under 30%, it's time to rest.
+            </span>
+            </div>
+        )}
+        </div>
+    );
 });
 
 export default FlappyBirdMiniGame;

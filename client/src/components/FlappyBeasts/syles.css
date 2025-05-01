@@ -12,40 +12,50 @@
   .flappy-bird-game .sky {
     position: absolute;
     top: 0;
-    width: 100%;
-    height: 80%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../../assets/FlappyBeasts/sky.png);
     background-repeat: repeat-x;
-    background-position: 0px 100%;
-    background-color: #4ec0ca;
+    /* ¿Quieres que escale a toda la pantalla? */
+    background-size: cover;
+    z-index: 1;
     animation: animSky 7s linear infinite;
   }
   
   .flappy-bird-game .fly-area {
     position: absolute;
     bottom: 0;
-    height: 420px;
+    top: 16px;      /* altura del ceiling */
+    bottom: 64px;   /* altura del land */
     width: 100%;
   }
   
   .flappy-bird-game .ceiling {
     position: absolute;
-    top: -16px;
-    height: 16px;
-    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 16px; /* altura real de ceiling.png */
+    background-image: url(../../assets/FlappyBeasts/ceiling.png);
     background-repeat: repeat-x;
+    background-size: auto 100%;
     animation: animCeiling 481ms linear infinite;
+    z-index: 2;
   }
   
   .flappy-bird-game .land {
     position: absolute;
     bottom: 0;
-    width: 100%;
-    height: 20%;
+    left: 0;
+    right: 0;
+    height: 64px; /* altura real de land.png */
+    background-image: url(../../assets/FlappyBeasts/land.png);
     background-repeat: repeat-x;
-    background-position: 0px 0px;
-    background-color: #ded895;
+    background-size: auto 100%;
     animation: animLand 2516ms linear infinite;
-  }
+    z-index: 2;
+    }
   
   .flappy-bird-game .bird {
     position: absolute;
