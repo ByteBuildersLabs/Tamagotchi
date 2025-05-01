@@ -109,7 +109,6 @@ const Leaderboard = () => {
 
   // Determine which beasts/players to display (top 15 + user if outside the top 15)
   const top15Beasts = allBeasts.slice(0, 15);
-  const top15Players = allPlayers.slice(0, 15);
   
   const showUserSeparatelyAge = userPositionAge !== null && userPositionAge > 15;
   const showUserSeparatelyPoints = userPositionPoints !== null && userPositionPoints > 15;
