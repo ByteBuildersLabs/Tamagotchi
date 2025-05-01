@@ -79,7 +79,7 @@ pub mod player {
             group: 'Minigame',
             icon: 'fa-trophy',
             title: 'Beginner of the minigame',
-            description: "Has reached 5 pts in the minigame",
+            description: "Has reached 10 pts in the minigame",
             tasks: tasks,
             data: "",
         );
@@ -134,7 +134,7 @@ pub mod player {
 
             // Emit progress event when the player earns points in the minigame
             let task_id = '1'; // Should be the same as the one in dojo_init
-            let count = points; // Quantity of points to add
+            let count = 10; // Quantity of points to add
             let achievement_store = AchievementStoreTrait::new(world); // Achievement store
             let time = starknet::get_block_timestamp(); // Current timestamp
 
