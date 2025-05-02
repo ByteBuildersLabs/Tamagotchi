@@ -483,7 +483,7 @@ const Leaderboard = () => {
               {renderScoreTable(skyJumpScores, "Sky Jump")}
             </div>
             <div className="carousel-item">
-              {renderScoreTable(flappyBirdScores, "Flappy Bird")}
+              {renderScoreTable(flappyBirdScores, "Flappy Beasts")}
             </div>
           </div>
           <button 
