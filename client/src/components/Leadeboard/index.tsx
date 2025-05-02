@@ -8,7 +8,6 @@ import { useAccount } from "@starknet-react/core";
 import { addAddressPadding, BigNumberish } from "starknet";
 import Spinner from '../ui/spinner.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
-import aarrow from "../../assets/img/arrow.svg";
 
 interface Beast {
   userName: string;
@@ -41,9 +40,7 @@ const Leaderboard = () => {
   const [isLoadedBeasts, setIsLoadedBeasts] = useState(false);
   const [isLoadedPlayers, setIsLoadedPlayers] = useState(false);
   const [userPositionAge, setUserPositionAge] = useState<number | null>(null);
-  const [userPositionPoints, setUserPositionPoints] = useState<number | null>(null);
   const [userBeast, setUserBeast] = useState<Beast | null>(null);
-  const [userPlayer, setUserPlayer] = useState<Player | null>(null);
   const [activeLeaderboard, setActiveLeaderboard] = useState<LeaderboardType>('age');
   
   // Get the logged-in user's account
@@ -61,6 +58,9 @@ const Leaderboard = () => {
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) bodyElement.classList.remove('day');
+    if (bodyElement) bodyElement.classList.remove('night');
+    if (bodyElement) bodyElement.classList.remove('sunrise');
+    if (bodyElement) bodyElement.classList.remove('sunset');
   }, []);
 
   // Add carousel initialization
@@ -140,18 +140,6 @@ const Leaderboard = () => {
     if (players && players.length > 0) {
       const sortedPlayers = [...players].sort((a, b) => (b?.total_points || 0) - (a?.total_points || 0));
       
-      // Find the current user's position in scores
-      if (userAddress) {
-        const userPlayerIndex = sortedPlayers.findIndex(
-          player => addAddressPadding(player.address) === userAddress
-        );
-        
-        if (userPlayerIndex !== -1) {
-          setUserPositionPoints(userPlayerIndex + 1); // Position starts at 1
-          setUserPlayer(sortedPlayers[userPlayerIndex]);
-        }
-      }
-      
       setAllPlayers(sortedPlayers);
       setIsLoadedPlayers(true);
     }
@@ -161,7 +149,6 @@ const Leaderboard = () => {
   const top15Beasts = allBeasts.slice(0, 15);
   
   const showUserSeparatelyAge = userPositionAge !== null && userPositionAge > 15;
-  const showUserSeparatelyPoints = userPositionPoints !== null && userPositionPoints > 15;
 
   // Function to determine if a row belongs to the user
   const isUserRow = (address: string) => {
