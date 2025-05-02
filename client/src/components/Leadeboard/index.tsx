@@ -62,6 +62,49 @@ const Leaderboard = () => {
     if (bodyElement) bodyElement.classList.remove('day');
   }, []);
 
+  // Add carousel initialization
+  useEffect(() => {
+    if (activeLeaderboard === 'minigames') {
+      const carousel = document.getElementById('carouselMinigames');
+      if (carousel) {
+        const bsCarousel = new (window as any).bootstrap.Carousel(carousel, {
+          interval: 5000, // 5 segundos
+          touch: true,
+          wrap: true,
+          keyboard: true,
+          pause: 'hover' // Pausa el auto-slide cuando el mouse está encima
+        });
+
+        // Add event listeners for the navigation buttons
+        const prevButton = document.querySelector('.carousel-control-prev');
+        const nextButton = document.querySelector('.carousel-control-next');
+
+        if (prevButton) {
+          prevButton.addEventListener('click', () => {
+            bsCarousel.prev();
+          });
+        }
+
+        if (nextButton) {
+          nextButton.addEventListener('click', () => {
+            bsCarousel.next();
+          });
+        }
+
+        // Cleanup function
+        return () => {
+          if (prevButton) {
+            prevButton.removeEventListener('click', () => bsCarousel.prev());
+          }
+          if (nextButton) {
+            nextButton.removeEventListener('click', () => bsCarousel.next());
+          }
+          bsCarousel.dispose();
+        };
+      }
+    }
+  }, [activeLeaderboard]);
+
   // Effect to process beast data
   useEffect(() => {
     if (beasts && beasts.length > 0) {
@@ -177,8 +220,10 @@ const Leaderboard = () => {
 
   const renderAgeLeaderboard = () => (
     <div className="leaderboard-table">
+      <h3 className="table-title">Oldest ByteBeasts</h3>
       {isLoadedBeasts && top15Beasts.length > 0 ? (
         <>
+          {renderColumnHeaders()}
           {top15Beasts.map((beast: Beast, index: number) => (
             <div 
               className={`row mb-3 ${isUserRow(beast.player) ? 'current-user' : ''}`} 
@@ -321,10 +366,48 @@ const Leaderboard = () => {
       </div>
     );
 
+    const minigames = [
+      { scores: skyJumpScores, title: "Sky Jump" },
+      { scores: flappyBirdScores, title: "Flappy Bird" }
+    ];
+
     return (
       <div className="minigames-container">
-        {renderScoreTable(skyJumpScores, "Sky Jump")}
-        {renderScoreTable(flappyBirdScores, "Flappy Bird")}
+        <div 
+          id="carouselMinigames" 
+          className="carousel slide" 
+          data-bs-ride="carousel"
+          data-bs-interval="5000"
+          data-bs-pause="hover"
+        >
+          <div className="carousel-inner">
+            {minigames.map((minigame, index) => (
+              <div key={`minigame-${index}`} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                {renderScoreTable(minigame.scores, minigame.title)}
+              </div>
+            ))}
+          </div>
+          <button 
+            className="carousel-control-prev" 
+            type="button" 
+            data-bs-target="#carouselMinigames" 
+            data-bs-slide="prev"
+            aria-label="Previous"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden"></span>
+          </button>
+          <button 
+            className="carousel-control-next" 
+            type="button" 
+            data-bs-target="#carouselMinigames" 
+            data-bs-slide="next"
+            aria-label="Next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden"></span>
+          </button>
+        </div>
       </div>
     );
   };
@@ -366,7 +449,6 @@ const Leaderboard = () => {
     
     return (
       <>
-        {renderColumnHeaders()}
         {activeLeaderboard === 'age' ? renderAgeLeaderboard() : renderMinigamesLeaderboard()}
       </>
     );
@@ -391,15 +473,6 @@ const Leaderboard = () => {
               Minigames
             </button>
           </div>
-          
-          <p className={'title mb-3'}>
-            {activeLeaderboard === 'age' ? 'Age Leaderboard' : 'Minigames Leaderboard'}
-            <span className='d-block'>
-              {activeLeaderboard === 'age' 
-                ? 'How old is your beast?' 
-                : 'Best players by total points'}
-            </span>
-          </p>
           
           <div className='leaderboard-container'>
             <div className="initial-info">
