@@ -29,7 +29,7 @@ declare global {
 const FullscreenGame = () => {
   const navigate = useNavigate();
   const { account } = useAccount();
-  const { myScore } = useHighScores(account);
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
 
   const location = useLocation();
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -43,37 +43,43 @@ const FullscreenGame = () => {
 
   useEffect(() => {
     const tempData = window.__gameTemp;
-    
+
     if (!tempData) {
       console.error("Game data not found. Please start the game from the play screen.");
       navigate('/play');
       return;
     }
-    
+
     setGameTemp(tempData);
-    
+
     // Get game data from the location state
     if (location.state?.beastId && location.state?.specie && location.state?.gameId) {
       const gameId = location.state.gameId;
-    
+
       // Verify if the game exists in the registry
       if (!GAMES_REGISTRY[gameId]) {
         console.error(`Game with ID ${gameId} not found in registry`);
         navigate('/play');
         return;
       }
-      
+
       const state = {
         beastId: location.state.beastId,
         specie: location.state.specie,
         gameId: gameId
       };
-      
+
       setGameState(state);
       setCurrentGameData(GAMES_REGISTRY[gameId]);
-      
+
       // Get high score
-      const savedHighScore = myScore[0]?.score || ''
+      const savedHighScore = (() => {
+        switch (gameId) {
+          case '1': return myScoreSkyJump[0]?.score || '0';
+          case '2': return myScoreFlappyBird[0]?.score || '0';
+          default: return '0';
+        }
+      })()
       setHighScore(savedHighScore);
     } else {
       navigate('/play');
@@ -81,7 +87,7 @@ const FullscreenGame = () => {
 
     // Apply full screen styles
     document.body.classList.add('fullscreen-game-mode');
-    
+
     return () => {
       // Cleanup
       document.body.classList.remove('fullscreen-game-mode');
@@ -118,7 +124,7 @@ const FullscreenGame = () => {
           boxSizing: 'border-box'
         }}
         onScoreUpdate={handleScoreUpdate}
-        beastImageRight={beastsDex[gameState.specie - 1]?.idlePicture} 
+        beastImageRight={beastsDex[gameState.specie - 1]?.idlePicture}
         beastImageLeft={beastsDex[gameState.specie - 1]?.idlePicture}
         onExitGame={handleExitGame}
         highScore={highScore}
@@ -129,9 +135,9 @@ const FullscreenGame = () => {
         client={gameTemp.client}
         account={gameTemp.account}
       />
-      
+
       {/* Button to close the game */}
-      <button 
+      <button
         className="return-button"
         onClick={handleExitGame}
       >

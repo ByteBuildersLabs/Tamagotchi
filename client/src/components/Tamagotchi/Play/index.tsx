@@ -23,7 +23,7 @@ const Play: React.FC<PlayProps> = ({
   showAnimation
 }) => {
   const navigate = useNavigate();
-  const { myScore } = useHighScores(account);
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
   const startGame = async (gameId: string) => {
     if (!beast) return;
 
@@ -71,7 +71,13 @@ const Play: React.FC<PlayProps> = ({
               <h3 className="game-name">{game.name}</h3>
               <p className="game-description" >{game.description}</p>
               <div className="game-high-score" >
-                Record: {myScore[0]?.score || '0'}
+                Record: {(() => {
+                  switch (game.id) {
+                    case '1': return myScoreSkyJump[0]?.score || '0';
+                    case '2': return myScoreFlappyBird[0]?.score || '0';
+                    default: return '0';
+                  }
+                })()}
               </div>
             </div>
           </div>
@@ -79,7 +85,7 @@ const Play: React.FC<PlayProps> = ({
       </div>
     </div>
   );
-  
+
 };
 
 export default Play;
