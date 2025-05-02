@@ -26,6 +26,12 @@ interface Player {
   userName: string;
 }
 
+interface Score {
+  player: string;
+  score: number;
+  minigame_id: number;
+}
+
 type LeaderboardType = 'age' | 'minigames';
 
 const Leaderboard = () => {
@@ -242,86 +248,83 @@ const Leaderboard = () => {
   );
 
   const renderMinigamesLeaderboard = () => {
-    // Ordenar los scores de mayor a menor
-    const sortedScores = scores.sort((a, b) => b.score - a.score);
-    const top15Scores = sortedScores.slice(0, 15);
+    // Separar los scores por minijuego
+    const skyJumpScores = scores.filter((score: Score) => score.minigame_id === 1)
+      .sort((a: Score, b: Score) => b.score - a.score)
+      .slice(0, 15);
+
+    const flappyBirdScores = scores.filter((score: Score) => score.minigame_id === 2)
+      .sort((a: Score, b: Score) => b.score - a.score)
+      .slice(0, 15);
+
+    const renderScoreTable = (scores: Score[], title: string) => (
+      <div className="minigame-table">
+        <h3 className="minigame-title">{title}</h3>
+        <div className="leaderboard-table">
+          {scores.length > 0 ? (
+            <>
+              <div className='row mb-3 header-row'>
+                <div className='col-3'>
+                  <span>Position</span>
+                </div>
+                <div className='col-3'>
+                  <span>Player</span>
+                </div>
+                <div className='col-3'>
+                  <span>Beast</span>
+                </div>
+                <div className='col-3'>
+                  <span>Score</span>
+                </div>
+              </div>
+              {scores.map((scoreData: Score, index: number) => {
+                const playerBeast = findPlayerBeast(scoreData.player);
+                const beastType = playerBeast?.beast_type || null;
+                
+                return (
+                  <div 
+                    className={`row mb-3 ${isUserRow(scoreData.player) ? 'current-user' : ''}`} 
+                    key={`minigame-${scoreData.minigame_id}-${index}`}
+                  >
+                    <div className='col-3'>
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className='col-3 username-col'>
+                      <span>{playerBeast?.userName || scoreData.player.slice(0, 8)}</span>
+                    </div>
+                    <div className='col-3'>
+                      {beastType && beastsDex[beastType - 1]?.idlePicture ? (
+                        <img 
+                          src={beastsDex[beastType - 1]?.idlePicture} 
+                          className='beast' 
+                          alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
+                        />
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </div>
+                    <div className='col-3'>
+                      <span>{scoreData.score}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            <div className='row mb-3'>
+              <div className='col-12 text-center'>
+                <span>No scores available for {title}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
 
     return (
-      <div className="leaderboard-table">
-        {isLoadedPlayers && top15Scores.length > 0 ? (
-          <>
-            {top15Scores.map((scoreData, index) => {
-              // Encontrar la bestia de este jugador
-              const playerBeast = findPlayerBeast(scoreData.player);
-              const beastType = playerBeast?.beast_type || null;
-              
-              return (
-                <div 
-                  className={`row mb-3 ${isUserRow(scoreData.player) ? 'current-user' : ''}`} 
-                  key={`minigame-${index}`}
-                >
-                  <div className='col-3'>
-                    <span>{index + 1}</span>
-                  </div>
-                  <div className='col-3 username-col'>
-                    <span>{playerBeast?.userName || scoreData.player.slice(0, 8)}</span>
-                  </div>
-                  <div className='col-3'>
-                    {beastType && beastsDex[beastType - 1]?.idlePicture ? (
-                      <img 
-                        src={beastsDex[beastType - 1]?.idlePicture} 
-                        className='beast' 
-                        alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
-                      />
-                    ) : (
-                      <span>-</span>
-                    )}
-                  </div>
-                  <div className='col-3'>
-                    <span>{scoreData.score}</span>
-                  </div>
-                </div>
-              );
-            })}
-            
-            {/* Mostrar al usuario si está fuera del top 15 */}
-            {showUserSeparatelyPoints && userPlayer && (
-              <>
-                <div className='row mb-3 separator'>
-                  <div className='col-12'><span>...</span></div>
-                </div>
-                <div className='row mb-3 current-user'>
-                  <div className='col-3'>
-                    <span>{userPositionPoints}</span>
-                  </div>
-                  <div className='col-3 username-col'>
-                    <span>{userPlayer.userName}</span>
-                  </div>
-                  <div className='col-3'>
-                    {userBeast?.beast_type && beastsDex[userBeast.beast_type - 1]?.idlePicture ? (
-                      <img 
-                        src={beastsDex[userBeast.beast_type - 1]?.idlePicture} 
-                        className='beast' 
-                        alt={userBeast.name || `Beast #${userBeast.beast_id}`} 
-                      />
-                    ) : (
-                      <span>-</span>
-                    )}
-                  </div>
-                  <div className='col-3'>
-                    <span>{userPlayer.total_points}</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <div className='row mb-3'>
-            <div className='col-12 text-center'>
-              <span>No scores available</span>
-            </div>
-          </div>
-        )}
+      <div className="minigames-container">
+        {renderScoreTable(skyJumpScores, "Sky Jump")}
+        {renderScoreTable(flappyBirdScores, "Flappy Bird")}
       </div>
     );
   };

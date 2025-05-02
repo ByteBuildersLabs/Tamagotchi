@@ -355,3 +355,36 @@
     font-size: 12px;
   }
 }
+
+/* Minigames container and tables */
+.minigames-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.minigame-table {
+  background-color: rgba(20, 20, 20, 0.6);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.minigame-title {
+  color: var(--text-light);
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: 'Kallisto', serif;
+}
+
+/* Responsive adjustments */
+@media (max-width: 450px) {
+  .minigame-table {
+    padding: 15px;
+  }
+
+  .minigame-title {
+    font-size: 18px;
+  }
+}
