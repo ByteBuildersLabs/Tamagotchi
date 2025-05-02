@@ -2,26 +2,32 @@ import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useEffect, useState } from "react";
 import { addAddressPadding } from "starknet";
 
-export const useHighScores = (account?:any) => {
+export const useHighScores = (account?: any) => {
   const { useDojoStore } = useDojoSDK();
   const entities = useDojoStore((state) => state.entities);
-  const [ myScore, setMyScore ] = useState<any[]>([]);
-  const [ scores, setScores ] = useState<any[]>([]);
-  const [ loadingScores, setLoadingScores ] = useState<any>(true);
+  const [myScoreSkyJump, setMyScoreSkyJump] = useState<any[]>([]);
+  const [myScoreFlappyBird, setMyScoreFlappyBird] = useState<any[]>([]);
+  const [scores, setScores] = useState<any[]>([]);
+  const [loadingScores, setLoadingScores] = useState<any>(true);
 
   useEffect(() => {
     const scoreEntities = Object.values(entities)
       .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.HighestScore)
       .map(entity => entity.models.tamagotchi.HighestScore);
 
+
     setScores(scoreEntities);
-    const myScore = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? ''));
-    setMyScore(myScore);
+    const myScoreSkyJump = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame === 1);
+    const myScoreFlappyBird = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame === 2);
+
+    setMyScoreSkyJump(myScoreSkyJump);
+    setMyScoreFlappyBird(myScoreFlappyBird);
     setLoadingScores(false);
   }, [entities]);
 
   return {
-    myScore,
+    myScoreFlappyBird,
+    myScoreSkyJump,
     scores,
     loadingScores
   };
