@@ -8,6 +8,7 @@ import { useAccount } from "@starknet-react/core";
 import { addAddressPadding, BigNumberish } from "starknet";
 import Spinner from '../ui/spinner.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
+import aarrow from "../../assets/img/arrow.svg";
 
 interface Beast {
   userName: string;
@@ -220,7 +221,7 @@ const Leaderboard = () => {
 
   const renderAgeLeaderboard = () => (
     <div className="leaderboard-table">
-      <h3 className="table-title">Oldest ByteBeasts</h3>
+      <h3 className="table-title">Age Leaderboard</h3>
       {isLoadedBeasts && top15Beasts.length > 0 ? (
         <>
           {renderColumnHeaders()}
@@ -394,8 +395,8 @@ const Leaderboard = () => {
             data-bs-slide="prev"
             aria-label="Previous"
           >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden"></span>
+            <span className="carousel-control-prev-icon" aria-hidden="true">
+            </span>
           </button>
           <button 
             className="carousel-control-next" 
@@ -404,8 +405,8 @@ const Leaderboard = () => {
             data-bs-slide="next"
             aria-label="Next"
           >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden"></span>
+            <span className="carousel-control-next-icon" aria-hidden="true">
+            </span>
           </button>
         </div>
       </div>

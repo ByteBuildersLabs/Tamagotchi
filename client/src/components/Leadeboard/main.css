@@ -248,17 +248,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   padding: 0;
   color: #fff;
   text-align: center;
-  background-color: var(--text-light);
-  border: 0;
+  border: 1px solid  var(--text-light);
   border-radius: 50%;
   opacity: 0.8;
   transition: opacity 0.15s ease;
 }
+
+.carousel-control-next img { transform: rotate(180deg); }
 
 .carousel-control-prev { left: -50px; }
 .carousel-control-next { right: -50px; }
@@ -271,7 +272,6 @@
   background-repeat: no-repeat;
   background-position: 50%;
   background-size: 100% 100%;
-  filter: brightness(0) saturate(100%) invert(14%) sepia(91%) saturate(3131%) hue-rotate(334deg) brightness(86%) contrast(105%);
 }
 
 .carousel-control-prev:hover,
