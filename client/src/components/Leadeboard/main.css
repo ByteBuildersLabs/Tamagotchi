@@ -34,12 +34,12 @@
 .leaderboard-table,
 .minigame-table {
   width: 100%;
-  background-color: rgba(20, 20, 20, 0.6);
   border-radius: 15px;
 }
 
 .minigame-title {
   margin: 30px;
+  font-size: 20px;
 }
 
 .table-title {

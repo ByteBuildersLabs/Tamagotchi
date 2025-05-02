@@ -293,6 +293,48 @@ const Leaderboard = () => {
     </div>
   );
 
+  const renderContent = () => {
+    if (activeLeaderboard === 'age') {
+      if (!isLoadedBeasts) {
+        return (
+          <Spinner message='Loading beasts leaderboard...' />
+        );
+      }
+      
+      if (allBeasts.length === 0) {
+        return (
+          <div className='row mb-3'>
+            <div className='col-12 text-center'>
+              <span>No beasts available</span>
+            </div>
+          </div>
+        );
+      }
+    } else {
+      if (!isLoadedPlayers) {
+        return (
+          <Spinner message='Loading minigames leaderboard...' />
+        );
+      }
+      
+      if (allPlayers.length === 0) {
+        return (
+          <div className='row mb-3'>
+            <div className='col-12 text-center'>
+              <span>No scores available</span>
+            </div>
+          </div>
+        );
+      }
+    }
+    
+    return (
+      <>
+        {activeLeaderboard === 'age' ? renderAgeLeaderboard() : renderMinigamesLeaderboard()}
+      </>
+    );
+  };
+
   const renderMinigamesLeaderboard = () => {
     // Separar los scores por minijuego
     const skyJumpScores = scores.filter((score: Score) => score.minigame_id === 1)
@@ -367,10 +409,75 @@ const Leaderboard = () => {
       </div>
     );
 
-    const minigames = [
-      { scores: skyJumpScores, title: "Sky Jump" },
-      { scores: flappyBirdScores, title: "Flappy Bird" }
-    ];
+    const renderTotalPointsTable = () => {
+      const top15Players = allPlayers
+        .sort((a, b) => (b?.total_points || 0) - (a?.total_points || 0))
+        .slice(0, 15);
+
+      return (
+        <div className="minigame-table">
+          <h3 className="minigame-title">Total Points Ranking</h3>
+          <div className="leaderboard-table">
+            {isLoadedPlayers && top15Players.length > 0 ? (
+              <>
+                <div className='row mb-3 header-row'>
+                  <div className='col-3'>
+                    <span>Position</span>
+                  </div>
+                  <div className='col-3'>
+                    <span>Player</span>
+                  </div>
+                  <div className='col-3'>
+                    <span>Beast</span>
+                  </div>
+                  <div className='col-3'>
+                    <span>Points</span>
+                  </div>
+                </div>
+                {top15Players.map((player, index) => {
+                  const playerBeast = findPlayerBeast(player.address);
+                  const beastType = playerBeast?.beast_type || null;
+                  
+                  return (
+                    <div 
+                      className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
+                      key={`total-points-${index}`}
+                    >
+                      <div className='col-3'>
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className='col-3 username-col'>
+                        <span>{player.userName || player.address.slice(0, 8)}</span>
+                      </div>
+                      <div className='col-3'>
+                        {beastType && beastsDex[beastType - 1]?.idlePicture ? (
+                          <img 
+                            src={beastsDex[beastType - 1]?.idlePicture} 
+                            className='beast' 
+                            alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
+                          />
+                        ) : (
+                          <span>-</span>
+                        )}
+                      </div>
+                      <div className='col-3'>
+                        <span>{player.total_points}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className='row mb-3'>
+                <div className='col-12 text-center'>
+                  <span>No players available</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
 
     return (
       <div className="minigames-container">
@@ -382,11 +489,15 @@ const Leaderboard = () => {
           data-bs-pause="hover"
         >
           <div className="carousel-inner">
-            {minigames.map((minigame, index) => (
-              <div key={`minigame-${index}`} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                {renderScoreTable(minigame.scores, minigame.title)}
-              </div>
-            ))}
+            <div className="carousel-item active">
+              {renderTotalPointsTable()}
+            </div>
+            <div className="carousel-item">
+              {renderScoreTable(skyJumpScores, "Sky Jump")}
+            </div>
+            <div className="carousel-item">
+              {renderScoreTable(flappyBirdScores, "Flappy Bird")}
+            </div>
           </div>
           <button 
             className="carousel-control-prev" 
@@ -410,48 +521,6 @@ const Leaderboard = () => {
           </button>
         </div>
       </div>
-    );
-  };
-
-  const renderContent = () => {
-    if (activeLeaderboard === 'age') {
-      if (!isLoadedBeasts) {
-        return (
-          <Spinner message='Loading beasts leaderboard...' />
-        );
-      }
-      
-      if (allBeasts.length === 0) {
-        return (
-          <div className='row mb-3'>
-            <div className='col-12 text-center'>
-              <span>No beasts available</span>
-            </div>
-          </div>
-        );
-      }
-    } else {
-      if (!isLoadedPlayers) {
-        return (
-          <Spinner message='Loading minigames leaderboard...' />
-        );
-      }
-      
-      if (allPlayers.length === 0) {
-        return (
-          <div className='row mb-3'>
-            <div className='col-12 text-center'>
-              <span>No scores available</span>
-            </div>
-          </div>
-        );
-      }
-    }
-    
-    return (
-      <>
-        {activeLeaderboard === 'age' ? renderAgeLeaderboard() : renderMinigamesLeaderboard()}
-      </>
     );
   };
 
