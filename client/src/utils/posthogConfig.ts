@@ -4,7 +4,7 @@ import type { PostHog } from 'posthog-js';
 interface CustomEnv {
   VITE_POSTHOG_API_KEY: string;
   VITE_POSTHOG_HOST: string;
-  DEV: boolean;
+  VITE_DEV: boolean;
 }
 
 interface PostHogSetupResult {
@@ -17,7 +17,7 @@ export function setupPostHog(): PostHogSetupResult {
 
   const apiKey = env.VITE_POSTHOG_API_KEY;
   const apiHost = env.VITE_POSTHOG_HOST;
-  const isDevelopment = env.DEV;
+  const isDevelopment = env.VITE_DEV;
 
   if (!apiKey) {
     console.warn('PostHog API key not found. Analytics will not be loaded.');
