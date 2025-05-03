@@ -1,72 +1,35 @@
-import { ControllerConnector}  from "@cartridge/connector";
-import {
-  ColorMode,
-  SessionPolicies,
-} from "@cartridge/controller";
 import { Connector } from "@starknet-react/core";
+import { ControllerConnector}  from "@cartridge/connector";
+import {ColorMode, SessionPolicies,ControllerOptions,} from "@cartridge/controller";
 
-const colorMode: ColorMode = "dark";
-const theme = "bytebeasts-tamagotchi";
+const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
+const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
+
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6'
 
 const policies: SessionPolicies = {
   contracts: {
-    ['0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790']: {
+    [CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM]: {
       methods: [
-        {
-          name: "awake",
-          entrypoint: "awake"
-        },
-        {
-          name: "clean",
-          entrypoint: "clean"
-        },
-        {
-          name: "feed",
-          entrypoint: "feed"
-        },
-        {
-          name: "get_beast_age",
-          entrypoint: "get_beast_age"
-        },
-        {
-          name: "get_beast_age_with_address",
-          entrypoint: "get_beast_age_with_address"
-        },
-        {
-          name: "get_timestamp_based_status",
-          entrypoint: "get_timestamp_based_status"
-        },
-        {
-          name: "get_timestamp_based_status_with_address",
-          entrypoint: "get_timestamp_based_status_with_address"
-        },
-        {
-          name: "pet",
-          entrypoint: "pet"
-        },
-        {
-          name: "play",
-          entrypoint: "play"
-        },
-        {
-          name: "revive",
-          entrypoint: "revive"
-        },
-        {
-          name: "sleep",
-          entrypoint: "sleep"
-        },
-        {
-          name: "spawn_beast",
-          entrypoint: "spawn_beast"
-        },
-        {
-          name: "update_beast",
-          entrypoint: "update_beast"
-        },
+        {name: "awake",entrypoint: "awake"},
+        {name: "clean", entrypoint: "clean"},
+        {name: "feed",entrypoint: "feed"},
+        {name: "get_beast_age",entrypoint: "get_beast_age"},
+        {name: "get_beast_age_with_address",entrypoint: "get_beast_age_with_address"},
+        {name: "get_timestamp_based_status",entrypoint: "get_timestamp_based_status"},
+        {name: "get_timestamp_based_status_with_address",entrypoint: "get_timestamp_based_status_with_address"},
+        {name: "pet",entrypoint: "pet"},
+        {name: "play",entrypoint: "play"},
+        {name: "revive",entrypoint: "revive"},
+        {name: "sleep",entrypoint: "sleep"},
+        {name: "spawn_beast",entrypoint: "spawn_beast"},
+        {name: "update_beast",entrypoint: "update_beast"},
+        {name: "update_food_amount",entrypoint: "update_food_amount"},
       ],
     },
-    ['0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6']: {
+
+    [CONTRACT_ADDRESS_PLAYER_SYSTEM]: {
       methods: [
         {
           name: "add_initial_food",
@@ -105,14 +68,34 @@ const policies: SessionPolicies = {
   },
 }
 
-// Configuración básica del conector
-const cartridgeConnector = new ControllerConnector({
+// Controller basic configuration
+const colorMode: ColorMode = "dark";
+const theme = "bytebeasts-tamagotchi";
+const namespace = "tamagotchi"; //ensure this is correct
+const slot = `bytebeasts-tamagotchi-${VITE_PUBLIC_DEPLOY_TYPE || 'dev'}`; //ensure bytebeasts-tamagotchi this is correct
+
+const getRpcUrl = () => {
+  switch (VITE_PUBLIC_DEPLOY_TYPE) {
+    case "mainnet":
+      return "https://api.cartridge.gg/x/starknet/mainnet";
+    case "sepolia":
+      return "https://api.cartridge.gg/x/starknet/sepolia";
+    default:
+      return VITE_PUBLIC_SLOT_ADDRESS;
+  }
+};
+
+const options: ControllerOptions = {
+  rpc: getRpcUrl(), 
   policies,
-  namespace: "tamagotchi",
-  slot: "bytebeaststamagotchi", 
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/bytebeaststamagotchi/katana'
-}) as never as Connector;
+  slot,
+  namespace,
+};
+
+const cartridgeConnector = new ControllerConnector(
+  options,
+) as never as Connector;
 
 export default cartridgeConnector;
