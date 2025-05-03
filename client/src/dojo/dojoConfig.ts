@@ -1,6 +1,6 @@
 import { createDojoConfig } from "@dojoengine/core";
 
-import manifest from "../dojo/manifest_dev.json";
+import { manifest } from "../config/manifest";
 
 const {
     VITE_PUBLIC_NODE_URL,
