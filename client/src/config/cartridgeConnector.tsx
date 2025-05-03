@@ -109,10 +109,10 @@ const policies: SessionPolicies = {
 const cartridgeConnector = new ControllerConnector({
   policies,
   namespace: "tamagotchi",
-  slot: "achievmentsbal", 
+  slot: "bytebeaststamagotchi", 
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/achievments/katana'
+  rpc: 'https://api.cartridge.gg/x/bytebeaststamagotchi/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
