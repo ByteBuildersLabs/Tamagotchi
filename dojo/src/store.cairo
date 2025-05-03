@@ -10,9 +10,11 @@ use tamagotchi::models::beast::{Beast, BeastTrait};
 use tamagotchi::models::beast_status::{BeastStatus, BeastStatusTrait};
 use tamagotchi::models::player::{Player};
 use tamagotchi::models::food::{Food};
+use tamagotchi::models::highest_score::{HighestScore};
 
 // types import
 use tamagotchi::types::food::{FoodType};
+use tamagotchi::types::beast_status_custom::{BeastStatusCustom};
 
 // Constants import
 use tamagotchi::constants;
@@ -43,6 +45,10 @@ pub impl StoreImpl of StoreTrait {
         self.world.read_model(player_address)
     }
 
+    fn read_beast_from_address(self: Store, beast_id: u16, player_address: ContractAddress) -> Beast {
+        self.world.read_model((player_address, beast_id))
+    }
+
     fn read_beast(self: Store, beast_id: u16) -> Beast {
         let player_address = get_caller_address();
         self.world.read_model((player_address, beast_id))
@@ -56,6 +62,11 @@ pub impl StoreImpl of StoreTrait {
     fn read_beast_status(self: Store, beast_id: u16) -> BeastStatus {
         self.world.read_model(beast_id)
     }
+
+    fn read_highest_score(self: Store, minigame_id: u16) -> HighestScore {
+        let player_address = get_caller_address();
+        self.world.read_model((minigame_id, player_address))
+    }    
 
     // --------- Setters ---------
     fn write_player(mut self: Store, mut player: @Player) {
@@ -74,6 +85,10 @@ pub impl StoreImpl of StoreTrait {
         self.world.write_model(food)
     }
 
+    fn write_new_highest_score(mut self: Store, highest_score: @HighestScore){
+        self.world.write_model(highest_score)
+    }
+    
     // --------- New entities ---------
     fn new_player(mut self: Store) {
         let caller = get_caller_address();
@@ -245,10 +260,16 @@ pub impl StoreImpl of StoreTrait {
         self.new_food(common_food_id, constants::MAX_FOOD_AMOUNT);
     }
 
-    fn new_beast_status(mut self: Store, beast_id: u16) {
+    fn new_beast_status_random_values(mut self: Store, beast_id: u16) {
         let current_timestamp = get_block_timestamp();
 
         let mut beast_status = BeastStatusTrait::new_beast_status_random_values(beast_id, current_timestamp);
+
+        self.world.write_model(@beast_status);
+    }
+
+    fn new_beast_status_custom_values(mut self: Store, beast_status_custom: BeastStatusCustom) {
+        let mut beast_status = BeastStatusTrait::new_beast_status_custom_values(beast_status_custom);
 
         self.world.write_model(@beast_status);
     }
@@ -260,7 +281,7 @@ pub impl StoreImpl of StoreTrait {
         let mut new_beast = Beast {
             player: player,
             beast_id: beast_id,
-            age: 1,
+            age: 0,
             birth_date: current_timestamp,
             specie: specie,
             beast_type: beast_type,

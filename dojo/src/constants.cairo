@@ -41,11 +41,13 @@ pub fn ZERO_ADDRESS() -> ContractAddress {
 pub const SECONDS_PER_DAY: u64 = 86400;
 
 // Total seconds in 3,6 minutes
-pub const SECONDS_IN_3_MINUTES: u64 = 220;
-// total seconds in 5 minutes
+pub const SECONDS_IN_3_6_MINUTES: u64 = 220;
+// Total seconds in 5 minutes
 pub const SECONDS_IN_5_MINUTES: u64 = 300;
-
+// Total seconds in 5 minutes
+pub const SECONDS_IN_6_MINUTES: u64 = 360;
+// Total seconds in 3 minutes
+pub const SECONDS_IN_3_MINUTES: u64 = 180;
 
 // Sleeping mechanics
-pub const POINTS_PER_SECOND: u8 = 80; 
-pub const MAX_RECOVER_TIME: u32 = 8000;
+pub const TOTAL_RECOVER_TIME: u64 = 18000; // Based on 1 point every 3 minutes increase rate | 5 hours to fully recover

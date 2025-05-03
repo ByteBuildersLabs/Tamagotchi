@@ -20,6 +20,9 @@ pub mod utils {
     use tamagotchi::models::player::{m_Player};
     use tamagotchi::models::food::{m_Food};
 
+    // Events imports
+    use tamagotchi::events::push::{e_PushToken};
+
     // ------- Constants -------
     pub fn PLAYER() -> ContractAddress {
         starknet::contract_address_const::<'PLAYER'>()
@@ -34,6 +37,9 @@ pub mod utils {
                 TestResource::Model(m_BeastStatus::TEST_CLASS_HASH),
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Model(m_Food::TEST_CLASS_HASH),
+                TestResource::Event(e_PushToken::TEST_CLASS_HASH),
+                TestResource::Event(achievement::events::index::e_TrophyCreation::TEST_CLASS_HASH),
+                TestResource::Event(achievement::events::index::e_TrophyProgression::TEST_CLASS_HASH),
                 TestResource::Contract(player::TEST_CLASS_HASH),
                 TestResource::Contract(game::TEST_CLASS_HASH),
             ].span(),

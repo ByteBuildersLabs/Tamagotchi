@@ -57,6 +57,18 @@ export interface FoodValue {
 	amount: BigNumberish;
 }
 
+// Type definition for `tamagotchi::models::highest_score::HighestScore` struct
+export interface HighestScore {
+	minigame_id: BigNumberish;
+	player: string;
+	score: BigNumberish;
+}
+
+// Type definition for `tamagotchi::models::highest_score::HighestScoreValue` struct
+export interface HighestScoreValue {
+	score: BigNumberish;
+}
+
 // Type definition for `tamagotchi::models::player::Player` struct
 export interface Player {
 	address: string;
@@ -76,6 +88,17 @@ export interface PlayerValue {
 	creation_day: BigNumberish;
 }
 
+// Type definition for `tamagotchi::events::push::PushToken` struct
+export interface PushToken {
+	player_address: string;
+	token: string;
+}
+
+// Type definition for `tamagotchi::events::push::PushTokenValue` struct
+export interface PushTokenValue {
+	token: string;
+}
+
 export interface SchemaType extends ISchemaType {
 	tamagotchi: {
 		Beast: Beast,
@@ -84,8 +107,12 @@ export interface SchemaType extends ISchemaType {
 		BeastStatusValue: BeastStatusValue,
 		Food: Food,
 		FoodValue: FoodValue,
+		HighestScore: HighestScore,
+		HighestScoreValue: HighestScoreValue,
 		Player: Player,
 		PlayerValue: PlayerValue,
+		PushToken: PushToken,
+		PushTokenValue: PushTokenValue,
 	},
 }
 export const schema: SchemaType = {
@@ -133,6 +160,14 @@ export const schema: SchemaType = {
 		FoodValue: {
 			amount: 0,
 		},
+		HighestScore: {
+			minigame_id: 0,
+			player: "",
+			score: 0,
+		},
+		HighestScoreValue: {
+			score: 0,
+		},
 		Player: {
 			address: "",
 			current_beast_id: 0,
@@ -148,6 +183,13 @@ export const schema: SchemaType = {
 			last_active_day: 0,
 			creation_day: 0,
 		},
+		PushToken: {
+			player_address: "",
+		token: "",
+		},
+		PushTokenValue: {
+		token: "",
+		},
 	},
 };
 export enum ModelsMapping {
@@ -157,6 +199,10 @@ export enum ModelsMapping {
 	BeastStatusValue = 'tamagotchi-BeastStatusValue',
 	Food = 'tamagotchi-Food',
 	FoodValue = 'tamagotchi-FoodValue',
+	HighestScore = 'tamagotchi-HighestScore',
+	HighestScoreValue = 'tamagotchi-HighestScoreValue',
 	Player = 'tamagotchi-Player',
 	PlayerValue = 'tamagotchi-PlayerValue',
+	PushToken = 'tamagotchi-PushToken',
+	PushTokenValue = 'tamagotchi-PushTokenValue',
 }

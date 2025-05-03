@@ -10,6 +10,10 @@ mod tests {
     use tamagotchi::models::beast_status::{BeastStatus};
     use tamagotchi::tests::utils::{utils::{PLAYER, cheat_caller_address, create_game_system, create_player_system, create_test_world, cheat_block_timestamp}};
 
+    // Types import
+    use tamagotchi::types::beast_status_custom::{BeastStatusCustom};
+    use tamagotchi::types::clean_status::{CleanStatus};
+
     #[test]
     fn test_beast_sleep() {
         // Initialize test environment
@@ -298,6 +302,133 @@ mod tests {
         assert(revived_status.hunger == 100, 'wrong hunger value');
         assert(revived_status.happiness == 100, 'wrong happiness value');
         assert(revived_status.hygiene == 100, 'wrong hygiene value');
+    }
+
+    #[test]
+    fn test_beast_status_decrease_beast_at_100_and_awake() {
+        // Initialize test environment
+        let mut world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
+
+        let custom_beast_status =  BeastStatusCustom {
+            beast_id: 1,
+            is_alive: true,
+            is_awake: true,
+            hunger: 100,
+            energy: 100,
+            happiness: 100,
+            hygiene: 100,
+            clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 7000000,
+        };
+
+        cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
+
+        // Create player and beast
+        player_system.spawn_player();
+        game_system.spawn_beast_custom_status(1, 1, custom_beast_status);
+        player_system.set_current_beast(1);
+
+        let mut status: BeastStatus = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Initial Status - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 2 hours         
+        cheat_block_timestamp(7007200);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 2 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 4 hours         
+        cheat_block_timestamp(7014400);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 4 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 6 hours         
+        cheat_block_timestamp(7021600);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 6 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 8 hours         
+        cheat_block_timestamp(7028800);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 8 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+        
+        assert(status.is_alive, 'beast should be alive');
+    }
+
+    #[test]
+    fn test_beast_status_decrease_beast_at_100_and_asleep() {
+        // Initialize test environment
+        let mut world = create_test_world();
+        let game_system = create_game_system(world);
+        let player_system = create_player_system(world);
+
+        let custom_beast_status =  BeastStatusCustom {
+            beast_id: 1,
+            is_alive: true,
+            is_awake: true,
+            hunger: 50,
+            energy: 1,
+            happiness: 50,
+            hygiene: 50,
+            clean_status: CleanStatus::Clean.into(),
+            last_timestamp: 7000000,
+        };
+
+        cheat_caller_address(PLAYER());
+        cheat_block_timestamp(7000000);
+
+        // Create player and beast
+        player_system.spawn_player();
+        game_system.spawn_beast_custom_status(1, 1, custom_beast_status);
+        player_system.set_current_beast(1);
+
+        game_system.sleep();
+        let mut status: BeastStatus = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Initial Status - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 2 hours         
+        cheat_block_timestamp(7007200);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 2 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 4 hours         
+        cheat_block_timestamp(7014400);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 4 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 6 hours         
+        cheat_block_timestamp(7021600);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 6 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        // Calculate status after 8 hours         
+        cheat_block_timestamp(7028800);
+        status = game_system.get_timestamp_based_status();
+
+        println!("[Decrease test] Status after 8 hours - Energy: {}, Happiness: {}, Hygiene: {}, Hunger: {}, Is Awake: {}, Is Alive {}", 
+        status.energy, status.happiness, status.hygiene, status.hunger, status.is_awake, status.is_alive);
+
+        assert(status.is_alive, 'beast should be alive');
     }
 
 }

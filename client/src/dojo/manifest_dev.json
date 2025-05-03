@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x289e9af5a5ee971c5e10ebf72fae4d6ad47d64268e4a04a969cd383b38c52f2",
-      "class_hash": "0x7a4ea86f065b1339f64954d27ea137a5b60d81aff54bf4e655efe781df0c84",
+      "address": "0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790",
+      "class_hash": "0x556b2f41a2089ffc197491ca97c66f4f6f8a8c6ec6acb4bcf9c8fec2250df39",
       "abi": [
         {
           "type": "impl",
@@ -1393,6 +1393,48 @@
         },
         {
           "type": "struct",
+          "name": "tamagotchi::types::beast_status_custom::BeastStatusCustom",
+          "members": [
+            {
+              "name": "beast_id",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "is_alive",
+              "type": "core::bool"
+            },
+            {
+              "name": "is_awake",
+              "type": "core::bool"
+            },
+            {
+              "name": "hunger",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "energy",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "happiness",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "hygiene",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "clean_status",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "last_timestamp",
+              "type": "core::integer::u64"
+            }
+          ]
+        },
+        {
+          "type": "struct",
           "name": "tamagotchi::models::beast_status::BeastStatus",
           "members": [
             {
@@ -1448,6 +1490,26 @@
                 {
                   "name": "beast_type",
                   "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "spawn_beast_custom_status",
+              "inputs": [
+                {
+                  "name": "specie",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "beast_type",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "beast_status",
+                  "type": "tamagotchi::types::beast_status_custom::BeastStatusCustom"
                 }
               ],
               "outputs": [],
@@ -1684,6 +1746,7 @@
       "systems": [
         "dojo_init",
         "spawn_beast",
+        "spawn_beast_custom_status",
         "update_beast",
         "feed",
         "sleep",
@@ -1700,8 +1763,8 @@
       ]
     },
     {
-      "address": "0x46c402a1a4ef204a135e08b81ad3c741e355ef6a3eaae8fcc01a3ef22594eb7",
-      "class_hash": "0x7522c2faa371ac553274d55342169b550148e8100cd3a7421bd9126d16b00a6",
+      "address": "0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6",
+      "class_hash": "0x16e693f0fe97efe8bed2acb44f0391ea17047216044f212a3db4dc14a863bf3",
       "abi": [
         {
           "type": "impl",
@@ -1809,6 +1872,22 @@
             },
             {
               "type": "function",
+              "name": "update_player_minigame_highest_score",
+              "inputs": [
+                {
+                  "name": "points",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "minigame_id",
+                  "type": "core::integer::u16"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
               "name": "add_or_update_food_amount",
               "inputs": [
                 {
@@ -1818,6 +1897,18 @@
                 {
                   "name": "amount",
                   "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "emit_player_push_token",
+              "inputs": [
+                {
+                  "name": "token",
+                  "type": "core::byte_array::ByteArray"
                 }
               ],
               "outputs": [],
@@ -1917,6 +2008,12 @@
         },
         {
           "type": "event",
+          "name": "achievement::components::achievable::AchievableComponent::Event",
+          "kind": "enum",
+          "variants": []
+        },
+        {
+          "type": "event",
           "name": "tamagotchi::systems::player::player::Event",
           "kind": "enum",
           "variants": [
@@ -1929,6 +2026,11 @@
               "name": "WorldProviderEvent",
               "type": "dojo::contract::components::world_provider::world_provider_cpt::Event",
               "kind": "nested"
+            },
+            {
+              "name": "AchievableEvent",
+              "type": "achievement::components::achievable::AchievableComponent::Event",
+              "kind": "flat"
             }
           ]
         }
@@ -1942,7 +2044,9 @@
         "set_current_beast",
         "update_player_daily_streak",
         "update_player_total_points",
+        "update_player_minigame_highest_score",
         "add_or_update_food_amount",
+        "emit_player_push_token",
         "upgrade"
       ]
     }
@@ -1969,11 +2073,36 @@
     },
     {
       "members": [],
+      "class_hash": "0x3ed5b7e51e018429d1355998ba752417f92c70ce9e510f07f4f19915cdb1684",
+      "tag": "tamagotchi-HighestScore",
+      "selector": "0x5deb2bdb1a82577394936a27d58d8a644c1665719915e10fdb8e993021a6604"
+    },
+    {
+      "members": [],
       "class_hash": "0x1bfd905032b1b8038e294f034c687612589f370faf359312b55b6aad19d561b",
       "tag": "tamagotchi-Player",
       "selector": "0x3c2b9e38bb17747db3008b613c6b1ef5f9a6bcd4c1f40f329e7ff691aafa1e2"
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "members": [],
+      "class_hash": "0x5ba467d714df9e1d85391e0660a13608d50ef9bca1704d6a452ecf2ca790b24",
+      "tag": "tamagotchi-PushToken",
+      "selector": "0x4e3bbf322d0cb081bf00ecf1d10a39c0d3aabd0cc5a930f68529b6beff15ee2"
+    },
+    {
+      "members": [],
+      "class_hash": "0x19a5c06b3a8417ff3f9883be3acb0e33c835795bd81fb87a5a47e6ed7d2d3af",
+      "tag": "tamagotchi-TrophyCreation",
+      "selector": "0x1454ef6269d8e20ab6a43686489082aa1525c0a46623f4670b0866c30e19eac"
+    },
+    {
+      "members": [],
+      "class_hash": "0x1922d2cd8b63eccf66321673234a52126cd9f0ab1bf6298c5abee6ee80c8990",
+      "tag": "tamagotchi-TrophyProgression",
+      "selector": "0x6dcb5b11df802989384a789be9f9ae0bd934b8bbee1e3e1f8e6d2544e3eea65"
+    }
+  ],
   "external_contracts": []
 }

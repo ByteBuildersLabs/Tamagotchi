@@ -12,8 +12,8 @@ const getBirthDate = (hexBirthDate:any) => {
     year: localDate.getUTCFullYear(),
     month: localDate.getUTCMonth() + 1,
     day: localDate.getUTCDate(),
-    hours: localDate.getUTCHours(),
-    minutes: localDate.getUTCMinutes(),
+    hours: String(localDate.getUTCHours()).padStart(2, '0'),
+    minutes: String(localDate.getUTCMinutes()).padStart(2, '0'),
     seconds: localDate.getUTCSeconds(),
     timezone: "GMT-0600 (hora estándar central)"
   };
@@ -22,7 +22,7 @@ const getBirthDate = (hexBirthDate:any) => {
 const fetchStatus = async (account:any) => {
     try {
         const response = await account?.callContract({
-          contractAddress: "0x289e9af5a5ee971c5e10ebf72fae4d6ad47d64268e4a04a969cd383b38c52f2",
+          contractAddress: "0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790",
           entrypoint: "get_timestamp_based_status_with_address",
           calldata: [String(account?.address)],
         });
@@ -32,4 +32,25 @@ const fetchStatus = async (account:any) => {
       }
 };
 
-export { fetchStatus, getBirthDate };
+const fetchAge = async (account:any) => {
+  try {
+      const response = await account?.callContract({
+        contractAddress: "0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790",
+        entrypoint: "get_beast_age_with_address",
+        calldata: [String(account?.address)],
+      });
+      return hexToDecimalArray(response);
+    } catch (err) {
+      console.log(err)
+    }
+};
+
+const getDayPeriod = () => {
+  const currentHours = new Date().getHours();
+  if (currentHours >= 4 && currentHours < 7) return "sunrise";
+  if (currentHours >= 7 && currentHours < 16) return "day";
+  if (currentHours >= 16 && currentHours < 19) return "sunset";
+  return "night";
+};
+
+export { fetchStatus, fetchAge, getBirthDate, getDayPeriod };

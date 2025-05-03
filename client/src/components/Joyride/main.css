@@ -1,6 +1,6 @@
 .react-joyride__tooltip {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  color: #ECECDA !important;
+  background-color: var(--overlay-dark) !important;
+  color: var(--text-light) !important;
   font-family: "Montserrat", serif !important;
   border-radius: 30px;
   padding: 24px 10px !important;
@@ -9,17 +9,17 @@
 }
 
 .react-joyride__tooltip button {
-  color: #ECECDA !important;
+  color: var(--text-light) !important;
   font-weight: bold;
 }
 
 .react-joyride__tooltip button:nth-child(2) {
-  background-color: #891a29 !important;
+  background-color: var(--primary-red-light) !important;
   border-radius: 9px !important;
 }
 
 [data-test-id="button-primary"] {
-  background-color: #891a29 !important;
+  background-color: var(--primary-red-light) !important;
   border-radius: 9px !important;
 }
 

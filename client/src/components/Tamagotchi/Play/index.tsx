@@ -1,10 +1,12 @@
-import toast, { Toaster } from 'react-hot-toast';
+import React from 'react';
 import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
-import { getAvailableGames, getHighScore } from '../../../data/gamesMiniGamesRegistry.tsx';
+import { getAvailableGames } from '../../../data/gamesMiniGamesRegistry.tsx';
+import { useHighScores } from '../../../hooks/useHighScore.tsx';
 import './main.css';
 
 const availableGames = getAvailableGames();
+
 interface PlayProps {
   handleAction: any;
   beast: any;
@@ -13,35 +15,28 @@ interface PlayProps {
   showAnimation?: (gifPath: string) => void;
 }
 
-const Play: React.FC<PlayProps> = ({ 
-  handleAction, 
-  beast, 
-  account, 
+const Play: React.FC<PlayProps> = ({
+  handleAction,
+  beast,
+  account,
   client,
-  showAnimation 
+  showAnimation
 }) => {
   const navigate = useNavigate();
-  
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
   const startGame = async (gameId: string) => {
     if (!beast) return;
-    
+
     if (showAnimation) {
       const playAnimation = beastsDex[beast.specie - 1].playPicture;
       showAnimation(playAnimation);
     }
 
     try {
-      await toast.promise(
-        handleAction(
-          "Play", 
-          () => client.game.play(account), 
-          beastsDex[beast.specie - 1].playPicture
-        ),
-        {
-          loading: 'Loading the game...',
-          success: '¡Game started!',
-          error: 'Cannot start the game.',
-        }
+      handleAction(
+        "Play",
+        async () => await client.game.play(account),
+        beastsDex[beast.specie - 1].playPicture
       );
 
       window.__gameTemp = {
@@ -49,12 +44,12 @@ const Play: React.FC<PlayProps> = ({
         client,
         account
       };
-      
+
       navigate('/fullscreen-game', {
         state: {
           beastId: beast.beast_id,
           specie: beast.specie,
-          gameId: gameId
+          gameId
         }
       });
     } catch (error) {
@@ -76,15 +71,21 @@ const Play: React.FC<PlayProps> = ({
               <h3 className="game-name">{game.name}</h3>
               <p className="game-description" >{game.description}</p>
               <div className="game-high-score" >
-                Record: {getHighScore(game.id, beast?.beast_id || 0)}
+                Record: {(() => {
+                  switch (game.id) {
+                    case '1': return myScoreSkyJump[0]?.score || '0';
+                    case '2': return myScoreFlappyBird[0]?.score || '0';
+                    default: return '0';
+                  }
+                })()}
               </div>
             </div>
           </div>
         ))}
       </div>
-      <Toaster position="bottom-center" />
     </div>
   );
+
 };
 
 export default Play;

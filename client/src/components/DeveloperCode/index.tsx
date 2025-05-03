@@ -5,7 +5,7 @@ export function DeveloperCode() {
   const [confirmed, setConfirmed] = useState(false);
 
   function confirmCode(e: { target: { value: string; }; }) {
-    if (e.target.value === 'babybeasts') {
+    if (e.target.value === 'bytebeasts') {
       setConfirmed(true);
     }
   }

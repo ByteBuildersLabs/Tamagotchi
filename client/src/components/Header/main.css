@@ -33,7 +33,7 @@
   align-items: center;
   z-index: 3;
   padding: 0;
-  background-color: #ECECDA;
+  background-color: var(--text-light);
 }
 .toggle-icon {
   width: 25px;
@@ -42,6 +42,7 @@
 }
 
 .side-menu-container {
+  display: flex;
   position: relative;
 }
 
@@ -50,7 +51,7 @@
   right: -15px;
   top: 50px;
   width: 200px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--overlay-dark-light);
   border-radius: 15px;
   padding: 20px 15px;
   display: flex;
@@ -69,7 +70,7 @@
 }
 
 .side-menu .item {
-  background-color: #ECECDA;
+  background-color: var(--text-light);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -85,7 +86,7 @@
 }
 
 .side-menu span {
-  color: #891a29;
+  color: var(--primary-red-light);
   margin-left: 10px;
   font-weight: bold;
 }

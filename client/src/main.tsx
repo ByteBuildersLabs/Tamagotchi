@@ -19,6 +19,7 @@ import { posthogInstance } from './utils/posthogConfig';
 import Main from "./components/Main/index.tsx";
 import "./index.css";
 
+
 async function main() {
   const sdk = await init<SchemaType>({
     client: {

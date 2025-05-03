@@ -1,6 +1,7 @@
-// Importaciones para juegos
 import DoodleGame  from '../components/SkyJumpMiniGame/index.tsx';
 import doodleGameIcon from '../assets/img/doodle-game-icon.svg';
+import FlappyBirdMiniGame from '../components/FlappyBeasts/flappyBeasts.tsx';
+import flappyBirdIcon from '../assets/FlappyBeasts/flappyIcon.svg';
 
 export interface GameData {
   id: string;
@@ -18,6 +19,13 @@ export const GAMES_REGISTRY: Record<string, GameData> = {
     description: 'Jump as high as you can!',
     component: DoodleGame,
     icon: doodleGameIcon
+  },
+  'flappyBirdGame': {
+    id: 'flappyBirdGame',
+    name: 'Flappy Beasts',
+    description: 'Tap to fly through obstacles!',
+    component: FlappyBirdMiniGame,
+    icon: flappyBirdIcon
   },
 };
 

@@ -8,6 +8,9 @@ const About: React.FC = () => {
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) bodyElement.classList.remove('day');
+    if (bodyElement) bodyElement.classList.remove('night');
+    if (bodyElement) bodyElement.classList.remove('sunrise');
+    if (bodyElement) bodyElement.classList.remove('sunset');
   }, []);
 
   return (

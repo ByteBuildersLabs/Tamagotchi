@@ -1,27 +1,37 @@
-/* Estilos que SÍ se utilizan en el componente Play */
-
 .game-selection-container {
-  padding: 15px;
+  width: 100%;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 15px 0;
+  overflow-x: hidden;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 15px;
-  height: 120px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  margin: 0 auto;
 }
 
 .game-selection-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
   gap: 15px;
-  margin-bottom: 20px;
-  justify-content: center;
-  justify-items: center;
-  grid-template-columns: minmax(140px, 300px);
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 300px;
+  padding: 0;
+  margin: 0;
+}
+
+.game-selection-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .game-card {
+  flex: 0 0 100%;
+  width: 100%;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  min-width: 0;
+  max-width: none;
   border-radius: 8px;
   padding: 10px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -31,7 +41,6 @@
   column-gap: 10px;
   align-items: start;
   color: #ececda;
-  cursor: pointer;
 }
 
 .game-card:hover {
@@ -49,7 +58,7 @@
 .game-card-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
+  align-items: flex-start;
   grid-column: 2 / 3;
 }
 
@@ -69,30 +78,32 @@
 .game-high-score {
   font-size: 12px;
   font-family: 'Kallisto', sans-serif;
-  color: #ECECDA;
+  color: #ececda;
   margin: 0;
 }
 
 @media (max-width: 600px) {
-  .game-selection-grid {
-    grid-template-columns: minmax(120px, 240px);
-    max-width: 240px;
+  .game-selection-container {
+    padding: 10px 10px;
   }
-  
+
+  .game-selection-grid {
+    padding: 0
+  }
+
   .game-card {
     padding: 5px;
-    max-width: 240px;
   }
-  
+
   .game-icon {
     width: 48px;
     height: 48px;
   }
-  
+
   .game-name {
     font-size: 18px;
   }
-  
+
   .game-description {
     font-size: 14px;
   }

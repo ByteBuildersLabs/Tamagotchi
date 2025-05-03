@@ -4,8 +4,8 @@ import {ColorMode, SessionPolicies,ControllerOptions,} from "@cartridge/controll
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7c0dd42dd8e7e948453bb8540977f1da32963be8f7c03962cdb2838a52263da'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5cb5588212364951995ef1006b64dd610a6f3ef6a264726dc5d4a2e6b57aa6e'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6'
 
 const policies: SessionPolicies = {
   contracts: {
@@ -27,13 +27,41 @@ const policies: SessionPolicies = {
         {name: "update_food_amount",entrypoint: "update_food_amount"},
       ],
     },
+
     [CONTRACT_ADDRESS_PLAYER_SYSTEM]: {
       methods: [
-        {name: "add_initial_food",entrypoint: "add_initial_food"},
-        {name: "set_current_beast",entrypoint: "set_current_beast"},
-        {name: "spawn_player",entrypoint: "spawn_player"},
-        {name: "update_player_daily_streak",entrypoint: "update_player_daily_streak"},
-        {name: "update_player_total_points",entrypoint: "update_player_total_points"},
+        {
+          name: "add_initial_food",
+          entrypoint: "add_initial_food"
+        },
+        {
+          name: "set_current_beast",
+          entrypoint: "set_current_beast"
+        },
+        {
+          name: "spawn_player",
+          entrypoint: "spawn_player"
+        },
+        {
+          name: "update_player_daily_streak",
+          entrypoint: "update_player_daily_streak"
+        },
+        {
+          name: "update_player_total_points",
+          entrypoint: "update_player_total_points"
+        },
+        {
+          name: "add_or_update_food_amount",
+          entrypoint: "add_or_update_food_amount"
+        },
+        {
+          name: "update_player_minigame_highest_score",
+          entrypoint: "update_player_minigame_highest_score"
+        },
+        {
+          name: "emit_player_push_token",
+          entrypoint: "emit_player_push_token"
+        },
       ],
     },
   },
@@ -52,13 +80,15 @@ const getRpcUrl = () => {
     case "sepolia":
       return "https://api.cartridge.gg/x/starknet/sepolia";
     default:
-      return "https://api.cartridge.gg/x/bbslotfood/katana";
+      return "https://api.cartridge.gg/x/bytebeaststamagotchi/katana";
   }
 };
 
 const options: ControllerOptions = {
   rpc: getRpcUrl(), 
   policies,
+  namespace: "tamagotchi",
+  slot: "bytebeaststamagotchi", 
   theme,
   colorMode,
   slot,

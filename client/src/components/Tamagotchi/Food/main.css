@@ -5,6 +5,7 @@
   height: 120px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 15px;
+  display: flex;
 }
 
 .food-carousel {
@@ -79,4 +80,71 @@
   100% {
     transform: translateY(-25%);
   }
+}
+
+/* Styles for mobile drag visual */
+.mobile-drag-image {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+  animation: pulse 1.2s infinite alternate;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Style for beast when valid drop target */
+.drag-over {
+  filter: brightness(1.3) drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.food-item:active {
+  cursor: grabbing;
+}
+
+.food-item:disabled {
+  cursor: not-allowed;
+}
+
+/* Prevent text selection during drag operations */
+body.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Add instruction tooltip */
+.drag-instruction {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 9998;
+  pointer-events: none;
+  animation: fadeIn 0.3s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Fix for iOS Safari to prevent unwanted scrolling and selection */
+.preventing-scroll {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
 }

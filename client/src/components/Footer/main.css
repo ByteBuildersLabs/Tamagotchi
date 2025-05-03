@@ -9,12 +9,11 @@
 .footer-team {
   border-radius: 50%;
   height: 50px;
-  border: 2px solid #ECECDA;
+  border: 2px solid var(--text-light);
 }
 
 .carousel-item {
-  padding: 0 60px;
-  color: #ECECDA;
+  color: var(--text-light);
   font-weight: 500;
 }
 
@@ -24,7 +23,7 @@
 }
 
 .bottom-footer {
-  color: #ECECDA;
+  color: var(--text-light);
   font-weight: bold;
   display: flex;
   align-items: center;

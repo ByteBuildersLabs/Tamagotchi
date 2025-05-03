@@ -1,5 +1,8 @@
-// Types import
+// Models import
 use tamagotchi::models::beast_status::BeastStatus;
+
+// Types import
+use tamagotchi::types::beast_status_custom::{BeastStatusCustom};
 
 // Starknet import
 use starknet::ContractAddress;
@@ -9,6 +12,7 @@ use starknet::ContractAddress;
 pub trait IGame<T> {
     // ------------------------- Beast methods -------------------------
     fn spawn_beast(ref self: T, specie: u8, beast_type: u8);
+    fn spawn_beast_custom_status(ref self: T, specie: u8, beast_type: u8, beast_status: BeastStatusCustom);
     fn update_beast(ref self: T);
     fn feed(ref self: T, food_id: u8);
     fn sleep(ref self: T);
@@ -28,7 +32,7 @@ pub trait IGame<T> {
 #[dojo::contract]
 pub mod game {
     // Local import
-    use super::{IGame};
+    use super::{IGame, BeastStatusCustom};
 
     // Starknet imports
     use starknet::{ContractAddress};
@@ -78,7 +82,7 @@ pub mod game {
             
             let current_beast_id = self.beast_counter.read();
 
-            store.new_beast_status(current_beast_id);
+            store.new_beast_status_random_values(current_beast_id);
             store.new_beast(current_beast_id, specie, beast_type);
 
             store.init_player_food(current_beast_id);
@@ -86,7 +90,21 @@ pub mod game {
             self.beast_counter.write(current_beast_id+1);
         }
 
-         // This method is used to update the beast related data and write it to the world
+        fn spawn_beast_custom_status(ref self: ContractState, specie: u8, beast_type: u8, beast_status: BeastStatusCustom) {
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            
+            let current_beast_id = self.beast_counter.read();
+
+            store.new_beast_status_custom_values(beast_status);
+            store.new_beast(current_beast_id, specie, beast_type);
+
+            store.init_player_food(current_beast_id);
+
+            self.beast_counter.write(current_beast_id+1);
+        }
+
+        // This method is used to update the beast related data and write it to the world
         fn update_beast(ref self: ContractState) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
@@ -105,7 +123,6 @@ pub mod game {
             else {
                 beast_status.calculate_timestamp_based_status_asleep(current_timestamp);
             }
- 
             store.write_beast_status(@beast_status);
             
             // Update beast and write it to the world
@@ -257,7 +274,7 @@ pub mod game {
                 if beast_status.hygiene > constants::MAX_HYGIENE{
                     beast_status.hygiene = constants::MAX_HYGIENE;
                 }
-                beast_status.happiness = beast_status.happiness + constants::L_UPDATE_POINTS;
+                beast_status.happiness = beast_status.happiness + constants::XS_UPDATE_POINTS;
                 if beast_status.happiness > constants::MAX_HAPPINESS {
                     beast_status.happiness = constants::MAX_HAPPINESS;
                 }
@@ -358,7 +375,7 @@ pub mod game {
             player.assert_exists();
 
             let beast_id = player.current_beast_id;
-            let mut beast: Beast = store.read_beast(beast_id);
+            let mut beast: Beast = store.read_beast_from_address(beast_id, address);
 
             let current_timestamp = get_block_timestamp();
             beast.calculate_age(current_timestamp);

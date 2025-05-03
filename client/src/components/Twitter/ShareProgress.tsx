@@ -40,7 +40,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
         `🛁 Cleanliness: ${stats.clean} \n\n` +
         `These are my current values! 🌟\n\n` +
         `Ready to raise your own Beast? 🚀\n` +
-        `👉 https://www.babybeasts.games \n` +
+        `👉 https://www.bytebeasts.games \n` +
         `@0xByteBeasts`
       );
     } else if (type === 'minigame' && minigameData) {
@@ -48,7 +48,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
         `🎮 I just played ${minigameData.name} mini-game in ByteBeasts Tamagotchi\n\n` +
         `My score: ${minigameData.score} 🏆\n\n` +
         `Think you can beat it? Bring it on!🔥\n` +
-        `👉 https://www.babybeasts.games \n` +
+        `👉 https://www.bytebeasts.games \n` +
         `@0xByteBeasts`
       );
     }
@@ -63,11 +63,20 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay"
+      onClick={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}>
+
       <div className="modal-content">
         <div className="modal-header">
           <h2>Share on X</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button 
+            className="close-button" 
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+          >×</button>
         </div>
         
         <div className="modal-body">
@@ -85,6 +94,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             target="_blank"
             rel="noreferrer"
             className="share-button"
+            onClick={(e) => e.stopPropagation()}
           >
             Share
           </a>
