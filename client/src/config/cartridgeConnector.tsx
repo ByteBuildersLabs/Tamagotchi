@@ -66,7 +66,7 @@ const policies: SessionPolicies = {
         },
       ],
     },
-    ['0x78bb6113e7dc5956cd3b630fdb22f227674f8c7997b1e798cec628c01672c62']: {
+    ['0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6']: {
       methods: [
         {
           name: "add_initial_food",
@@ -109,10 +109,10 @@ const policies: SessionPolicies = {
 const cartridgeConnector = new ControllerConnector({
   policies,
   namespace: "tamagotchi",
-  slot: "achievmentsbal", 
+  slot: "bytebeaststamagotchi", 
   theme,
   colorMode,
-  rpc: 'https://api.cartridge.gg/x/achievments/katana'
+  rpc: 'https://api.cartridge.gg/x/bytebeaststamagotchi/katana'
 }) as never as Connector;
 
 export default cartridgeConnector;
