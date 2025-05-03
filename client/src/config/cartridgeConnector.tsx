@@ -3,6 +3,7 @@ import { ControllerConnector}  from "@cartridge/connector";
 import {ColorMode, SessionPolicies,ControllerOptions,} from "@cartridge/controller";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
+const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
 const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790'
 const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6'
@@ -80,15 +81,13 @@ const getRpcUrl = () => {
     case "sepolia":
       return "https://api.cartridge.gg/x/starknet/sepolia";
     default:
-      return "https://api.cartridge.gg/x/bytebeaststamagotchi/katana";
+      return VITE_PUBLIC_SLOT_ADDRESS;
   }
 };
 
 const options: ControllerOptions = {
   rpc: getRpcUrl(), 
   policies,
-  namespace: "tamagotchi",
-  slot: "bytebeaststamagotchi", 
   theme,
   colorMode,
   slot,

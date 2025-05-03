@@ -9,6 +9,7 @@ import cartridgeConnector from "../config/cartridgeConnector";
 
 export default function StarknetProvider({ children }: PropsWithChildren) {
     const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
+    const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
     // Get RPC URL based on environment
     const getRpcUrl = () => {
@@ -18,7 +19,7 @@ export default function StarknetProvider({ children }: PropsWithChildren) {
             case "sepolia":
                 return "https://api.cartridge.gg/x/starknet/sepolia";
             default:
-                return "https://api.cartridge.gg/x/bbslotfood/katana"; 
+                return VITE_PUBLIC_SLOT_ADDRESS; 
         }
     };
 
