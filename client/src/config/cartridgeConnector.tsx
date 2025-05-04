@@ -4,7 +4,6 @@ import { ColorMode, SessionPolicies, ControllerOptions, } from "@cartridge/contr
 import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
-const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
 const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x6e34249d89c6a2dd8059f9839122b294dec169e270baba0cca3c4d9b731ae5e'
 const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x50ea71c0a5259bed8aa5f4b111a0b6a4b5e8b342c273ae6269bef0cbc2c9b19'
@@ -75,23 +74,13 @@ const theme = "bytebeasts-tamagotchi";
 const namespace = "tamagotchi"; //ensure this is correct
 const slot = `bytebeasts-tamagotchi-${VITE_PUBLIC_DEPLOY_TYPE || 'dev'}`; //ensure bytebeasts-tamagotchi this is correct
 
-const getRpcUrl = () => {
-  switch (VITE_PUBLIC_DEPLOY_TYPE) {
-    case "mainnet":
-      return "https://api.cartridge.gg/x/starknet/mainnet";
-    case "sepolia":
-      return "https://api.cartridge.gg/x/starknet/sepolia";
-    default:
-      return VITE_PUBLIC_SLOT_ADDRESS;
-  }
-};
-
 const options: ControllerOptions = {
-  rpc: getRpcUrl(),
-  // @ts-ignore
   chains: [
     {
       rpcUrl: "https://api.cartridge.gg/x/starknet/sepolia",
+    },
+    {
+      rpcUrl: "https://api.cartridge.gg/x/starknet/mainnet",
     },
   ],
   defaultChainId: VITE_PUBLIC_DEPLOY_TYPE === 'mainnet' ?  constants.StarknetChainId.SN_MAIN : constants.StarknetChainId.SN_SEPOLIA,
