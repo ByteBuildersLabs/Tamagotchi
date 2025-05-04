@@ -1,8 +1,8 @@
 # The World address to index.
-world_address = "0x06ab051c6e8ddf7fd3481b7e09f681116948dc7e9a960023c985484c85630302"
+world_address = "0x056b054364e71b68da48b4cb25fde8969b5cacd948ba3caaf44e9093fc74f081"
  
 # Default RPC URL configuration
-rpc = "https://api.cartridge.gg/x/bytebeaststamagotchi/katana"
+rpc = "https://api.cartridge.gg/x/starknet/sepolia"
 
 # Indexing Options
 [indexing]

@@ -6,8 +6,8 @@ import { constants } from "starknet";
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7786f44a02b17e21f1661e29f167c80093dea8b27b17932544fd0338f831790'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x5d3cd45f20b3b97dd9ac65117227c102256578247ef9fd63a3a2b7a82d213a6'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x6e34249d89c6a2dd8059f9839122b294dec169e270baba0cca3c4d9b731ae5e'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x50ea71c0a5259bed8aa5f4b111a0b6a4b5e8b342c273ae6269bef0cbc2c9b19'
 
 const policies: SessionPolicies = {
   contracts: {
