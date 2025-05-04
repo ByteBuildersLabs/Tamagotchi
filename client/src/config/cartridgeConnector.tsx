@@ -1,6 +1,7 @@
 import { Connector } from "@starknet-react/core";
-import { ControllerConnector}  from "@cartridge/connector";
-import {ColorMode, SessionPolicies,ControllerOptions,} from "@cartridge/controller";
+import { ControllerConnector } from "@cartridge/connector";
+import { ColorMode, SessionPolicies, ControllerOptions, } from "@cartridge/controller";
+import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
@@ -12,20 +13,20 @@ const policies: SessionPolicies = {
   contracts: {
     [CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM]: {
       methods: [
-        {name: "awake",entrypoint: "awake"},
-        {name: "clean", entrypoint: "clean"},
-        {name: "feed",entrypoint: "feed"},
-        {name: "get_beast_age",entrypoint: "get_beast_age"},
-        {name: "get_beast_age_with_address",entrypoint: "get_beast_age_with_address"},
-        {name: "get_timestamp_based_status",entrypoint: "get_timestamp_based_status"},
-        {name: "get_timestamp_based_status_with_address",entrypoint: "get_timestamp_based_status_with_address"},
-        {name: "pet",entrypoint: "pet"},
-        {name: "play",entrypoint: "play"},
-        {name: "revive",entrypoint: "revive"},
-        {name: "sleep",entrypoint: "sleep"},
-        {name: "spawn_beast",entrypoint: "spawn_beast"},
-        {name: "update_beast",entrypoint: "update_beast"},
-        {name: "update_food_amount",entrypoint: "update_food_amount"},
+        { name: "awake", entrypoint: "awake" },
+        { name: "clean", entrypoint: "clean" },
+        { name: "feed", entrypoint: "feed" },
+        { name: "get_beast_age", entrypoint: "get_beast_age" },
+        { name: "get_beast_age_with_address", entrypoint: "get_beast_age_with_address" },
+        { name: "get_timestamp_based_status", entrypoint: "get_timestamp_based_status" },
+        { name: "get_timestamp_based_status_with_address", entrypoint: "get_timestamp_based_status_with_address" },
+        { name: "pet", entrypoint: "pet" },
+        { name: "play", entrypoint: "play" },
+        { name: "revive", entrypoint: "revive" },
+        { name: "sleep", entrypoint: "sleep" },
+        { name: "spawn_beast", entrypoint: "spawn_beast" },
+        { name: "update_beast", entrypoint: "update_beast" },
+        { name: "update_food_amount", entrypoint: "update_food_amount" },
       ],
     },
 
@@ -86,7 +87,14 @@ const getRpcUrl = () => {
 };
 
 const options: ControllerOptions = {
-  rpc: getRpcUrl(), 
+  rpc: getRpcUrl(),
+  // @ts-ignore
+  chains: [
+    {
+      rpcUrl: "https://api.cartridge.gg/x/starknet/sepolia",
+    },
+  ],
+  defaultChainId: constants.StarknetChainId.SN_SEPOLIA,
   policies,
   theme,
   colorMode,
