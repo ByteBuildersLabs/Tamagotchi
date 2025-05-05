@@ -1,6 +1,10 @@
 pub mod constants;
 pub mod store;
 
+pub mod achievements{
+    pub mod achievement;
+}
+
 pub mod helpers {
     pub mod timestamp;
     pub mod pseudo_random;

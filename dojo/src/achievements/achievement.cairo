@@ -1,3 +1,9 @@
+// Dojo achievements import
+use achievement::types::task::{Task, TaskTrait}; 
+
+// Into trait import
+use core::traits::Into;
+
 // Achievement enum
 #[derive(Copy, Drop)]
 enum Achievement {
@@ -31,25 +37,25 @@ impl AchievementImpl of AchievementTrait {
     fn identifier(self: Achievement) -> felt252 {
         match self {
             Achievement::None => 0,
-            Achievement::MiniGamer => "MiniGamer",
-            Achievement::MasterGamer => "MasterGamer",
-            Achievement::LegendGamer => "LegendGamer",
-            Achievement::AllStarGamer => "AllStarGamer",
-            Achievement::ScoreHunterI => "ScoreHunterI",
-            Achievement::ScoreHunterII => "ScoreHunterII",
-            Achievement::ScoreHunterIII => "ScoreHunterIII",
-            Achievement::ScoreHunterIV => "ScoreHunterIV",
-            Achievement::ScoreHunterV => "ScoreHunterV",
-            Achievement::JumperI => "JumperI",
-            Achievement::JumperII => "JumperII",
-            Achievement::JumperIII => "JumperIII",
-            Achievement::JumperIV => "JumperIV",
-            Achievement::JumperV => "JumperV",
-            Achievement::TangoI => "TangoI",
-            Achievement::TangoII => "TangoII",
-            Achievement::TangoIII => "TangoIII",
-            Achievement::TangoIV => "TangoIV",
-            Achievement::TangoV => "TangoV",
+            Achievement::MiniGamer => 'MiniGamer',
+            Achievement::MasterGamer => 'MasterGamer',
+            Achievement::LegendGamer => 'LegendGamer',
+            Achievement::AllStarGamer => 'AllStarGamer',
+            Achievement::ScoreHunterI => 'ScoreHunterI',
+            Achievement::ScoreHunterII => 'ScoreHunterII',
+            Achievement::ScoreHunterIII => 'ScoreHunterIII',
+            Achievement::ScoreHunterIV => 'ScoreHunterIV',
+            Achievement::ScoreHunterV => 'ScoreHunterV',
+            Achievement::JumperI => 'JumperI',
+            Achievement::JumperII => 'JumperII',
+            Achievement::JumperIII => 'JumperIII',
+            Achievement::JumperIV => 'JumperIV',
+            Achievement::JumperV => 'JumperV',
+            Achievement::TangoI => 'TangoI',
+            Achievement::TangoII => 'TangoII',
+            Achievement::TangoIII => 'TangoIII',
+            Achievement::TangoIV => 'TangoIV',
+            Achievement::TangoV => 'TangoV',
         }
     }
 
@@ -78,7 +84,6 @@ impl AchievementImpl of AchievementTrait {
             Achievement::TangoV => false,
         }
     }
-    
 
     #[inline]
     fn index(self: Achievement) -> u8 {
@@ -337,7 +342,7 @@ impl AchievementImpl of AchievementTrait {
     }
 }
 
-impl IntoAchievementU8 of core::Into<Achievement, u8> {
+pub impl IntoAchievementU8 of Into<Achievement, u8> {
     #[inline]
     fn into(self: Achievement) -> u8 {
         match self {
@@ -369,7 +374,7 @@ impl IntoAchievementU8 of core::Into<Achievement, u8> {
     }
 }
 
-impl IntoU8Achievement of core::Into<u8, Achievement> {
+pub impl IntoU8Achievement of Into<u8, Achievement> {
     #[inline]
     fn into(self: u8) -> Achievement {
         let value: felt252 = self.into();
