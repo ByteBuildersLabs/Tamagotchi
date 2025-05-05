@@ -37,8 +37,8 @@ torii --world <WORLD_ADDRESS> --allowed-origins "*"
    ```
 2. Open `.env.sepolia` and fill in the required values:  
    - `STARKNET_RPC_URL` → `https://api.cartridge.gg/x/starknet/sepolia`  
-   - `DOJO_ACCOUNT_ADDRESS` → The address of the deployment account  
-   - `DOJO_PRIVATE_KEY` → The private key of the deployment account  
+   - `DEPLOYER_ACCOUNT_ADDRESS` → The address of the deployer account  
+   - `DEPLOYER_PRIVATE_KEY` → The private key of the deployer account  
 
 > ⚠️ **Important:** Ensure this account is **funded** before deploying.  
 
@@ -50,13 +50,16 @@ Before deploying, load the environment variables into your session:
 source .env.sepolia
 ```
 
-### 3️⃣ Deploy to Sepolia  
+### 3️⃣ Update seed
+
+Go to the file `dojo_sepolia.toml` and update the seed by incrementing the last number here: `seed = "tamagotchi1"`
+
+### 4️⃣ Deploy to Sepolia using command
 
 Run the following command to deploy your world on Sepolia:  
 
 ```bash
 scarb run sepolia
 ```
-
 Once the deployment is complete, it will return the **world address**, which you will use to interact with the deployed game.  
 
