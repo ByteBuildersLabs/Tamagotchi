@@ -4,6 +4,8 @@ import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import Lock from '../../assets/img/lock.svg';
 import Unlock from '../../assets/img/unlock.svg';
+import FoodRewardService from '../../services/FoodRewardService';
+import { GameId } from '../../types/GameRewards';
 import './main.css';
 
 import platformImg from '../../assets/SkyJump/platform.png';
@@ -75,6 +77,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [showEnergyToast, setShowEnergyToast] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [collectedFood, setCollectedFood] = useState<number>(0);
   // States for modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
@@ -194,22 +198,31 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       return null;
     }
   };
+
   // Function to handle game end
   const handleGameEnd = () => {
     const score = currentScoreRef.current;
     setFinalScore(score);
-  
+
     // Check if it's a new high score
     if (score > currentHighScore) {
       setCurrentHighScore(score);
     }
-  
+
+    // Usar el servicio para determinar la recompensa
+    const { food, amount } = FoodRewardService.determineReward(score, GameId.SKY_JUMP);
+    
+    // update states
+    setSelectedFood(food);
+    setCollectedFood(amount);
+    
+    // Save to dojo
     saveGameResultsToDojo({
       score,
-      foodId: "", // Temporalmente vacío hasta conectar con el nuevo servicio
-      foodCollected: 0 // Temporalmente 0 hasta conectar con el nuevo servicio
+      foodId: food.id || "", 
+      foodCollected: amount
     });
-  
+
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
@@ -1111,8 +1124,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         currentScreen={currentScreen}
         finalScore={finalScore}
         currentHighScore={currentHighScore}
-        // collectedFood={collectedFood}
-        // selectedFood={selectedFood}
+        collectedFood={collectedFood}
+        selectedFood={selectedFood}
         handlePlayAgain={handlePlayAgain}
         restartIcon={Restart}
       />
@@ -1126,4 +1139,5 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     </div>
   );
 });
+
 export default DOMDoodleGame;
