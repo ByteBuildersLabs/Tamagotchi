@@ -1,6 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
-import initialFoodItems from '../../data/food';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import Lock from '../../assets/img/lock.svg';
@@ -15,6 +14,7 @@ import bgImage4 from '../../assets/SkyJump/space-bg.gif';
 import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { Account } from 'starknet';
+
 const HITBOX_MARGIN = 2;
 const CAMERA_THRESHOLD = 150;
 const GYRO_TILT_THRESHOLD = 5;
@@ -24,10 +24,9 @@ const PLATFORM_GENERATION_THRESHOLD = 2;
 const PLATFORM_HORIZONTAL_MAX = 0.8;
 const SCORE_MILESTONE_INCREMENT = 50;
 const MAX_SCORE_ADJUSTMENT = 200;
-const FOOD_APEARANCE_PROBABILITY = 0.3;
 const RESET_GAME_DELAY = 100;
-const DELETE_FOOD_ANIMATION_TIME = 300;
 const ENERGY_TOAST_DURATION = 3000;
+
 // Interface for the game reference
 export interface DOMDoodleGameRefHandle {
   resetGame: () => void;
@@ -68,7 +67,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const currentScoreRef = useRef<number>(0);
   const maxHeightRef = useRef<number>(0);
   const lastMilestoneRef = useRef<number>(0);
-  const collectedFoodRef = useRef<number>(0);
   // States
   const [background, setBackground] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -76,8 +74,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [usingGyroscope, setUsingGyroscope] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
-  const [collectedFood, setCollectedFood] = useState(0);
-  const [selectedFood, setSelectedFood] = useState<any>(null);
   const [showEnergyToast, setShowEnergyToast] = useState(false);
   // States for modals
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -208,12 +204,10 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       setCurrentHighScore(score);
     }
   
-    if (collectedFoodRef.current === 0) selectedFood.id = 0;
-    
     saveGameResultsToDojo({
       score,
-      foodId: selectedFood?.id || "", 
-      foodCollected: collectedFoodRef.current
+      foodId: "", // Temporalmente vacío hasta conectar con el nuevo servicio
+      foodCollected: 0 // Temporalmente 0 hasta conectar con el nuevo servicio
     });
   
     setCurrentScreen('sharing');
@@ -319,61 +313,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     }
   };
 
-  const getRandomFood = (forceNew = false) => {
-    if (!selectedFood || forceNew) {
-      const randomIndex = Math.floor(Math.random() * initialFoodItems.length);
-      setSelectedFood(initialFoodItems[randomIndex]);
-      return initialFoodItems[randomIndex];
-    }
-    return selectedFood;
-  };
-
-  const collectFood = (platform: any) => {
-    if (platform.hasFood && !platform.foodCollected && platform.foodElement) {
-      platform.foodCollected = true;
-      collectedFoodRef.current += 1;
-      setCollectedFood(collectedFoodRef.current);
-
-      // Animate food disappearing
-      platform.foodElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-      platform.foodElement.style.transform = 'scale(1.5)';
-      platform.foodElement.style.opacity = '0';
-
-      // Animate food counter
-      const foodCounterElement = document.querySelector('.food-counter');
-      if (foodCounterElement) {
-        foodCounterElement.classList.add('food-counter-animation');
-        
-        // Create floating food indicator
-        const foodIndicator = document.createElement('div');
-        foodIndicator.className = 'increment-indicator';
-        foodIndicator.textContent = '+1';
-        
-        // Position near food counter
-        const foodCounterRect = foodCounterElement.getBoundingClientRect();
-        foodIndicator.style.left = `${foodCounterRect.left - 20}px`;
-        foodIndicator.style.top = `${foodCounterRect.top + 10}px`;
-        
-        // Add to DOM
-        document.body.appendChild(foodIndicator);
-        
-        // Remove classes and elements after animation completes
-        setTimeout(() => {
-          foodCounterElement.classList.remove('food-counter-animation');
-          if (foodIndicator.parentNode) {
-            foodIndicator.parentNode.removeChild(foodIndicator);
-          }
-        }, 1000);
-      }
-  
-      // Remove food element from DOM after animation
-      setTimeout(() => {
-        if (platform.foodElement && platform.foodElement.parentNode) {
-          platform.foodElement.parentNode.removeChild(platform.foodElement);
-        }
-      }, DELETE_FOOD_ANIMATION_TIME);
-    }
-  };
   // Expose resetGame function to parent component
   useImperativeHandle(ref, () => ({
     resetGame: () => {
@@ -497,9 +436,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       width: game.platformWidth,
       height: game.platformHeight,
       element: document.createElement('div'),
-      hasFood: false,
-      foodCollected: false,
-      foodElement: null as HTMLDivElement | null
     };
     game.platforms.push(initialPlatform);
     // Calculate the vertical distance between initial platforms
@@ -519,9 +455,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         width: game.platformWidth,
         height: game.platformHeight,
         element: document.createElement('div'),
-        hasFood: Math.random() < FOOD_APEARANCE_PROBABILITY,
-        foodCollected: false,
-        foodElement: null
       };
       game.platforms.push(platform);
     }
@@ -536,23 +469,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       platformElement.style.backgroundImage = `url(${platformImg})`;
       platformElement.style.backgroundSize = 'cover';
       platformsContainer.appendChild(platformElement);
-      // Add food to some platforms
-      if (platform.hasFood && !platform.foodCollected) {
-        const food = getRandomFood();
-        const foodElement = document.createElement('div');
-        foodElement.className = 'platform-food';
-        foodElement.style.width = '30px';
-        foodElement.style.height = '30px';
-        foodElement.style.position = 'absolute';
-        foodElement.style.left = `${platform.width / 2 - 15}px`;
-        foodElement.style.top = '-30px';
-        foodElement.style.backgroundImage = `url(${food.img})`;
-        foodElement.style.backgroundSize = 'contain';
-        foodElement.style.backgroundRepeat = 'no-repeat';
-        foodElement.style.transition = 'opacity 0.3s ease';
-        platform.foodElement = foodElement;
-        platform.element.appendChild(foodElement);
-      }
     });
   };
   // Create a new platform when one goes off-screen
@@ -596,35 +512,16 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       width: game.platformWidth,
       height: game.platformHeight,
       element: platformElement,
-      hasFood: Math.random() < FOOD_APEARANCE_PROBABILITY,
-      foodCollected: false,
-      foodElement: null as HTMLDivElement | null
     };
     // Update the visual position of the element
     platformElement.style.left = `${platform.x}px`;
     platformElement.style.top = `${platform.y}px`;
-    // if the platform has food, add it to the visual container
-    if (platform.hasFood) {
-      const food = getRandomFood();
-      const foodElement = document.createElement('div');
-      foodElement.className = 'platform-food';
-      foodElement.style.width = '30px';
-      foodElement.style.height = '30px';
-      foodElement.style.position = 'absolute';
-      foodElement.style.left = `${platform.width / 2 - 15}px`;
-      foodElement.style.top = '-30px';
-      foodElement.style.backgroundImage = `url(${food.img})`;
-      foodElement.style.backgroundSize = 'contain';
-      foodElement.style.backgroundRepeat = 'no-repeat';
-
-      platform.foodElement = foodElement;
-      platformElement.appendChild(foodElement);
-    }
 
     // Add the platform to the visual container
     platformsContainer.appendChild(platformElement);
     return platform;
   };
+  
   // Detect collision between the doodler and a platform
   const detectCollision = (doodler: any, platform: any) => {
     // Only detect collision if the doodler is falling
@@ -757,8 +654,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         game.velocityY = game.initialVelocityY;
         game.doodler.worldY = platform.worldY - game.doodler.height - game.doodler.hitboxOffsetY;
         collisionDetected = true;
-        // Añadir esta línea para recolectar comida
-        collectFood(platform);
       }
     }
     // --- START CORRECTED PLATFORM GENERATION CODE ---
@@ -807,7 +702,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     currentScoreRef.current = 0;
     maxHeightRef.current = 0;
     lastMilestoneRef.current = 0;
-    collectedFoodRef.current = 0;
     // Reset states
     setScore(0);
     setGameOver(false);
@@ -817,15 +711,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
     setShowGameOverModal(false);
     // Reset game over notification flag
     game.endNotified = false;
-    // Reset food collection
-    setCollectedFood(0);
-    // Seleccionar una nueva comida aleatoria
-    const newFood = getRandomFood(true);
-    setSelectedFood(newFood);
     // Update the scorecard directly
-    if (scoreCardRef.current) {
-      scoreCardRef.current.textContent = "0";
-    }
+    if (scoreCardRef.current) scoreCardRef.current.textContent = "0";
     game.maxScore = 0;
     game.backgrounds.current = 0;
     gameContainer.style.backgroundImage = `url(${game.backgrounds.images[0].img})`;
@@ -1147,19 +1034,6 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       <div className="score-card">
         <div ref={scoreCardRef} className="score-text">0</div>
       </div>
-      {/* Food collected counter */}
-      <div className="food-counter">
-        {selectedFood && (
-          <>
-            <img
-              src={selectedFood.img}
-              alt={selectedFood.name}
-              style={{ width: '24px', height: '24px', marginRight: '5px' }}
-            />
-            <span>{collectedFood}</span>
-          </>
-        )}
-      </div>
       {/* Touch controls for mobile devices */}
       {isMobile && !usingGyroscope && (
         <>
@@ -1237,8 +1111,8 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
         currentScreen={currentScreen}
         finalScore={finalScore}
         currentHighScore={currentHighScore}
-        collectedFood={collectedFood}
-        selectedFood={selectedFood}
+        // collectedFood={collectedFood}
+        // selectedFood={selectedFood}
         handlePlayAgain={handlePlayAgain}
         restartIcon={Restart}
       />
