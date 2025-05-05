@@ -16,12 +16,17 @@ pub mod player {
     // Local import
     use super::{IPlayer};
 
+    // Constants import
+    use tamagotchi::constants;
+
     // Starknet imports
     use starknet::{get_block_timestamp, ContractAddress};
 
-    // Achievements imports
+    // Tamagotchi achievements import
+    use tamagotchi::achievements::achievement::{Achievement, AchievementTrait};
+
+    // Dojo achievements imports
     use achievement::components::achievable::AchievableComponent;
-    use achievement::types::task::{Task, TaskTrait}; 
     use achievement::store::{StoreTrait as AchievementStoreTrait};
     component!(path: AchievableComponent, storage: achievable, event: AchievableEvent);
     impl AchievableInternalImpl = AchievableComponent::InternalImpl<ContractState>;
@@ -62,27 +67,29 @@ pub mod player {
     fn dojo_init(ref self: ContractState) {
         // [Event] Emit all Achievement creation events
         let mut world = self.world(@"tamagotchi");
-        let task_id = '1';
-        let task_target = 1; // The amount of times needed to complete a task
-        let task = TaskTrait::new(task_id, task_target, "Reach 10 pts in the minigame 1 time");
-        let tasks: Span<Task> = array![task].span();
 
-        // Create the achievement
-        let achievement_store = AchievementStoreTrait::new(world);
-        achievement_store.create(
-            id: '1',
-            hidden: false,
-            index: 0,
-            points: 10, // This set the total points to reach in order to complete the achievement
-            start: 0,
-            end: 0,
-            group: 'Minigame',
-            icon: 'fa-trophy',
-            title: 'Beginner of the minigame',
-            description: "Has reached 10 pts in the minigame",
-            tasks: tasks,
-            data: "",
-        );
+        let mut achievement_id: u8 = 1;
+            while achievement_id <= constants::ACHIEVEMENTS_COUNT {
+                let achievement: Achievement = achievement_id.into();
+                self
+                    .achievable
+                    .create(
+                        world,
+                        id: achievement.identifier(),
+                        hidden: achievement.hidden(),
+                        index: achievement.index(),
+                        points: achievement.points(),
+                        start: achievement.start(),
+                        end: achievement.end(),
+                        group: achievement.group(),
+                        icon: achievement.icon(),
+                        title: achievement.title(),
+                        description: achievement.description(),
+                        tasks: achievement.tasks(),
+                        data: achievement.data(),
+                    );
+                achievement_id += 1;
+            }
     }
 
     // Implementation of the interface methods

@@ -6,7 +6,7 @@ use core::traits::Into;
 
 // Achievement enum
 #[derive(Copy, Drop)]
-enum Achievement {
+pub enum Achievement {
     None,
     // Minigames
     MiniGamer,
@@ -32,7 +32,7 @@ enum Achievement {
 
 
 #[generate_trait]
-impl AchievementImpl of AchievementTrait {
+pub impl AchievementImpl of AchievementTrait {
     #[inline]
     fn identifier(self: Achievement) -> felt252 {
         match self {

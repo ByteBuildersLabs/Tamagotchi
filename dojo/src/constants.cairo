@@ -29,6 +29,9 @@ pub const M_UPDATE_POINTS: u8 = 6;
 pub const L_UPDATE_POINTS: u8 = 8;
 pub const XL_UPDATE_POINTS: u8 = 10;
 
+// Achievements
+pub const ACHIEVEMENTS_COUNT: u8 = 19;
+
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;
 
