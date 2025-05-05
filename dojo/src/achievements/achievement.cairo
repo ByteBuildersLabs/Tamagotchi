@@ -37,25 +37,25 @@ pub impl AchievementImpl of AchievementTrait {
     fn identifier(self: Achievement) -> felt252 {
         match self {
             Achievement::None => 0,
-            Achievement::MiniGamer => 'MiniGamer',
-            Achievement::MasterGamer => 'MasterGamer',
-            Achievement::LegendGamer => 'LegendGamer',
-            Achievement::AllStarGamer => 'AllStarGamer',
-            Achievement::ScoreHunterI => 'ScoreHunterI',
-            Achievement::ScoreHunterII => 'ScoreHunterII',
-            Achievement::ScoreHunterIII => 'ScoreHunterIII',
-            Achievement::ScoreHunterIV => 'ScoreHunterIV',
-            Achievement::ScoreHunterV => 'ScoreHunterV',
-            Achievement::JumperI => 'JumperI',
-            Achievement::JumperII => 'JumperII',
-            Achievement::JumperIII => 'JumperIII',
-            Achievement::JumperIV => 'JumperIV',
-            Achievement::JumperV => 'JumperV',
-            Achievement::TangoI => 'TangoI',
-            Achievement::TangoII => 'TangoII',
-            Achievement::TangoIII => 'TangoIII',
-            Achievement::TangoIV => 'TangoIV',
-            Achievement::TangoV => 'TangoV',
+            Achievement::MiniGamer => 'MiniGamer', // Play a minigame once
+            Achievement::MasterGamer => 'MasterGamer', // Play a minigame 15 times
+            Achievement::LegendGamer => 'LegendGamer', // Play a minigame 30 times
+            Achievement::AllStarGamer => 'AllStarGamer', // Play a minigame 50 times 
+            Achievement::ScoreHunterI => 'ScoreHunterI', // Get 2000 total points from minigames
+            Achievement::ScoreHunterII => 'ScoreHunterII', // Get 5000 total points from minigames
+            Achievement::ScoreHunterIII => 'ScoreHunterIII', // Get 12000 total points from minigames
+            Achievement::ScoreHunterIV => 'ScoreHunterIV', // Get 20000 total points from minigames
+            Achievement::ScoreHunterV => 'ScoreHunterV', // Get 50000 total points from minigames
+            Achievement::JumperI => 'JumperI', // Reach 500 points in a single platform game
+            Achievement::JumperII => 'JumperII', // Reach 1500 points in a single platform game
+            Achievement::JumperIII => 'JumperIII', // Reach 2500 points in a single platform game
+            Achievement::JumperIV => 'JumperIV', // Reach 3500 points in a single platform game
+            Achievement::JumperV => 'JumperV', // Reach 4500 points in a single platform game
+            Achievement::TangoI => 'TangoI', // Reach 25 points in a single flappy beasts game
+            Achievement::TangoII => 'TangoII', // Reach 50 points in a single flappy beasts game
+            Achievement::TangoIII => 'TangoIII', // Reach 100 points in a single flappy beasts game
+            Achievement::TangoIV => 'TangoIV', // Reach 200 points in a single flappy beasts game
+            Achievement::TangoV => 'TangoV', // Reach 350 points in a single flappy beasts game
         }
     }
 
@@ -280,30 +280,30 @@ pub impl AchievementImpl of AchievementTrait {
         match self {
             Achievement::None => "",
             // Gamer progression
-            Achievement::MiniGamer => "Embark on your first gaming adventure! A true novice.",
-            Achievement::MasterGamer => "You've honed your skills and mastered the art of gaming.",
-            Achievement::LegendGamer => "You are a legendary figure in the ByteBeasts world, a true hero.",
-            Achievement::AllStarGamer => "The ultimate champion, a master of all things gaming.",
+            Achievement::MiniGamer => "Play a minigame once.",
+            Achievement::MasterGamer => "Play a minigame 15 times.",
+            Achievement::LegendGamer => "Play a minigame 30 times.",
+            Achievement::AllStarGamer => "Play a minigame 50 times.",
             // ScoreHunter levels
-            Achievement::ScoreHunterI => "You've set your sights on the highest scores, aiming for precision.",
-            Achievement::ScoreHunterII => "Your aim is true, and you've become a true score hunter.",
-            Achievement::ScoreHunterIII => "You are a pro at hunting high scores, an unstoppable force.",
-            Achievement::ScoreHunterIV => "Legends are made with your skills, and your name echoes among the greatest.",
-            Achievement::ScoreHunterV => "You are the master of scores, no one can match your precision.",
+            Achievement::ScoreHunterI => "Get 2000 total points from minigames.",
+            Achievement::ScoreHunterII => "Get 5000 total points from minigames.",
+            Achievement::ScoreHunterIII => "Get 12000 total points from minigames.",
+            Achievement::ScoreHunterIV => "Get 20000 total points from minigames.",
+            Achievement::ScoreHunterV => "Get 50000 total points from minigames.",
             // Jumper (platform game)
-            Achievement::JumperI => "A small step, but a leap toward greatness. The world is at your feet.",
-            Achievement::JumperII => "You've taken to the skies, ready to jump higher and further.",
-            Achievement::JumperIII => "Scaling new heights, you've become a master of jumps.",
-            Achievement::JumperIV => "The mountains don't scare you anymore; you're on top of the world.",
-            Achievement::JumperV => "Your leaps defy gravity itself, as you ride rockets into the unknown.",
+            Achievement::JumperI => "Reach 500 points in a single platform game.",
+            Achievement::JumperII => "Reach 1500 points in a single platform game.",
+            Achievement::JumperIII => "Reach 2500 points in a single platform game.",
+            Achievement::JumperIV => "Reach 3500 points in a single platform game.",
+            Achievement::JumperV => "Reach 4500 points in a single platform game.",
             // Tango (flappy beasts game)
-            Achievement::TangoI => "You have got the moves! Glide through the air with elegance.",
-            Achievement::TangoII => "The wind is your friend, helping you soar through the skies.",
-            Achievement::TangoIII => "You have embraced the adventure of flight, an unstoppable flapper.",
-            Achievement::TangoIV => "Clouds are your playground as you dance across the sky.",
-            Achievement::TangoV => "You rule the skies now, flying at lightning speeds like a true king.",
+            Achievement::TangoI => "Reach 25 points in a single flappy beasts game.",
+            Achievement::TangoII => "Reach 50 points in a single flappy beasts game.",
+            Achievement::TangoIII => "Reach 100 points in a single flappy beasts game.",
+            Achievement::TangoIV => "Reach 200 points in a single flappy beasts game.",
+            Achievement::TangoV => "Reach 350 points in a single flappy beasts game.",
         }
-    }
+    }    
 
     #[inline]
     fn tasks(self: Achievement) -> Span<Task> {
@@ -312,9 +312,9 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::None => [].span(),
             // Gamer progression
             Achievement::MiniGamer => array![TaskTrait::new('MINIGAMER', 1, "Embark on your first gaming adventure! A true novice.")].span(),
-            Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 1, "You've honed your skills and mastered the art of gaming.")].span(),
-            Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 1, "You are a legendary figure in the gaming world, a true hero.")].span(),
-            Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 1, "The ultimate champion, a master of all things gaming.")].span(),
+            Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 15, "You've honed your skills and mastered the art of gaming.")].span(),
+            Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 30, "You are a legendary figure in the gaming world, a true hero.")].span(),
+            Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 50, "The ultimate champion, a master of all things gaming.")].span(),
             // ScoreHunter levels
             Achievement::ScoreHunterI => array![TaskTrait::new('SCOREHUNTERI', 1, "You've set your sights on the highest scores, aiming for precision.")].span(),
             Achievement::ScoreHunterII => array![TaskTrait::new('SCOREHUNTERII', 1, "Your aim is true, and you've become a true score hunter.")].span(),
