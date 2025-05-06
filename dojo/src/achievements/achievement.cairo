@@ -90,9 +90,9 @@ pub impl AchievementImpl of AchievementTrait {
         match self {
             Achievement::None => 0,
             Achievement::MiniGamer => 0,
-            Achievement::MasterGamer => 0,
-            Achievement::LegendGamer => 0,
-            Achievement::AllStarGamer => 0,
+            Achievement::MasterGamer => 1,
+            Achievement::LegendGamer => 2,
+            Achievement::AllStarGamer => 3,
             Achievement::ScoreHunterI => 0,
             Achievement::ScoreHunterII => 1,
             Achievement::ScoreHunterIII => 2,
