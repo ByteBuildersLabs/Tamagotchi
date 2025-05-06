@@ -12,10 +12,8 @@
 /* Ensure all interactive elements prevent selection */
 .doodler,
 .platform,
-.platform-food,
 .control-button,
 .score-card,
-.food-counter,
 .gyro-button,
 .return-button {
   -webkit-touch-callout: none;
@@ -30,8 +28,7 @@
 /* Prevent dragging of images */
 .dom-doodle-game img,
 .doodler,
-.platform,
-.platform-food {
+.platform{
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -388,39 +385,6 @@
   .platform {
     animation: fadeIn 0.3s ease-in-out;
   }
-  
-  .food-counter {
-    position: absolute;
-    top: 110px;
-    right: 15px;
-    width: 40px;
-    background-color: #ECECDA;
-    color: #85002A;
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 20px;
-    z-index: 100;
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center; 
-    font-weight: bold;
-  }
-
-.platform-food {
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
-  animation: float 2s infinite ease-in-out;
-  z-index: 46; /* Make sure this is higher than platforms but lower than player */
-  transform: translateZ(0); /* Force hardware acceleration */
-  pointer-events: auto !important; /* Override global pointer-events */
-}
-
-.platform-food img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none; /* Keep images non-interactive */
-}
 
 /* Make sure animations use hardware acceleration */
 @keyframes float {
@@ -437,19 +401,6 @@
 
 .score-milestone-animation {
   animation: score-milestone-pulse 0.8s ease-in-out;
-}
-
-/* Food collection animation */
-@keyframes food-collected {
-  0% { transform: scale(1); }
-  25% { transform: scale(1.2); }
-  50% { transform: scale(1); }
-  75% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-.food-counter-animation {
-  animation: food-collected 0.6s ease-in-out;
 }
 
 /* Value increment animation */
