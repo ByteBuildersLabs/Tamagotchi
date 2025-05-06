@@ -1,71 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import trophy from "../../assets/img/trophy2.svg";
 import "./main.css";
 
 interface CountdownProps {
-  targetDate: string; // Format: "YYYY-MM-DDTHH:mm:ss"
+  // targetDate: string; // Format: "YYYY-MM-DDTHH:mm:ss"
 }
 
-const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-  });
-  const [showInfo, setShowInfo] = useState(false);
-  const [showStatus, setShowStatus] = useState(true);
+const Countdown: React.FC<CountdownProps> = () => {
+  // const [timeLeft, setTimeLeft] = useState({
+  //   days: 0,
+  //   hours: 0,
+  //   minutes: 0,
+  // });
+  // const [showInfo, setShowInfo] = useState(false);
+  // const [showStatus, setShowStatus] = useState(true);
 
-  useEffect(() => {
-    const target = new Date(targetDate).getTime();
+  // useEffect(() => {
+  //   const target = new Date(targetDate).getTime();
 
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = target - now;
+  //   const interval = setInterval(() => {
+  //     const now = new Date().getTime();
+  //     const difference = target - now;
 
-      if (difference <= 0) {
-        clearInterval(interval);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0 });
-      } else {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
+  //     if (difference <= 0) {
+  //       clearInterval(interval);
+  //       setTimeLeft({ days: 0, hours: 0, minutes: 0 });
+  //     } else {
+  //       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  //       const hours = Math.floor(
+  //         (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  //       );
+  //       const minutes = Math.floor(
+  //         (difference % (1000 * 60 * 60)) / (1000 * 60)
+  //       );
 
-        setTimeLeft({ days, hours, minutes });
-      }
-    }, 1000);
+  //       setTimeLeft({ days, hours, minutes });
+  //     }
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, [targetDate]);
+  //   return () => clearInterval(interval);
+  // }, [targetDate]);
 
-  useEffect(() => {
-    ['status', 'leaderboard .title', 'leaderboard-tabs', 'banner-container'].forEach(className => {
-      const element = document.querySelector(`.${className}`);
-      element?.classList.toggle('opacity-0', !showStatus);
-    });
-  }, [showStatus]);
+  // useEffect(() => {
+  //   ['status', 'leaderboard .title', 'leaderboard-tabs', 'banner-container'].forEach(className => {
+  //     const element = document.querySelector(`.${className}`);
+  //     element?.classList.toggle('opacity-0', !showStatus);
+  //   });
+  // }, [showStatus]);
 
-  const handleClick = () => {
-    setShowInfo(true);
-    setShowStatus(false);
+  // const handleClick = () => {
+  //   setShowInfo(true);
+  //   setShowStatus(false);
     
-    setTimeout(() => {
-      setShowInfo(false);
-      setShowStatus(true);
-    }, 5000);
-  };
+  //   setTimeout(() => {
+  //     setShowInfo(false);
+  //     setShowStatus(true);
+  //   }, 5000);
+  // };
 
   return (
     <div>
-      <div className='countdown loading-aura' onClick={handleClick}>
+      <div className='countdown loading-aura'>
         <img src={trophy} alt="trophy" />
-        <p>Tournament starts in</p>
-        <p>{timeLeft.days}d{timeLeft.hours}h</p>
+        <p>The Tournament is coming soon!</p>
+        {/* <p>{timeLeft.days}d{timeLeft.hours}h</p> */}
       </div>
-      {showInfo && (
+      {/* {showInfo && ( 
         <div className='countdown-info'>
           <div className='prize-container'>
             <div className='prize-item'>
@@ -90,7 +90,7 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

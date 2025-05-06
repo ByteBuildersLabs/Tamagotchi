@@ -15,6 +15,7 @@ import useSound from 'use-sound';
 import buttonClick from '../../assets/sounds/click.mp3';
 import "./main.css";
 import CountDown from "../CountDown/index.tsx";
+import Countdown from "../CountDown/index.tsx";
 
 interface HeaderProps {
   tamagotchiStats?: {
@@ -92,7 +93,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
         </Link>
 
         <div onClick={() => buttonSound()}>
-          <CountDown targetDate={"2025-05-05T12:00:00"}  />
+          <Countdown />
         </div>
         
         <div className="side-menu-container">
