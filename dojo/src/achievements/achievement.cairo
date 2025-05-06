@@ -280,61 +280,60 @@ pub impl AchievementImpl of AchievementTrait {
         match self {
             Achievement::None => "",
             // Gamer progression
-            Achievement::MiniGamer => "Play a minigame once.",
-            Achievement::MasterGamer => "Play a minigame 15 times.",
-            Achievement::LegendGamer => "Play a minigame 30 times.",
-            Achievement::AllStarGamer => "Play a minigame 50 times.",
+            Achievement::MiniGamer => "Embark on your first gaming adventure! A true novice.",
+            Achievement::MasterGamer => "You've honed your skills and mastered the art of gaming.",
+            Achievement::LegendGamer => "You are a legendary figure in the gaming world, a true hero.",
+            Achievement::AllStarGamer => "The ultimate champion, a master of all things gaming.",
             // ScoreHunter levels
-            Achievement::ScoreHunterI => "Get 2000 total points from minigames.",
-            Achievement::ScoreHunterII => "Get 5000 total points from minigames.",
-            Achievement::ScoreHunterIII => "Get 12000 total points from minigames.",
-            Achievement::ScoreHunterIV => "Get 20000 total points from minigames.",
-            Achievement::ScoreHunterV => "Get 50000 total points from minigames.",
+            Achievement::ScoreHunterI => "You've set your sights on the highest scores, aiming for precision.",
+            Achievement::ScoreHunterII => "Your aim is true, and you've become a true score hunter.",
+            Achievement::ScoreHunterIII => "You are a pro at hunting high scores, an unstoppable force.",
+            Achievement::ScoreHunterIV => "Legends are made with your skills, and your name echoes among the greatest.",
+            Achievement::ScoreHunterV => "You are the master of scores, no one can match your precision.",
             // Jumper (platform game)
-            Achievement::JumperI => "Reach 500 points in a single platform game.",
-            Achievement::JumperII => "Reach 1500 points in a single platform game.",
-            Achievement::JumperIII => "Reach 2500 points in a single platform game.",
-            Achievement::JumperIV => "Reach 3500 points in a single platform game.",
-            Achievement::JumperV => "Reach 4500 points in a single platform game.",
+            Achievement::JumperI => "A small step, but a leap toward greatness. The world is at your feet.",
+            Achievement::JumperII => "You've taken to the skies, ready to jump higher and further.",
+            Achievement::JumperIII => "Scaling new heights, you've become a master of jumps.",
+            Achievement::JumperIV => "The mountains don't scare you anymore; you're on top of the world.",
+            Achievement::JumperV => "Your leaps defy gravity itself, as you ride rockets into the unknown.",
             // Tango (flappy beasts game)
-            Achievement::TangoI => "Reach 25 points in a single flappy beasts game.",
-            Achievement::TangoII => "Reach 50 points in a single flappy beasts game.",
-            Achievement::TangoIII => "Reach 100 points in a single flappy beasts game.",
-            Achievement::TangoIV => "Reach 200 points in a single flappy beasts game.",
-            Achievement::TangoV => "Reach 350 points in a single flappy beasts game.",
+            Achievement::TangoI => "You have got the moves! Glide through the air with elegance.",
+            Achievement::TangoII => "The wind is your friend, helping you soar through the skies.",
+            Achievement::TangoIII => "You have embraced the adventure of flight, an unstoppable flapper.",
+            Achievement::TangoIV => "Clouds are your playground as you dance across the sky.",
+            Achievement::TangoV => "You rule the skies now, flying at lightning speeds like a true king.",
         }
     }    
 
     #[inline]
     fn tasks(self: Achievement) -> Span<Task> {
-        // span structure: array![TaskTrait::new(task_id, count, description)].span(),
         match self {
             Achievement::None => [].span(),
             // Gamer progression
-            Achievement::MiniGamer => array![TaskTrait::new('MINIGAMER', 1, "Embark on your first gaming adventure! A true novice.")].span(),
-            Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 15, "You've honed your skills and mastered the art of gaming.")].span(),
-            Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 30, "You are a legendary figure in the gaming world, a true hero.")].span(),
-            Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 50, "The ultimate champion, a master of all things gaming.")].span(),
+            Achievement::MiniGamer => array![TaskTrait::new('MINIGAMER', 1, "Play a minigame once.")].span(),
+            Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 15, "Play a minigame 15 times.")].span(),
+            Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 30, "Play a minigame 30 times.")].span(),
+            Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 50, "Play a minigame 50 times.")].span(),
             // ScoreHunter levels
-            Achievement::ScoreHunterI => array![TaskTrait::new('SCOREHUNTERI', 1, "You've set your sights on the highest scores, aiming for precision.")].span(),
-            Achievement::ScoreHunterII => array![TaskTrait::new('SCOREHUNTERII', 1, "Your aim is true, and you've become a true score hunter.")].span(),
-            Achievement::ScoreHunterIII => array![TaskTrait::new('SCOREHUNTERIII', 1, "You are a pro at hunting high scores, an unstoppable force.")].span(),
-            Achievement::ScoreHunterIV => array![TaskTrait::new('SCOREHUNTERIV', 1, "Legends are made with your skills, and your name echoes among the greatest.")].span(),
-            Achievement::ScoreHunterV => array![TaskTrait::new('SCOREHUNTERV', 1, "You are the master of scores, no one can match your precision.")].span(),   
+            Achievement::ScoreHunterI => array![TaskTrait::new('SCOREHUNTERI', 1, "Get 2000 total points from minigames.")].span(),
+            Achievement::ScoreHunterII => array![TaskTrait::new('SCOREHUNTERII', 1, "Get 5000 total points from minigames.")].span(),
+            Achievement::ScoreHunterIII => array![TaskTrait::new('SCOREHUNTERIII', 1, "Get 12000 total points from minigames.")].span(),
+            Achievement::ScoreHunterIV => array![TaskTrait::new('SCOREHUNTERIV', 1, "Get 20000 total points from minigames.")].span(),
+            Achievement::ScoreHunterV => array![TaskTrait::new('SCOREHUNTERV', 1, "Get 50000 total points from minigames.")].span(),
             // Jumper (platform game)
-            Achievement::JumperI => array![TaskTrait::new('JUMPERI', 1, "A small step, but a leap toward greatness. The world is at your feet.")].span(),
-            Achievement::JumperII => array![TaskTrait::new('JUMPERII', 1, "You've taken to the skies, ready to jump higher and further.")].span(),
-            Achievement::JumperIII => array![TaskTrait::new('JUMPERIII', 1, "Scaling new heights, you've become a master of jumps.")].span(),
-            Achievement::JumperIV => array![TaskTrait::new('JUMPERIV', 1, "The mountains don't scare you anymore; you're on top of the world.")].span(),
-            Achievement::JumperV => array![TaskTrait::new('JUMPERV', 1, "Your leaps defy gravity itself, as you ride rockets into the unknown.")].span(),
+            Achievement::JumperI => array![TaskTrait::new('JUMPERI', 1, "Reach 500 points in a single platform game.")].span(),
+            Achievement::JumperII => array![TaskTrait::new('JUMPERII', 1, "Reach 1500 points in a single platform game.")].span(),
+            Achievement::JumperIII => array![TaskTrait::new('JUMPERIII', 1, "Reach 2500 points in a single platform game.")].span(),
+            Achievement::JumperIV => array![TaskTrait::new('JUMPERIV', 1, "Reach 3500 points in a single platform game.")].span(),
+            Achievement::JumperV => array![TaskTrait::new('JUMPERV', 1, "Reach 4500 points in a single platform game.")].span(),
             // Tango (flappy beasts game)
-            Achievement::TangoI => array![TaskTrait::new('TANGOI', 1, "You have got the moves! Glide through the air with elegance.")].span(),
-            Achievement::TangoII => array![TaskTrait::new('TANGOII', 1, "The wind is your friend, helping you soar through the skies.")].span(),
-            Achievement::TangoIII => array![TaskTrait::new('TANGOIII', 1, "You have embraced the adventure of flight, an unstoppable flapper.")].span(),
-            Achievement::TangoIV => array![TaskTrait::new('TANGOIV', 1, "Clouds are your playground as you dance across the sky.")].span(),
-            Achievement::TangoV => array![TaskTrait::new('TANGOV', 1, "You rule the skies now, flying at lightning speeds like a true king.")].span(),
-        }        
-    }
+            Achievement::TangoI => array![TaskTrait::new('TANGOI', 1, "Reach 25 points in a single flappy beasts game.")].span(),
+            Achievement::TangoII => array![TaskTrait::new('TANGOII', 1, "Reach 50 points in a single flappy beasts game.")].span(),
+            Achievement::TangoIII => array![TaskTrait::new('TANGOIII', 1, "Reach 100 points in a single flappy beasts game.")].span(),
+            Achievement::TangoIV => array![TaskTrait::new('TANGOIV', 1, "Reach 200 points in a single flappy beasts game.")].span(),
+            Achievement::TangoV => array![TaskTrait::new('TANGOV', 1, "Reach 350 points in a single flappy beasts game.")].span(),
+        }
+    }    
 
     #[inline]
     fn data(self: Achievement) -> ByteArray {
