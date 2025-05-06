@@ -22,7 +22,7 @@ const getBirthDate = (hexBirthDate:any) => {
 const fetchStatus = async (account:any) => {
     try {
         const response = await account?.callContract({
-          contractAddress: "0x6e34249d89c6a2dd8059f9839122b294dec169e270baba0cca3c4d9b731ae5e",
+          contractAddress: "0x568e844567dabb8c275f74708ec20bd0b228eee2b16435efcbc6ba5f5fdb7c",
           entrypoint: "get_timestamp_based_status_with_address",
           calldata: [String(account?.address)],
         });
@@ -35,7 +35,7 @@ const fetchStatus = async (account:any) => {
 const fetchAge = async (account:any) => {
   try {
       const response = await account?.callContract({
-        contractAddress: "0x6e34249d89c6a2dd8059f9839122b294dec169e270baba0cca3c4d9b731ae5e",
+        contractAddress: "0x568e844567dabb8c275f74708ec20bd0b228eee2b16435efcbc6ba5f5fdb7c",
         entrypoint: "get_beast_age_with_address",
         calldata: [String(account?.address)],
       });
