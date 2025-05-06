@@ -15,10 +15,11 @@ export const useHighScores = (account?: any) => {
       .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.HighestScore)
       .map(entity => entity.models.tamagotchi.HighestScore);
 
-
     setScores(scoreEntities);
-    const myScoreSkyJump = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame === 1);
-    const myScoreFlappyBird = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame === 2);
+
+    const myScoreSkyJump = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame_id === 1);
+
+    const myScoreFlappyBird = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame_id === 2);
 
     setMyScoreSkyJump(myScoreSkyJump);
     setMyScoreFlappyBird(myScoreFlappyBird);
