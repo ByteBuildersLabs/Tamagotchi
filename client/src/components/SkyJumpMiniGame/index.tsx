@@ -215,7 +215,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
       setCurrentHighScore(actualHighScore);
     }
 
-    const { food, amount } = FoodRewardService.determineReward(score, GameId.FLAPPY_BIRD);
+    const { food, amount } = FoodRewardService.determineReward(score, GameId.SKY_JUMP);
 
     setSelectedFood(food);
     setCollectedFood(amount);
