@@ -98,8 +98,8 @@ const options: ControllerOptions = {
   policies,
   theme,
   colorMode,
-  slot,
-  namespace,
+  namespace: "tamagotchi", 
+  slot: "bytebeaststamagotchisepolia", 
 };
 
 const cartridgeConnector = new ControllerConnector(
