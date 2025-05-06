@@ -1,7 +1,9 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import { saveHighScore } from '../../data/gamesMiniGamesRegistry';
-//import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import FoodRewardService from '../../services/FoodRewardService';
+import { GameId } from '../../types/GameRewards';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import './syles.css';
@@ -86,6 +88,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [showGameOverModal, setShowGameOverModal] = useState(false);
     const [showColliders, _setShowColliders] = useState(false);
+    const [selectedFood, setSelectedFood] = useState<any>(null);
+    const [collectedFood, setCollectedFood] = useState<number>(0);
 
     type GameScreenState = 'playing' | 'sharing' | 'gameover';
     const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
@@ -139,63 +143,65 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     }, []);
 
     // Save game results to Dojo
-    const saveGameResultsToDojo = async (score: number) => {
+    const saveGameResultsToDojo = async (gameData: {
+        score: number;
+        foodId: string;
+        foodCollected: number;
+      }) => {
+        const { score, foodId, foodCollected  } = gameData;
+        console.log("Saving game results to Dojo:", gameData);
         try {
-            if (handleAction && client && account) {
-                await handleAction(
-                    "SaveGameResults",
-                    async () => {
-                        await client.player.updatePlayerTotalPoints(
-                            account,
-                            score
-                        );
-                        await client.player.updatePlayerMinigameHighestScore(
-                            account,
-                            score,
-                            2 // Use appropriate ID for FlappyBird
-                        );
-                        //Comment out when food becomes available
-                        // await client.player.addOrUpdateFoodAmount(
-                        //     account as Account,
-                        //     foodId,
-                        //     foodCollected
-                        // );
-                    }
-                );
-                return true;
-            } else {
-                console.warn("Cannot save game results - missing required props");
-                return false;
-            }
-        } catch (error) {
-            console.error("Error saving game results:", error);
+          if (handleAction && client && account) {
+            await handleAction(
+              "SaveGameResults", 
+              async () => {
+                await client.player.updatePlayerTotalPoints(
+                  account,
+                  score
+                )
+                await client.player.updatePlayerMinigameHighestScore(
+                  account,
+                  score,
+                  1
+                )
+                await client.player.addOrUpdateFoodAmount(
+                  account,
+                  foodId,
+                  foodCollected
+                )
+            });
+            return true;
+          } else {
+            console.warn("Cannot save game results - missing required props");
             return false;
+          }
+        } catch (error) {
+          console.error("Error saving game results:", error);
+          console.error("Couldn't save your game results. Your progress might not be recorded.");
+          return false;
         }
-    };
+      };
 
-    const fetchBeastEnergy = async () => {
+      const fetchBeastEnergy = async () => {
         if (!account) return null;
-
-        const testValue = 50;
-        return testValue;
-
-        // try {
-        //   const statusResponse = await fetchStatus(account);
-
-        //   // Check if we have a valid response
-        //   if (statusResponse && statusResponse.length > 0) {
-        //     // energy appears to be at index 4
-        //     const energy = statusResponse[4] || 0;
-        //     return energy;
-        //   } else {
-        //     console.log("No valid status response");
-        //     return 0;
-        //   }
-        // } catch (error) {
-        //   console.error("Error fetching beast energy:", error);
-        //   return null;
-        // }
-    };
+    
+        try {
+          const statusResponse = await fetchStatus(account);
+    
+          // Check if we have a valid response
+          if (statusResponse && statusResponse.length > 0) {
+            // energy appears to be at index 4
+            const energy = statusResponse[4] || 0;
+            return energy;
+          } else {
+            console.log("No valid status response");
+            return 0;
+          }
+        } catch (error) {
+          console.error("Error fetching beast energy:", error);
+          return null;
+        }
+      };
 
     // Handle game over
     const handleGameEnd = () => {
@@ -208,7 +214,15 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             setCurrentHighScore(score);
         }
 
-        saveGameResultsToDojo(score);
+        // Use the service to determine the reward
+        const { food, amount } = FoodRewardService.determineReward(score, GameId.FLAPPY_BIRD);
+
+        // Update states
+        setSelectedFood(food);
+        setCollectedFood(amount);
+
+        // Save the results
+        saveGameResultsToDojo({score,foodId: food.id || "", foodCollected: amount});
 
         setCurrentScreen('sharing');
         setIsShareModalOpen(true);
@@ -595,6 +609,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
         setIsShareModalOpen(false);
         setShowGameOverModal(false);
         setCurrentScreen('playing');
+        setSelectedFood(null);
+        setCollectedFood(0);
 
         if (beastRef.current) beastRef.current.style.transform = `translateY(${game.birdY}px) rotate(0deg)`;
     };
@@ -890,6 +906,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
                 currentScreen={currentScreen}
                 finalScore={finalScore}
                 currentHighScore={currentHighScore}
+                collectedFood={collectedFood}
+                selectedFood={selectedFood}
                 handlePlayAgain={handlePlayAgain}
                 restartIcon={Restart}
             />
