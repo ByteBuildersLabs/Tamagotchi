@@ -162,7 +162,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
                 await client.player.updatePlayerMinigameHighestScore(
                   account,
                   score,
-                  1
+                  2
                 )
                 await client.player.addOrUpdateFoodAmount(
                   account,
