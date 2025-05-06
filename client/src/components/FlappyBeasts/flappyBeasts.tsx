@@ -1,9 +1,9 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
-import { saveHighScore } from '../../data/gamesMiniGamesRegistry';
 import FoodRewardService from '../../services/FoodRewardService';
 import { GameId } from '../../types/GameRewards';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import './syles.css';
@@ -70,8 +70,6 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     beastImageRight,
     onExitGame,
     highScore,
-    gameId,
-    beastId,
     gameName,
     handleAction,
     client,
@@ -83,6 +81,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     const [_score, setScore] = useState(0);
     const [finalScore, setFinalScore] = useState(0);
     const [currentHighScore, setCurrentHighScore] = useState(highScore);
+    const { myScoreFlappyBird } = useHighScores(account);
     const [showEnergyToast, setShowEnergyToast] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -205,27 +204,25 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
 
     // Handle game over
     const handleGameEnd = () => {
-        const score = currentScoreRef.current;
-        setFinalScore(score);
 
-        // Check if it's a new high score
-        if (score > currentHighScore) {
-            saveHighScore(gameId, beastId, score);
-            setCurrentHighScore(score);
-        }
+      const score = currentScoreRef.current;
+      setFinalScore(score);
+      const dojoHighScore = myScoreFlappyBird.length > 0 ? myScoreFlappyBird[0]?.score : 0;
+      const actualHighScore = Math.max(dojoHighScore, currentHighScore);
+      
+      if (score > actualHighScore) {
+          setCurrentHighScore(score);
+      } else {
+          setCurrentHighScore(actualHighScore);
+      }
 
-        // Use the service to determine the reward
-        const { food, amount } = FoodRewardService.determineReward(score, GameId.FLAPPY_BIRD);
+      const { food, amount } = FoodRewardService.determineReward(score, GameId.FLAPPY_BIRD);
 
-        // Update states
-        setSelectedFood(food);
-        setCollectedFood(amount);
-
-        // Save the results
-        saveGameResultsToDojo({score,foodId: food.id || "", foodCollected: amount});
-
-        setCurrentScreen('sharing');
-        setIsShareModalOpen(true);
+      setSelectedFood(food);
+      setCollectedFood(amount);
+      saveGameResultsToDojo({score, foodId: food.id || "", foodCollected: amount});
+      setCurrentScreen('sharing');
+      setIsShareModalOpen(true);
     };
 
     // Handle play again

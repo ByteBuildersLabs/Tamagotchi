@@ -24,6 +24,12 @@ const Play: React.FC<PlayProps> = ({
 }) => {
   const navigate = useNavigate();
   const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
+
+  const GAME_ID_MAPPING: Record<string, number> = {
+    'doodleGame': 1,     // SkyJump
+    'flappyBirdGame': 2  // FlappyBird
+  };
+
   const startGame = async (gameId: string) => {
     if (!beast) return;
 
@@ -35,7 +41,9 @@ const Play: React.FC<PlayProps> = ({
     try {
       handleAction(
         "Play",
-        async () => await client.game.play(account),
+        async () => {
+          return await client.game.play(account);
+        },
         beastsDex[beast.specie - 1].playPicture
       );
 
@@ -69,12 +77,15 @@ const Play: React.FC<PlayProps> = ({
             <img src={game.icon} alt={game.name} className="game-icon" />
             <div className="game-card-content">
               <h3 className="game-name">{game.name}</h3>
-              <p className="game-description" >{game.description}</p>
-              <div className="game-high-score" >
+              <p className="game-description">{game.description}</p>
+              <div className="game-high-score">
                 Record: {(() => {
-                  switch (game.id) {
-                    case '1': return myScoreSkyJump[0]?.score || '0';
-                    case '2': return myScoreFlappyBird[0]?.score || '0';
+                  const gameId = game.id as string;
+                  const dojoGameId = GAME_ID_MAPPING[gameId] || 0; 
+                  
+                  switch (dojoGameId) {
+                    case 1: return myScoreSkyJump[0]?.score || '0';
+                    case 2: return myScoreFlappyBird[0]?.score || '0';
                     default: return '0';
                   }
                 })()}
@@ -85,7 +96,6 @@ const Play: React.FC<PlayProps> = ({
       </div>
     </div>
   );
-
 };
 
 export default Play;

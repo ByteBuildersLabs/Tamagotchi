@@ -6,6 +6,7 @@ import Lock from '../../assets/img/lock.svg';
 import Unlock from '../../assets/img/unlock.svg';
 import FoodRewardService from '../../services/FoodRewardService';
 import { GameId } from '../../types/GameRewards';
+import { useHighScores } from '../../hooks/useHighScore.tsx';
 import './main.css';
 
 import platformImg from '../../assets/SkyJump/platform.png';
@@ -84,6 +85,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const [currentHighScore, setCurrentHighScore] = useState(highScore);
+  const { myScoreSkyJump } = useHighScores(account);
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
 
@@ -201,28 +203,23 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
 
   // Function to handle game end
   const handleGameEnd = () => {
+
     const score = currentScoreRef.current;
     setFinalScore(score);
+    const dojoHighScore = myScoreSkyJump.length > 0 ? myScoreSkyJump[0]?.score : 0;
+    const actualHighScore = Math.max(dojoHighScore, currentHighScore);
 
-    // Check if it's a new high score
-    if (score > currentHighScore) {
+    if (score > actualHighScore) {
       setCurrentHighScore(score);
+    } else {
+      setCurrentHighScore(actualHighScore);
     }
 
-    // Usar el servicio para determinar la recompensa
     const { food, amount } = FoodRewardService.determineReward(score, GameId.SKY_JUMP);
-    
-    // update states
+
     setSelectedFood(food);
     setCollectedFood(amount);
-    
-    // Save to dojo
-    saveGameResultsToDojo({
-      score,
-      foodId: food.id || "", 
-      foodCollected: amount
-    });
-
+    saveGameResultsToDojo({ score, foodId: food.id || "", foodCollected: amount });
     setCurrentScreen('sharing');
     setIsShareModalOpen(true);
   };
