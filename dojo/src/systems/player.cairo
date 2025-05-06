@@ -16,21 +16,9 @@ pub mod player {
     // Local import
     use super::{IPlayer};
 
-    // Constants import
-    use tamagotchi::constants;
-
     // Starknet imports
     use starknet::{get_block_timestamp, ContractAddress};
-
-    // Tamagotchi achievements import
-    use tamagotchi::achievements::achievement::{Achievement, AchievementTrait};
-
-    // Dojo achievements imports
-    use achievement::components::achievable::AchievableComponent;
-    use achievement::store::{StoreTrait as AchievementStoreTrait};
-    component!(path: AchievableComponent, storage: achievable, event: AchievableEvent);
-    impl AchievableInternalImpl = AchievableComponent::InternalImpl<ContractState>;
-
+    
     // Model imports
     #[allow(unused_imports)]
     use tamagotchi::models::beast::{Beast, BeastTrait};
@@ -50,47 +38,8 @@ pub mod player {
     #[allow(unused_imports)]
     use dojo::event::EventStorage;
 
-    #[storage]
-    struct Storage {
-        #[substorage(v0)]
-        achievable: AchievableComponent::Storage,
-    }
-
-    #[event]
-    #[derive(Drop, starknet::Event)]
-    enum Event {
-        #[flat]
-        AchievableEvent: AchievableComponent::Event,
-    }
-
     // Constructor
-    fn dojo_init(ref self: ContractState) {
-        // [Event] Emit all Achievement creation events
-        let mut world = self.world(@"tamagotchi");
-
-        let mut achievement_id: u8 = 1;
-            while achievement_id <= constants::ACHIEVEMENTS_COUNT {
-                let achievement: Achievement = achievement_id.into();
-                self
-                    .achievable
-                    .create(
-                        world,
-                        id: achievement.identifier(),
-                        hidden: achievement.hidden(),
-                        index: achievement.index(),
-                        points: achievement.points(),
-                        start: achievement.start(),
-                        end: achievement.end(),
-                        group: achievement.group(),
-                        icon: achievement.icon(),
-                        title: achievement.title(),
-                        description: achievement.description(),
-                        tasks: achievement.tasks(),
-                        data: achievement.data(),
-                    );
-                achievement_id += 1;
-            }
-    }
+    fn dojo_init(ref self: ContractState) {}
 
     // Implementation of the interface methods
     #[abi(embed_v0)]
@@ -138,19 +87,9 @@ pub mod player {
             player.update_total_points(points);
 
             store.write_player(@player);
-
-            // Emit progress event when the player earns points in the minigame
-            let task_id = '1'; // Should be the same as the one in dojo_init
-            let count = 1; // This is the times a task is completed in order to complete the achievement
-            let achievement_store = AchievementStoreTrait::new(world); // Achievement store
-            let time = starknet::get_block_timestamp(); // Current timestamp
-
-            achievement_store.progress(player.address.into(), task_id, count, time); 
         }
 
-        fn update_player_minigame_highest_score(
-            ref self: ContractState, points: u32, minigame_id: u16,
-        ) {
+        fn update_player_minigame_highest_score(ref self: ContractState, points: u32, minigame_id: u16) {
             let mut world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
 

@@ -13,6 +13,7 @@ pub mod helpers {
 pub mod systems {
     pub mod game;
     pub mod player;
+    pub mod achieve;
 }
 
 pub mod models {

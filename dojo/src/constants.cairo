@@ -31,6 +31,25 @@ pub const XL_UPDATE_POINTS: u8 = 10;
 
 // Achievements
 pub const ACHIEVEMENTS_COUNT: u8 = 19;
+pub const MINIGAMES_ACHIEVEMENTS_COUNT: u8 = 4;
+// ScoreHunter
+pub const SCOREHUNTERI_POINTS: u32 = 2000;
+pub const SCOREHUNTERII_POINTS: u32 = 5000;
+pub const SCOREHUNTERIII_POINTS: u32 = 12000;
+pub const SCOREHUNTERIV_POINTS: u32 = 20000;
+pub const SCOREHUNTERV_POINTS: u32 = 50000;
+// Jumper
+pub const JUMPERI_POINTS: u32 = 500;
+pub const JUMPERII_POINTS: u32 = 1500;
+pub const JUMPERIII_POINTS: u32 = 2500;
+pub const JUMPERIV_POINTS: u32 = 3500;
+pub const JUMPERV_POINTS: u32 = 4500;
+// Tango
+pub const TANGOI_POINTS: u32 = 25;
+pub const TANGOII_POINTS: u32 = 50;
+pub const TANGOIII_POINTS: u32 = 100;
+pub const TANGOIV_POINTS: u32 = 200;
+pub const TANGOV_POINTS: u32 = 350;
 
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;

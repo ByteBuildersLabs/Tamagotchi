@@ -18,6 +18,6 @@ default = "tamagotchi"
 rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 
 [writers]
-"tamagotchi" = ["tamagotchi-game", "tamagotchi-player"]
+"tamagotchi" = ["tamagotchi-game", "tamagotchi-player", "tamagotchi-achieve]
 "tamagotchi-TrophyCreation" = ["tamagotchi-player"]
 "tamagotchi-TrophyProgression" = ["tamagotchi-player"]
