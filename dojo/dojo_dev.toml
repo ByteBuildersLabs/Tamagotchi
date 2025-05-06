@@ -21,6 +21,6 @@ private_key = "0x33003003001800009900180300d206308b0070db00121318d17b5e6262150b"
 # world_address = "0x06171ed98331e849d6084bf2b3e3186a7ddf35574dd68cab4691053ee8ab69d7"
 
 [writers]
-"tamagotchi" = ["tamagotchi-game", "tamagotchi-player"]
+"tamagotchi" = ["tamagotchi-game", "tamagotchi-player", "tamagotchi-achieve]
 "tamagotchi-TrophyCreation" = ["tamagotchi-player"]
 "tamagotchi-TrophyProgression" = ["tamagotchi-player"]
