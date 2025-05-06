@@ -6,8 +6,14 @@ rpc = "https://api.cartridge.gg/x/starknet/sepolia"
 
 # Indexing Options
 [indexing]
+allowed_origins = ["*"]
 transactions = true
 pending = true
+polling_interval = 1000
+contracts = []
 
-[sql] 
+[events]
+raw = true
+
+[sql]
 historical = ["tamagotchi-TrophyProgression"] 
