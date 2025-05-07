@@ -64,8 +64,22 @@ function Header({ tamagotchiStats }: HeaderProps) {
 
   // Define menu items in a standardized way
   const menuItems: MenuItem[] = [
-    { to: '/leaderboard', icon: ranking, alt: "Leaderboard", label: "Leaderboard", onClick: () => buttonSound() },
-    { to: '/about', icon: book, alt: "Book", label: "About", onClick: () => buttonSound() }
+    {
+      to: '/leaderboard',
+      icon: ranking,
+      alt: "Leaderboard",
+      label: "Leaderboard",
+      onClick: () => buttonSound()
+    },
+    {
+      icon: book,
+      alt: "Book",
+      label: "About",
+      onClick: () => {
+        buttonSound();
+        window.open('https://website.bytebeasts.games', '_blank');
+      }
+    }
   ];
 
   // Conditionally add Share option if on tamagotchi route
