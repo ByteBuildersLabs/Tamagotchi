@@ -6,8 +6,8 @@ import { constants } from "starknet";
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x568e844567dabb8c275f74708ec20bd0b228eee2b16435efcbc6ba5f5fdb7c'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x22f0e64ecfcb7f7da6dc183b131bf081516c0c41a2c791d2b958c243a5c714'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x58b7067aba23d176d96cde4be201d3dc5c5bddd0d1b4a665584d206846a165d'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x54019f8f6a4b65ed6ccb2704ac1a1dd10c3b376ff4ba8589b1a517588202e32'
 
 const policies: SessionPolicies = {
   contracts: {
@@ -99,7 +99,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "tamagotchisepoliatorii", 
+  slot: "tamagotchibb", 
 };
 
 const cartridgeConnector = new ControllerConnector(
