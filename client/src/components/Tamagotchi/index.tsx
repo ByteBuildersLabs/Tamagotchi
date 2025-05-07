@@ -29,7 +29,7 @@ import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/t
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
-import achievementIcon from '../../assets/img/trophy2.svg';
+import achievementIcon from '../../assets/img/achievement.svg';
 import Egg from "../../assets/img/egg.gif";
 import Cake from "../../assets/img/cake.svg";
 import { Message } from "../../hooks/useBeastChat.ts";

@@ -14,7 +14,6 @@ import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import useSound from 'use-sound';
 import buttonClick from '../../assets/sounds/click.mp3';
 import "./main.css";
-import CountDown from "../CountDown/index.tsx";
 import Countdown from "../CountDown/index.tsx";
 
 interface HeaderProps {
