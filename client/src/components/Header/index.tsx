@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
 import monster from "../../assets/img/logo.jpg";
-import trophy from "../../assets/img/trophy.svg";
+import ranking from "../../assets/img/ranking.svg";
 import book from "../../assets/img/book.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
@@ -64,7 +64,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
 
   // Define menu items in a standardized way
   const menuItems: MenuItem[] = [
-    { to: '/leaderboard', icon: trophy, alt: "Leaderboard", label: "Leaderboard", onClick: () => buttonSound() },
+    { to: '/leaderboard', icon: ranking, alt: "Leaderboard", label: "Leaderboard", onClick: () => buttonSound() },
     { to: '/about', icon: book, alt: "Book", label: "About", onClick: () => buttonSound() }
   ];
 
