@@ -6,6 +6,11 @@ pub trait IAchieve<T> {
     fn achieve_player_new_total_points(ref self: T);
     fn achieve_platform_highscore(ref self: T, score: u32);
     fn achieve_flappy_beast_highscore(ref self: T, score: u32);
+    // ------------------------- BeastCare achievement methods -------------------------
+    fn achieve_beast_feed(ref self: T);
+    fn achieve_beast_pet(ref self: T);
+    fn achieve_beast_sleep(ref self: T);
+    fn achieve_beast_clean(ref self: T);
     // ------------------------- Social achievement methods -------------------------
     fn achieve_social_share(ref self: T, score: u32);
     fn achieve_beast_chat(ref self: T);
@@ -101,9 +106,10 @@ pub mod achieve {
             player.assert_exists();
 
             // Emit all minigames progress
-            let mut achievement_id: u8 = 1;
+            let mut achievement_id = constants::SCOREHUNTER_INITIAL_ID;
+            let counter = constants::SCOREHUNTER_ACHIEVEMENTS_COUNT;
             
-            while achievement_id <= constants::MINIGAMES_ACHIEVEMENTS_COUNT {
+            while achievement_id <= counter + achievement_id {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
                 achievement_id += 1;
             }
@@ -219,6 +225,80 @@ pub mod achieve {
             }
         }
 
+        // ------------------------- BeastCare achievement methods -------------------------
+        fn achieve_beast_feed(ref self: ContractState){
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            // Emit all minigames progress
+            let mut achievement_id = constants::BYTEBITES_INITIAL_ID;
+            let counter = constants::BYTEBITES_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
+            
+            while achievement_id <= stop {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            }
+        }
+
+        fn achieve_beast_pet(ref self: ContractState){
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            // Emit all minigames progress
+            let mut achievement_id = constants::PET_INITIAL_ID;
+            let counter = constants::PET_ACHIEVEMENTS_COUNT;
+            
+            while achievement_id <= counter + achievement_id {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            }
+        }
+
+        fn achieve_beast_sleep(ref self: ContractState){
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            // Emit all minigames progress
+            let mut achievement_id = constants::SLEEP_INITIAL_ID;
+            let counter = constants::SLEEP_ACHIEVEMENTS_COUNT;
+            
+            while achievement_id <= counter + achievement_id {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            }
+        }
+
+        fn achieve_beast_clean(ref self: ContractState){
+            let mut world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            let mut player: Player = store.read_player();
+            player.assert_exists();
+
+            // Emit all minigames progress
+            let mut achievement_id = constants::CLEAN_INITIAL_ID;
+            let counter = constants::CLEAN_ACHIEVEMENTS_COUNT;
+            
+            while achievement_id <= counter + achievement_id {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            }
+        }
+
         // ------------------------- Social achievement methods -------------------------
         // Share on social media
         fn achieve_social_share(ref self: ContractState, score: u32) {
@@ -287,6 +367,5 @@ pub mod achieve {
             achievement_store.progress(player.address.into(), achievement_neural_linkIV.into(), 1, get_block_timestamp());
             achievement_store.progress(player.address.into(), achievement_neural_linkV.into(), 1, get_block_timestamp());
         }
-
     }
 }

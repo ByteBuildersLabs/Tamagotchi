@@ -30,9 +30,14 @@ pub const L_UPDATE_POINTS: u8 = 8;
 pub const XL_UPDATE_POINTS: u8 = 10;
 
 // Achievements
-pub const ACHIEVEMENTS_COUNT: u8 = 34;
-pub const MINIGAMES_ACHIEVEMENTS_COUNT: u8 = 4;
+pub const ACHIEVEMENTS_COUNT: u8 = 54;
+pub const SCOREHUNTER_ACHIEVEMENTS_COUNT: u8 = 4;
+pub const BYTEBITES_ACHIEVEMENTS_COUNT: u8 = 5;
+pub const PET_ACHIEVEMENTS_COUNT: u8 = 5;
+pub const SLEEP_ACHIEVEMENTS_COUNT: u8 = 5;
+pub const CLEAN_ACHIEVEMENTS_COUNT: u8 = 5;
 // ScoreHunter
+pub const SCOREHUNTER_INITIAL_ID: u8 = 1;
 pub const SCOREHUNTERI_POINTS: u32 = 2000;
 pub const SCOREHUNTERII_POINTS: u32 = 5000;
 pub const SCOREHUNTERIII_POINTS: u32 = 12000;
@@ -56,6 +61,14 @@ pub const ARENAROCKSTARII_POINTS: u32 = 1500;
 pub const ARENAROCKSTARIII_POINTS: u32 = 3000;
 pub const ARENAROCKSTARIV_POINTS: u32 = 5000;
 pub const ARENAROCKSTARV_POINTS: u32 = 9999;
+// ByteBites
+pub const BYTEBITES_INITIAL_ID: u8 = 35;
+// BeastFriend
+pub const PET_INITIAL_ID: u8 = 40;
+// NapMaster
+pub const SLEEP_INITIAL_ID: u8 = 45;
+// CleanStreakI
+pub const CLEAN_INITIAL_ID: u8 = 50;
 
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;
