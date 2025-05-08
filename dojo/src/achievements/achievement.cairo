@@ -44,6 +44,27 @@ pub enum Achievement {
     NeuralLinkIII,
     NeuralLinkIV,
     NeuralLinkV,
+    // BeastCare
+    ByteBitesI,
+    ByteBitesII,
+    ByteBitesIII,
+    ByteBitesIV,
+    ByteBitesV,
+    BeastFriendI,
+    BeastFriendII,
+    BeastFriendIII,
+    BeastFriendIV,
+    BeastFriendV,
+    NapMasterI,
+    NapMasterII,
+    NapMasterIII,
+    NapMasterIV,
+    NapMasterV,
+    CleanStreakI,
+    CleanStreakII,
+    CleanStreakIII,
+    CleanStreakIV,
+    CleanStreakV,
 }
 
 
@@ -52,42 +73,72 @@ pub impl AchievementImpl of AchievementTrait {
     #[inline]
     fn identifier(self: Achievement) -> felt252 {
         match self {
-            Achievement::None => 0,
-            Achievement::MiniGamer => 'MiniGamer', // Play a minigame once
-            Achievement::MasterGamer => 'MasterGamer', // Play a minigame 15 times
-            Achievement::LegendGamer => 'LegendGamer', // Play a minigame 30 times
-            Achievement::AllStarGamer => 'AllStarGamer', // Play a minigame 50 times 
-            Achievement::ScoreHunterI => 'ScoreHunterI', // Get 2000 total points from minigames
-            Achievement::ScoreHunterII => 'ScoreHunterII', // Get 5000 total points from minigames
-            Achievement::ScoreHunterIII => 'ScoreHunterIII', // Get 12000 total points from minigames
-            Achievement::ScoreHunterIV => 'ScoreHunterIV', // Get 20000 total points from minigames
-            Achievement::ScoreHunterV => 'ScoreHunterV', // Get 50000 total points from minigames
-            Achievement::JumperI => 'JumperI', // Reach 500 points in a single platform game
-            Achievement::JumperII => 'JumperII', // Reach 1500 points in a single platform game
-            Achievement::JumperIII => 'JumperIII', // Reach 2500 points in a single platform game
-            Achievement::JumperIV => 'JumperIV', // Reach 3500 points in a single platform game
-            Achievement::JumperV => 'JumperV', // Reach 4500 points in a single platform game
-            Achievement::TangoI => 'TangoI', // Reach 25 points in a single flappy beasts game
-            Achievement::TangoII => 'TangoII', // Reach 50 points in a single flappy beasts game
-            Achievement::TangoIII => 'TangoIII', // Reach 100 points in a single flappy beasts game
-            Achievement::TangoIV => 'TangoIV', // Reach 200 points in a single flappy beasts game
-            Achievement::TangoV => 'TangoV', // Reach 350 points in a single flappy beasts game
+            Achievement::None => "None",
+            Achievement::MiniGamer => "MiniGamer", // Play a minigame once
+            Achievement::MasterGamer => "MasterGamer", // Play a minigame 15 times
+            Achievement::LegendGamer => "LegendGamer", // Play a minigame 30 times
+            Achievement::AllStarGamer => "AllStarGamer", // Play a minigame 50 times 
+
+            Achievement::ScoreHunterI => "ScoreHunterI", // Get 2000 total points from minigames
+            Achievement::ScoreHunterII => "ScoreHunterII", // Get 5000 total points from minigames
+            Achievement::ScoreHunterIII => "ScoreHunterIII", // Get 12000 total points from minigames
+            Achievement::ScoreHunterIV => "ScoreHunterIV", // Get 20000 total points from minigames
+            Achievement::ScoreHunterV => "ScoreHunterV", // Get 50000 total points from minigames
+        
+            Achievement::JumperI => "JumperI", // Reach 500 points in a single platform game
+            Achievement::JumperII => "JumperII", // Reach 1500 points in a single platform game
+            Achievement::JumperIII => "JumperIII", // Reach 2500 points in a single platform game
+            Achievement::JumperIV => "JumperIV", // Reach 3500 points in a single platform game
+            Achievement::JumperV => "JumperV", // Reach 4500 points in a single platform game
+        
+            Achievement::TangoI => "TangoI", // Reach 25 points in a single flappy beasts game
+            Achievement::TangoII => "TangoII", // Reach 50 points in a single flappy beasts game
+            Achievement::TangoIII => "TangoIII", // Reach 100 points in a single flappy beasts game
+            Achievement::TangoIV => "TangoIV", // Reach 200 points in a single flappy beasts game
+            Achievement::TangoV => "TangoV", // Reach 350 points in a single flappy beasts game
             Achievement::EchoNetworkI => 'EchoNetworkI', // Shared Beast for the first time
+
             Achievement::EchoNetworkII => 'EchoNetworkII', // Shared beast 5 times
             Achievement::EchoNetworkIII => 'EchoNetworkIII', // Shared beast 10 times
             Achievement::EchoNetworkIV => 'EchoNetworkIV', // Shared your Beast 25 times
             Achievement::EchoNetworkV => 'EchoNetworkV', // Shared your Beast 50 times
+
             Achievement::ArenaRockstarI => 'ArenaRockstarI', // Shared a score of 500
             Achievement::ArenaRockstarII => 'ArenaRockstarII', // Shared a score of 1500
             Achievement::ArenaRockstarIII => 'ArenaRockstarIII', // Shared a score of 3000
             Achievement::ArenaRockstarIV => 'ArenaRockstarIV', // Shared a score of 5000
             Achievement::ArenaRockstarV => 'ArenaRockstarV', // Shared a score of 9999
+            
             Achievement::NeuralLinkI => 'NeuralLinkI', // Talked to your Beast for the first time
             Achievement::NeuralLinkII => 'NeuralLinkII', // Talked to your Beast 5 times
             Achievement::NeuralLinkIII => 'NeuralLinkIII', // Talked to your Beast 10 times
             Achievement::NeuralLinkIV => 'NeuralLinkIV', // Talked to your Beast 20 times
             Achievement::NeuralLinkV => 'NeuralLinkV' // Talked to your Beast 50 times
-        }
+        
+            Achievement::ByteBitesI => "ByteBitesI", // Feed your beast once
+            Achievement::ByteBitesII => "ByteBitesII", // Feed your beast 20 times
+            Achievement::ByteBitesIII => "ByteBitesIII", // Feed your beast 50 times
+            Achievement::ByteBitesIV => "ByteBitesIV", // Feed your beast 150 times
+            Achievement::ByteBitesV => "ByteBitesV", // Feed your beast 250 times
+        
+            Achievement::BeastFriendI => "BeastFriendI", // Pet your beast once
+            Achievement::BeastFriendII => "BeastFriendII", // Pet your beast 20 times
+            Achievement::BeastFriendIII => "BeastFriendIII", // Pet your beast 20 times
+            Achievement::BeastFriendIV => "BeastFriendIV", // Pet your beast 20 times
+            Achievement::BeastFriendV => "BeastFriendV", // Pet your beast 20 times
+        
+            Achievement::NapMasterI => "NapMasterI", // Put your beast to sleep once
+            Achievement::NapMasterII => "NapMasterII", // Put your beast to sleep 10 times
+            Achievement::NapMasterIII => "NapMasterIII", // Put your beast to sleep 25 times
+            Achievement::NapMasterIV => "NapMasterIV", // Put your beast to sleep 55 times
+            Achievement::NapMasterV => "NapMasterV", // Put your beast to sleep 100 times
+
+            Achievement::CleanStreakI => "CleanStreakI", // Clean your beast once
+            Achievement::CleanStreakII => "CleanStreakII", // Clean your beast 25 times
+            Achievement::CleanStreakIII => "CleanStreakIII", // Clean your beast 55 times
+            Achievement::CleanStreakIV => "CleanStreakIV", // Clean your beast 100 times
+            Achievement::CleanStreakV => "CleanStreakV", // Clean your beast 200 times
+        }        
     }
 
     #[inline]
