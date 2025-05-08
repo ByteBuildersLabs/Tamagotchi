@@ -225,37 +225,67 @@ pub mod achieve {
             let world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
-
-            // Achievement IDs
-            let achievement_socialI: felt252 = 'SOCIALI';
-            let achievement_socialII: felt252 = 'SOCIALII';
-            let achievement_socialIV: felt252 = 'SOCIALIV';
+        
+            let achievement_echoI: felt252 = 'ECHONETWORKI';
+            let achievement_echoII: felt252 = 'ECHONETWORKII';
+            let achievement_echoIII: felt252 = 'ECHONETWORKIII';
+            let achievement_echoIV: felt252 = 'ECHONETWORKIV';
+            let achievement_echoV: felt252 = 'ECHONETWORKV';
+        
+            let achievement_rockstarI: felt252 = 'ARENAROCKSTARI';
+            let achievement_rockstarII: felt252 = 'ARENAROCKSTARII';
+            let achievement_rockstarIII: felt252 = 'ARENAROCKSTARIII';
+            let achievement_rockstarIV: felt252 = 'ARENAROCKSTARIV';
+            let achievement_rockstarV: felt252 = 'ARENAROCKSTARV';
         
             let player = store.read_player();
             player.assert_exists();
         
-            // Always progress these one by one
-            achievement_store.progress(player.address.into(), achievement_socialI.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_socialIV.into(), 1, get_block_timestamp());
+            // Progress EchoNetwork (share count)
+            achievement_store.progress(player.address.into(), achievement_echoI.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_echoII.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_echoIII.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_echoIV.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_echoV.into(), 1, get_block_timestamp());
         
-            if score >= constants::SOCIALII_POINTS {
-                achievement_store.progress(player.address.into(), achievement_socialII.into(), 1, get_block_timestamp());
+            // Progress ArenaRockstar (score thresholds)
+            if score >= constants::ARENAROCKSTARI_POINTS {
+                achievement_store.progress(player.address.into(), achievement_rockstarI.into(), 1, get_block_timestamp());
+            }
+            if score >= constants::ARENAROCKSTARII_POINTS {
+                achievement_store.progress(player.address.into(), achievement_rockstarII.into(), 1, get_block_timestamp());
+            }
+            if score >= constants::ARENAROCKSTARIII_POINTS {
+                achievement_store.progress(player.address.into(), achievement_rockstarIII.into(), 1, get_block_timestamp());
+            }
+            if score >= constants::ARENAROCKSTARIV_POINTS {
+                achievement_store.progress(player.address.into(), achievement_rockstarIV.into(), 1, get_block_timestamp());
+            }
+            if score >= constants::ARENAROCKSTARV_POINTS {
+                achievement_store.progress(player.address.into(), achievement_rockstarV.into(), 1, get_block_timestamp());
             }
         }
-
+        
         // Chat with beast
         fn achieve_beast_chat(ref self: ContractState) {
             let world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
 
-            // Achievement IDs
-            let achievement_socialIII: felt252 = 'SOCIALIII';
+            let achievement_neural_linkI: felt252 = 'NEURALLINKI';
+            let achievement_neural_linkII: felt252 = 'NEURALLINKII';
+            let achievement_neural_linkIII: felt252 = 'NEURALLINKIII';
+            let achievement_neural_linkIV: felt252 = 'NEURALLINKIV';
+            let achievement_neural_linkV: felt252 = 'NEURALLINKV';
         
             let player = store.read_player();
             player.assert_exists();
         
-            achievement_store.progress(player.address.into(), achievement_socialIII.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_neural_linkI.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_neural_linkII.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_neural_linkIII.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_neural_linkIV.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_neural_linkV.into(), 1, get_block_timestamp());
         }
 
     }
