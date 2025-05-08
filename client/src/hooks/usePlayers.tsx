@@ -1,67 +1,83 @@
-import { KeysClause, ToriiQueryBuilder } from "@dojoengine/sdk";
-import { useDojoSDK, useModel } from "@dojoengine/sdk/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useEffect, useState } from "react";
+import { dojoConfig } from "../dojo/dojoConfig";
+import { lookupAddresses } from '@cartridge/controller';
 import { useAccount } from "@starknet-react/core";
-import { useEffect, useMemo } from "react";
-import { AccountInterface, addAddressPadding } from "starknet";
-import { ModelsMapping } from "../dojo/bindings";
+import { addAddressPadding } from "starknet";
+
+const TORII_URL = dojoConfig.toriiUrl + "/graphql";
+
+interface Player {
+  address: string;
+  current_beast_id: string;
+  daily_streak: number;
+  total_points: number;
+  last_active_day: string;
+  creation_day: string;
+}
+
+interface PlayerEdge {
+  node: Player;
+}
 
 export const usePlayer = () => {
-  const { useDojoStore, sdk } = useDojoSDK();
+  const [player, setPlayerData] = useState<Player | null>(null);
   const { account } = useAccount();
-  const state = useDojoStore((state) => state);
-  // const entities = useDojoStore((state) => state.entities);
-
-  const entityId = useMemo(() => {
-    if (account) {
-      return getEntityIdFromKeys([BigInt(account.address)]);
-    }
-    return BigInt(0);
-  }, [account]);
+  const userAddress = account ? addAddressPadding(account.address) : '';
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
+    const fetchPlayer = async () => {
+      if (!userAddress) return;
 
-    const subscribe = async (account: AccountInterface) => {
-      const [initialData, subscription] = await sdk.subscribeEntityQuery({
-        query: new ToriiQueryBuilder()
-          .withClause(
-            // Querying Moves and Position models that has at least [account.address] as key
-            KeysClause(
-              [ModelsMapping.Player ],
-              [addAddressPadding(account.address)],
-              "VariableLen"
-            ).build()
-          )
-          .includeHashedKeys(),
-        callback: ({ error, data }) => {
-          if (error) {
-            console.error("Error setting up entity sync:", error);
-          } else if (data && data[0].entityId !== "0x0") {
-            state.updateEntity(data[0]);
+      try {
+        const response = await fetch(TORII_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `
+              query GetPlayer {
+                tamagotchiPlayerModels(first: 1000) {
+                  edges {
+                    node {
+                      address
+                      current_beast_id
+                      daily_streak
+                      total_points
+                      last_active_day
+                      creation_day
+                    }
+                  }
+                  totalCount
+                }
+              }
+            `,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.data && result.data.tamagotchiPlayerModels) {
+          const playerEdge = result.data.tamagotchiPlayerModels.edges
+            .find((edge: PlayerEdge) => 
+              addAddressPadding(edge.node.address) === userAddress
+            );
+
+          if (playerEdge) {
+            const addressMap = await lookupAddresses([userAddress]);
+            const player = {
+              ...playerEdge.node,
+              userName: addressMap.get(userAddress)
+            };
+            setPlayerData(player);
           }
-        },
-      });
-
-      state.setEntities(initialData);
-
-      unsubscribe = () => subscription.cancel();
-    };
-
-    if (account) {
-      subscribe(account);
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
+        }
+      } catch (error) {
+        console.error("Error fetching player:", error);
       }
     };
-  }, [sdk, account]);
 
-  const player = useModel(entityId as string, ModelsMapping.Player);
-  
+    fetchPlayer();
+  }, [userAddress]);
+
   return {
-    player,
+    player
   };
 };
