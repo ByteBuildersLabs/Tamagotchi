@@ -17,7 +17,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   beastStatus: any,
   showAnimation: (gifPath: string) => void,
 }) => {
-  const { foods, loadingFood } = useFood(account);
+  const { foods, loadingFood } = useFood();
   const { zfoods, setFoods } = useAppStore();
   const [loading, setLoadingFood] = useState(true);
   const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
@@ -26,6 +26,8 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const [isDragging, setIsDragging] = useState(false);
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const dragImageRef = useRef<HTMLDivElement>(null);
+
+  console.info('foods', foods);
 
   useEffect(() => {
     const timer = setTimeout(() => {
