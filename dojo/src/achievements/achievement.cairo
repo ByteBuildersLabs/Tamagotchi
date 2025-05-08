@@ -67,37 +67,36 @@ pub enum Achievement {
     CleanStreakV,
 }
 
-
 #[generate_trait]
 pub impl AchievementImpl of AchievementTrait {
     #[inline]
     fn identifier(self: Achievement) -> felt252 {
         match self {
-            Achievement::None => "None",
-            Achievement::MiniGamer => "MiniGamer", // Play a minigame once
-            Achievement::MasterGamer => "MasterGamer", // Play a minigame 15 times
-            Achievement::LegendGamer => "LegendGamer", // Play a minigame 30 times
-            Achievement::AllStarGamer => "AllStarGamer", // Play a minigame 50 times 
+            Achievement::None => 0,
+            Achievement::MiniGamer => 'MiniGamer', // Play a minigame once
+            Achievement::MasterGamer => 'MasterGamer', // Play a minigame 15 times
+            Achievement::LegendGamer => 'LegendGamer', // Play a minigame 30 times
+            Achievement::AllStarGamer => 'AllStarGamer', // Play a minigame 50 times 
 
-            Achievement::ScoreHunterI => "ScoreHunterI", // Get 2000 total points from minigames
-            Achievement::ScoreHunterII => "ScoreHunterII", // Get 5000 total points from minigames
-            Achievement::ScoreHunterIII => "ScoreHunterIII", // Get 12000 total points from minigames
-            Achievement::ScoreHunterIV => "ScoreHunterIV", // Get 20000 total points from minigames
-            Achievement::ScoreHunterV => "ScoreHunterV", // Get 50000 total points from minigames
-        
-            Achievement::JumperI => "JumperI", // Reach 500 points in a single platform game
-            Achievement::JumperII => "JumperII", // Reach 1500 points in a single platform game
-            Achievement::JumperIII => "JumperIII", // Reach 2500 points in a single platform game
-            Achievement::JumperIV => "JumperIV", // Reach 3500 points in a single platform game
-            Achievement::JumperV => "JumperV", // Reach 4500 points in a single platform game
-        
-            Achievement::TangoI => "TangoI", // Reach 25 points in a single flappy beasts game
-            Achievement::TangoII => "TangoII", // Reach 50 points in a single flappy beasts game
-            Achievement::TangoIII => "TangoIII", // Reach 100 points in a single flappy beasts game
-            Achievement::TangoIV => "TangoIV", // Reach 200 points in a single flappy beasts game
-            Achievement::TangoV => "TangoV", // Reach 350 points in a single flappy beasts game
+            Achievement::ScoreHunterI => 'ScoreHunterI', // Get 2000 total points from minigames
+            Achievement::ScoreHunterII => 'ScoreHunterII', // Get 5000 total points from minigames
+            Achievement::ScoreHunterIII => 'ScoreHunterIII', // Get 12000 total points from minigames
+            Achievement::ScoreHunterIV => 'ScoreHunterIV', // Get 20000 total points from minigames
+            Achievement::ScoreHunterV => 'ScoreHunterV', // Get 50000 total points from minigames
+
+            Achievement::JumperI => 'JumperI', // Reach 500 points in a single platform game
+            Achievement::JumperII => 'JumperII', // Reach 1500 points in a single platform game
+            Achievement::JumperIII => 'JumperIII', // Reach 2500 points in a single platform game
+            Achievement::JumperIV => 'JumperIV', // Reach 3500 points in a single platform game
+            Achievement::JumperV => 'JumperV', // Reach 4500 points in a single platform game
+
+            Achievement::TangoI => 'TangoI', // Reach 25 points in a single flappy beasts game
+            Achievement::TangoII => 'TangoII', // Reach 50 points in a single flappy beasts game
+            Achievement::TangoIII => 'TangoIII', // Reach 100 points in a single flappy beasts game
+            Achievement::TangoIV => 'TangoIV', // Reach 200 points in a single flappy beasts game
+            Achievement::TangoV => 'TangoV', // Reach 350 points in a single flappy beasts game
+            
             Achievement::EchoNetworkI => 'EchoNetworkI', // Shared Beast for the first time
-
             Achievement::EchoNetworkII => 'EchoNetworkII', // Shared beast 5 times
             Achievement::EchoNetworkIII => 'EchoNetworkIII', // Shared beast 10 times
             Achievement::EchoNetworkIV => 'EchoNetworkIV', // Shared your Beast 25 times
@@ -108,36 +107,36 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::ArenaRockstarIII => 'ArenaRockstarIII', // Shared a score of 3000
             Achievement::ArenaRockstarIV => 'ArenaRockstarIV', // Shared a score of 5000
             Achievement::ArenaRockstarV => 'ArenaRockstarV', // Shared a score of 9999
-            
+
             Achievement::NeuralLinkI => 'NeuralLinkI', // Talked to your Beast for the first time
             Achievement::NeuralLinkII => 'NeuralLinkII', // Talked to your Beast 5 times
             Achievement::NeuralLinkIII => 'NeuralLinkIII', // Talked to your Beast 10 times
             Achievement::NeuralLinkIV => 'NeuralLinkIV', // Talked to your Beast 20 times
-            Achievement::NeuralLinkV => 'NeuralLinkV' // Talked to your Beast 50 times
+            Achievement::NeuralLinkV => 'NeuralLinkV', // Talked to your Beast 50 times
         
-            Achievement::ByteBitesI => "ByteBitesI", // Feed your beast once
-            Achievement::ByteBitesII => "ByteBitesII", // Feed your beast 20 times
-            Achievement::ByteBitesIII => "ByteBitesIII", // Feed your beast 50 times
-            Achievement::ByteBitesIV => "ByteBitesIV", // Feed your beast 150 times
-            Achievement::ByteBitesV => "ByteBitesV", // Feed your beast 250 times
-        
-            Achievement::BeastFriendI => "BeastFriendI", // Pet your beast once
-            Achievement::BeastFriendII => "BeastFriendII", // Pet your beast 20 times
-            Achievement::BeastFriendIII => "BeastFriendIII", // Pet your beast 20 times
-            Achievement::BeastFriendIV => "BeastFriendIV", // Pet your beast 20 times
-            Achievement::BeastFriendV => "BeastFriendV", // Pet your beast 20 times
-        
-            Achievement::NapMasterI => "NapMasterI", // Put your beast to sleep once
-            Achievement::NapMasterII => "NapMasterII", // Put your beast to sleep 10 times
-            Achievement::NapMasterIII => "NapMasterIII", // Put your beast to sleep 25 times
-            Achievement::NapMasterIV => "NapMasterIV", // Put your beast to sleep 55 times
-            Achievement::NapMasterV => "NapMasterV", // Put your beast to sleep 100 times
+            Achievement::ByteBitesI => 'ByteBitesI', // Feed your beast once
+            Achievement::ByteBitesII => 'ByteBitesII', // Feed your beast 20 times
+            Achievement::ByteBitesIII => 'ByteBitesIII', // Feed your beast 50 times
+            Achievement::ByteBitesIV => 'ByteBitesIV', // Feed your beast 150 times
+            Achievement::ByteBitesV => 'ByteBitesV', // Feed your beast 250 times
 
-            Achievement::CleanStreakI => "CleanStreakI", // Clean your beast once
-            Achievement::CleanStreakII => "CleanStreakII", // Clean your beast 25 times
-            Achievement::CleanStreakIII => "CleanStreakIII", // Clean your beast 55 times
-            Achievement::CleanStreakIV => "CleanStreakIV", // Clean your beast 100 times
-            Achievement::CleanStreakV => "CleanStreakV", // Clean your beast 200 times
+            Achievement::BeastFriendI => 'BeastFriendI', // Pet your beast once
+            Achievement::BeastFriendII => 'BeastFriendII', // Pet your beast 20 times
+            Achievement::BeastFriendIII => 'BeastFriendIII', // Pet your beast 35 times
+            Achievement::BeastFriendIV => 'BeastFriendIV', // Pet your beast 55 times
+            Achievement::BeastFriendV => 'BeastFriendV', // Pet your beast 100 times
+
+            Achievement::NapMasterI => 'NapMasterI', // Put your beast to sleep once
+            Achievement::NapMasterII => 'NapMasterII', // Put your beast to sleep 10 times
+            Achievement::NapMasterIII => 'NapMasterIII', // Put your beast to sleep 25 times
+            Achievement::NapMasterIV => 'NapMasterIV', // Put your beast to sleep 55 times
+            Achievement::NapMasterV => 'NapMasterV', // Put your beast to sleep 100 times
+
+            Achievement::CleanStreakI => 'CleanStreakI', // Clean your beast once
+            Achievement::CleanStreakII => 'CleanStreakII', // Clean your beast 25 times
+            Achievement::CleanStreakIII => 'CleanStreakIII', // Clean your beast 55 times
+            Achievement::CleanStreakIV => 'CleanStreakIV', // Clean your beast 100 times
+            Achievement::CleanStreakV => 'CleanStreakV', // Clean your beast 200 times
         }        
     }
 
@@ -179,6 +178,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => false,
             Achievement::NeuralLinkIV => false,
             Achievement::NeuralLinkV => false,
+            Achievement::ByteBitesI => false,
+            Achievement::ByteBitesII => false,
+            Achievement::ByteBitesIII => false,
+            Achievement::ByteBitesIV => false,
+            Achievement::ByteBitesV => false,
+            Achievement::BeastFriendI => false,
+            Achievement::BeastFriendII => false,
+            Achievement::BeastFriendIII => false,
+            Achievement::BeastFriendIV => false,
+            Achievement::BeastFriendV => false,
+            Achievement::NapMasterI => false,
+            Achievement::NapMasterII => false,
+            Achievement::NapMasterIII => false,
+            Achievement::NapMasterIV => false,
+            Achievement::NapMasterV => false,
+            Achievement::CleanStreakI => false,
+            Achievement::CleanStreakII => false,
+            Achievement::CleanStreakIII => false,
+            Achievement::CleanStreakIV => false,
+            Achievement::CleanStreakV => false,
         }
     }
 
@@ -220,6 +239,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 2,
             Achievement::NeuralLinkIV => 3,
             Achievement::NeuralLinkV => 4,
+            Achievement::ByteBitesI => 0,
+            Achievement::ByteBitesII => 1,
+            Achievement::ByteBitesIII => 2,
+            Achievement::ByteBitesIV => 3,
+            Achievement::ByteBitesV => 4,
+            Achievement::BeastFriendI => 0,
+            Achievement::BeastFriendII => 1,
+            Achievement::BeastFriendIII => 2,
+            Achievement::BeastFriendIV => 3,
+            Achievement::BeastFriendV => 4,
+            Achievement::NapMasterI => 0,
+            Achievement::NapMasterII => 1,
+            Achievement::NapMasterIII => 2,
+            Achievement::NapMasterIV => 3,
+            Achievement::NapMasterV => 4,
+            Achievement::CleanStreakI => 0,
+            Achievement::CleanStreakII => 1,
+            Achievement::CleanStreakIII => 2,
+            Achievement::CleanStreakIV => 3,
+            Achievement::CleanStreakV => 4,
         }
     }
 
@@ -261,6 +300,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 30,
             Achievement::NeuralLinkIV => 40,
             Achievement::NeuralLinkV => 50,
+            Achievement::ByteBitesI => 10,
+            Achievement::ByteBitesII => 20,
+            Achievement::ByteBitesIII => 30,
+            Achievement::ByteBitesIV => 40,
+            Achievement::ByteBitesV => 50,
+            Achievement::BeastFriendI => 10,
+            Achievement::BeastFriendII => 20,
+            Achievement::BeastFriendIII => 30,
+            Achievement::BeastFriendIV => 40,
+            Achievement::BeastFriendV => 50,
+            Achievement::NapMasterI => 10,
+            Achievement::NapMasterII => 20,
+            Achievement::NapMasterIII => 30,
+            Achievement::NapMasterIV => 40,
+            Achievement::NapMasterV => 50,
+            Achievement::CleanStreakI => 10,
+            Achievement::CleanStreakII => 20,
+            Achievement::CleanStreakIII => 30,
+            Achievement::CleanStreakIV => 40,
+            Achievement::CleanStreakV => 50,
         }
     }
 
@@ -302,6 +361,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 0,
             Achievement::NeuralLinkIV => 0,
             Achievement::NeuralLinkV => 0,
+            Achievement::ByteBitesI => 0,
+            Achievement::ByteBitesII => 0,
+            Achievement::ByteBitesIII => 0,
+            Achievement::ByteBitesIV => 0,
+            Achievement::ByteBitesV => 0,
+            Achievement::BeastFriendI => 0,
+            Achievement::BeastFriendII => 0,
+            Achievement::BeastFriendIII => 0,
+            Achievement::BeastFriendIV => 0,
+            Achievement::BeastFriendV => 0,
+            Achievement::NapMasterI => 0,
+            Achievement::NapMasterII => 0,
+            Achievement::NapMasterIII => 0,
+            Achievement::NapMasterIV => 0,
+            Achievement::NapMasterV => 0,
+            Achievement::CleanStreakI => 0,
+            Achievement::CleanStreakII => 0,
+            Achievement::CleanStreakIII => 0,
+            Achievement::CleanStreakIV => 0,
+            Achievement::CleanStreakV => 0,
         }
     }
 
@@ -343,6 +422,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 0,
             Achievement::NeuralLinkIV => 0,
             Achievement::NeuralLinkV => 0,
+            Achievement::ByteBitesI => 0,
+            Achievement::ByteBitesII => 0,
+            Achievement::ByteBitesIII => 0,
+            Achievement::ByteBitesIV => 0,
+            Achievement::ByteBitesV => 0,
+            Achievement::BeastFriendI => 0,
+            Achievement::BeastFriendII => 0,
+            Achievement::BeastFriendIII => 0,
+            Achievement::BeastFriendIV => 0,
+            Achievement::BeastFriendV => 0,
+            Achievement::NapMasterI => 0,
+            Achievement::NapMasterII => 0,
+            Achievement::NapMasterIII => 0,
+            Achievement::NapMasterIV => 0,
+            Achievement::NapMasterV => 0,
+            Achievement::CleanStreakI => 0,
+            Achievement::CleanStreakII => 0,
+            Achievement::CleanStreakIII => 0,
+            Achievement::CleanStreakIV => 0,
+            Achievement::CleanStreakV => 0,
         }
     }
 
@@ -384,6 +483,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 'NeuralLink',
             Achievement::NeuralLinkIV => 'NeuralLink',
             Achievement::NeuralLinkV => 'NeuralLink',
+            Achievement::ByteBitesI => 'ByteBites',
+            Achievement::ByteBitesII => 'ByteBites',
+            Achievement::ByteBitesIII => 'ByteBites',
+            Achievement::ByteBitesIV => 'ByteBites',
+            Achievement::ByteBitesV => 'ByteBites',
+            Achievement::BeastFriendI => 'BeastFriend',
+            Achievement::BeastFriendII => 'BeastFriend',
+            Achievement::BeastFriendIII => 'BeastFriend',
+            Achievement::BeastFriendIV => 'BeastFriend',
+            Achievement::BeastFriendV => 'BeastFriend', 
+            Achievement::NapMasterI => 'NapMaster',
+            Achievement::NapMasterII => 'NapMaster',
+            Achievement::NapMasterIII => 'NapMaster',
+            Achievement::NapMasterIV => 'NapMaster',
+            Achievement::NapMasterV => 'NapMaster',
+            Achievement::CleanStreakI => 'CleanStreak',
+            Achievement::CleanStreakII => 'CleanStreak',
+            Achievement::CleanStreakIII => 'CleanStreak',
+            Achievement::CleanStreakIV => 'CleanStreak',
+            Achievement::CleanStreakV => 'CleanStreak',
         }
     }
 
@@ -432,6 +551,30 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 'fa-brain',
             Achievement::NeuralLinkIV => 'fa-link',
             Achievement::NeuralLinkV => 'fa-infinity',
+            // Feed your beast
+            Achievement::ByteBitesI => 'fa-utensils',
+            Achievement::ByteBitesII => 'fa-apple-alt',
+            Achievement::ByteBitesIII => 'fa-drumstick-bite',
+            Achievement::ByteBitesIV => 'fa-fish',
+            Achievement::ByteBitesV => 'fa-hamburger',
+            // Pet your beast
+            Achievement::BeastFriendI => 'fa-hand-paper',
+            Achievement::BeastFriendII => 'fa-handshake',
+            Achievement::BeastFriendIII => 'fa-paw',
+            Achievement::BeastFriendIV => 'fa-heart-circle-check',
+            Achievement::BeastFriendV => 'fa-hands',
+            // Put your beast to sleep
+            Achievement::NapMasterI => 'fa-bed',
+            Achievement::NapMasterII => 'fa-moon',
+            Achievement::NapMasterIII => 'fa-cloud-moon',
+            Achievement::NapMasterIV => 'fa-face-smile',
+            Achievement::NapMasterV => 'fa-star-and-crescent',
+            // Clean your beast
+            Achievement::CleanStreakI => 'fa-soap',
+            Achievement::CleanStreakII => 'fa-bath',
+            Achievement::CleanStreakIII => 'fa-spray-can-sparkles',
+            Achievement::CleanStreakIV => 'fa-shower',
+            Achievement::CleanStreakV => 'fa-water',
         }
     }
 
@@ -480,6 +623,30 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => 'Thread of Thought',
             Achievement::NeuralLinkIV => 'Soul Link',
             Achievement::NeuralLinkV => 'Symbiotic Mind',
+            // Feed your beast
+            Achievement::ByteBitesI => 'First Feast',
+            Achievement::ByteBitesII => 'Hungry Companion',
+            Achievement::ByteBitesIII => 'Devouring Duo',
+            Achievement::ByteBitesIV => 'Gourmet Guardian',
+            Achievement::ByteBitesV => 'Eternal Banquet',
+            // Pet your beast
+            Achievement::BeastFriendI => 'Gentle Touch',
+            Achievement::BeastFriendII => 'Caring Hand',
+            Achievement::BeastFriendIII => 'Trusted Companion',
+            Achievement::BeastFriendIV => 'Kindred Spirits',
+            Achievement::BeastFriendV => 'Bond Eternal',
+            // Put your beast to sleep
+            Achievement::NapMasterI => 'First Nap',
+            Achievement::NapMasterII => 'Dream Sender',
+            Achievement::NapMasterIII => 'Restful Guardian',
+            Achievement::NapMasterIV => 'Slumber Sage',
+            Achievement::NapMasterV => 'Keeper of Dreams',
+            // Clean your beast
+            Achievement::CleanStreakI => 'Bubble Beginner',
+            Achievement::CleanStreakII => 'Tidy Beastmaster',
+            Achievement::CleanStreakIII => 'Hygiene Hero',
+            Achievement::CleanStreakIV => 'Sparkle Specialist',
+            Achievement::CleanStreakV => 'Sanitation Saint',
         }
     }
 
@@ -528,6 +695,30 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => "10 conversations in. There's depth in these exchanges.",
             Achievement::NeuralLinkIV => "20 chats. Your Beast responds like it knows you.",
             Achievement::NeuralLinkV => "50 deep interactions. Two minds, one bond.",
+            // Feed your beast
+            Achievement::ByteBitesI => "You fed your Beast for the first time. It looks at you with grateful eyes.",
+            Achievement::ByteBitesII => "Your Beast starts to rely on your care. Snacks well-received.",
+            Achievement::ByteBitesIII => "Feeding time is a ritual now. Your bond strengthens.",
+            Achievement::ByteBitesIV => "Only the finest treats for your cherished companion.",
+            Achievement::ByteBitesV => "Your Beast thrives in luxury. You feed like royalty.",
+            // Pet your beast
+            Achievement::BeastFriendI => "The first pet. Your Beast purrs with joy.",
+            Achievement::BeastFriendII => "You have shown kindness. The bond grows.",
+            Achievement::BeastFriendIII => "Your Beast follows you without hesitation.",
+            Achievement::BeastFriendIV => "Petting becomes communication deep and mutual.",
+            Achievement::BeastFriendV => "No longer just friends. You are soulbound.",
+            // Put your beast to sleep
+            Achievement::NapMasterI => "Your Beast takes a cozy rest under your watch.",
+            Achievement::NapMasterII => "You haveve mastered the bedtime ritual.",
+            Achievement::NapMasterIII => "Peace surrounds you as your Beast naps soundly.",
+            Achievement::NapMasterIV => "You guide dreams like a shepherd.",
+            Achievement::NapMasterV => "You are the guardian of sleep, the architect of rest.",
+            // Clean your beast
+            Achievement::CleanStreakI => "First clean! Your Beast shines with joy.",
+            Achievement::CleanStreakII => "A routine emerges your Beast looks immaculate.",
+            Achievement::CleanStreakIII => "Dirt fears your presence.",
+            Achievement::CleanStreakIV => "Every scrub deepens your friendship.",
+            Achievement::CleanStreakV => "Spotless. Radiant. You are the cleansing force.",
         }
     }
 
@@ -582,6 +773,35 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::NeuralLinkIII => array![TaskTrait::new('NEURALLINKIII', 10, "Talk to your Beast 10 times")].span(),
             Achievement::NeuralLinkIV => array![TaskTrait::new('NEURALLINKIV', 20, "Talk to your Beast 20 times")].span(),
             Achievement::NeuralLinkV => array![TaskTrait::new('NEURALLINKV', 50, "Talk to your Beast 50 times")].span(),
+
+            // ByteBites (feeding)
+            Achievement::ByteBitesI => array![TaskTrait::new('BYTEBITESI', 1, "Feed your Beast once")].span(),
+            Achievement::ByteBitesII => array![TaskTrait::new('BYTEBITESII', 20, "Feed your Beast 20 times")].span(),
+            Achievement::ByteBitesIII => array![TaskTrait::new('BYTEBITESIII', 50, "Feed your Beast 50 times")].span(),
+            Achievement::ByteBitesIV => array![TaskTrait::new('BYTEBITESIV', 150, "Feed your Beast 150 times")].span(),
+            Achievement::ByteBitesV => array![TaskTrait::new('BYTEBITESV', 250, "Feed your Beast 250 times")].span(),
+
+            // BeastFriend (petting)
+            Achievement::BeastFriendI => array![TaskTrait::new('BEASTFRIENDI', 1, "Pet your Beast once")].span(),
+            Achievement::BeastFriendII => array![TaskTrait::new('BEASTFRIENDII', 20, "Pet your Beast 20 times")].span(),
+            Achievement::BeastFriendIII => array![TaskTrait::new('BEASTFRIENDIII', 35, "Pet your Beast 35 times")].span(),
+            Achievement::BeastFriendIV => array![TaskTrait::new('BEASTFRIENDIV', 55, "Pet your Beast 55 times")].span(),
+            Achievement::BeastFriendV => array![TaskTrait::new('BEASTFRIENDV', 100, "Pet your Beast 100 times")].span(),
+
+            // NapMaster (sleeping)
+            Achievement::NapMasterI => array![TaskTrait::new('NAPMASTERI', 1, "Put your Beast to sleep once")].span(),
+            Achievement::NapMasterII => array![TaskTrait::new('NAPMASTERII', 10, "Put your Beast to sleep 10 times")].span(),
+            Achievement::NapMasterIII => array![TaskTrait::new('NAPMASTERIII', 25, "Put your Beast to sleep 25 times")].span(),
+            Achievement::NapMasterIV => array![TaskTrait::new('NAPMASTERIV', 55, "Put your Beast to sleep 55 times")].span(),
+            Achievement::NapMasterV => array![TaskTrait::new('NAPMASTERV', 100, "Put your Beast to sleep 100 times")].span(),
+
+            // CleanStreak (cleaning)
+            Achievement::CleanStreakI => array![TaskTrait::new('CLEANSTREAKI', 1, "Clean your Beast once")].span(),
+            Achievement::CleanStreakII => array![TaskTrait::new('CLEANSTREAKII', 25, "Clean your Beast 25 times")].span(),
+            Achievement::CleanStreakIII => array![TaskTrait::new('CLEANSTREAKIII', 55, "Clean your Beast 55 times")].span(),
+            Achievement::CleanStreakIV => array![TaskTrait::new('CLEANSTREAKIV', 100, "Clean your Beast 100 times")].span(),
+            Achievement::CleanStreakV => array![TaskTrait::new('CLEANSTREAKV', 200, "Clean your Beast 200 times")].span(),
+
         }
     }
 
@@ -637,6 +857,30 @@ pub impl IntoAchievementU8 of Into<Achievement, u8> {
             Achievement::NeuralLinkIII => 32,
             Achievement::NeuralLinkIV => 33,
             Achievement::NeuralLinkV => 34,
+            // Feed your beast
+            Achievement::ByteBitesI => 35,
+            Achievement::ByteBitesII => 36,
+            Achievement::ByteBitesIII => 37,
+            Achievement::ByteBitesIV => 38,
+            Achievement::ByteBitesV => 39,
+            // Pet your beast
+            Achievement::BeastFriendI => 40,
+            Achievement::BeastFriendII => 41,
+            Achievement::BeastFriendIII => 42,
+            Achievement::BeastFriendIV => 43,
+            Achievement::BeastFriendV => 44,
+            // Put your beast to sleep
+            Achievement::NapMasterI => 45,
+            Achievement::NapMasterII => 46,
+            Achievement::NapMasterIII => 47,
+            Achievement::NapMasterIV => 48,
+            Achievement::NapMasterV => 49,
+            // Clean your beast
+            Achievement::CleanStreakI => 50,
+            Achievement::CleanStreakII => 51,
+            Achievement::CleanStreakIII => 52,
+            Achievement::CleanStreakIV => 53,
+            Achievement::CleanStreakV => 54,
         }
     }
 }
@@ -688,6 +932,30 @@ pub impl IntoU8Achievement of Into<u8, Achievement> {
             32 => Achievement::NeuralLinkIII,
             33 => Achievement::NeuralLinkIV,
             34 => Achievement::NeuralLinkV,
+            // Feed your beast
+            35 => Achievement::ByteBitesI,
+            36 => Achievement::ByteBitesII,
+            37 => Achievement::ByteBitesIII,
+            38 => Achievement::ByteBitesIV,
+            39 => Achievement::ByteBitesV,
+            // Pet your beast
+            40 => Achievement::BeastFriendI,
+            41 => Achievement::BeastFriendII,
+            42 => Achievement::BeastFriendIII,
+            43 => Achievement::BeastFriendIV,
+            44 => Achievement::BeastFriendV,
+            // Put your beast to sleep
+            45 => Achievement::NapMasterI,
+            46 => Achievement::NapMasterII,
+            47 => Achievement::NapMasterIII,
+            48 => Achievement::NapMasterIV,
+            49 => Achievement::NapMasterV,
+            // Clean your beast
+            50 => Achievement::CleanStreakI,
+            51 => Achievement::CleanStreakII,
+            52 => Achievement::CleanStreakIII,
+            53 => Achievement::CleanStreakIV,
+            54 => Achievement::CleanStreakV,
             // Default case
             _ => Achievement::None,
         }
