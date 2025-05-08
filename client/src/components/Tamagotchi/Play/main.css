@@ -19,6 +19,7 @@
   gap: 15px;
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 .game-selection-grid::-webkit-scrollbar {
@@ -36,10 +37,9 @@
   padding: 10px;
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  column-gap: 10px;
-  align-items: start;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   color: #ececda;
 }
 
