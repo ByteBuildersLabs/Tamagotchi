@@ -50,7 +50,7 @@ const Leaderboard = () => {
   // Get beast and player data
   const { beastsData } = useBeasts();
   const { playerData } = usePlayerData();
-  const { scores } = useHighScores(account);
+  const { scores } = useHighScores();
   
   let beasts = beastsData as Beast[];
   let players = playerData as Player[];
@@ -333,52 +333,37 @@ const Leaderboard = () => {
       .slice(0, 15);
 
     const renderScoreTable = (scores: Score[], title: string) => (
-      <div className="minigame-table">
+      <div className="minigame-table w-100">
         <h3 className="minigame-title">{title}</h3>
-        <div className="leaderboard-table">
+        <div className="leaderboard-table w-100">
           {scores.length > 0 ? (
             <>
-              <div className='row mb-3 header-row'>
-                <div className='col-3'>
+              <div className='row mb-3 header-row w-100'>
+                <div className='col-4 text-center px-4'>
                   <span>Position</span>
                 </div>
-                <div className='col-3'>
+                <div className='col-4 text-center px-4'>
                   <span>Player</span>
                 </div>
-                <div className='col-3'>
-                  <span>Beast</span>
-                </div>
-                <div className='col-3'>
+                <div className='col-4 text-center px-4'>
                   <span>Score</span>
                 </div>
               </div>
               {scores.map((scoreData: Score, index: number) => {
                 const playerBeast = findPlayerBeast(scoreData.player);
-                const beastType = playerBeast?.beast_type || null;
                 
                 return (
                   <div 
-                    className={`row mb-3 ${isUserRow(scoreData.player) ? 'current-user' : ''}`} 
+                    className={`row mb-3 w-100 ${isUserRow(scoreData.player) ? 'current-user' : ''}`} 
                     key={`minigame-${scoreData.minigame_id}-${index}`}
                   >
-                    <div className='col-3'>
+                    <div className='col-4 text-center px-4'>
                       <span>{index + 1}</span>
                     </div>
-                    <div className='col-3 username-col'>
+                    <div className='col-4 text-center px-4 username-col'>
                       <span>{playerBeast?.userName || scoreData.player.slice(0, 8)}</span>
                     </div>
-                    <div className='col-3'>
-                      {beastType && beastsDex[beastType - 1]?.idlePicture ? (
-                        <img 
-                          src={beastsDex[beastType - 1]?.idlePicture} 
-                          className='beast' 
-                          alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
-                        />
-                      ) : (
-                        <span>-</span>
-                      )}
-                    </div>
-                    <div className='col-3'>
+                    <div className='col-4 text-center px-4'>
                       <span>{scoreData.score}</span>
                     </div>
                   </div>
@@ -402,57 +387,38 @@ const Leaderboard = () => {
         .slice(0, 15);
 
       return (
-        <div className="minigame-table">
+        <div className="minigame-table w-100">
           <h3 className="minigame-title">Total Points Ranking</h3>
-          <div className="leaderboard-table">
+          <div className="leaderboard-table w-100">
             {isLoadedPlayers && top15Players.length > 0 ? (
               <>
-                <div className='row mb-3 header-row'>
-                  <div className='col-3'>
+                <div className='row mb-3 header-row w-100'>
+                  <div className='col-4 text-center px-4'>
                     <span>Position</span>
                   </div>
-                  <div className='col-3'>
+                  <div className='col-4 text-center px-4'>
                     <span>Player</span>
                   </div>
-                  <div className='col-3'>
-                    <span>Beast</span>
-                  </div>
-                  <div className='col-3'>
+                  <div className='col-4 text-center px-4'>
                     <span>Points</span>
                   </div>
                 </div>
-                {top15Players.map((player, index) => {
-                  const playerBeast = findPlayerBeast(player.address);
-                  const beastType = playerBeast?.beast_type || null;
-                  
-                  return (
-                    <div 
-                      className={`row mb-3 ${isUserRow(player.address) ? 'current-user' : ''}`} 
-                      key={`total-points-${index}`}
-                    >
-                      <div className='col-3'>
-                        <span>{index + 1}</span>
-                      </div>
-                      <div className='col-3 username-col'>
-                        <span>{player.userName || player.address.slice(0, 8)}</span>
-                      </div>
-                      <div className='col-3'>
-                        {beastType && beastsDex[beastType - 1]?.idlePicture ? (
-                          <img 
-                            src={beastsDex[beastType - 1]?.idlePicture} 
-                            className='beast' 
-                            alt={playerBeast?.name || `Beast #${playerBeast?.beast_id}`} 
-                          />
-                        ) : (
-                          <span>-</span>
-                        )}
-                      </div>
-                      <div className='col-3'>
-                        <span>{player.total_points}</span>
-                      </div>
+                {top15Players.map((player, index) => (
+                  <div 
+                    className={`row mb-3 w-100 ${isUserRow(player.address) ? 'current-user' : ''}`} 
+                    key={`total-points-${index}`}
+                  >
+                    <div className='col-4 text-center px-4'>
+                      <span>{index + 1}</span>
                     </div>
-                  );
-                })}
+                    <div className='col-4 text-center px-4 username-col'>
+                      <span>{player.userName || player.address.slice(0, 8)}</span>
+                    </div>
+                    <div className='col-4 text-center px-4'>
+                      <span>{player.total_points}</span>
+                    </div>
+                  </div>
+                ))}
               </>
             ) : (
               <div className='row mb-3'>

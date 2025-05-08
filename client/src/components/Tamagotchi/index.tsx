@@ -49,10 +49,6 @@ function Tamagotchi() {
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
 
-  console.info('zplayer', zplayer);
-  console.info('zbeasts', zbeasts);
-  console.info('zcurrentBeast', zcurrentBeast);
-
   useEffect(() => {
     if (player) setPlayer(player);
   }, [player, setPlayer, location]);

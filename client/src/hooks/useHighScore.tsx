@@ -1,30 +1,89 @@
-import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useEffect, useState } from "react";
+import { dojoConfig } from "../dojo/dojoConfig";
+import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
 
-export const useHighScores = (account?: any) => {
-  const { useDojoStore } = useDojoSDK();
-  const entities = useDojoStore((state) => state.entities);
-  const [myScoreSkyJump, setMyScoreSkyJump] = useState<any[]>([]);
-  const [myScoreFlappyBird, setMyScoreFlappyBird] = useState<any[]>([]);
-  const [scores, setScores] = useState<any[]>([]);
-  const [loadingScores, setLoadingScores] = useState<any>(true);
+const TORII_URL = dojoConfig.toriiUrl + "/graphql";
+
+interface HighScore {
+  minigame_id: number;
+  player: string;
+  score: number;
+}
+
+interface HighScoreEdge {
+  node: HighScore;
+}
+
+export const useHighScores = () => {
+  const [myScoreSkyJump, setMyScoreSkyJump] = useState<HighScore[]>([]);
+  const [myScoreFlappyBird, setMyScoreFlappyBird] = useState<HighScore[]>([]);
+  const [scores, setScores] = useState<HighScore[]>([]);
+  const [loadingScores, setLoadingScores] = useState<boolean>(true);
+  
+  const { account } = useAccount();
+  const userAddress = account ? addAddressPadding(account.address) : '';
 
   useEffect(() => {
-    const scoreEntities = Object.values(entities)
-      .filter(entity => entity.models && entity.models.tamagotchi && entity.models.tamagotchi.HighestScore)
-      .map(entity => entity.models.tamagotchi.HighestScore);
+    const fetchScores = async () => {
+      try {
+        const response = await fetch(TORII_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `
+              query GetHighScores {
+                tamagotchiHighestScoreModels(first: 1000) {
+                  edges {
+                    node {
+                      minigame_id
+                      player
+                      score
+                    }
+                  }
+                  totalCount
+                }
+              }
+            `,
+          }),
+        });
 
-    setScores(scoreEntities);
+        const result = await response.json();
+        if (result.data && result.data.tamagotchiHighestScoreModels) {
+          const allScores = result.data.tamagotchiHighestScoreModels.edges.map(
+            (edge: HighScoreEdge) => edge.node
+          );
 
-    const myScoreSkyJump = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame_id === 1);
+          // Establecer todos los scores
+          setScores(allScores);
 
-    const myScoreFlappyBird = scoreEntities.filter(score => account && score?.player === addAddressPadding(account.address ?? '') && score?.minigame_id === 2);
+          if (userAddress) {
+            // Filtrar scores para Sky Jump (minigame_id === 1)
+            const skyJumpScores = allScores.filter(
+              (score: HighScore) => 
+                score.minigame_id === 1 && 
+                addAddressPadding(score.player).toLowerCase() === userAddress.toLowerCase()
+            );
+            setMyScoreSkyJump(skyJumpScores);
 
-    setMyScoreSkyJump(myScoreSkyJump);
-    setMyScoreFlappyBird(myScoreFlappyBird);
-    setLoadingScores(false);
-  }, [entities]);
+            // Filtrar scores para Flappy Bird (minigame_id === 2)
+            const flappyBirdScores = allScores.filter(
+              (score: HighScore) => 
+                score.minigame_id === 2 && 
+                addAddressPadding(score.player).toLowerCase() === userAddress.toLowerCase()
+            );
+            setMyScoreFlappyBird(flappyBirdScores);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching scores:", error);
+      } finally {
+        setLoadingScores(false);
+      }
+    };
+
+    fetchScores();
+  }, [userAddress]);
 
   return {
     myScoreFlappyBird,

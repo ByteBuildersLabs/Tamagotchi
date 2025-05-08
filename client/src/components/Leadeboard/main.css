@@ -35,9 +35,11 @@
 .minigame-table {
   width: 100%;
   border-radius: 15px;
+  color: var(--text-light);
 }
 
 .minigame-title {
+  color: var(--text-light);
   margin: 30px;
   font-size: 20px;
 }
