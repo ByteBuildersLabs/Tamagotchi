@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x359ef435b4e4c5015b3100a2b5c5e2bf3a246c2f203a86773e66d4c295dcea8",
-    "seed": "tamagotchi3",
+    "address": "0x6e1ce9d4515e763c76e01512f8ad2c0a4658238d8cf11348b70f9e9a9b680f",
+    "seed": "tamagotchi4",
     "name": "ByteBeasts Tamagotchi",
     "entrypoints": [
       "uuid",
@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x3125df30ce14d2adf524adbb5bce84f4d1ad8160ad4e8d471483f6486b3edfc",
-      "class_hash": "0x369eb983802b238bb8a9660a38cd7d69ef3dd499587c322d0ab2aeece53dfc8",
+      "address": "0xc58593bd294d090d993e3dfb4bd62d47caceb8b51b7b69c6dcf0193adbde34",
+      "class_hash": "0x69eb3620c583836ab09b16d883134f3803f3ef00dd9243933772fc94a0a8c8b",
       "abi": [
         {
           "type": "impl",
@@ -1416,6 +1416,53 @@
                   "type": "core::integer::u32"
                 }
               ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_beast_feed",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_beast_pet",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_beast_sleep",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_beast_clean",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_social_share",
+              "inputs": [
+                {
+                  "name": "score",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_beast_chat",
+              "inputs": [],
               "outputs": [],
               "state_mutability": "external"
             }
@@ -1549,11 +1596,17 @@
         "achieve_player_new_total_points",
         "achieve_platform_highscore",
         "achieve_flappy_beast_highscore",
+        "achieve_beast_feed",
+        "achieve_beast_pet",
+        "achieve_beast_sleep",
+        "achieve_beast_clean",
+        "achieve_social_share",
+        "achieve_beast_chat",
         "upgrade"
       ]
     },
     {
-      "address": "0x58b7067aba23d176d96cde4be201d3dc5c5bddd0d1b4a665584d206846a165d",
+      "address": "0x479c61a114b253ae1a55298cd05fb7033a48a692bfc483f85e9788950d5a0eb",
       "class_hash": "0x556b2f41a2089ffc197491ca97c66f4f6f8a8c6ec6acb4bcf9c8fec2250df39",
       "abi": [
         {
@@ -2004,7 +2057,7 @@
       ]
     },
     {
-      "address": "0x54019f8f6a4b65ed6ccb2704ac1a1dd10c3b376ff4ba8589b1a517588202e32",
+      "address": "0x63fae743e894159c53c7854a42d4aac040560accb99100684415c282800cdc0",
       "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
       "abi": [
         {
