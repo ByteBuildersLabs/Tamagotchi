@@ -6,6 +6,9 @@ pub trait IAchieve<T> {
     fn achieve_player_new_total_points(ref self: T);
     fn achieve_platform_highscore(ref self: T, score: u32);
     fn achieve_flappy_beast_highscore(ref self: T, score: u32);
+    // ------------------------- Social achievement methods -------------------------
+    fn achieve_social_share(ref self: T, score: u32);
+    fn achieve_beast_chat(ref self: T);
 }
 
 #[dojo::contract]
@@ -215,5 +218,45 @@ pub mod achieve {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
         }
+
+        // ------------------------- Social achievement methods -------------------------
+        // Share on social media
+        fn achieve_social_share(ref self: ContractState, score: u32) {
+            let world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            // Achievement IDs
+            let achievement_socialI: felt252 = 'SOCIALI';
+            let achievement_socialII: felt252 = 'SOCIALII';
+            let achievement_socialIV: felt252 = 'SOCIALIV';
+        
+            let player = store.read_player();
+            player.assert_exists();
+        
+            // Always progress these one by one
+            achievement_store.progress(player.address.into(), achievement_socialI.into(), 1, get_block_timestamp());
+            achievement_store.progress(player.address.into(), achievement_socialIV.into(), 1, get_block_timestamp());
+        
+            if score >= constants::SOCIALII_POINTS {
+                achievement_store.progress(player.address.into(), achievement_socialII.into(), 1, get_block_timestamp());
+            }
+        }
+
+        // Chat with beast
+        fn achieve_beast_chat(ref self: ContractState) {
+            let world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
+
+            // Achievement IDs
+            let achievement_socialIII: felt252 = 'SOCIALIII';
+        
+            let player = store.read_player();
+            player.assert_exists();
+        
+            achievement_store.progress(player.address.into(), achievement_socialIII.into(), 1, get_block_timestamp());
+        }
+
     }
 }
