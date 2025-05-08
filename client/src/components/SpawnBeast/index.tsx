@@ -4,7 +4,7 @@ import useAppStore from "../../context/store.ts";
 import Egg from "../../assets/img/egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
-import { Account, addAddressPadding } from "starknet";
+import { Account } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
@@ -22,7 +22,7 @@ function SpawnBeast() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();
+  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();  
 
   async function setCurrentBeastInPlayer(foundBeast:any) {
     if (!foundBeast) return
@@ -44,7 +44,7 @@ function SpawnBeast() {
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
-    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) ===  zplayer.address);
+    const foundBeast = zbeasts.find((beast: any) => beast.player ===  zplayer.address);
     if (foundBeast && !reborn) {
       setCurrentBeastInPlayer(foundBeast);
       setCurrentBeast(foundBeast);
@@ -52,7 +52,7 @@ function SpawnBeast() {
       localStorage.removeItem('status');
       navigate('/play');
     }
-  }, [zplayer, zbeasts, status]);
+  }, [zplayer, zbeasts, status, player, beasts]);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;

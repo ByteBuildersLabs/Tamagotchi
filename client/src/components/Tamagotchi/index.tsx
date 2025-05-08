@@ -49,6 +49,10 @@ function Tamagotchi() {
   // Fetch Beasts and Player
   const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
 
+  console.info('zplayer', zplayer);
+  console.info('zbeasts', zbeasts);
+  console.info('zcurrentBeast', zcurrentBeast);
+
   useEffect(() => {
     if (player) setPlayer(player);
   }, [player, setPlayer, location]);
@@ -65,7 +69,7 @@ function Tamagotchi() {
   useEffect(() => {
     if (!zplayer || Object.keys(zplayer).length === 0) return;
     if (!zbeasts || zbeasts.length === 0) return;
-    const foundBeast = zbeasts.find((beast: any) => addAddressPadding(beast.player) === zplayer.address);
+    const foundBeast = zbeasts.find((beast: any) => beast.player === zplayer.address);
     if (foundBeast) {
       setCurrentBeast(foundBeast);
       setBirthday(getBirthDate(zcurrentBeast.birth_date))

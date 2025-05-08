@@ -99,7 +99,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "tamagotchibb", 
+  slot: "newbbtamagotchi", 
 };
 
 const cartridgeConnector = new ControllerConnector(
