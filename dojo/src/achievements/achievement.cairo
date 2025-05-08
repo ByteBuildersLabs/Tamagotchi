@@ -28,6 +28,11 @@ pub enum Achievement {
     TangoIII,
     TangoIV,
     TangoV,
+    // Social
+    SocialI,
+    SocialII,
+    SocialIII,
+    SocialIV,
 }
 
 
@@ -56,6 +61,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'TangoIII', // Reach 100 points in a single flappy beasts game
             Achievement::TangoIV => 'TangoIV', // Reach 200 points in a single flappy beasts game
             Achievement::TangoV => 'TangoV', // Reach 350 points in a single flappy beasts game
+            Achievement::SocialI => 'SocialI', // Shared your Beast for the first time
+            Achievement::SocialII => 'SocialII', // Shared a high score of over 500 points
+            Achievement::SocialIII => 'SocialIII', // Reached 10 conversations with your Beast
+            Achievement::SocialIV => 'SocialIV', // Shared your Beast 5 times
         }
     }
 
@@ -82,6 +91,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => false,
             Achievement::TangoIV => false,
             Achievement::TangoV => false,
+            Achievement::SocialI => false,
+            Achievement::SocialII => false,
+            Achievement::SocialIII => false,
+            Achievement::SocialIV => false,
         }
     }
 
@@ -108,6 +121,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 2,
             Achievement::TangoIV => 3,
             Achievement::TangoV => 4,
+            Achievement::SocialI => 0,
+            Achievement::SocialII => 1,
+            Achievement::SocialIII => 2,
+            Achievement::SocialIV => 3,
         }
     }
 
@@ -134,6 +151,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 30,
             Achievement::TangoIV => 40,
             Achievement::TangoV => 50,
+            Achievement::SocialI => 10,
+            Achievement::SocialII => 20,
+            Achievement::SocialIII => 30,
+            Achievement::SocialIV => 40,
         }
     }
 
@@ -160,6 +181,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 0,
             Achievement::TangoIV => 0,
             Achievement::TangoV => 0,
+            Achievement::SocialI => 0,
+            Achievement::SocialII => 0,
+            Achievement::SocialIII => 0,
+            Achievement::SocialIV => 0,
         }
     }
 
@@ -186,6 +211,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 0,
             Achievement::TangoIV => 0,
             Achievement::TangoV => 0,
+            Achievement::SocialI => 0,
+            Achievement::SocialII => 0,
+            Achievement::SocialIII => 0,
+            Achievement::SocialIV => 0,
         }
     }
 
@@ -212,6 +241,10 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'Tango',
             Achievement::TangoIV => 'Tango',
             Achievement::TangoV => 'Tango',
+            Achievement::SocialI => 'Social',
+            Achievement::SocialII => 'Social',
+            Achievement::SocialIII => 'Social',
+            Achievement::SocialIV => 'Social',
         }
     }
 
@@ -242,6 +275,11 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'fa-bird',
             Achievement::TangoIV => 'fa-cloud-arrow-up',
             Achievement::TangoV => 'fa-jet-fighter',
+            // Social
+            Achievement::SocialI => 'fa-users',
+            Achievement::SocialII => 'fa-user-friends',
+            Achievement::SocialIII => 'fa-user-plus',
+            Achievement::SocialIV => 'fa-user-check',
         }
     }
     
@@ -272,6 +310,11 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'Soaring Adventurer',
             Achievement::TangoIV => 'Cloud Chaser',
             Achievement::TangoV => 'Sky King',
+            // Social
+            Achievement::SocialI => 'Social Beast',
+            Achievement::SocialII => 'Friendship Builder',
+            Achievement::SocialIII => 'Beast Whisperer',
+            Achievement::SocialIV => 'Social Champion',
         }
     }
 
@@ -302,6 +345,11 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => "You have embraced the adventure of flight, an unstoppable flapper.",
             Achievement::TangoIV => "Clouds are your playground as you dance across the sky.",
             Achievement::TangoV => "You rule the skies now, flying at lightning speeds like a true king.",
+            // Social
+            Achievement::SocialI => "You've shared your Beast adventure on social media for the first time!",
+            Achievement::SocialII => "You've shared a high score of over 500 points on social media!",
+            Achievement::SocialIII => "You've had 10 conversations with your BabyBeast through the AI chat feature!",
+            Achievement::SocialIV => "You've shared your Beast on social media 5 times! Your beast is becoming famous!",
         }
     }    
 
@@ -332,6 +380,11 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => array![TaskTrait::new('TANGOIII', 1, "Reach 100 points in a single flappy beasts game.")].span(),
             Achievement::TangoIV => array![TaskTrait::new('TANGOIV', 1, "Reach 200 points in a single flappy beasts game.")].span(),
             Achievement::TangoV => array![TaskTrait::new('TANGOV', 1, "Reach 350 points in a single flappy beasts game.")].span(),
+            // Social
+            Achievement::SocialI => array![TaskTrait::new('SOCIALI', 1, "Shared your Beast for the first time.")].span(),
+            Achievement::SocialII => array![TaskTrait::new('SOCIALII', 1, "Shared a high score of over 500 points.")].span(),
+            Achievement::SocialIII => array![TaskTrait::new('SOCIALIII', 1, "Reached 10 conversations with your Beast.")].span(),
+            Achievement::SocialIV => array![TaskTrait::new('SOCIALIV', 1, "Shared your Beast 5 times.")].span(),
         }
     }    
 
@@ -369,6 +422,11 @@ pub impl IntoAchievementU8 of Into<Achievement, u8> {
             Achievement::TangoIII => 17,
             Achievement::TangoIV => 18,
             Achievement::TangoV => 19,
+            // Social
+            Achievement::SocialI => 20,
+            Achievement::SocialII => 21,
+            Achievement::SocialIII => 22,
+            Achievement::SocialIV => 23,
         }
     }
 }
@@ -402,6 +460,12 @@ pub impl IntoU8Achievement of Into<u8, Achievement> {
             17 => Achievement::TangoIII,
             18 => Achievement::TangoIV,
             19 => Achievement::TangoV,
+            // Social
+            20 => Achievement::SocialI,
+            21 => Achievement::SocialII,
+            22 => Achievement::SocialIII,
+            23 => Achievement::SocialIV,
+            // Default case
             _ => Achievement::None,
         }
     }

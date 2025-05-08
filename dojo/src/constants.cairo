@@ -30,7 +30,7 @@ pub const L_UPDATE_POINTS: u8 = 8;
 pub const XL_UPDATE_POINTS: u8 = 10;
 
 // Achievements
-pub const ACHIEVEMENTS_COUNT: u8 = 19;
+pub const ACHIEVEMENTS_COUNT: u8 = 23;
 pub const MINIGAMES_ACHIEVEMENTS_COUNT: u8 = 4;
 // ScoreHunter
 pub const SCOREHUNTERI_POINTS: u32 = 2000;
@@ -50,6 +50,9 @@ pub const TANGOII_POINTS: u32 = 50;
 pub const TANGOIII_POINTS: u32 = 100;
 pub const TANGOIV_POINTS: u32 = 200;
 pub const TANGOV_POINTS: u32 = 350;
+
+// Social
+pub const SOCIALII_POINTS: u32 = 500;
 
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;
