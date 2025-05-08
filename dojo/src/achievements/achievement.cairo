@@ -1,5 +1,5 @@
 // Dojo achievements import
-use achievement::types::task::{Task, TaskTrait}; 
+use achievement::types::task::{Task, TaskTrait};
 
 // Into trait import
 use core::traits::Into;
@@ -28,6 +28,22 @@ pub enum Achievement {
     TangoIII,
     TangoIV,
     TangoV,
+    // Social
+    EchoNetworkI,
+    EchoNetworkII,
+    EchoNetworkIII,
+    EchoNetworkIV,
+    EchoNetworkV,
+    ArenaRockstarI,
+    ArenaRockstarII,
+    ArenaRockstarIII,
+    ArenaRockstarIV,
+    ArenaRockstarV,
+    NeuralLinkI,
+    NeuralLinkII,
+    NeuralLinkIII,
+    NeuralLinkIV,
+    NeuralLinkV,
 }
 
 
@@ -56,6 +72,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'TangoIII', // Reach 100 points in a single flappy beasts game
             Achievement::TangoIV => 'TangoIV', // Reach 200 points in a single flappy beasts game
             Achievement::TangoV => 'TangoV', // Reach 350 points in a single flappy beasts game
+            Achievement::EchoNetworkI => 'EchoNetworkI', // Shared Beast for the first time
+            Achievement::EchoNetworkII => 'EchoNetworkII', // Shared beast 5 times
+            Achievement::EchoNetworkIII => 'EchoNetworkIII', // Shared beast 10 times
+            Achievement::EchoNetworkIV => 'EchoNetworkIV', // Shared your Beast 25 times
+            Achievement::EchoNetworkV => 'EchoNetworkV', // Shared your Beast 50 times
+            Achievement::ArenaRockstarI => 'ArenaRockstarI', // Shared a score of 500
+            Achievement::ArenaRockstarII => 'ArenaRockstarII', // Shared a score of 1500
+            Achievement::ArenaRockstarIII => 'ArenaRockstarIII', // Shared a score of 3000
+            Achievement::ArenaRockstarIV => 'ArenaRockstarIV', // Shared a score of 5000
+            Achievement::ArenaRockstarV => 'ArenaRockstarV', // Shared a score of 9999
+            Achievement::NeuralLinkI => 'NeuralLinkI', // Talked to your Beast for the first time
+            Achievement::NeuralLinkII => 'NeuralLinkII', // Talked to your Beast 5 times
+            Achievement::NeuralLinkIII => 'NeuralLinkIII', // Talked to your Beast 10 times
+            Achievement::NeuralLinkIV => 'NeuralLinkIV', // Talked to your Beast 20 times
+            Achievement::NeuralLinkV => 'NeuralLinkV' // Talked to your Beast 50 times
         }
     }
 
@@ -82,6 +113,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => false,
             Achievement::TangoIV => false,
             Achievement::TangoV => false,
+            Achievement::EchoNetworkI => false,
+            Achievement::EchoNetworkII => false,
+            Achievement::EchoNetworkIII => false,
+            Achievement::EchoNetworkIV => false,
+            Achievement::EchoNetworkV => false,
+            Achievement::ArenaRockstarI => false,
+            Achievement::ArenaRockstarII => false,
+            Achievement::ArenaRockstarIII => false,
+            Achievement::ArenaRockstarIV => false,
+            Achievement::ArenaRockstarV => false,
+            Achievement::NeuralLinkI => false,
+            Achievement::NeuralLinkII => false,
+            Achievement::NeuralLinkIII => false,
+            Achievement::NeuralLinkIV => false,
+            Achievement::NeuralLinkV => false,
         }
     }
 
@@ -108,6 +154,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 2,
             Achievement::TangoIV => 3,
             Achievement::TangoV => 4,
+            Achievement::EchoNetworkI => 0,
+            Achievement::EchoNetworkII => 1,
+            Achievement::EchoNetworkIII => 2,
+            Achievement::EchoNetworkIV => 3,
+            Achievement::EchoNetworkV => 4,
+            Achievement::ArenaRockstarI => 0,
+            Achievement::ArenaRockstarII => 1,
+            Achievement::ArenaRockstarIII => 2,
+            Achievement::ArenaRockstarIV => 3,
+            Achievement::ArenaRockstarV => 4,
+            Achievement::NeuralLinkI => 0,
+            Achievement::NeuralLinkII => 1,
+            Achievement::NeuralLinkIII => 2,
+            Achievement::NeuralLinkIV => 3,
+            Achievement::NeuralLinkV => 4,
         }
     }
 
@@ -134,6 +195,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 30,
             Achievement::TangoIV => 40,
             Achievement::TangoV => 50,
+            Achievement::EchoNetworkI => 10,
+            Achievement::EchoNetworkII => 20,
+            Achievement::EchoNetworkIII => 30,
+            Achievement::EchoNetworkIV => 40,
+            Achievement::EchoNetworkV => 50,
+            Achievement::ArenaRockstarI => 10,
+            Achievement::ArenaRockstarII => 20,
+            Achievement::ArenaRockstarIII => 30,
+            Achievement::ArenaRockstarIV => 40,
+            Achievement::ArenaRockstarV => 50,
+            Achievement::NeuralLinkI => 10,
+            Achievement::NeuralLinkII => 20,
+            Achievement::NeuralLinkIII => 30,
+            Achievement::NeuralLinkIV => 40,
+            Achievement::NeuralLinkV => 50,
         }
     }
 
@@ -160,6 +236,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 0,
             Achievement::TangoIV => 0,
             Achievement::TangoV => 0,
+            Achievement::EchoNetworkI => 0,
+            Achievement::EchoNetworkII => 0,
+            Achievement::EchoNetworkIII => 0,
+            Achievement::EchoNetworkIV => 0,
+            Achievement::EchoNetworkV => 0,
+            Achievement::ArenaRockstarI => 0,
+            Achievement::ArenaRockstarII => 0,
+            Achievement::ArenaRockstarIII => 0,
+            Achievement::ArenaRockstarIV => 0,
+            Achievement::ArenaRockstarV => 0,
+            Achievement::NeuralLinkI => 0,
+            Achievement::NeuralLinkII => 0,
+            Achievement::NeuralLinkIII => 0,
+            Achievement::NeuralLinkIV => 0,
+            Achievement::NeuralLinkV => 0,
         }
     }
 
@@ -186,6 +277,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 0,
             Achievement::TangoIV => 0,
             Achievement::TangoV => 0,
+            Achievement::EchoNetworkI => 0,
+            Achievement::EchoNetworkII => 0,
+            Achievement::EchoNetworkIII => 0,
+            Achievement::EchoNetworkIV => 0,
+            Achievement::EchoNetworkV => 0,
+            Achievement::ArenaRockstarI => 0,
+            Achievement::ArenaRockstarII => 0,
+            Achievement::ArenaRockstarIII => 0,
+            Achievement::ArenaRockstarIV => 0,
+            Achievement::ArenaRockstarV => 0,
+            Achievement::NeuralLinkI => 0,
+            Achievement::NeuralLinkII => 0,
+            Achievement::NeuralLinkIII => 0,
+            Achievement::NeuralLinkIV => 0,
+            Achievement::NeuralLinkV => 0,
         }
     }
 
@@ -212,6 +318,21 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'Tango',
             Achievement::TangoIV => 'Tango',
             Achievement::TangoV => 'Tango',
+            Achievement::EchoNetworkI => 'EchoNetwork',
+            Achievement::EchoNetworkII => 'EchoNetwork',
+            Achievement::EchoNetworkIII => 'EchoNetwork',
+            Achievement::EchoNetworkIV => 'EchoNetwork',
+            Achievement::EchoNetworkV => 'EchoNetwork',
+            Achievement::ArenaRockstarI => 'ArenaRockstar',
+            Achievement::ArenaRockstarII => 'ArenaRockstar',
+            Achievement::ArenaRockstarIII => 'ArenaRockstar',
+            Achievement::ArenaRockstarIV => 'ArenaRockstar',
+            Achievement::ArenaRockstarV => 'ArenaRockstar',
+            Achievement::NeuralLinkI => 'NeuralLink',
+            Achievement::NeuralLinkII => 'NeuralLink',
+            Achievement::NeuralLinkIII => 'NeuralLink',
+            Achievement::NeuralLinkIV => 'NeuralLink',
+            Achievement::NeuralLinkV => 'NeuralLink',
         }
     }
 
@@ -242,9 +363,27 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'fa-bird',
             Achievement::TangoIV => 'fa-cloud-arrow-up',
             Achievement::TangoV => 'fa-jet-fighter',
+            // Share in X your beast
+            Achievement::EchoNetworkI => 'fa-feather-alt',
+            Achievement::EchoNetworkII => 'fa-book',
+            Achievement::EchoNetworkIII => 'fa-wifi',
+            Achievement::EchoNetworkIV => 'fa-broadcast-tower',
+            Achievement::EchoNetworkV => 'fa-volume-up',
+            // Share in X your score
+            Achievement::ArenaRockstarI => 'fa-fire',
+            Achievement::ArenaRockstarII => 'fa-bullhorn',
+            Achievement::ArenaRockstarIII => 'fa-star',
+            Achievement::ArenaRockstarIV => 'fa-trophy',
+            Achievement::ArenaRockstarV => 'fa-dragon',
+            // Talk to your beast
+            Achievement::NeuralLinkI => 'fa-comments',
+            Achievement::NeuralLinkII => 'fa-heart',
+            Achievement::NeuralLinkIII => 'fa-brain',
+            Achievement::NeuralLinkIV => 'fa-link',
+            Achievement::NeuralLinkV => 'fa-infinity',
         }
     }
-    
+
     #[inline]
     fn title(self: Achievement) -> felt252 {
         match self {
@@ -272,6 +411,24 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => 'Soaring Adventurer',
             Achievement::TangoIV => 'Cloud Chaser',
             Achievement::TangoV => 'Sky King',
+            // Share in X n times
+            Achievement::EchoNetworkI => 'Whisper to the Wind',
+            Achievement::EchoNetworkII => 'Chronicler',
+            Achievement::EchoNetworkIII => 'Echo Weaver',
+            Achievement::EchoNetworkIV => 'Signal Tower',
+            Achievement::EchoNetworkV => 'The Voice of Beasts',
+            // Share in X your score
+            Achievement::ArenaRockstarI => 'Spark of Glory',
+            Achievement::ArenaRockstarII => 'Echo of Triumph',
+            Achievement::ArenaRockstarIII => 'Signal of Greatness',
+            Achievement::ArenaRockstarIV => 'Myth in Motion',
+            Achievement::ArenaRockstarV => 'Beast Ascendant',
+            // Talk to your beast
+            Achievement::NeuralLinkI => 'Emotional Ping',
+            Achievement::NeuralLinkII => 'Emotional Ping',
+            Achievement::NeuralLinkIII => 'Thread of Thought',
+            Achievement::NeuralLinkIV => 'Soul Link',
+            Achievement::NeuralLinkV => 'Symbiotic Mind',
         }
     }
 
@@ -302,8 +459,26 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::TangoIII => "You have embraced the adventure of flight, an unstoppable flapper.",
             Achievement::TangoIV => "Clouds are your playground as you dance across the sky.",
             Achievement::TangoV => "You rule the skies now, flying at lightning speeds like a true king.",
+            // Share n times
+            Achievement::EchoNetworkI => "Your very first share. A gentle echo into the wild.",
+            Achievement::EchoNetworkII => "5 shares in. You're infiltrating timelines.",
+            Achievement::EchoNetworkIII => "10 drops. People scroll and they stop at your Beast.",
+            Achievement::EchoNetworkIV => "25 shares. The community hears you loud and clear.",
+            Achievement::EchoNetworkV => "50 broadcasts. You are the algorithm.",
+            // Share your score
+            Achievement::ArenaRockstarI => "Shared a score of 500+. You're catching fire.",
+            Achievement::ArenaRockstarII => "Shared a score of 1500+. The crowd hears you now.",
+            Achievement::ArenaRockstarIII => "Shared a 3000+ score. Competitors pause to watch.",
+            Achievement::ArenaRockstarIV => "Shared a 5000+ score. You're the stuff of legends.",
+            Achievement::ArenaRockstarV => "Shared a godlike 9999+ score. You broke the sound barrier.",
+            // Talk to your beast
+            Achievement::NeuralLinkI => "You have spoken to your Beast for the first time. A connection begins.",
+            Achievement::NeuralLinkII => "5 chats exchanged. Your Beast starts to feel real.",
+            Achievement::NeuralLinkIII => "10 conversations in. There's depth in these exchanges.",
+            Achievement::NeuralLinkIV => "20 chats. Your Beast responds like it knows you.",
+            Achievement::NeuralLinkV => "50 deep interactions. Two minds, one bond.",
         }
-    }    
+    }
 
     #[inline]
     fn tasks(self: Achievement) -> Span<Task> {
@@ -314,26 +489,50 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 15, "Play a minigame 15 times.")].span(),
             Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 30, "Play a minigame 30 times.")].span(),
             Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 50, "Play a minigame 50 times.")].span(),
+
             // ScoreHunter levels
             Achievement::ScoreHunterI => array![TaskTrait::new('SCOREHUNTERI', 1, "Get 2000 total points from minigames.")].span(),
             Achievement::ScoreHunterII => array![TaskTrait::new('SCOREHUNTERII', 1, "Get 5000 total points from minigames.")].span(),
             Achievement::ScoreHunterIII => array![TaskTrait::new('SCOREHUNTERIII', 1, "Get 12000 total points from minigames.")].span(),
             Achievement::ScoreHunterIV => array![TaskTrait::new('SCOREHUNTERIV', 1, "Get 20000 total points from minigames.")].span(),
             Achievement::ScoreHunterV => array![TaskTrait::new('SCOREHUNTERV', 1, "Get 50000 total points from minigames.")].span(),
+
             // Jumper (platform game)
             Achievement::JumperI => array![TaskTrait::new('JUMPERI', 1, "Reach 500 points in a single platform game.")].span(),
             Achievement::JumperII => array![TaskTrait::new('JUMPERII', 1, "Reach 1500 points in a single platform game.")].span(),
             Achievement::JumperIII => array![TaskTrait::new('JUMPERIII', 1, "Reach 2500 points in a single platform game.")].span(),
             Achievement::JumperIV => array![TaskTrait::new('JUMPERIV', 1, "Reach 3500 points in a single platform game.")].span(),
             Achievement::JumperV => array![TaskTrait::new('JUMPERV', 1, "Reach 4500 points in a single platform game.")].span(),
+
             // Tango (flappy beasts game)
             Achievement::TangoI => array![TaskTrait::new('TANGOI', 1, "Reach 25 points in a single flappy beasts game.")].span(),
             Achievement::TangoII => array![TaskTrait::new('TANGOII', 1, "Reach 50 points in a single flappy beasts game.")].span(),
             Achievement::TangoIII => array![TaskTrait::new('TANGOIII', 1, "Reach 100 points in a single flappy beasts game.")].span(),
             Achievement::TangoIV => array![TaskTrait::new('TANGOIV', 1, "Reach 200 points in a single flappy beasts game.")].span(),
             Achievement::TangoV => array![TaskTrait::new('TANGOV', 1, "Reach 350 points in a single flappy beasts game.")].span(),
+
+            // Echo Network (share X times)
+            Achievement::EchoNetworkI => array![TaskTrait::new('ECHONETWORKI', 1, "Share once")].span(),
+            Achievement::EchoNetworkII => array![TaskTrait::new('ECHONETWORKII', 5, "Share 5 times")].span(),
+            Achievement::EchoNetworkIII => array![TaskTrait::new('ECHONETWORKIII', 10, "Share 10 times")].span(),
+            Achievement::EchoNetworkIV => array![TaskTrait::new('ECHONETWORKIV', 25, "Share 25 times")].span(),
+            Achievement::EchoNetworkV => array![TaskTrait::new('ECHONETWORKV', 50, "Share 50 times")].span(),
+
+            // Arena Rockstar (share score thresholds)
+            Achievement::ArenaRockstarI => array![TaskTrait::new('ARENAROCKSTARI', 1, "Share a score of 500+")].span(),
+            Achievement::ArenaRockstarII => array![TaskTrait::new('ARENAROCKSTARII', 1, "Share a score of 1500+")].span(),
+            Achievement::ArenaRockstarIII => array![TaskTrait::new('ARENAROCKSTARIII', 1, "Share a score of 3000+")].span(),
+            Achievement::ArenaRockstarIV => array![TaskTrait::new('ARENAROCKSTARIV', 1, "Share a score of 5000+")].span(),
+            Achievement::ArenaRockstarV => array![TaskTrait::new('ARENAROCKSTARV', 1, "Share a score of 9999+")].span(),
+
+            // Neural Link (AI chat interactions)
+            Achievement::NeuralLinkI => array![TaskTrait::new('NEURALLINKI', 1, "Talk to your Beast once")].span(),
+            Achievement::NeuralLinkII => array![TaskTrait::new('NEURALLINKII', 5, "Talk to your Beast 5 times")].span(),
+            Achievement::NeuralLinkIII => array![TaskTrait::new('NEURALLINKIII', 10, "Talk to your Beast 10 times")].span(),
+            Achievement::NeuralLinkIV => array![TaskTrait::new('NEURALLINKIV', 20, "Talk to your Beast 20 times")].span(),
+            Achievement::NeuralLinkV => array![TaskTrait::new('NEURALLINKV', 50, "Talk to your Beast 50 times")].span(),
         }
-    }    
+    }
 
     #[inline]
     fn data(self: Achievement) -> ByteArray {
@@ -369,6 +568,24 @@ pub impl IntoAchievementU8 of Into<Achievement, u8> {
             Achievement::TangoIII => 17,
             Achievement::TangoIV => 18,
             Achievement::TangoV => 19,
+            // Share n times
+            Achievement::EchoNetworkI => 20,
+            Achievement::EchoNetworkII => 21,
+            Achievement::EchoNetworkIII => 22,
+            Achievement::EchoNetworkIV => 23,
+            Achievement::EchoNetworkV => 24,
+            // Share your score
+            Achievement::ArenaRockstarI => 25,
+            Achievement::ArenaRockstarII => 26,
+            Achievement::ArenaRockstarIII => 27,
+            Achievement::ArenaRockstarIV => 28,
+            Achievement::ArenaRockstarV => 29,
+            // Talk to your beast
+            Achievement::NeuralLinkI => 30,
+            Achievement::NeuralLinkII => 31,
+            Achievement::NeuralLinkIII => 32,
+            Achievement::NeuralLinkIV => 33,
+            Achievement::NeuralLinkV => 34,
         }
     }
 }
@@ -402,6 +619,25 @@ pub impl IntoU8Achievement of Into<u8, Achievement> {
             17 => Achievement::TangoIII,
             18 => Achievement::TangoIV,
             19 => Achievement::TangoV,
+            // Share n times
+            20 => Achievement::EchoNetworkI,
+            21 => Achievement::EchoNetworkII,
+            22 => Achievement::EchoNetworkIII,
+            23 => Achievement::EchoNetworkIV,
+            24 => Achievement::EchoNetworkV,
+            // Share your score
+            25 => Achievement::ArenaRockstarI,
+            26 => Achievement::ArenaRockstarII,
+            27 => Achievement::ArenaRockstarIII,
+            28 => Achievement::ArenaRockstarIV,
+            29 => Achievement::ArenaRockstarV,
+            // Talk to your beast
+            30 => Achievement::NeuralLinkI,
+            31 => Achievement::NeuralLinkII,
+            32 => Achievement::NeuralLinkIII,
+            33 => Achievement::NeuralLinkIV,
+            34 => Achievement::NeuralLinkV,
+            // Default case
             _ => Achievement::None,
         }
     }
