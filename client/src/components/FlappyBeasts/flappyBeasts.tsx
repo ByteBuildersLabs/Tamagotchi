@@ -34,6 +34,11 @@ const BIRD_HEIGHT = 52;
 const PIPE_WIDTH = 52;
 const ENERGY_TOAST_DURATION = 3000;
 
+// Parameters for interpolating speed
+const BASE_PIPE_SPEED = 180;    // px/s at the start
+const SPEED_FACTOR = 2;         // additional px/s for each point in the score
+const MAX_PIPE_SPEED = 600;     // maximum speed in px/s
+
 // Sizes for colliders
 const COLLIDER_MARGIN = 10;
 const BIRD_COLLIDER_WIDTH = 30;
@@ -121,8 +126,22 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
         gameWidth: 360,
         gameHeight: 576,
         running: false,
-        lastTimestamp: 0
+        lastTimestamp: 0,
+        pipeSpeedPPS: BASE_PIPE_SPEED, // Dinamically adjusted speed
     });
+
+    // Adjust pipe speed based on score
+    useEffect(() => {
+        // Speed is linearly interpolated: BASE + score * factor
+        const nextSpeed = BASE_PIPE_SPEED + _score * SPEED_FACTOR;
+        const clamped = Math.min(nextSpeed, MAX_PIPE_SPEED);
+        gameConfig.current.pipeSpeedPPS = clamped;
+      
+        // DEBUG: print the current speed and score
+        // console.log(
+        //   `[FlappyBeasts] Pipe speed: ${clamped.toFixed(2)} px/s at score ${_score}`
+        // );
+    }, [_score]);
 
     // Expose resetGame to parent component
     useImperativeHandle(ref, () => ({
@@ -442,12 +461,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     const updatePipes = (dt: number) => {
         const game = gameConfig.current;
 
-        // Define the speed in PIXELS PER SECOND (not per frame)
-        // The original Flappy Bird uses approximately 60-80 pixels per second
-        const PIPE_SPEED_PPS = 180; // Pixels per second - ADJUST THIS VALUE
-
         // The applied speed will be pixels/second * seconds = pixels to move
-        const pipeSpeed = PIPE_SPEED_PPS * dt;
+        const pipeSpeed = gameConfig.current.pipeSpeedPPS * dt;
 
         game.pipes.forEach(pipe => {
             // Move pipe
