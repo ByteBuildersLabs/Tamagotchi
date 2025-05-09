@@ -108,8 +108,9 @@ pub mod achieve {
             // Emit all minigames progress
             let mut achievement_id = constants::SCOREHUNTER_INITIAL_ID;
             let counter = constants::SCOREHUNTER_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
             
-            while achievement_id <= counter + achievement_id {
+            while achievement_id <= stop {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
                 achievement_id += 1;
             }
@@ -256,8 +257,9 @@ pub mod achieve {
             // Emit all minigames progress
             let mut achievement_id = constants::PET_INITIAL_ID;
             let counter = constants::PET_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
             
-            while achievement_id <= counter + achievement_id {
+            while achievement_id <= stop {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
                 achievement_id += 1;
             }
@@ -274,8 +276,9 @@ pub mod achieve {
             // Emit all minigames progress
             let mut achievement_id = constants::SLEEP_INITIAL_ID;
             let counter = constants::SLEEP_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
             
-            while achievement_id <= counter + achievement_id {
+            while achievement_id <= stop {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
                 achievement_id += 1;
             }
@@ -292,8 +295,9 @@ pub mod achieve {
             // Emit all minigames progress
             let mut achievement_id = constants::CLEAN_INITIAL_ID;
             let counter = constants::CLEAN_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
             
-            while achievement_id <= counter + achievement_id {
+            while achievement_id <= stop {
                 achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
                 achievement_id += 1;
             }
