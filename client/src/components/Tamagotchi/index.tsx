@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Account, addAddressPadding } from "starknet";
+import { Account } from "starknet";
 import useAppStore from "../../context/store.ts";
 import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
@@ -42,7 +42,6 @@ function Tamagotchi() {
   const { player } = usePlayer();
   const navigate = useNavigate();
   const [botMessage, setBotMessage] = useState<Message>({ user: '', text: '' });
-  const [isMobileDragging, setIsMobileDragging] = useState(false);
   const [birthday, setBirthday] = useState<any>({});
   const [age, setAge] = useState<any>();
 
@@ -74,16 +73,6 @@ function Tamagotchi() {
     }
   }, [zplayer, zbeasts, location]);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    // Prevent default to allow drop
-    e.preventDefault();
-
-    // Add visual indication that this is a drop target
-    if (e.currentTarget.classList) {
-      e.currentTarget.classList.add('drag-over');
-    }
-  };
-
   const handleAchievements = useCallback(() => {
     buttonSound();
     if (!connector || !('controller' in connector)) {
@@ -96,82 +85,6 @@ function Tamagotchi() {
       console.error("Connector controller is not properly initialized");
     }
   }, [connector]);
-
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    // Remove visual indication when drag leaves
-    if (e.currentTarget.classList) {
-      e.currentTarget.classList.remove('drag-over');
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-
-    // Remove drag-over class
-    if (e.currentTarget.classList) {
-      e.currentTarget.classList.remove('drag-over');
-    }
-
-    // Check if beast is alive and awake
-    if (!zcurrentBeast || status[1] != 1 || status[2] != 1) return;
-
-    try {
-      // Get the food data from dataTransfer
-      const foodData = e.dataTransfer.getData('application/json');
-      if (!foodData) return;
-
-      const { name } = JSON.parse(foodData);
-
-      // Find the food in the DOM and trigger its click event
-      const foodItem = Array.from(document.querySelectorAll('.food-item'))
-        .find(item => item.textContent?.includes(name));
-
-      if (foodItem) {
-        (foodItem as HTMLElement).click();
-      }
-    } catch (error) {
-      console.error("Error handling drop:", error);
-    }
-  };
-
-  // Listen for messages from the Food component about mobile drag state
-  useEffect(() => {
-    const handleMobileDragMessage = (e: MessageEvent) => {
-      if (e.data && e.data.type === 'MOBILE_DRAG_STATE') {
-        setIsMobileDragging(e.data.isDragging);
-
-        // Apply body class to prevent scrolling during drag
-        if (e.data.isDragging) {
-          document.body.classList.add('preventing-scroll');
-        } else {
-          document.body.classList.remove('preventing-scroll');
-        }
-      }
-    };
-
-    window.addEventListener('message', handleMobileDragMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMobileDragMessage);
-    };
-  }, []);
-
-  // Prevent scrolling issues during mobile drag
-  useEffect(() => {
-    const preventScroll = (e: TouchEvent) => {
-      if (isMobileDragging) {
-        e.preventDefault();
-      }
-    };
-
-    // Add with passive: false to ensure preventDefault works
-    document.addEventListener('touchmove', preventScroll, { passive: false });
-
-    return () => {
-      document.removeEventListener('touchmove', preventScroll);
-    };
-  }, [isMobileDragging]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
@@ -361,11 +274,7 @@ function Tamagotchi() {
                       <img
                         src={currentImage}
                         alt="Tamagotchi"
-                        className="w-full h-full"
                         onClick={handleCuddle}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
                         style={{ cursor: 'pointer' }}
                       />
                       {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}
