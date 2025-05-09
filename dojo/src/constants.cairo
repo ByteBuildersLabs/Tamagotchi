@@ -36,6 +36,8 @@ pub const BYTEBITES_ACHIEVEMENTS_COUNT: u8 = 5;
 pub const PET_ACHIEVEMENTS_COUNT: u8 = 5;
 pub const SLEEP_ACHIEVEMENTS_COUNT: u8 = 5;
 pub const CLEAN_ACHIEVEMENTS_COUNT: u8 = 5;
+pub const ECHONETWORK_ACHIEVEMENTS_COUNT: u8 = 5;
+pub const NEURALLINK_ACHIEVEMENTS_COUNT: u8 = 5;
 // ScoreHunter
 pub const SCOREHUNTER_INITIAL_ID: u8 = 1;
 pub const SCOREHUNTERI_POINTS: u32 = 2000;
@@ -69,6 +71,10 @@ pub const PET_INITIAL_ID: u8 = 40;
 pub const SLEEP_INITIAL_ID: u8 = 45;
 // CleanStreakI
 pub const CLEAN_INITIAL_ID: u8 = 50;
+// EchoNetwork
+pub const ECHONETWORK_INITIAL_ID: u8 = 20;
+// NeuralLink
+pub const NEURALLINK_INITIAL_ID: u8 = 30;
 
 // Next level experience
 pub const NEXT_LEVEL_EXPERIENCE: u8 = 20;

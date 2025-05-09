@@ -306,43 +306,39 @@ pub mod achieve {
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
         
-            let achievement_echoI: felt252 = 'ECHONETWORKI';
-            let achievement_echoII: felt252 = 'ECHONETWORKII';
-            let achievement_echoIII: felt252 = 'ECHONETWORKIII';
-            let achievement_echoIV: felt252 = 'ECHONETWORKIV';
-            let achievement_echoV: felt252 = 'ECHONETWORKV';
-        
-            let achievement_rockstarI: felt252 = 'ARENAROCKSTARI';
-            let achievement_rockstarII: felt252 = 'ARENAROCKSTARII';
-            let achievement_rockstarIII: felt252 = 'ARENAROCKSTARIII';
-            let achievement_rockstarIV: felt252 = 'ARENAROCKSTARIV';
-            let achievement_rockstarV: felt252 = 'ARENAROCKSTARV';
-        
             let player = store.read_player();
             player.assert_exists();
         
-            // Progress EchoNetwork (share count)
-            achievement_store.progress(player.address.into(), achievement_echoI.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_echoII.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_echoIII.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_echoIV.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_echoV.into(), 1, get_block_timestamp());
+            // Emit all progress achievements
+            let mut achievement_id = constants::ECHONETWORK_INITIAL_ID;
+            let counter = constants::ECHONETWORK_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
+            
+            while achievement_id <= stop {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            };
         
             // Progress ArenaRockstar (score thresholds)
-            if score >= constants::ARENAROCKSTARI_POINTS {
-                achievement_store.progress(player.address.into(), achievement_rockstarI.into(), 1, get_block_timestamp());
+            if score >= constants::ARENAROCKSTARI_POINTS && score <= constants::ARENAROCKSTARII_POINTS {
+                let achievement_id: felt252 = 'ArenaRockstarI';
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
-            if score >= constants::ARENAROCKSTARII_POINTS {
-                achievement_store.progress(player.address.into(), achievement_rockstarII.into(), 1, get_block_timestamp());
+            if score >= constants::ARENAROCKSTARII_POINTS && score <= constants::ARENAROCKSTARIII_POINTS {
+                let achievement_id: felt252 = 'ArenaRockstarII';
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
-            if score >= constants::ARENAROCKSTARIII_POINTS {
-                achievement_store.progress(player.address.into(), achievement_rockstarIII.into(), 1, get_block_timestamp());
+            if score >= constants::ARENAROCKSTARIII_POINTS && score <= constants::ARENAROCKSTARIV_POINTS {
+                let achievement_id: felt252 = 'ArenaRockstarIII';
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
-            if score >= constants::ARENAROCKSTARIV_POINTS {
-                achievement_store.progress(player.address.into(), achievement_rockstarIV.into(), 1, get_block_timestamp());
+            if score >= constants::ARENAROCKSTARIV_POINTS && score <= constants::ARENAROCKSTARV_POINTS {
+                let achievement_id: felt252 = 'ArenaRockstarIV';
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
             if score >= constants::ARENAROCKSTARV_POINTS {
-                achievement_store.progress(player.address.into(), achievement_rockstarV.into(), 1, get_block_timestamp());
+                let achievement_id: felt252 = 'ArenaRockstarV';
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
             }
         }
         
@@ -351,21 +347,19 @@ pub mod achieve {
             let world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
-
-            let achievement_neural_linkI: felt252 = 'NEURALLINKI';
-            let achievement_neural_linkII: felt252 = 'NEURALLINKII';
-            let achievement_neural_linkIII: felt252 = 'NEURALLINKIII';
-            let achievement_neural_linkIV: felt252 = 'NEURALLINKIV';
-            let achievement_neural_linkV: felt252 = 'NEURALLINKV';
         
             let player = store.read_player();
             player.assert_exists();
         
-            achievement_store.progress(player.address.into(), achievement_neural_linkI.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_neural_linkII.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_neural_linkIII.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_neural_linkIV.into(), 1, get_block_timestamp());
-            achievement_store.progress(player.address.into(), achievement_neural_linkV.into(), 1, get_block_timestamp());
+            // Emit all progress achievements
+            let mut achievement_id = constants::NEURALLINK_INITIAL_ID;
+            let counter = constants::NEURALLINK_ACHIEVEMENTS_COUNT;
+            let stop = counter + achievement_id;
+            
+            while achievement_id <= stop {
+                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                achievement_id += 1;
+            };
         }
     }
 }
