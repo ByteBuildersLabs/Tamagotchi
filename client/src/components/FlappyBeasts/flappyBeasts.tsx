@@ -7,12 +7,12 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/restart.svg';
 import './syles.css';
-import skyBackground from '../../assets/FlappyBeasts/sky.png';
-import landBackground from '../../assets/FlappyBeasts/land.png';
-import ceilingBackground from '../../assets/FlappyBeasts/ceiling.png';
-import pipeImage from '../../assets/FlappyBeasts/pipe.png';
-import pipeUpImage from '../../assets/FlappyBeasts/pipe-up.png';
-import pipeDownImage from '../../assets/FlappyBeasts/pipe-down.png';
+import skyBackground from '../../assets/FlappyBeasts/NewSky.png';
+import landBackground from '../../assets/FlappyBeasts/NewLand.png';
+import ceilingBackground from '../../assets/FlappyBeasts/NewCelling.png';
+import pipeImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
+import pipeUpImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
+import pipeDownImage from '../../assets/FlappyBeasts/NewPipeDown2.png';
 
 // Asset configuration
 const gameAssets = {
@@ -81,7 +81,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     const [_score, setScore] = useState(0);
     const [finalScore, setFinalScore] = useState(0);
     const [currentHighScore, setCurrentHighScore] = useState(highScore);
-    const { myScoreFlappyBird } = useHighScores(account);
+    const { myScoreFlappyBird } = useHighScores();
     const [showEnergyToast, setShowEnergyToast] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
