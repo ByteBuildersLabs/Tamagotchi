@@ -494,7 +494,7 @@ pub impl AchievementImpl of AchievementTrait {
             Achievement::BeastFriendIV => 'Beast Friend',
             Achievement::BeastFriendV => 'Beast Friend', 
             Achievement::NapMasterI => 'Nap Master',
-            Achievement::NapMasterII => 'Na Master',
+            Achievement::NapMasterII => 'Nap Master',
             Achievement::NapMasterIII => 'Nap Master',
             Achievement::NapMasterIV => 'Nap Master',
             Achievement::NapMasterV => 'Nap Master',
