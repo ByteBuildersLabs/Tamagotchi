@@ -10,6 +10,7 @@ import { requestNotificationPermission } from "../../utils/notification.tsx";
 
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import { useAccount } from "@starknet-react/core";
+import { MusicProvider } from "../../context/contextMusic.tsx";
 
 function Main() {
 
@@ -20,7 +21,7 @@ function Main() {
 
   useEffect(() => {
     if (player?.address) {
-      requestNotificationPermission(account,client);
+      requestNotificationPermission(account, client);
     } else {
       console.log("Player address not available yet.");
     }
@@ -28,13 +29,15 @@ function Main() {
 
   return (
     <Router>
-      <Routes>
+      <MusicProvider>
+        <Routes>
           <Route path="/" element={<NewCover />} />
           <Route path="/spawn" element={<SpawnBeast />} />
           <Route path="/play" element={<Tamagotchi />} />
           <Route path="/fullscreen-game" element={<FullscreenGame />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-      </Routes>
+        </Routes>
+      </MusicProvider>
     </Router>
   )
 }

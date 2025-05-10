@@ -1,7 +1,6 @@
 // React imports
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom";
-import { MusicProvider } from "./context/contextMusic.tsx";
 
 // Dojo imports
 import { init } from "@dojoengine/sdk";
@@ -45,15 +44,13 @@ async function main() {
           clientFn={setupWorld}
         >
           <StarknetProvider>
-              <MusicProvider>
-                {posthogInstance.initialized && posthogInstance.client ? (
-                  <PostHogProvider client={posthogInstance.client}>
-                    <Main />
-                  </PostHogProvider>
-                ) : (
-                  <Main />
-                )}
-              </MusicProvider>
+            {posthogInstance.initialized && posthogInstance.client ? (
+              <PostHogProvider client={posthogInstance.client}>
+                <Main />
+              </PostHogProvider>
+            ) : (
+              <Main />
+            )}
           </StarknetProvider>
         </DojoSdkProvider>
       </StrictMode>,
