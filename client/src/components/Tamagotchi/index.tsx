@@ -204,6 +204,8 @@ function Tamagotchi() {
         // Use the cuddle animation from your initials data
         beastsDex[zcurrentBeast.specie - 1].cuddlePicture
       )
+
+      async () => await client.achieve.achieveBeastPet(account as Account)
       // Disable the button for 5 seconds
       setIsLoading(true);
       setTimeout(() => {

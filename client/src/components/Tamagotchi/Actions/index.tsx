@@ -66,6 +66,12 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
                   beastsDex[beast.specie - 1][pictureKey]
                 )
 
+                if (action === 'sleep') {
+                  await client.achieve.achieveBeastSleep(account as Account);
+                } else if (action === 'clean') {
+                  await client.achieve.achieveBeastClean(account as Account);
+                }
+
                 await client.game.updateBeast(account as Account);
 
                 const status:any = fetchStatus(account);
