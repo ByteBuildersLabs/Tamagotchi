@@ -111,7 +111,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             }
         }
@@ -129,28 +131,28 @@ pub mod achieve {
             
             if player_points >= constants::SCOREHUNTERI_POINTS && player_points <= constants::SCOREHUNTERII_POINTS {
                 // ScoreHunterI
-                let achievement_id: felt252 = 'ScoreHunterI';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ScoreHunterI';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if player_points >= constants::SCOREHUNTERII_POINTS &&  player_points <= constants::SCOREHUNTERIII_POINTS {
                 // ScoreHunterII
-                let achievement_id: felt252 = 'ScoreHunterII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ScoreHunterII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if player_points >= constants::SCOREHUNTERIII_POINTS && player_points <= constants::SCOREHUNTERIV_POINTS {
                 // ScoreHunterII
-                let achievement_id: felt252 = 'ScoreHunterIII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ScoreHunterIII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if player_points >= constants::SCOREHUNTERIV_POINTS && player_points <= constants::SCOREHUNTERV_POINTS {
                 // ScoreHunterII
-                let achievement_id: felt252 = 'ScoreHunterIV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ScoreHunterIV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if player_points >= constants::SCOREHUNTERV_POINTS {
                 // ScoreHunterII
-                let achievement_id: felt252 = 'ScoreHunterV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ScoreHunterV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
         }
 
@@ -165,28 +167,28 @@ pub mod achieve {
 
             if score >= constants::JUMPERI_POINTS && score <= constants::JUMPERII_POINTS {
                 // JumperI
-                let achievement_id: felt252 = 'JumperI';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'JumperI';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::JUMPERII_POINTS && score <= constants::JUMPERIII_POINTS {
                 // JumperII
-                let achievement_id: felt252 = 'JumperII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'JumperII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::JUMPERIII_POINTS && score <= constants::JUMPERIV_POINTS {
                 // JumperIII
-                let achievement_id: felt252 = 'JumperIII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'JumperIII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::JUMPERIV_POINTS && score <= constants::JUMPERV_POINTS{
                 // JumperIV
-                let achievement_id: felt252 = 'JumperIV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'JumperIV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::JUMPERV_POINTS {
                 // JumperV
-                let achievement_id: felt252 = 'JumperV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'JumperV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
         }
 
@@ -201,28 +203,28 @@ pub mod achieve {
 
             if score >= constants::TANGOI_POINTS && score <= constants::JUMPERII_POINTS {
                 // TangoI
-                let achievement_id: felt252 = 'TangoI';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'TangoI';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::TANGOI_POINTS && score <= constants::JUMPERIII_POINTS {
                 // TangoII
-                let achievement_id: felt252 = 'TangoII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'TangoII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::TANGOI_POINTS && score <= constants::JUMPERIV_POINTS {
                 // TangoIII
-                let achievement_id: felt252 = 'TangoIII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'TangoIII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::TANGOI_POINTS && score <= constants::JUMPERV_POINTS{
                 // TangoIV
-                let achievement_id: felt252 = 'TangoIV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'TangoIV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::TANGOI_POINTS {
                 // TangoV
-                let achievement_id: felt252 = 'TangoV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'TangoV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
         }
 
@@ -241,7 +243,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             }
         }
@@ -260,7 +264,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             }
         }
@@ -279,7 +285,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             }
         }
@@ -298,7 +306,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             }
         }
@@ -319,30 +329,32 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             };
         
             // Progress ArenaRockstar (score thresholds)
             if score >= constants::ARENAROCKSTARI_POINTS && score <= constants::ARENAROCKSTARII_POINTS {
-                let achievement_id: felt252 = 'ArenaRockstarI';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ArenaRockstarI';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::ARENAROCKSTARII_POINTS && score <= constants::ARENAROCKSTARIII_POINTS {
-                let achievement_id: felt252 = 'ArenaRockstarII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ArenaRockstarII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::ARENAROCKSTARIII_POINTS && score <= constants::ARENAROCKSTARIV_POINTS {
-                let achievement_id: felt252 = 'ArenaRockstarIII';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ArenaRockstarIII';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::ARENAROCKSTARIV_POINTS && score <= constants::ARENAROCKSTARV_POINTS {
-                let achievement_id: felt252 = 'ArenaRockstarIV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ArenaRockstarIV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
             if score >= constants::ARENAROCKSTARV_POINTS {
-                let achievement_id: felt252 = 'ArenaRockstarV';
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task_id: felt252 = 'ArenaRockstarV';
+                achievement_store.progress(player.address.into(), task_id, 1, get_block_timestamp());
             }
         }
         
@@ -361,7 +373,9 @@ pub mod achieve {
             let stop = counter + achievement_id;
             
             while achievement_id <= stop {
-                achievement_store.progress(player.address.into(), achievement_id.into(), 1, get_block_timestamp());
+                let task: Achievement = achievement_id.into(); // u8 to Achievement
+                let task_identifier = task.identifier(); // Achievement identifier is the task to complete
+                achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             };
         }
