@@ -86,6 +86,69 @@ export interface PlayerValue {
 	creation_day: number;
 }
 
+// Type definition for `achievement::events::index::TrophyCreation` struct
+export interface TrophyCreation {
+	id: number;
+	hidden: boolean;
+	index: number;
+	points: number;
+	start: number;
+	end: number;
+	group: number;
+	icon: number;
+	title: number;
+	description: string;
+	tasks: Array<Task>;
+	data: string;
+}
+
+// Type definition for `achievement::events::index::TrophyCreationValue` struct
+export interface TrophyCreationValue {
+	hidden: boolean;
+	index: number;
+	points: number;
+	start: number;
+	end: number;
+	group: number;
+	icon: number;
+	title: number;
+	description: string;
+	tasks: Array<Task>;
+	data: string;
+}
+
+// Type definition for `achievement::events::index::TrophyProgression` struct
+export interface TrophyProgression {
+	player_id: number;
+	task_id: number;
+	count: number;
+	time: number;
+}
+
+// Type definition for `achievement::events::index::TrophyProgressionValue` struct
+export interface TrophyProgressionValue {
+	count: number;
+	time: number;
+}
+
+// Type definition for `achievement::types::index::Task` struct
+export interface Task {
+	id: number;
+	total: number;
+	description: string;
+}
+
+// Type definition for `tamagotchi::events::push::PushToken` struct
+export interface PushToken {
+	player_address: string;
+	token: string;
+}
+
+// Type definition for `tamagotchi::events::push::PushTokenValue` struct
+export interface PushTokenValue {
+	token: string;
+}
+
 export interface SchemaType extends ISchemaType {
 	tamagotchi: {
 		Beast: Beast,
@@ -98,6 +161,15 @@ export interface SchemaType extends ISchemaType {
 		HighestScoreValue: HighestScoreValue,
 		Player: Player,
 		PlayerValue: PlayerValue,
+	},
+	achievement: {
+		TrophyCreation: TrophyCreation,
+		TrophyCreationValue: TrophyCreationValue,
+		TrophyProgression: TrophyProgression,
+		TrophyProgressionValue: TrophyProgressionValue,
+		Task: Task,
+		PushToken: PushToken,
+		PushTokenValue: PushTokenValue,
 	},
 }
 export const schema: SchemaType = {
@@ -169,6 +241,57 @@ export const schema: SchemaType = {
 			creation_day: 0,
 		},
 	},
+	achievement: {
+		TrophyCreation: {
+			id: 0,
+			hidden: false,
+			index: 0,
+			points: 0,
+			start: 0,
+			end: 0,
+			group: 0,
+			icon: 0,
+			title: 0,
+			description: "",
+			tasks: [{ id: 0, total: 0, description: "", }],
+			data: "",
+		},
+		TrophyCreationValue: {
+			hidden: false,
+			index: 0,
+			points: 0,
+			start: 0,
+			end: 0,
+			group: 0,
+			icon: 0,
+			title: 0,
+			description: "",
+			tasks: [{ id: 0, total: 0, description: "", }],
+			data: "",
+		},
+		TrophyProgression: {
+			player_id: 0,
+			task_id: 0,
+			count: 0,
+			time: 0,
+		},
+		TrophyProgressionValue: {
+			count: 0,
+			time: 0,
+		},
+		Task: {
+			id: 0,
+			total: 0,
+			description: "",
+		},
+		PushToken: {
+			player_address: "",
+			token: "",
+		},
+		PushTokenValue: {
+			token: "",
+		},
+	}
 };
 export enum ModelsMapping {
 	Beast = 'tamagotchi-Beast',
@@ -181,4 +304,11 @@ export enum ModelsMapping {
 	HighestScoreValue = 'tamagotchi-HighestScoreValue',
 	Player = 'tamagotchi-Player',
 	PlayerValue = 'tamagotchi-PlayerValue',
+	TrophyCreation = 'achievement-TrophyCreation',
+	TrophyCreationValue = 'achievement-TrophyCreationValue',
+	TrophyProgression = 'achievement-TrophyProgression',
+	TrophyProgressionValue = 'achievement-TrophyProgressionValue',
+	Task = 'achievement-Task',
+	PushToken = 'tamagotchi-PushToken',
+	PushTokenValue = 'tamagotchi-PushTokenValue',
 }

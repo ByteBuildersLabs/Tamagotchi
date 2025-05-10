@@ -8,6 +8,7 @@ import useSound from 'use-sound';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
+import { Account } from 'starknet';
 
 const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: {
   handleAction: any,
@@ -56,6 +57,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
       if (!selectedFood) return;
       
       await handleAction("Feed", async () => await client.game.feed(account, selectedFood.id), eatAnimation);
+      await client.achieve.achieveBeastFeed(account as Account);
       
       const updatedFoods = zfoods.map((food: any) => {
         if (food.name === foodName) {
