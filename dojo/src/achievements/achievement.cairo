@@ -724,84 +724,84 @@ pub impl AchievementImpl of AchievementTrait {
 
     #[inline]
     fn tasks(self: Achievement) -> Span<Task> {
+        // array![ TaskTrait::new(task_id, task_target, "Description");].span();
         match self {
             Achievement::None => [].span(),
             // Gamer progression
-            Achievement::MiniGamer => array![TaskTrait::new('MINIGAMER', 1, "Play a minigame once.")].span(),
-            Achievement::MasterGamer => array![TaskTrait::new('MASTERGAMER', 15, "Play a minigame 15 times.")].span(),
-            Achievement::LegendGamer => array![TaskTrait::new('LEGENDGAMER', 30, "Play a minigame 30 times.")].span(),
-            Achievement::AllStarGamer => array![TaskTrait::new('ALLSTARGAMER', 50, "Play a minigame 50 times.")].span(),
+            Achievement::MiniGamer => array![TaskTrait::new('MiniGamer', 1, "Play a minigame once.")].span(),
+            Achievement::MasterGamer => array![TaskTrait::new('MasterGamer', 15, "Play a minigame 15 times.")].span(),
+            Achievement::LegendGamer => array![TaskTrait::new('LegendGamer', 30, "Play a minigame 30 times.")].span(),
+            Achievement::AllStarGamer => array![TaskTrait::new('AllStarGamer', 50, "Play a minigame 50 times.")].span(),
 
             // ScoreHunter levels
-            Achievement::ScoreHunterI => array![TaskTrait::new('SCOREHUNTERI', 1, "Get 2000 total points from minigames.")].span(),
-            Achievement::ScoreHunterII => array![TaskTrait::new('SCOREHUNTERII', 1, "Get 5000 total points from minigames.")].span(),
-            Achievement::ScoreHunterIII => array![TaskTrait::new('SCOREHUNTERIII', 1, "Get 12000 total points from minigames.")].span(),
-            Achievement::ScoreHunterIV => array![TaskTrait::new('SCOREHUNTERIV', 1, "Get 20000 total points from minigames.")].span(),
-            Achievement::ScoreHunterV => array![TaskTrait::new('SCOREHUNTERV', 1, "Get 50000 total points from minigames.")].span(),
+            Achievement::ScoreHunterI => array![TaskTrait::new('ScoreHunterI', 1, "Get 2000 total points from minigames.")].span(),
+            Achievement::ScoreHunterII => array![TaskTrait::new('ScoreHunterII', 1, "Get 5000 total points from minigames.")].span(),
+            Achievement::ScoreHunterIII => array![TaskTrait::new('ScoreHunterIII', 1, "Get 12000 total points from minigames.")].span(),
+            Achievement::ScoreHunterIV => array![TaskTrait::new('ScoreHunterIV', 1, "Get 20000 total points from minigames.")].span(),
+            Achievement::ScoreHunterV => array![TaskTrait::new('ScoreHunterV', 1, "Get 50000 total points from minigames.")].span(),
 
             // Jumper (platform game)
-            Achievement::JumperI => array![TaskTrait::new('JUMPERI', 1, "Reach 500 points in a single platform game.")].span(),
-            Achievement::JumperII => array![TaskTrait::new('JUMPERII', 1, "Reach 1500 points in a single platform game.")].span(),
-            Achievement::JumperIII => array![TaskTrait::new('JUMPERIII', 1, "Reach 2500 points in a single platform game.")].span(),
-            Achievement::JumperIV => array![TaskTrait::new('JUMPERIV', 1, "Reach 3500 points in a single platform game.")].span(),
-            Achievement::JumperV => array![TaskTrait::new('JUMPERV', 1, "Reach 4500 points in a single platform game.")].span(),
+            Achievement::JumperI => array![TaskTrait::new('JumperI', 1, "Reach 500 points in a single platform game.")].span(),
+            Achievement::JumperII => array![TaskTrait::new('JumperII', 1, "Reach 1500 points in a single platform game.")].span(),
+            Achievement::JumperIII => array![TaskTrait::new('JumperIII', 1, "Reach 2500 points in a single platform game.")].span(),
+            Achievement::JumperIV => array![TaskTrait::new('JumperIV', 1, "Reach 3500 points in a single platform game.")].span(),
+            Achievement::JumperV => array![TaskTrait::new('JumperV', 1, "Reach 4500 points in a single platform game.")].span(),
 
             // Tango (flappy beasts game)
-            Achievement::TangoI => array![TaskTrait::new('TANGOI', 1, "Reach 25 points in a single flappy beasts game.")].span(),
-            Achievement::TangoII => array![TaskTrait::new('TANGOII', 1, "Reach 50 points in a single flappy beasts game.")].span(),
-            Achievement::TangoIII => array![TaskTrait::new('TANGOIII', 1, "Reach 100 points in a single flappy beasts game.")].span(),
-            Achievement::TangoIV => array![TaskTrait::new('TANGOIV', 1, "Reach 200 points in a single flappy beasts game.")].span(),
-            Achievement::TangoV => array![TaskTrait::new('TANGOV', 1, "Reach 350 points in a single flappy beasts game.")].span(),
+            Achievement::TangoI => array![TaskTrait::new('TangoI', 1, "Reach 25 points in a single flappy beasts game.")].span(),
+            Achievement::TangoII => array![TaskTrait::new('TangoII', 1, "Reach 50 points in a single flappy beasts game.")].span(),
+            Achievement::TangoIII => array![TaskTrait::new('TangoIII', 1, "Reach 100 points in a single flappy beasts game.")].span(),
+            Achievement::TangoIV => array![TaskTrait::new('TangoIV', 1, "Reach 200 points in a single flappy beasts game.")].span(),
+            Achievement::TangoV => array![TaskTrait::new('TangoV', 1, "Reach 350 points in a single flappy beasts game.")].span(),
 
             // Echo Network (share X times)
-            Achievement::EchoNetworkI => array![TaskTrait::new('ECHONETWORKI', 1, "Share once")].span(),
-            Achievement::EchoNetworkII => array![TaskTrait::new('ECHONETWORKII', 5, "Share 5 times")].span(),
-            Achievement::EchoNetworkIII => array![TaskTrait::new('ECHONETWORKIII', 10, "Share 10 times")].span(),
-            Achievement::EchoNetworkIV => array![TaskTrait::new('ECHONETWORKIV', 25, "Share 25 times")].span(),
-            Achievement::EchoNetworkV => array![TaskTrait::new('ECHONETWORKV', 50, "Share 50 times")].span(),
+            Achievement::EchoNetworkI => array![TaskTrait::new('EchoNetworkI', 1, "Share once")].span(),
+            Achievement::EchoNetworkII => array![TaskTrait::new('EchoNetworkII', 5, "Share 5 times")].span(),
+            Achievement::EchoNetworkIII => array![TaskTrait::new('EchoNetworkIII', 10, "Share 10 times")].span(),
+            Achievement::EchoNetworkIV => array![TaskTrait::new('EchoNetworkIV', 25, "Share 25 times")].span(),
+            Achievement::EchoNetworkV => array![TaskTrait::new('EchoNetworkV', 50, "Share 50 times")].span(),
 
             // Arena Rockstar (share score thresholds)
-            Achievement::ArenaRockstarI => array![TaskTrait::new('ARENAROCKSTARI', 1, "Share a score of 500+")].span(),
-            Achievement::ArenaRockstarII => array![TaskTrait::new('ARENAROCKSTARII', 1, "Share a score of 1500+")].span(),
-            Achievement::ArenaRockstarIII => array![TaskTrait::new('ARENAROCKSTARIII', 1, "Share a score of 3000+")].span(),
-            Achievement::ArenaRockstarIV => array![TaskTrait::new('ARENAROCKSTARIV', 1, "Share a score of 5000+")].span(),
-            Achievement::ArenaRockstarV => array![TaskTrait::new('ARENAROCKSTARV', 1, "Share a score of 9999+")].span(),
+            Achievement::ArenaRockstarI => array![TaskTrait::new('ArenaRockstarI', 1, "Share a score of 500+")].span(),
+            Achievement::ArenaRockstarII => array![TaskTrait::new('ArenaRockstarII', 1, "Share a score of 1500+")].span(),
+            Achievement::ArenaRockstarIII => array![TaskTrait::new('ArenaRockstarIII', 1, "Share a score of 3000+")].span(),
+            Achievement::ArenaRockstarIV => array![TaskTrait::new('ArenaRockstarIV', 1, "Share a score of 5000+")].span(),
+            Achievement::ArenaRockstarV => array![TaskTrait::new('ArenaRockstarV', 1, "Share a score of 9999+")].span(),
 
             // Neural Link (AI chat interactions)
-            Achievement::NeuralLinkI => array![TaskTrait::new('NEURALLINKI', 1, "Talk to your Beast once")].span(),
-            Achievement::NeuralLinkII => array![TaskTrait::new('NEURALLINKII', 5, "Talk to your Beast 5 times")].span(),
-            Achievement::NeuralLinkIII => array![TaskTrait::new('NEURALLINKIII', 10, "Talk to your Beast 10 times")].span(),
-            Achievement::NeuralLinkIV => array![TaskTrait::new('NEURALLINKIV', 20, "Talk to your Beast 20 times")].span(),
-            Achievement::NeuralLinkV => array![TaskTrait::new('NEURALLINKV', 50, "Talk to your Beast 50 times")].span(),
+            Achievement::NeuralLinkI => array![TaskTrait::new('NeuralLinkI', 1, "Talk to your Beast once")].span(),
+            Achievement::NeuralLinkII => array![TaskTrait::new('NeuralLinkII', 5, "Talk to your Beast 5 times")].span(),
+            Achievement::NeuralLinkIII => array![TaskTrait::new('NeuralLinkIII', 10, "Talk to your Beast 10 times")].span(),
+            Achievement::NeuralLinkIV => array![TaskTrait::new('NeuralLinkIV', 20, "Talk to your Beast 20 times")].span(),
+            Achievement::NeuralLinkV => array![TaskTrait::new('NeuralLinkV', 50, "Talk to your Beast 50 times")].span(),
 
             // ByteBites (feeding)
-            Achievement::ByteBitesI => array![TaskTrait::new('BYTEBITESI', 1, "Feed your Beast once")].span(),
-            Achievement::ByteBitesII => array![TaskTrait::new('BYTEBITESII', 20, "Feed your Beast 20 times")].span(),
-            Achievement::ByteBitesIII => array![TaskTrait::new('BYTEBITESIII', 50, "Feed your Beast 50 times")].span(),
-            Achievement::ByteBitesIV => array![TaskTrait::new('BYTEBITESIV', 150, "Feed your Beast 150 times")].span(),
-            Achievement::ByteBitesV => array![TaskTrait::new('BYTEBITESV', 250, "Feed your Beast 250 times")].span(),
+            Achievement::ByteBitesI => array![TaskTrait::new('ByteBitesI', 1, "Feed your Beast once")].span(),
+            Achievement::ByteBitesII => array![TaskTrait::new('ByteBitesII', 20, "Feed your Beast 20 times")].span(),
+            Achievement::ByteBitesIII => array![TaskTrait::new('ByteBitesIII', 50, "Feed your Beast 50 times")].span(),
+            Achievement::ByteBitesIV => array![TaskTrait::new('ByteBitesIV', 150, "Feed your Beast 150 times")].span(),
+            Achievement::ByteBitesV => array![TaskTrait::new('ByteBitesV', 250, "Feed your Beast 250 times")].span(),
 
             // BeastFriend (petting)
-            Achievement::BeastFriendI => array![TaskTrait::new('BEASTFRIENDI', 1, "Pet your Beast once")].span(),
-            Achievement::BeastFriendII => array![TaskTrait::new('BEASTFRIENDII', 20, "Pet your Beast 20 times")].span(),
-            Achievement::BeastFriendIII => array![TaskTrait::new('BEASTFRIENDIII', 35, "Pet your Beast 35 times")].span(),
-            Achievement::BeastFriendIV => array![TaskTrait::new('BEASTFRIENDIV', 55, "Pet your Beast 55 times")].span(),
-            Achievement::BeastFriendV => array![TaskTrait::new('BEASTFRIENDV', 100, "Pet your Beast 100 times")].span(),
+            Achievement::BeastFriendI => array![TaskTrait::new('BeastFriendI', 1, "Pet your Beast once")].span(),
+            Achievement::BeastFriendII => array![TaskTrait::new('BeastFriendII', 20, "Pet your Beast 20 times")].span(),
+            Achievement::BeastFriendIII => array![TaskTrait::new('BeastFriendIII', 35, "Pet your Beast 35 times")].span(),
+            Achievement::BeastFriendIV => array![TaskTrait::new('BeastFriendIV', 55, "Pet your Beast 55 times")].span(),
+            Achievement::BeastFriendV => array![TaskTrait::new('BeastFriendV', 100, "Pet your Beast 100 times")].span(),
 
             // NapMaster (sleeping)
-            Achievement::NapMasterI => array![TaskTrait::new('NAPMASTERI', 1, "Put your Beast to sleep once")].span(),
-            Achievement::NapMasterII => array![TaskTrait::new('NAPMASTERII', 10, "Put your Beast to sleep 10 times")].span(),
-            Achievement::NapMasterIII => array![TaskTrait::new('NAPMASTERIII', 25, "Put your Beast to sleep 25 times")].span(),
-            Achievement::NapMasterIV => array![TaskTrait::new('NAPMASTERIV', 55, "Put your Beast to sleep 55 times")].span(),
-            Achievement::NapMasterV => array![TaskTrait::new('NAPMASTERV', 100, "Put your Beast to sleep 100 times")].span(),
+            Achievement::NapMasterI => array![TaskTrait::new('NapMasterI', 1, "Put your Beast to sleep once")].span(),
+            Achievement::NapMasterII => array![TaskTrait::new('NapMasterII', 10, "Put your Beast to sleep 10 times")].span(),
+            Achievement::NapMasterIII => array![TaskTrait::new('NapMasterIII', 25, "Put your Beast to sleep 25 times")].span(),
+            Achievement::NapMasterIV => array![TaskTrait::new('NapMasterIV', 55, "Put your Beast to sleep 55 times")].span(),
+            Achievement::NapMasterV => array![TaskTrait::new('NapMasterV', 100, "Put your Beast to sleep 100 times")].span(),
 
             // CleanStreak (cleaning)
-            Achievement::CleanStreakI => array![TaskTrait::new('CLEANSTREAKI', 1, "Clean your Beast once")].span(),
-            Achievement::CleanStreakII => array![TaskTrait::new('CLEANSTREAKII', 25, "Clean your Beast 25 times")].span(),
-            Achievement::CleanStreakIII => array![TaskTrait::new('CLEANSTREAKIII', 55, "Clean your Beast 55 times")].span(),
-            Achievement::CleanStreakIV => array![TaskTrait::new('CLEANSTREAKIV', 100, "Clean your Beast 100 times")].span(),
-            Achievement::CleanStreakV => array![TaskTrait::new('CLEANSTREAKV', 200, "Clean your Beast 200 times")].span(),
-
+            Achievement::CleanStreakI => array![TaskTrait::new('CleanStreakI', 1, "Clean your Beast once")].span(),
+            Achievement::CleanStreakII => array![TaskTrait::new('CleanStreakII', 25, "Clean your Beast 25 times")].span(),
+            Achievement::CleanStreakIII => array![TaskTrait::new('CleanStreakIII', 55, "Clean your Beast 55 times")].span(),
+            Achievement::CleanStreakIV => array![TaskTrait::new('CleanStreakIV', 100, "Clean your Beast 100 times")].span(),
+            Achievement::CleanStreakV => array![TaskTrait::new('CleanStreakV', 200, "Clean your Beast 200 times")].span(),
         }
     }
 
