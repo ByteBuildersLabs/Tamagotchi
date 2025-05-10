@@ -12,8 +12,5 @@ pending = true
 polling_interval = 1000
 contracts = []
 
-[events]
-raw = true
-
 [sql]
 historical = ["tamagotchi-TrophyProgression"] 

@@ -205,7 +205,8 @@ function Tamagotchi() {
         beastsDex[zcurrentBeast.specie - 1].cuddlePicture
       )
 
-      async () => await client.achieve.achieveBeastPet(account as Account)
+      const pettx = await client.achieve.achieveBeastPet(account as Account)
+      console.info('pettx', pettx);
       // Disable the button for 5 seconds
       setIsLoading(true);
       setTimeout(() => {

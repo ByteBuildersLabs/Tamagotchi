@@ -145,7 +145,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "achievetamagotchi", 
+  slot: "bbachivi",
 };
 
 const cartridgeConnector = new ControllerConnector(
