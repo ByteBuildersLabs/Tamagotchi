@@ -888,8 +888,7 @@ pub impl IntoAchievementU8 of Into<Achievement, u8> {
 pub impl IntoU8Achievement of Into<u8, Achievement> {
     #[inline]
     fn into(self: u8) -> Achievement {
-        let value: felt252 = self.into();
-        match value {
+        match self {
             0 => Achievement::None,
             // Minigames - General Progression
             1 => Achievement::MiniGamer,
