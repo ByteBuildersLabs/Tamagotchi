@@ -37,20 +37,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     stopCalmMusic();
     stopGameMusic();
 
-    console.info('Location actual:', {
-      pathname: location.pathname,
-      hash: location.hash,
-      search: location.search
-    });
-
     // Con HashRouter, la ruta está en pathname
-    if (location.pathname === '/fullscreen-game') {
-      console.info('Iniciando música de juego para:', location.pathname);
-      playGameMusic();
-    } else {
-      console.info('Iniciando música tranquila para:', location.pathname);
-      playCalmMusic();
-    }
+    location.pathname === '/fullscreen-game' ? playGameMusic() : playCalmMusic();
 
     // Cleanup cuando el componente se desmonte
     return () => {

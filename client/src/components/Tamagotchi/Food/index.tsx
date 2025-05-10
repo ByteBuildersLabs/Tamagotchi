@@ -22,8 +22,6 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   const [loading, setLoadingFood] = useState(true);
   const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
-  console.info('foods', foods);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingFood(false);
@@ -56,7 +54,16 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     try {
       const selectedFood = zfoods.find((item: { name: string; }) => item.name === foodName);
       if (!selectedFood) return;
-      handleAction("Feed", async () => await client.game.feed(account, selectedFood.id), eatAnimation)
+      
+      await handleAction("Feed", async () => await client.game.feed(account, selectedFood.id), eatAnimation);
+      
+      const updatedFoods = zfoods.map((food: any) => {
+        if (food.name === foodName) {
+          return { ...food, count: food.count - 1 };
+        }
+        return food;
+      });
+      setFoods(updatedFoods);
     } catch (error) {
       console.error("Error feeding beast:", error);
     }
