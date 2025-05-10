@@ -6,8 +6,9 @@ import { constants } from "starknet";
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x71ab59a6af469886d05667ce3986aaca2b82e6a24533e308daa98166ed6d504'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x285f27a83c2d19f98b79fdf1c25241a34bc1f99b2f52d429d211b725ad4e901'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x5b0663b8b9a0418fdb34f564471bebe48db6c2edf993659a2b6167ad755b58e'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x74899df8de83f1dfdfd31c4a691e568379a735a241c023eda1f6e2da4cc6f62'
+const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x69782dc32c1f271b70c10df9874ff85527fa4530b6d9e0c00422c0886a2809a'
 
 const policies: SessionPolicies = {
   contracts: {
@@ -66,6 +67,51 @@ const policies: SessionPolicies = {
         },
       ],
     },
+
+    [CONTRACT_ADDRESS_ACHIEVEMENTS]: {
+      methods: [
+        {
+          name: "achieve_beast_chat",
+          entrypoint: "achieve_beast_chat"
+        },
+        {
+          name: "achieve_beast_clean",
+          entrypoint: "achieve_beast_clean"
+        },
+        {
+          name: "achieve_beast_feed",
+          entrypoint: "achieve_beast_feed"
+        },
+        {
+          name: "achieve_beast_pet",
+          entrypoint: "achieve_beast_pet"
+        },
+        {
+          name: "achieve_beast_sleep",
+          entrypoint: "achieve_beast_sleep"
+        },
+        {
+          name: "achieve_flappy_beast_highscore",
+          entrypoint: "achieve_flappy_beast_highscore"
+        },
+        {
+          name: "achieve_platform_highscore",
+          entrypoint: "achieve_platform_highscore"
+        },
+        {
+          name: "achieve_play_minigame",
+          entrypoint: "achieve_play_minigame"
+        },
+        {
+          name: "achieve_player_new_total_points",
+          entrypoint: "achieve_player_new_total_points"
+        },
+        {
+          name: "achieve_social_share",
+          entrypoint: "achieve_social_share"
+        },
+      ],
+    },
   },
 }
 
@@ -99,7 +145,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "tamanew", 
+  slot: "achievetamagotchi", 
 };
 
 const cartridgeConnector = new ControllerConnector(
