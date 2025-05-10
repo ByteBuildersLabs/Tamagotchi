@@ -169,6 +169,25 @@ scarb run sepolia
 > After deployment, the CLI will output your **world address**, which is required to interact with the deployed game.
 
 
+### 3️⃣ Simple integration steps
+
+1. At this point you should have a new manufest for sepolia here `dojo/manifest_sepolia.json` copy the whole file to the front end manifest `client/src/dojo/manifest_dev.json`
+2. There are the new contract address for the actiond and the world address, copy the world address and make sure It's the same in thie file `dojo/torii-config.toml`
+3. Copy the contract address for the game contract and the player contract and paste It in the `client/src/config/cartridgeConnector.tsx` file in the variables `CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM` and `CONTRACT_ADDRESS_PLAYER_SYSTEM` + go to this file `client/src/utils/tamagotchi.tsx` and update the address for fetch age and status with the game contract adrress
+4. Now, let's create a new Torii for the new world address, please make sure you have latest `slotup` version, make sure you are in the dojo folder in your terminal, and execute this command
+
+```bash
+slot auth login
+
+slot d create [name of the torii] torii --config ./torii-config.toml --version 1.5.1
+```
+
+5. Use that new torii name to replace It in these files `client/src/dojo/dojoConfig.ts` (line 17) + `client/src/config/cartridgeConnector.tsx` (line 102)
+6. Last step, update your env file with the new Torii address
+7. Run de app
+
+> Here is an example of a clean integration of the new sepolia contracts https://github.com/ByteBuildersLabs/Tamagotchi/commit/2742f7e79c5aa0191519e5a1d7b163953569cd28
+
 ## Founders
 <table>
   <tr>
