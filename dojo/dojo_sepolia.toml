@@ -4,7 +4,7 @@ description = "This is the first game in the on-chain ByteBeasts universe."
 cover_uri = "file://assets/cover.png"
 icon_uri = "file://assets/icon.png"
 website = "https://github.com/ByteBuildersLabs/BabyBeastsv2"
-seed = "tamagotchi13"
+seed = "tamagotchi14"
 
 [world.socials]
 x = "https://x.com/0xByteBeasts"
@@ -19,5 +19,5 @@ rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
 
 [writers]
 "tamagotchi" = ["tamagotchi-game", "tamagotchi-player", "tamagotchi-achieve"]
-"tamagotchi-TrophyCreation" = ["tamagotchi-player"]
-"tamagotchi-TrophyProgression" = ["tamagotchi-player"]
+"tamagotchi-TrophyCreation" = ["tamagotchi-achieve"]
+"tamagotchi-TrophyProgression" = ["tamagotchi-achieve"]
