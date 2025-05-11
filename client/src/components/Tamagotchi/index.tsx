@@ -203,8 +203,9 @@ function Tamagotchi() {
     }
   };
 
-  const handleNewEgg = () => {
+  const handleNewEgg = async () => {
     buttonSound();
+    await client.game.updateBeast(account as Account);
     if (!reborn) setReborn(true);
     navigate('/spawn');
   }
