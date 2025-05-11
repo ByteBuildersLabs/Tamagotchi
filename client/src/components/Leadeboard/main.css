@@ -38,16 +38,20 @@
   color: var(--text-light);
 }
 
+.leaderboard-table .row {
+  height: 50px;
+} 
+
 .minigame-title {
   color: var(--text-light);
-  margin: 30px;
+  margin: 10px 30px 30px;
   font-size: 20px;
 }
 
 .table-title {
   color: var(--text-light);
   font-size: 20px;
-  margin: 30px;
+  margin: 10px 30px 30px;
   text-align: center;
   font-family: 'Kallisto', serif;
 }
@@ -286,12 +290,12 @@
 }
 
 .carousel-control-prev {
-  top: 40px;
+  top: 20px;
   left: 0;
 }
 
 .carousel-control-next {
-  top: 40px;
+  top: 20px;
   right: 0;
 }
 
@@ -311,4 +315,9 @@
     opacity: 1;
     transform: translateY(30px);
   }
+}
+
+.death-indicator {
+  position: relative;
+  bottom: 5px;
 }

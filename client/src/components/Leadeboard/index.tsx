@@ -1,13 +1,15 @@
-import Header from '../Header/index.tsx';
-import { useEffect, useState } from 'react';
 import './main.css';
-import beastsDex from '../../data/beastDex.tsx';
-import { useBeasts } from '../../hooks/useBeasts.tsx';
-import { usePlayerData } from '../../hooks/usePlayersData.tsx';
-import { useAccount } from "@starknet-react/core";
-import { addAddressPadding, BigNumberish } from "starknet";
+import hearth from '../../assets/img/hearth.svg';
+import skull from '../../assets/img/skull.svg';
+import Header from '../Header/index.tsx';
 import Spinner from '../ui/spinner.tsx';
+import beastsDex from '../../data/beastDex.tsx';
+import { useEffect, useState } from 'react';
+import { addAddressPadding, BigNumberish } from "starknet";
+import { useAccount } from "@starknet-react/core";
+import { useBeasts } from '../../hooks/useBeasts.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
+import { usePlayerData } from '../../hooks/usePlayersData.tsx';
 
 interface Beast {
   userName: string;
@@ -18,6 +20,7 @@ interface Beast {
   beast_id: string;
   birth_date: string;
   specie: string;
+  is_alive: boolean;
 }
 
 interface Player {
@@ -235,7 +238,12 @@ const Leaderboard = () => {
                 )}
               </div>
               <div className='col-3'>
-                <span>{beast.age}</span>
+                <span className="age-container">
+                  {beast.age}
+                  <span className="death-indicator" title="Beast is deceased">
+                    <img src={beast.is_alive ? hearth : skull} alt="" />
+                  </span>
+                </span>
               </div>
             </div>
           ))}
@@ -264,7 +272,12 @@ const Leaderboard = () => {
                   )}
                 </div>
                 <div className='col-3'>
-                  <span>{userBeast.age}</span>
+                  <span className="age-container">
+                    {userBeast.age}
+                    {!userBeast.is_alive && (
+                      <span className="death-indicator" title="Beast is deceased">💀</span>
+                    )}
+                  </span>
                 </div>
               </div>
             </>

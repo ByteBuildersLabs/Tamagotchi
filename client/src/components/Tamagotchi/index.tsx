@@ -192,11 +192,11 @@ function Tamagotchi() {
         beastsDex[zcurrentBeast.specie - 1].cuddlePicture
       )
 
-      async () => await client.achieve.achieveBeastPet(account as Account)
+      const achieveBeastPet = await client.achieve.achieveBeastPet(account as Account);
       // Disable the button for 5 seconds
       setIsLoading(true);
       setTimeout(() => {
-        setIsLoading(false);
+        if (achieveBeastPet) setIsLoading(false);
       }, loadingTime);
     } catch (error) {
       console.error("Cuddle error:", error);
