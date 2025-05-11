@@ -10,10 +10,24 @@ interface Beast {
   birth_date: string;
   specie: string;
   beast_id: string;
+  is_alive?: boolean;
 }
 
 interface BeastEdge {
   node: Beast;
+}
+
+interface BeastStatus {
+  beast_id: string;
+  is_alive: boolean;
+}
+
+interface BeastStatusEdge {
+  node: BeastStatus;
+}
+
+interface BeastStatuses {
+  [key: string]: boolean;
 }
 
 export const useBeasts = () => {
@@ -40,6 +54,14 @@ export const useBeasts = () => {
                   }
                   totalCount
                 }
+                tamagotchiBeastStatusModels(first: 1000) {
+                  edges {
+                    node {
+                      beast_id
+                      is_alive
+                    }
+                  }
+                }
               }
             `,
           }),
@@ -53,11 +75,25 @@ export const useBeasts = () => {
               self.indexOf(address) === index
             );
           const addressMap = await lookupAddresses(playerAddresses);
+
+          // Extract beast statuses in a similar way to tamagotchiBeastModels
+          const beastStatuses: BeastStatuses = {};
+
+          if (result.data.tamagotchiBeastStatusModels) {
+            result.data.tamagotchiBeastStatusModels.edges.forEach((edge: BeastStatusEdge) => {
+              const status = edge.node;
+              beastStatuses[status.beast_id] = status.is_alive;
+            });
+          }
+
           let playerData = result.data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => {
             const beast = edge.node;
+            const beastStatus = beastStatuses[beast.beast_id];
+            
             return {
               ...beast,
-              userName: addressMap.get(beast.player)
+              userName: addressMap.get(beast.player),
+              is_alive: typeof beastStatus === 'boolean' ? beastStatus : true
             };
           });
           setBeastsData(playerData);
@@ -69,6 +105,8 @@ export const useBeasts = () => {
 
     fetchBeasts();
   }, []);
+
+  console.info('beastsData', beastsData);
 
   return {
     beastsData
