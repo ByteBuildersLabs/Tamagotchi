@@ -1,8 +1,19 @@
+// React and external libraries
 import { useState, useRef } from "react";
+
+// Internal components
 import MessageComponent from "../../ui/message";
-import beastsDex from "../../../data/beastDex";
-import messageIcon from '../../../assets/img/message.svg';
+
+// Hooks and Contexts
 import { useBeastChat } from "../../../hooks/useBeastChat";
+
+// Data
+import beastsDex from "../../../data/beastDex";
+
+// Assets
+import messageIcon from '../../../assets/img/icon-message.svg';
+
+// Styles
 import './main.css';
 
 const context = `Remembre this is your context, 

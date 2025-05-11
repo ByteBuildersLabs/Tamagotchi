@@ -1,38 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAccount } from '@starknet-react/core';
 import { Account } from "starknet";
-import useAppStore from "../../context/store.ts";
-import { useAccount } from "@starknet-react/core";
-import { Card } from '../../components/ui/card';
+import { useDojoSDK } from "@dojoengine/sdk/react";
 import useSound from 'use-sound';
-import { Link, useNavigate } from "react-router-dom";
-import beastsDex from "../../data/beastDex.tsx";
-import dead from '../../assets/img/dead.gif';
-import Actions from "./Actions/index.tsx";
+
+// Internal components
+import { Card } from '../../components/ui/card';
+import Actions from './Actions';
 import Status from "./Status/index.tsx";
-import Food from "./Food/index.tsx";
-import Play from "./Play/index.tsx";
+import Food from './Food';
+import Play from './Play';
 import Whispers from "./Whispers/index.tsx";
 import Chat from "./Chat/index.tsx";
 import CleanlinessIndicator from "../CleanIndicator/index.tsx";
+import Header from '../Header';
+import Spinner from "../ui/spinner.tsx";
+
+// Hooks and Contexts
+import useAppStore from "../../context/store.ts";
+import { useBeasts } from '../../hooks/useBeasts';
+import { usePlayer } from '../../hooks/usePlayers';
+import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
+import { Message } from "../../hooks/useBeastChat.ts";
+
+// Services and Utils
+import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/tamagotchi.tsx";
+
+// Data
+import beastsDex from "../../data/beastDex.tsx";
+
+// Assets
+import dead from '../../assets/img/img-dead.gif';
 import feedSound from '../../assets/sounds/bbeating.mp3';
 import cleanSound from '../../assets/sounds/bbshower.mp3';
 import sleepSound from '../../assets/sounds/bbsleeps.mp3';
 import playSound from '../../assets/sounds/bbjump.mp3';
 import reviveSound from '../../assets/sounds/bbrevive.mp3';
 import buttonClick from '../../assets/sounds/click.mp3';
-import Header from '../../components/Header';
-import Spinner from "../ui/spinner.tsx";
-import { useDojoSDK } from "@dojoengine/sdk/react";
-import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { useBeasts } from "../../hooks/useBeasts.tsx";
-import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/tamagotchi.tsx";
-import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import Close from "../../assets/img/CloseWhite.svg";
-import chatIcon from '../../assets/img/chat.svg';
-import ranking from "../../assets/img/ranking.svg";
-import Egg from "../../assets/img/egg.gif";
-import Cake from "../../assets/img/cake.svg";
-import { Message } from "../../hooks/useBeastChat.ts";
+import Close from "../../assets/img/icon-close-white.svg";
+import chatIcon from '../../assets/img/icon-chat.svg';
+import ranking from "../../assets/img/icon-ranking.svg";
+import Egg from "../../assets/img/img-egg.gif";
+import Cake from "../../assets/img/icon-cake.svg";
+
+// Styles
 import './main.css';
 
 function Tamagotchi() {

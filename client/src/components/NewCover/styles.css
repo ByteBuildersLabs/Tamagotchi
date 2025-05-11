@@ -185,3 +185,27 @@
     transform: translateY(0);
   }
 }
+
+.cover-container {
+  background-color: var(--bg-dark-secondary);
+}
+
+.cover-title {
+  color: var(--text-light);
+}
+
+.cover-icon {
+  fill: var(--overlay-dark-light);
+}
+
+.cover-icon.active {
+  fill: var(--text-light);
+}
+
+.cover-content {
+  background-color: var(--bg-dark-secondary);
+}
+
+.cover-button {
+  background-color: var(--primary-red);
+}

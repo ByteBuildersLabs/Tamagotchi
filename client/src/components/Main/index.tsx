@@ -1,16 +1,22 @@
+// React and external libraries
+import { useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { useDojoSDK } from "@dojoengine/sdk/react";
+import { useAccount } from "@starknet-react/core";
+
+// Internal components
 import FullscreenGame from "../FullScreenGame/FullScreenGame";
 import Leaderboard from "../Leadeboard";
 import NewCover from "../NewCover";
 import Tamagotchi from "../Tamagotchi";
 import SpawnBeast from "../SpawnBeast";
-import { useEffect } from "react";
-import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { requestNotificationPermission } from "../../utils/notification.tsx";
 
-import { useDojoSDK } from "@dojoengine/sdk/react";
-import { useAccount } from "@starknet-react/core";
+// Hooks and Contexts
+import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { MusicProvider } from "../../context/contextMusic.tsx";
+
+// Services and Utils
+import { requestNotificationPermission } from "../../utils/notification.tsx";
 
 function Main() {
 

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import './styles/colors.css';
+@import './styles/utilities.css';
 
 @font-face {
   font-family: 'Kallisto';
@@ -280,41 +281,45 @@ p, span {
   }
 }
 
-.loading-state {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .loading {
-  width: 25px;
-  height: 25px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  border: 3px solid var(--text-light);
+  border: 8px solid var(--text-light);
   border-top-color: var(--primary-red-dark);
   animation: loading 1s linear infinite;
+  margin: auto;
 }
+
 @keyframes loading {
   to {
     transform: rotate(360deg);
   }
 }
 
-.loading-aura {
-  animation: loading-aura 3s ease-in-out infinite;
+.loading-state {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-dark);
+  z-index: 1000;
 }
 
-@keyframes loading-aura {
-  0% {
-    box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);
-  }
-  50% {
-    box-shadow: 0 0 20px 4px rgba(133, 0, 40, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);
-  }
+.loader {
+  border: 8px solid var(--text-light);
+  border-top: 8px solid var(--primary-red);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

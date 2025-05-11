@@ -1,15 +1,26 @@
-import './main.css';
-import hearth from '../../assets/img/hearth.svg';
-import skull from '../../assets/img/skull.svg';
+// React and external libraries
+import { useEffect, useState } from 'react';
+import { useAccount } from "@starknet-react/core";
+import { addAddressPadding, BigNumberish } from "starknet";
+
+// Internal components
 import Header from '../Header/index.tsx';
 import Spinner from '../ui/spinner.tsx';
-import beastsDex from '../../data/beastDex.tsx';
-import { useEffect, useState } from 'react';
-import { addAddressPadding, BigNumberish } from "starknet";
-import { useAccount } from "@starknet-react/core";
+
+// Hooks and Contexts
 import { useBeasts } from '../../hooks/useBeasts.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
 import { usePlayerData } from '../../hooks/usePlayersData.tsx';
+
+// Data
+import beastsDex from '../../data/beastDex.tsx';
+
+// Assets
+import hearth from '../../assets/img/icon-heart.svg';
+import skull from '../../assets/img/icon-skull.svg';
+
+// Styles
+import './main.css';
 
 interface Beast {
   userName: string;

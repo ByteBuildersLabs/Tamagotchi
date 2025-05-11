@@ -1,4 +1,7 @@
+// React and external libraries
 import { useState, useEffect } from "react";
+
+// Data
 import { hints } from "../../data/hints";
 
 function Hints() {

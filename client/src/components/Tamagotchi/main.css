@@ -1,3 +1,5 @@
+@import '../../styles/utilities.css';
+
 .tamaguchi {
   overflow-y: auto; 
   background-color: transparent;
@@ -13,7 +15,7 @@
   height: 17dvh;
   background-size: cover;
   position: relative;
-  margin: 30px 0;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,21 +33,13 @@
 .beast-interaction {
   position: relative;
   display: flex;
+  height: 37px;
 }
 
 .beast-buttons {
-  position: absolute;
-  top: -45px; 
   width: 100%;
   display: flex;
   justify-content: space-between;
-  pointer-events: none;
-}
-
-.name-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
 }
 
 .beast-interaction .actions-icon {
@@ -57,30 +51,28 @@
 }
 
 .age-indicator {
+  border-radius: 50%;
+  background-color: var(--overlay-dark-light);
   width: 35px;
   height: 35px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  margin-left: 0px;
+  margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0px;
-  margin-right: 10px;
-  pointer-events: auto;
   cursor: pointer;
 }
 
 .age-info {
-  width: 100%;
+  width: 100px;
   position: absolute;
   left: 35px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ECECDA;
+  background-color: var(--overlay-dark-light);
+  color: var(--text-light);
   padding: 5px 10px;
   border-radius: 10px;
   font-weight: bold;
   font-size: 18px;
-  width: 100px;
   text-align: center;
 }
 
@@ -91,15 +83,15 @@
 }
 
 .chat-toggle {
+  background-color: var(--overlay-dark-light);
+  border-radius: 50%;
   width: 37px;
   height: 37px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-left: 0px;
-  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .chat-toggle img {
@@ -108,26 +100,23 @@
 }
 
 .age-indicator span {
-  color: #ECECDA;
+  color: var(--text-light);
   font-family: 'Montserrat';
   font-weight: bold;
   font-size: 20px;
 }
 
 .back-button {
-  width: 35px; 
-  height: 35px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--overlay-dark-light);
   border-radius: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: 35px; 
+  height: 35px;
   margin-right: 0px;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  pointer-events: auto; 
   position: absolute;
-  right: 40px
+  right: 40px;
 }
 
 .beast-interaction .icon-circle .actions-icon {
@@ -139,4 +128,15 @@
   filter: brightness(1.2);
   transform: scale(1.05);
   transition: all 0.2s ease;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

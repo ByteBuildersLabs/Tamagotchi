@@ -1,3 +1,5 @@
+@import '../../styles/utilities.css';
+
 .navbar {
   width: 100%;
   max-width: 400px;
@@ -23,18 +25,15 @@
 }
 
 .menu-toggle {
+  border-radius: 50%;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
   border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 3;
   padding: 0;
   background-color: var(--text-light);
 }
+
 .toggle-icon {
   width: 25px;
   height: 25px;
@@ -92,16 +91,11 @@
 }
 
 .icon-container {
-  background-image: url('../../assets/img/back.png');
+  composes: circle-button;
+  background-image: url('../../assets/img/icon-close.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
 }
 
 .icon-container img {
@@ -111,7 +105,13 @@
   object-fit: contain;
 }
 
-.muted {
-  filter: brightness(0.5);
-  transition: all 0.25s;
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
