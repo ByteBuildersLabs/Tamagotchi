@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
 import monster from "../../assets/img/logo.jpg";
-import ranking from "../../assets/img/ranking.svg";
-import book from "../../assets/img/book.svg";
+import profile from "../../assets/img/profile.svg";
+import about from "../../assets/img/about.svg";
 import menuIcon from "../../assets/img/Menu.svg";
 import closeIcon from "../../assets/img/Close.svg";
 import share from "../../assets/img/share.svg";
@@ -15,6 +15,7 @@ import useSound from 'use-sound';
 import buttonClick from '../../assets/sounds/click.mp3';
 import "./main.css";
 import Countdown from "../CountDown/index.tsx";
+import { useAccount } from "@starknet-react/core";
 
 interface HeaderProps {
   tamagotchiStats?: {
@@ -42,13 +43,27 @@ function Header({ tamagotchiStats }: HeaderProps) {
   const { player } = usePlayer();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
+  const { connector } = useAccount();
   const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
-  
+
   const isTamagotchiRoute = location.pathname === '/play';
+
+  const handleAchievements = useCallback(() => {
+    buttonSound();
+    if (!connector || !('controller' in connector)) {
+      console.error("Connector not initialized");
+      return;
+    }
+    if (connector.controller && typeof connector.controller === 'object' && 'openProfile' in connector.controller) {
+      (connector.controller as { openProfile: (profile: string) => void }).openProfile("achievements");
+    } else {
+      console.error("Connector controller is not properly initialized");
+    }
+  }, [connector]);
 
   useEffect(() => {
     if (!player) return;
-    const foundBeast = beasts.find((beast:any) => beast?.player === player.address);
+    const foundBeast = beasts.find((beast: any) => beast?.player === player.address);
     if (foundBeast) setRoute('/play');
   }, [beasts, player]);
 
@@ -56,7 +71,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
     buttonSound();
     setIsOpen(!isOpen);
   };
-  
+
   const handleShareClick = () => {
     buttonSound();
     setIsShareModalOpen(true);
@@ -65,15 +80,8 @@ function Header({ tamagotchiStats }: HeaderProps) {
   // Define menu items in a standardized way
   const menuItems: MenuItem[] = [
     {
-      to: '/leaderboard',
-      icon: ranking,
-      alt: "Leaderboard",
-      label: "Leaderboard",
-      onClick: () => buttonSound()
-    },
-    {
-      icon: book,
-      alt: "Book",
+      icon: about,
+      alt: "about",
       label: "About",
       onClick: () => {
         buttonSound();
@@ -108,21 +116,27 @@ function Header({ tamagotchiStats }: HeaderProps) {
         <div onClick={() => buttonSound()}>
           <Countdown />
         </div>
-        
+
         <div className="side-menu-container">
-          <button 
+          <button
             onClick={toggleMenu}
             className="menu-toggle"
             aria-label="Toggle menu"
           >
-            <img 
-              src={isOpen ? closeIcon : menuIcon} 
+            <img
+              src={isOpen ? closeIcon : menuIcon}
               alt={isOpen ? "Close menu" : "Open menu"}
               className="toggle-icon"
             />
           </button>
-          
+
           <div className={`side-menu ${isOpen ? 'expanded' : ''}`}>
+            <div className="item" onClick={() => handleAchievements()}>
+              <div className="icon-container">
+                <img src={profile} alt="Profile" />
+              </div>
+              <span>Profile</span>
+            </div>
             {menuItems.map((item, index) => (
               <div key={index} className="item" onClick={item.onClick}>
                 {item.to ? (
@@ -137,7 +151,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
           </div>
         </div>
       </nav>
-      
+
       {tamagotchiStats && (
         <ShareProgress
           isOpen={isShareModalOpen}

@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Account } from "starknet";
 import useAppStore from "../../context/store.ts";
 import { useAccount } from "@starknet-react/core";
 import { Card } from '../../components/ui/card';
 import useSound from 'use-sound';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import beastsDex from "../../data/beastDex.tsx";
 import dead from '../../assets/img/dead.gif';
 import Actions from "./Actions/index.tsx";
@@ -29,14 +29,14 @@ import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/t
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import Close from "../../assets/img/CloseWhite.svg";
 import chatIcon from '../../assets/img/chat.svg';
-import achievementIcon from '../../assets/img/trophy2.svg';
+import ranking from "../../assets/img/ranking.svg";
 import Egg from "../../assets/img/egg.gif";
 import Cake from "../../assets/img/cake.svg";
 import { Message } from "../../hooks/useBeastChat.ts";
 import './main.css';
 
 function Tamagotchi() {
-  const { account, connector } = useAccount();
+  const { account } = useAccount();
   const { client } = useDojoSDK();
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
@@ -72,19 +72,6 @@ function Tamagotchi() {
       setCurrentBeastInPlayer(foundBeast);
     }
   }, [zplayer, zbeasts, location]);
-
-  const handleAchievements = useCallback(() => {
-    buttonSound();
-    if (!connector || !('controller' in connector)) {
-      console.error("Connector not initialized");
-      return;
-    }
-    if (connector.controller && typeof connector.controller === 'object' && 'openProfile' in connector.controller) {
-      (connector.controller as { openProfile: (profile: string) => void }).openProfile("achievements");
-    } else {
-      console.error("Connector controller is not properly initialized");
-    }
-  }, [connector]);
 
   // Fetch Status
   const [status, setStatus] = useLocalStorage('status', []);
@@ -317,9 +304,9 @@ function Tamagotchi() {
                           </div>
                         )}
                         {
-                          <div className="chat-toggle" onClick={() => handleAchievements()}>
-                            <img src={achievementIcon} alt="achievements" />
-                          </div>
+                          <Link to={'/leaderboard'} className="chat-toggle">
+                            <img src={ranking} alt="Leaderboard" />
+                          </Link>
                         }
                       </div>
 
