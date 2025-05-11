@@ -66,13 +66,17 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
                   beastsDex[beast.specie - 1][pictureKey]
                 )
 
+                let txAction = null;
+
                 if (action === 'sleep') {
-                  await client.achieve.achieveBeastSleep(account as Account);
+                  txAction = await client.achieve.achieveBeastSleep(account as Account);
                 } else if (action === 'clean') {
-                  await client.achieve.achieveBeastClean(account as Account);
+                  txAction =await client.achieve.achieveBeastClean(account as Account);
                 }
 
-                await client.game.updateBeast(account as Account);
+                const txUpdateBeast = await client.game.updateBeast(account as Account);
+
+                if (!(txAction != null && txUpdateBeast)) return
 
                 const status:any = fetchStatus(account);
                 if (status && Object.keys(status).length !== 0) setStatus(status);
