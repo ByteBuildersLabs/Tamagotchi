@@ -1,5 +1,5 @@
 import React from 'react';
-import poopIcon from '../../assets/img/poop.svg';
+import poopIcon from '../../assets/img/icon-poop.svg';
 import './main.css';
 
 interface CleanlinessIndicatorProps {cleanlinessLevel: number;}

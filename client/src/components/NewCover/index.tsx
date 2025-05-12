@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { DeveloperCode } from "../DeveloperCode/index.tsx";
 import { useAccount } from '@starknet-react/core';
 import { useNavigate } from 'react-router-dom';
-import bbBanner from '../../assets/img/bbbanner.png';
-import bbBannerTamagotchi from '../../assets/img/bbbannertamagotchi.png';
+import bbBanner from '../../assets/img/img-banner.png';
+import bbBannerTamagotchi from '../../assets/img/img-banner-tamagotchi.png';
 import './styles.css';
 
 const gradients = [

@@ -1,6 +1,6 @@
 import './main.css';
-import hearth from '../../assets/img/hearth.svg';
-import skull from '../../assets/img/skull.svg';
+import hearth from '../../assets/img/icon-heart.svg';
+import skull from '../../assets/img/icon-skull.svg';
 import Header from '../Header/index.tsx';
 import Spinner from '../ui/spinner.tsx';
 import beastsDex from '../../data/beastDex.tsx';

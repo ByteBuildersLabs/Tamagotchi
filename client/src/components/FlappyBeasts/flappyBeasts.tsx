@@ -5,14 +5,14 @@ import { GameId } from '../../types/GameRewards';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
-import Restart from '../../assets/img/restart.svg';
+import Restart from '../../assets/img/icon-restart.svg';
 import './syles.css';
-import skyBackground from '../../assets/FlappyBeasts/NewSky.png';
-import landBackground from '../../assets/FlappyBeasts/NewLand.png';
-import ceilingBackground from '../../assets/FlappyBeasts/NewCelling.png';
-import pipeImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
-import pipeUpImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
-import pipeDownImage from '../../assets/FlappyBeasts/NewPipeDown2.png';
+import skyBackground from '../../assets/FlappyBeasts/bg-sky.png';
+import landBackground from '../../assets/FlappyBeasts/bg-land.png';
+import ceilingBackground from '../../assets/FlappyBeasts/bg-ceiling.png';
+import pipeImage from '../../assets/FlappyBeasts/img-pipe.png';
+import pipeUpImage from '../../assets/FlappyBeasts/img-pipe-up.png';
+import pipeDownImage from '../../assets/FlappyBeasts/img-pipe-down.png';
 
 // Asset configuration
 const gameAssets = {

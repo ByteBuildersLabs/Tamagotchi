@@ -3,11 +3,11 @@ import { Account } from '@dojoengine/torii-wasm';
 import { Button } from '../../../components/ui/button';
 import useSound from 'use-sound';
 import buttonClick from '../../../assets/sounds/click.mp3';
-import Food from '../../../assets/img/Feed.svg';
-import Sleep from '../../../assets/img/Sleep.svg';
-import Awake from '../../../assets/img/sun.svg';
-import Clean from '../../../assets/img/Clean.svg';
-import Play from '../../../assets/img/Play.svg';
+import Food from '../../../assets/img/icon-feed.svg';
+import Sleep from '../../../assets/img/icon-sleep.svg';
+import Awake from '../../../assets/img/icon-sun.svg';
+import Clean from '../../../assets/img/icon-clean.svg';
+import Play from '../../../assets/img/icon-play.svg';
 import beastsDex from '../../../data/beastDex';
 import './main.css';
 

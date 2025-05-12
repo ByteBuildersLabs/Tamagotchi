@@ -1,9 +1,9 @@
-import rolo from '../../assets/img/rolo.jpg';
-import marco from '../../assets/img/marco.jpeg';
-import luis from '../../assets/img/Luis.png';
-import daniel from '../../assets/img/daniel.jpeg';
-import dojologo from '../../assets/img/dojo-icon.svg';
-import starknet from '../../assets/img/stark.svg'
+import rolo from '../../assets/img/img-rolo.jpg';
+import marco from '../../assets/img/img-marco.jpg';
+import luis from '../../assets/img/img-luis.png';
+import daniel from '../../assets/img/img-daniel.jpg';
+import dojologo from '../../assets/img/icon-dojo.svg';
+import starknet from '../../assets/img/icon-stark.svg'
 
 import './main.css';
 

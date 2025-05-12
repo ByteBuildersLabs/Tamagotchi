@@ -1,8 +1,8 @@
 import CircularProgressBar from "../../ui/circularProgressBar";
-import Energy from '../../../assets/img/energy.svg';
-import Happyness from '../../../assets/img/Mood.svg';
-import Hygienne from '../../../assets/img/Hygeine.svg';
-import Hunger from '../../../assets/img/hunger.svg';
+import Energy from '../../../assets/img/icon-energy.svg';
+import Happyness from '../../../assets/img/icon-mood.svg';
+import Hygienne from '../../../assets/img/icon-hygiene.svg';
+import Hunger from '../../../assets/img/icon-hunger.svg';
 import './main.css';
 
 const statusItems = [

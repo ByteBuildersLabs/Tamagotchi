@@ -1,7 +1,7 @@
 import DoodleGame  from '../components/SkyJumpMiniGame/index.tsx';
-import doodleGameIcon from '../assets/img/doodle-game-icon.png';
+import doodleGameIcon from '../assets/img/img-doodle-game.png';
 import FlappyBirdMiniGame from '../components/FlappyBeasts/flappyBeasts.tsx';
-import flappyBirdIcon from '../assets/FlappyBeasts/flappyIcon.png';
+import flappyBirdIcon from '../assets/FlappyBeasts/icon-flappy.png';
 
 export interface GameData {
   id: string;

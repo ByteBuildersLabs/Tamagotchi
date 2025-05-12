@@ -1,20 +1,20 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ShareProgress } from '../Twitter/ShareProgress';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
-import Restart from '../../assets/img/restart.svg';
-import Lock from '../../assets/img/lock.svg';
-import Unlock from '../../assets/img/unlock.svg';
+import Restart from '../../assets/img/icon-restart.svg';
+import Lock from '../../assets/img/icon-lock.svg';
+import Unlock from '../../assets/img/icon-unlock.svg';
 import FoodRewardService from '../../services/FoodRewardService';
 import { GameId } from '../../types/GameRewards';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
 import './main.css';
 
-import platformImg from '../../assets/SkyJump/platform.png';
-import bgImage1 from '../../assets/SkyJump/sky-bg.gif';
-import bgImage2 from '../../assets/SkyJump/sky-bg-2.gif';
-import bgImage3 from '../../assets/SkyJump/night-bg.gif';
-import bgImage4 from '../../assets/SkyJump/space-bg.gif';
-import bgImage5 from '../../assets/SkyJump/space-bg-2.gif';
+import platformImg from '../../assets/img/bg-platform.png';
+import bgImage1 from '../../assets/img/bg-sky-1.gif';
+import bgImage2 from '../../assets/img/bg-sky-2.gif';
+import bgImage3 from '../../assets/img/bg-night.gif';
+import bgImage4 from '../../assets/img/bg-space-1.gif';
+import bgImage5 from '../../assets/img/bg-space-2.gif';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 import { Account } from 'starknet';
 

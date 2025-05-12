@@ -92,7 +92,7 @@
 
 .icon-container {
   composes: circle-button;
-  background-image: url('../../assets/img/back.png');
+  background-image: url('../../assets/img/icon-back.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Music from "../Music";
-import monster from "../../assets/img/logo.jpg";
-import profile from "../../assets/img/profile.svg";
-import about from "../../assets/img/about.svg";
-import menuIcon from "../../assets/img/Menu.svg";
-import closeIcon from "../../assets/img/Close.svg";
-import share from "../../assets/img/share.svg";
+import monster from "../../assets/img/img-logo.jpg";
+import profile from "../../assets/img/icon-profile.svg";
+import about from "../../assets/img/icon-about.svg";
+import menuIcon from "../../assets/img/icon-menu.svg";
+import closeIcon from "../../assets/img/icon-close.svg";
+import share from "../../assets/img/icon-share.svg";
 import { useBeasts } from "../../hooks/useBeasts";
 import { usePlayer } from "../../hooks/usePlayers";
 import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
 import useAppStore from "../../context/store.ts";
-import Egg from "../../assets/img/egg.gif";
+import Egg from "../../assets/img/img-egg.gif";
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
 import { Account } from "starknet";

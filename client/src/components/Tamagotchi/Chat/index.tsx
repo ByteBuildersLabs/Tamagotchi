@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import MessageComponent from "../../ui/message";
 import beastsDex from "../../../data/beastDex";
-import messageIcon from '../../../assets/img/message.svg';
+import messageIcon from '../../../assets/img/icon-message.svg';
 import { useBeastChat } from "../../../hooks/useBeastChat";
 import './main.css';
 

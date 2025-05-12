@@ -1,4 +1,4 @@
-import music from "../../assets/img/music.svg";
+import music from "../../assets/img/icon-music.svg";
 import { useMusic } from "../../context/contextMusic"; 
 
 function Music() {
