@@ -7,12 +7,12 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import Restart from '../../assets/img/icon-restart.svg';
 import './syles.css';
-import skyBackground from '../../assets/FlappyBeasts/bg-sky.png';
-import landBackground from '../../assets/FlappyBeasts/bg-land.png';
-import ceilingBackground from '../../assets/FlappyBeasts/bg-ceiling.png';
-import pipeImage from '../../assets/FlappyBeasts/img-pipe.png';
-import pipeUpImage from '../../assets/FlappyBeasts/img-pipe-up.png';
-import pipeDownImage from '../../assets/FlappyBeasts/img-pipe-down.png';
+import skyBackground from '../../assets/flappyBeasts/bg-sky.png';
+import landBackground from '../../assets/flappyBeasts/bg-land.png';
+import ceilingBackground from '../../assets/flappyBeasts/bg-ceiling.png';
+import pipeImage from '../../assets/flappyBeasts/img-pipe.png';
+import pipeUpImage from '../../assets/flappyBeasts/img-pipe-up.png';
+import pipeDownImage from '../../assets/flappyBeasts/img-pipe-down.png';
 
 // Asset configuration
 const gameAssets = {
@@ -139,7 +139,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       
         // DEBUG: print the current speed and score
         // console.log(
-        //   `[FlappyBeasts] Pipe speed: ${clamped.toFixed(2)} px/s at score ${_score}`
+        //   `[flappyBeasts] Pipe speed: ${clamped.toFixed(2)} px/s at score ${_score}`
         // );
     }, [_score]);
 
