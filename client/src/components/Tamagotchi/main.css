@@ -66,8 +66,8 @@
   width: 100px;
   position: absolute;
   left: 35px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ECECDA;
+  background-color: var(--overlay-dark-light);
+  color: var(--text-light);
   padding: 5px 10px;
   border-radius: 10px;
   font-weight: bold;
@@ -98,7 +98,7 @@
 }
 
 .age-indicator span {
-  color: #ECECDA;
+  color: var(--text-light);
   font-family: 'Montserrat';
   font-weight: bold;
   font-size: 20px;

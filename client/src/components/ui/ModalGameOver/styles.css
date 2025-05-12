@@ -106,3 +106,26 @@
   .play-again-button {
     cursor: pointer !important;
   }
+
+.modal-overlay {
+  background-color: var(--overlay-dark-light);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 8px var(--overlay-dark);
+}
+
+.modal-title {
+  color: var(--text-light);
+}
+
+.modal-score {
+  color: var(--text-light);
+}
+
+.modal-button {
+  background-color: var(--text-light);
+  color: var(--primary-red);
+}
+
+.modal-button:hover {
+  box-shadow: 0 4px 6px var(--overlay-dark-light);
+}

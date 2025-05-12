@@ -116,8 +116,8 @@
     font-family: 'Arial', sans-serif;
     font-size: 36px;
     font-weight: bold;
-    color: #ECECDA;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--text-light);
+    text-shadow: 2px 2px 4px var(--overlay-dark);
   }
   
   .flappy-bird-game .score-text {
@@ -130,7 +130,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.7);
-    color: #ECECDA;
+    color: var(--text-light);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -149,9 +149,9 @@
   }
   
   .flappy-bird-game .start-button {
-    background-color: #ECECDA;
+    background-color: var(--text-light);
     border: none;
-    color: #85002A;
+    color: var(--primary-red);
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
@@ -165,7 +165,7 @@
   }
   
   .flappy-bird-game .start-button:hover {
-    background-color: #ECECDA;
+    background-color: var(--text-light);
   }
   
   .flappy-bird-game .return-button {
@@ -173,7 +173,7 @@
     top: 10px;
     right: 10px;
     background-color: rgba(0, 0, 0, 0.5);
-    color: #ECECDA;
+    color: var(--text-light);
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -209,7 +209,7 @@
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.8);
-    color: #ECECDA;
+    color: var(--text-light);
     padding: 10px 15px;
     border-radius: 5px;
     font-size: 14px;
@@ -264,3 +264,49 @@
     0% { background-position: 0px 0px; }
     100% { background-position: -63px 0px;}
   }
+
+.score {
+  color: var(--text-light);
+  text-shadow: 2px 2px 4px var(--overlay-dark);
+}
+
+.game-over {
+  background-color: var(--overlay-dark);
+  color: var(--text-light);
+}
+
+.button {
+  background-color: var(--text-light);
+  border: none;
+  color: var(--primary-red);
+}
+
+.modal {
+  background-color: var(--overlay-dark-light);
+  color: var(--text-light);
+}
+
+.overlay {
+  background-color: var(--overlay-dark);
+}
+
+.modal-content {
+  background-color: var(--overlay-dark);
+}
+
+.modal-header {
+  background-color: var(--overlay-dark);
+  color: var(--text-light);
+}
+
+.health-bar {
+  background-color: var(--status-bad);
+}
+
+.health-bar.good {
+  background-color: var(--status-good);
+}
+
+.health-bar.medium {
+  background-color: var(--status-bad);
+}
