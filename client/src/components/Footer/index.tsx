@@ -1,10 +1,12 @@
+// Assets
 import rolo from '../../assets/img/img-rolo.jpg';
 import marco from '../../assets/img/img-marco.jpg';
 import luis from '../../assets/img/img-luis.png';
 import daniel from '../../assets/img/img-daniel.jpg';
 import dojologo from '../../assets/img/icon-dojo.svg';
-import starknet from '../../assets/img/icon-stark.svg'
+import starknet from '../../assets/img/icon-stark.svg';
 
+// Styles
 import './main.css';
 
 function Footer() {

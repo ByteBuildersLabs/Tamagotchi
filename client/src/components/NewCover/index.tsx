@@ -1,9 +1,16 @@
+// React and external libraries
 import { useEffect, useState } from 'react';
-import { DeveloperCode } from "../DeveloperCode/index.tsx";
 import { useAccount } from '@starknet-react/core';
 import { useNavigate } from 'react-router-dom';
+
+// Internal components
+import { DeveloperCode } from "../DeveloperCode/index.tsx";
+
+// Assets
 import bbBanner from '../../assets/img/img-banner.png';
 import bbBannerTamagotchi from '../../assets/img/img-banner-tamagotchi.png';
+
+// Styles
 import './styles.css';
 
 const gradients = [

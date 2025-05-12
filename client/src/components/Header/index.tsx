@@ -1,21 +1,30 @@
+// React and external libraries
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAccount } from "@starknet-react/core";
+import useSound from 'use-sound';
+
+// Internal components
+import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import Music from "../Music";
+import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
+import Countdown from "../CountDown/index.tsx";
+
+// Hooks and Contexts
+import { useBeasts } from "../../hooks/useBeasts";
+import { usePlayer } from "../../hooks/usePlayers";
+
+// Assets
+import buttonClick from '../../assets/sounds/click.mp3';
 import monster from "../../assets/img/img-logo.jpg";
 import profile from "../../assets/img/icon-profile.svg";
 import about from "../../assets/img/icon-about.svg";
 import menuIcon from "../../assets/img/icon-menu.svg";
 import closeIcon from "../../assets/img/icon-close.svg";
 import share from "../../assets/img/icon-share.svg";
-import { useBeasts } from "../../hooks/useBeasts";
-import { usePlayer } from "../../hooks/usePlayers";
-import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
-import { ShareProgress } from '../Twitter/ShareProgress.tsx';
-import useSound from 'use-sound';
-import buttonClick from '../../assets/sounds/click.mp3';
-import "./main.css";
-import Countdown from "../CountDown/index.tsx";
-import { useAccount } from "@starknet-react/core";
+
+// Styles
+import './main.css';
 
 interface HeaderProps {
   tamagotchiStats?: {

@@ -1,12 +1,22 @@
+// React and external libraries
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+// Internal components
 import { ShareProgress } from '../Twitter/ShareProgress';
-import FoodRewardService from '../../services/FoodRewardService';
-import { GameId } from '../../types/GameRewards';
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
-import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
+
+// Hooks and Contexts
+import { useHighScores } from '../../hooks/useHighScore.tsx';
+
+// Services and Utils
+import FoodRewardService from '../../services/FoodRewardService';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
+
+// Types and Interfaces
+import { GameId } from '../../types/GameRewards';
+
+// Assets
 import Restart from '../../assets/img/icon-restart.svg';
-import './syles.css';
 import skyBackground from '../../assets/flappyBeasts/bg-sky.png';
 import landBackground from '../../assets/flappyBeasts/bg-land.png';
 import ceilingBackground from '../../assets/flappyBeasts/bg-ceiling.png';

@@ -1,5 +1,8 @@
-import music from "../../assets/img/icon-music.svg";
+// Hooks and Contexts
 import { useMusic } from "../../context/contextMusic"; 
+
+// Assets
+import music from "../../assets/img/icon-music.svg";
 
 function Music() {
   // Get the state and the function to toggle the state from the custom context

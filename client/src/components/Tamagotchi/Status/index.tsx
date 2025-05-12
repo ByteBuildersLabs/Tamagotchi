@@ -1,8 +1,13 @@
+// Internal components
 import CircularProgressBar from "../../ui/circularProgressBar";
+
+// Assets
 import Energy from '../../../assets/img/icon-energy.svg';
 import Happyness from '../../../assets/img/icon-mood.svg';
 import Hygienne from '../../../assets/img/icon-hygiene.svg';
 import Hunger from '../../../assets/img/icon-hunger.svg';
+
+// Styles
 import './main.css';
 
 const statusItems = [

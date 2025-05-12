@@ -1,6 +1,13 @@
+// React and external libraries
 import { useEffect, useState, useRef } from "react";
+
+// Internal components
 import MessageComponent, { Message } from "../../ui/message";
+
+// Hooks and Contexts
 import { useBeastChat } from "../../../hooks/useBeastChat";
+
+// Styles
 import './main.css';
 
 const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: { beast: any, beastStatus: any, expanded: boolean, botMessage:any, setBotMessage:any }) => {

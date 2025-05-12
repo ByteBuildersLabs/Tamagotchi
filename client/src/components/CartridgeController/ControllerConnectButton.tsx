@@ -1,5 +1,8 @@
+// React and external libraries
 import { Link } from 'react-router-dom';
 import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
+
+// Assets
 import logout from "../../assets/img/icon-logout.svg";
 import dojo from '../../assets/img/icon-dojo.svg';
 

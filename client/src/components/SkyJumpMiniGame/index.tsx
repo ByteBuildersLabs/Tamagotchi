@@ -1,22 +1,34 @@
+// React and external libraries
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Account } from 'starknet';
+
+// Internal components
 import { ShareProgress } from '../Twitter/ShareProgress';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
+
+// Hooks and Contexts
+import { useHighScores } from '../../hooks/useHighScore.tsx';
+
+// Services and Utils
+import FoodRewardService from '../../services/FoodRewardService';
+import { fetchStatus } from "../../utils/tamagotchi.tsx";
+
+// Types and Interfaces
+import { GameId } from '../../types/GameRewards';
+
+// Assets
 import Restart from '../../assets/img/icon-restart.svg';
 import Lock from '../../assets/img/icon-lock.svg';
 import Unlock from '../../assets/img/icon-unlock.svg';
-import FoodRewardService from '../../services/FoodRewardService';
-import { GameId } from '../../types/GameRewards';
-import { useHighScores } from '../../hooks/useHighScore.tsx';
-import './main.css';
-
 import platformImg from '../../assets/img/bg-platform.png';
 import bgImage1 from '../../assets/img/bg-sky-1.gif';
 import bgImage2 from '../../assets/img/bg-sky-2.gif';
 import bgImage3 from '../../assets/img/bg-night.gif';
 import bgImage4 from '../../assets/img/bg-space-1.gif';
 import bgImage5 from '../../assets/img/bg-space-2.gif';
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
-import { Account } from 'starknet';
+
+// Styles
+import './main.css';
 
 const HITBOX_MARGIN = 2;
 const CAMERA_THRESHOLD = 150;

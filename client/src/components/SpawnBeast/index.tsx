@@ -1,16 +1,25 @@
+// React and external libraries
 import { useEffect, useState } from "react";
-import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import useAppStore from "../../context/store.ts";
-import Egg from "../../assets/img/img-egg.gif";
+import { useNavigate } from 'react-router-dom';
+import { useAccount } from "@starknet-react/core";
+import { Account } from "starknet";
+import { useDojoSDK } from "@dojoengine/sdk/react";
+
+// Internal components
 import Hints from "../Hints/index.tsx";
 import Header from "../Header/index.tsx";
-import { Account } from "starknet";
-import { useAccount } from "@starknet-react/core";
-import { useDojoSDK } from "@dojoengine/sdk/react";
+
+// Hooks and Contexts
+import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
+import useAppStore from "../../context/store.ts";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { useNavigate } from 'react-router-dom';
+
+// Assets
+import Egg from "../../assets/img/img-egg.gif";
+
+// Styles
 import './main.css';
 
 function SpawnBeast() {

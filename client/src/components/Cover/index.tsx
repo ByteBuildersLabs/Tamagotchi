@@ -1,10 +1,14 @@
-
+// React and external libraries
 import { useEffect } from "react";
 // import { useAccount } from "@starknet-react/core";
-// import fight from '../../assets/img/banner.jpeg';
+
+// Internal components
 // import Footer from "../Footer/index.tsx";
 // import SpawnBeast from "../SpawnBeast/index.tsx";
 // import { DeveloperCode } from "../DeveloperCode/index.tsx";
+
+// Assets
+// import fight from '../../assets/img/banner.jpeg';
 
 function Cover() {
   // const { account } = useAccount();

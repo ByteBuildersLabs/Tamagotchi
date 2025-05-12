@@ -1,4 +1,7 @@
+// React and external libraries
 import { useState } from "react";
+
+// Internal components
 import ControllerConnectButton from '../CartridgeController/ControllerConnectButton';
 
 export function DeveloperCode() {

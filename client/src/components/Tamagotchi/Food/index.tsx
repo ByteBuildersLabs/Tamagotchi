@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
+import { Account } from 'starknet';
+import useSound from 'use-sound';
+
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
+
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
+
 import buttonClick from '../../../assets/sounds/click.mp3';
-import useSound from 'use-sound';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
-import { Account } from 'starknet';
 
 const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: {
   handleAction: any,
