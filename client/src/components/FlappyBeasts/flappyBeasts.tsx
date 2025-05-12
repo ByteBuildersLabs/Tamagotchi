@@ -25,7 +25,7 @@ const gameAssets = {
 };
 
 // Constants
-const PIPE_GAP = 160; // Space between pipes
+const PIPE_GAP = 160;
 const PIPE_INTERVAL = 1700;
 const GRAVITY = 9.8;
 const JUMP_FORCE = -6.5;
