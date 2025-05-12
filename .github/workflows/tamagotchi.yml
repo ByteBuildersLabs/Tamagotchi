@@ -1,0 +1,56 @@
+name: Tamagotchi
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install asdf
+        uses: asdf-vm/actions/setup@v2
+      
+      - name: Verify asdf installation
+        run: asdf --version
+      
+      - name: Install Dojo plugin
+        run: |
+          asdf plugin add dojo https://github.com/dojoengine/asdf-dojo
+          asdf install dojo 1.2.1
+          asdf global dojo 1.2.1
+          asdf list dojo
+      
+      - name: Update PATH
+        run: echo "$HOME/.asdf/shims" >> $GITHUB_PATH
+      
+      - name: Install Scarb plugin
+        run: |
+          asdf plugin add scarb
+          asdf install scarb 2.9.2
+          asdf global scarb 2.9.2
+      
+      # Create file .tool-versions in the dojo directory
+      - name: Create .tool-versions file
+        run: |
+          echo "dojo 1.2.1" > dojo/.tool-versions
+          echo "scarb 2.9.2" >> dojo/.tool-versions
+      
+      - name: Build contracts
+        working-directory: dojo
+        run: |
+          # Asegurarnos que sozo está en el PATH
+          export PATH="$HOME/.asdf/installs/dojo/1.2.1/bin:$PATH"
+          sozo build
+      
+      - name: Run tests
+        working-directory: dojo
+        run: |
+          # Asegurarnos que sozo está en el PATH
+          export PATH="$HOME/.asdf/installs/dojo/1.2.1/bin:$PATH"
+          sozo test
