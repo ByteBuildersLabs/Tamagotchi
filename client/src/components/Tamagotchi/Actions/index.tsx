@@ -32,7 +32,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
   account: any, 
   client: any,
   setCurrentView: (view: string) => void,
-  setStatus: (view: string) => void,
+  setStatus: any,
 }) => {
 
   const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [

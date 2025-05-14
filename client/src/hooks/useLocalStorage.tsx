@@ -1,23 +1,53 @@
 import { useState } from 'react';
 
-export function useLocalStorage(key: string, initialValue: {}) {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return initialValue;
-    }
-  });
+// Types
+type StorageValue<T> = T | null;
 
-  const setValue = (value:{}) => {
-    try {
-      setStoredValue(value);
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(error);
+interface StorageError extends Error {
+  code: string;
+}
+
+// Constants
+const STORAGE_ERROR_CODES = {
+  QUOTA_EXCEEDED: 'QUOTA_EXCEEDED_ERR',
+  INVALID_VALUE: 'INVALID_VALUE_ERR'
+} as const;
+
+// Utility Functions
+const getStorageItem = <T,>(key: string): StorageValue<T> => {
+  try {
+    const item = window.localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.error('Error reading from localStorage:', error);
+    return null;
+  }
+};
+
+const setStorageItem = <T,>(key: string, value: T): void => {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    const storageError = error as StorageError;
+    if (storageError.code === STORAGE_ERROR_CODES.QUOTA_EXCEEDED) {
+      console.error('Storage quota exceeded');
+    } else {
+      console.error('Error writing to localStorage:', error);
     }
   }
+};
+
+// Hook
+export function useLocalStorage<T,>(key: string, initialValue: T): [T, (value: T) => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    const item = getStorageItem<T>(key);
+    return item ?? initialValue;
+  });
+
+  const setValue = (value: T) => {
+    setStoredValue(value);
+    setStorageItem(key, value);
+  };
 
   return [storedValue, setValue];
 }
