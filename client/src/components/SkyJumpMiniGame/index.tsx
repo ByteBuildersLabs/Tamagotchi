@@ -10,7 +10,7 @@ import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 // Services and Utils
-import FoodRewardService from '../../services/FoodRewardService';
+import FoodRewardService from '../../services/foodRewardService.ts';
 import { fetchStatus } from "../../utils/tamagotchi.tsx";
 
 // Types and Interfaces
