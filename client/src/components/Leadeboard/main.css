@@ -319,5 +319,8 @@
 
 .death-indicator {
   position: relative;
-  bottom: 5px;
+  width: 13px;
+  height: 13px;
+  margin: auto;
+  display: block;
 }
