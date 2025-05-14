@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { generateSpeech } from '../../services/TextToSpeech';
+import { generateSpeech } from '../../services/textToSpeech';
 import { findMatchingVoice } from '../../utils/voiceUtils';
 import textToSpeechIcon from '../../assets/img/icon-text-to-speech.svg';
 import './main.css';
