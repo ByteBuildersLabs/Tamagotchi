@@ -1,26 +1,5 @@
 import { useState } from 'react';
-
-// Types
-interface UseAudioReturn {
-  audioElement: HTMLAudioElement | null;
-  isPlaying: boolean;
-  play: (audioBase64: string) => Promise<void>;
-  togglePlayPause: () => Promise<void>;
-  error: Error | null;
-}
-
-interface AudioError extends Error {
-  code: string;
-}
-
-// Constants
-const AUDIO_ERROR_CODES = {
-  NOT_SUPPORTED: 'MEDIA_ERR_NOT_SUPPORTED',
-  ABORTED: 'MEDIA_ERR_ABORTED',
-  NETWORK: 'MEDIA_ERR_NETWORK',
-  DECODE: 'MEDIA_ERR_DECODE',
-  SRC_NOT_SUPPORTED: 'MEDIA_ERR_SRC_NOT_SUPPORTED'
-} as const;
+import { UseAudioReturn } from '../types/game';
 
 // Utility Functions
 const createAudioElement = (audioBase64: string): HTMLAudioElement => {

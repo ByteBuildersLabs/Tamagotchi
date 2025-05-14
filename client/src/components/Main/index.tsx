@@ -18,34 +18,57 @@ import { MusicProvider } from "../../context/contextMusic.tsx";
 // Services and Utils
 import { requestNotificationPermission } from "../../utils/notification.tsx";
 
-function Main() {
+// Types
+interface RouteConfig {
+  path: string;
+  element: React.ReactNode;
+}
 
+// Constants
+const ROUTES: RouteConfig[] = [
+  { path: "/", element: <NewCover /> },
+  { path: "/spawn", element: <SpawnBeast /> },
+  { path: "/play", element: <Tamagotchi /> },
+  { path: "/fullscreen-game", element: <FullscreenGame /> },
+  { path: "/leaderboard", element: <Leaderboard /> }
+];
+
+// Components
+const AppRoutes = () => (
+  <Routes>
+    {ROUTES.map(({ path, element }) => (
+      <Route key={path} path={path} element={element} />
+    ))}
+  </Routes>
+);
+
+// Main Component
+function Main() {
+  // Hooks
   const { client } = useDojoSDK();
   const { account } = useAccount();
-
   const { player } = usePlayer();
 
+  // Effects
   useEffect(() => {
-    if (player?.address) {
-      requestNotificationPermission(account, client);
-    } else {
-      console.log("Player address not available yet.");
-    }
-  }, [player]);
+    const handleNotificationPermission = async () => {
+      if (player?.address) {
+        await requestNotificationPermission(account, client);
+      } else {
+        console.log("Player address not available yet.");
+      }
+    };
+
+    handleNotificationPermission();
+  }, [player, account, client]);
 
   return (
     <Router>
       <MusicProvider>
-        <Routes>
-          <Route path="/" element={<NewCover />} />
-          <Route path="/spawn" element={<SpawnBeast />} />
-          <Route path="/play" element={<Tamagotchi />} />
-          <Route path="/fullscreen-game" element={<FullscreenGame />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-        </Routes>
+        <AppRoutes />
       </MusicProvider>
     </Router>
-  )
+  );
 }
 
 export default Main;

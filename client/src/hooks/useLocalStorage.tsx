@@ -1,17 +1,5 @@
 import { useState } from 'react';
-
-// Types
-type StorageValue<T> = T | null;
-
-interface StorageError extends Error {
-  code: string;
-}
-
-// Constants
-const STORAGE_ERROR_CODES = {
-  QUOTA_EXCEEDED: 'QUOTA_EXCEEDED_ERR',
-  INVALID_VALUE: 'INVALID_VALUE_ERR'
-} as const;
+import { StorageValue, StorageError, STORAGE_ERROR_CODES } from '../types/game';
 
 // Utility Functions
 const getStorageItem = <T,>(key: string): StorageValue<T> => {

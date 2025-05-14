@@ -2,17 +2,7 @@ import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
-
-// Types
-interface HighScore {
-  minigame_id: number;
-  player: string;
-  score: number;
-}
-
-interface HighScoreEdge {
-  node: HighScore;
-}
+import { HighScore, HighScoreEdge, GAME_IDS } from '../types/game';
 
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";
@@ -30,12 +20,6 @@ const HIGH_SCORES_QUERY = `
     }
   }
 `;
-
-// Game IDs
-const GAME_IDS = {
-  SKY_JUMP: 1,
-  FLAPPY_BIRD: 2
-} as const;
 
 // API Functions
 const fetchHighScores = async (): Promise<HighScoreEdge[]> => {

@@ -22,7 +22,7 @@ import useAppStore from "../../context/store.ts";
 import { useBeasts } from '../../hooks/useBeasts';
 import { usePlayer } from '../../hooks/usePlayers';
 import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import { Message } from "../../hooks/useBeastChat.ts";
+import { Message } from '../../types/game.ts';
 
 // Services and Utils
 import { fetchStatus, fetchAge, getBirthDate, getDayPeriod } from "../../utils/tamagotchi.tsx";

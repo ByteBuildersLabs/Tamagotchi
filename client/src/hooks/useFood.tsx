@@ -2,17 +2,7 @@ import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
-
-// Types
-interface Food {
-  player: string;
-  id: number;
-  amount: number;
-}
-
-interface FoodEdge {
-  node: Food;
-}
+import { Food, FoodEdge } from '../types/game';
 
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";

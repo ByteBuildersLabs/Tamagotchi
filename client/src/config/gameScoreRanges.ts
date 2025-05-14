@@ -1,4 +1,4 @@
-import { GameId, ScoreRange } from '../types/GameRewards';
+import { GameId, ScoreRange } from '../types/minigames';
 
 const GAME_SCORE_RANGES: Record<number, ScoreRange[]> = {
   // SkyJump

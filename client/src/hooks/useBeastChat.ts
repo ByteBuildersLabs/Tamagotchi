@@ -1,24 +1,7 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { Beast } from '../dojo/bindings';
 import beastsDex from '../data/beastDex';
-
-export interface Message {
-  user: string;
-  text: string;
-  isSystem?: boolean;
-}
-
-interface UseBeastChatProps {
-  beast: Beast | null;
-  baseUrl?: string;
-  setBotMessage?: (message: Message) => void;
-}
-
-interface ChatResponse {
-  user: string;
-  text: string;
-}
+import { Message, UseBeastChatProps, ChatResponse } from '../types/game';
 
 const DEFAULT_ERROR_MESSAGE: Message = {
   user: "System",
@@ -74,7 +57,7 @@ export const useBeastChat = ({
     setError(null);
 
     try {
-      const endpoint = getBeastEndpoint(baseUrl, beast.specie);
+      const endpoint = getBeastEndpoint(baseUrl, parseInt(beast.specie));
       const { user, text: responseText } = await sendChatRequest(endpoint, text);
       
       const botMessage: Message = { 

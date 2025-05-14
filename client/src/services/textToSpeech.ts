@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TextToSpeechResponse } from '../types/text-to-speech';
+import { TextToSpeechResponse } from '../types/textToSpeech';
 
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY;
 

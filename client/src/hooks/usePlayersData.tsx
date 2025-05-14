@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { lookupAddresses } from '@cartridge/controller';
-
-// Types
-interface Player {
-  address: string;
-  total_points: number;
-  userName?: string;
-}
-
-interface PlayerEdge {
-  node: Player;
-}
+import { Player, PlayerEdge } from '../types/game';
 
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";

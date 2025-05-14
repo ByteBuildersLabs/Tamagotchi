@@ -1,35 +1,7 @@
 import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { lookupAddresses } from '@cartridge/controller';
-
-// Types
-interface Beast {
-  player: string;
-  age: number;
-  beast_type: string;
-  birth_date: string;
-  specie: string;
-  beast_id: string;
-  is_alive?: boolean;
-  userName?: string;
-}
-
-interface BeastEdge {
-  node: Beast;
-}
-
-interface BeastStatus {
-  beast_id: string;
-  is_alive: boolean;
-}
-
-interface BeastStatusEdge {
-  node: BeastStatus;
-}
-
-interface BeastStatuses {
-  [key: string]: boolean;
-}
+import { Beast, BeastEdge, BeastStatus, BeastStatusEdge, BeastStatuses } from '../types/game';
 
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";

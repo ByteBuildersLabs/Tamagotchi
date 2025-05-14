@@ -22,22 +22,61 @@ import Egg from "../../assets/img/img-egg.gif";
 // Styles
 import './main.css';
 
+// Types
+interface Beast {
+  player: string;
+  beast_id: string;
+  [key: string]: any;
+}
+
+// Constants
+const SPAWN_DELAY = 2500;
+const NAVIGATION_DELAY = 5000;
+const MIN_BEAST_ID = 1;
+const MAX_BEAST_ID = 3;
+
+// Utility Functions
+const getRandomNumber = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+// Components
+const LoadingAnimation = () => (
+  <div className="loading-state">
+    <div className="loading"></div>
+  </div>
+);
+
+const SpawnButton = ({ 
+  loading, 
+  onSpawn 
+}: { 
+  loading: boolean; 
+  onSpawn: () => Promise<void> 
+}) => (
+  <button
+    className="button"
+    onClick={onSpawn}
+  >
+    {loading ? <LoadingAnimation /> : 'Hatch your egg'}
+  </button>
+);
+
+// Main Component
 function SpawnBeast() {
+  // Hooks
   const { account } = useAccount();
   const { client } = useDojoSDK();
   const { player } = usePlayer();
   const { beastsData: beasts } = useBeasts();
   const { spawn } = useSystemCalls();
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();
+  const [loading, setLoading] = useState(false);
+  const [status] = useLocalStorage('status', []);
+  const [reborn] = useLocalStorage('reborn', false);
 
-  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();  
-
-  async function setCurrentBeastInPlayer(foundBeast:any) {
-    if (!foundBeast) return
-    await client.player.setCurrentBeast(account as Account, foundBeast?.beast_id)
-  }
-  
+  // Effects
   useEffect(() => {
     if (player) setPlayer(player);
   }, [player, setPlayer]);
@@ -46,23 +85,6 @@ function SpawnBeast() {
     if (beasts) setBeasts(beasts);
   }, [beasts, setBeasts]);
 
-  const [status] = useLocalStorage('status', []);
-  const [reborn] = useLocalStorage('reborn', false);
-
-  // Set current beast and navigate to play If there is a beast for the player
-  useEffect(() => {
-    if (!zplayer || Object.keys(zplayer).length === 0) return;
-    if (!zbeasts || zbeasts.length === 0) return;
-    const foundBeast = zbeasts.find((beast: any) => beast.player ===  zplayer.address);
-    if (foundBeast && !reborn) {
-      setCurrentBeastInPlayer(foundBeast);
-      setCurrentBeast(foundBeast);
-      localStorage.removeItem('reborn');
-      localStorage.removeItem('status');
-      navigate('/play');
-    }
-  }, [zplayer, zbeasts, status, player, beasts]);
-
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) {
@@ -70,73 +92,81 @@ function SpawnBeast() {
     }
   }, []);
 
-  const getRandomNumber = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  // Handle current beast and navigation
+  useEffect(() => {
+    if (!zplayer || Object.keys(zplayer).length === 0) return;
+    if (!zbeasts || zbeasts.length === 0) return;
 
-  const randomNumber = getRandomNumber(1, 3);
-
-  const spawnPlayer = async () => {
-    if (!account) return
-
-    if (!zplayer) {
-      setLoading(true);
-      await client.player.spawnPlayer(account as Account);
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      setLoading(false);
+    const foundBeast = zbeasts.find((beast: Beast) => beast.player === zplayer.address);
+    if (foundBeast && !reborn) {
+      handleCurrentBeast(foundBeast);
     }
+  }, [zplayer, zbeasts, status, player, beasts]);
 
-    setLoading(true);
-    await spawn(randomNumber);
-    await new Promise(resolve => setTimeout(resolve, 5000));
+  // Handlers
+  const handleCurrentBeast = async (foundBeast: Beast) => {
+    if (!foundBeast || !account) return;
+    
+    await client.player.setCurrentBeast(account as Account, foundBeast.beast_id);
+    setCurrentBeast(foundBeast);
     localStorage.removeItem('reborn');
     localStorage.removeItem('status');
     navigate('/play');
   };
 
-  const loadingAnimation = () => {
-    return (
-      <div className="loading-state">
-        <div className="loading"></div>
-      </div>
-    )
-  }
+  const spawnPlayer = async () => {
+    if (!account) return;
+
+    try {
+      if (!zplayer) {
+        setLoading(true);
+        await client.player.spawnPlayer(account as Account);
+        await new Promise(resolve => setTimeout(resolve, SPAWN_DELAY));
+        setLoading(false);
+      }
+
+      setLoading(true);
+      const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
+      await spawn(randomBeastId);
+      await new Promise(resolve => setTimeout(resolve, NAVIGATION_DELAY));
+      
+      localStorage.removeItem('reborn');
+      localStorage.removeItem('status');
+      navigate('/play');
+    } catch (error) {
+      console.error('Error spawning player:', error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <Header />
       <div className="spawn-beast">
         <div className='d-flex justify-content-between align-items-center'>
-          <p className={'title'}>
-            Hacth the egg
+          <p className='title'>
+            Hatch the egg
             <span className='d-block'>Collect them all!</span>
           </p>
         </div>
         <div className="initial-beast">
-          <img src={Egg} className="egg" alt="beast" />
+          <img src={Egg} className="egg" alt="beast egg" />
           <div className="initial-info">
-            <h4>
-              This is a random beast
-            </h4>
+            <h4>This is a random beast</h4>
             <p>
               Hatch your own Baby Beast and <br />take care of him!
             </p>
           </div>
-          { account && 
-            <button
-              className="button"
-              onClick={async () => {
-                spawnPlayer();
-              }}>
-                {
-                  loading ? loadingAnimation() : 'Hatch your egg'
-                }
-            </button>}
+          {account && (
+            <SpawnButton 
+              loading={loading} 
+              onSpawn={spawnPlayer} 
+            />
+          )}
           <Hints />
         </div>
       </div>
     </>
-
   );
 }
 

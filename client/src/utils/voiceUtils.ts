@@ -1,4 +1,4 @@
-import { Voice } from '../types/text-to-speech';
+import { Voice } from '../types/textToSpeech';
 import { AVAILABLE_VOICES } from '../config/voices';
 
 export const findMatchingVoice = (beastName: string): Voice => {

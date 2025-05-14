@@ -3,21 +3,7 @@ import { dojoConfig } from "../dojo/dojoConfig";
 import { lookupAddresses } from '@cartridge/controller';
 import { useAccount } from "@starknet-react/core";
 import { addAddressPadding } from "starknet";
-
-// Types
-interface Player {
-  address: string;
-  current_beast_id: string;
-  daily_streak: number;
-  total_points: number;
-  last_active_day: string;
-  creation_day: string;
-  userName?: string;
-}
-
-interface PlayerEdge {
-  node: Player;
-}
+import { Player, PlayerEdge } from '../types/game';
 
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";
