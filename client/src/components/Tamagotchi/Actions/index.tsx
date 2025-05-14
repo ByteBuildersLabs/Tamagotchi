@@ -6,7 +6,7 @@ import useSound from 'use-sound';
 import { Button } from '../../../components/ui/button';
 
 // Services and Utils
-import { fetchStatus } from '../../../utils/tamagotchi';
+import { fetchStatus } from '../utils';
 
 // Data
 import beastsDex from '../../../data/beastDex';

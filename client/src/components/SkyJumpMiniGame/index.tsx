@@ -11,10 +11,10 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 // Services and Utils
 import FoodRewardService from '../../services/foodRewardService.ts';
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
+import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
 
 // Types and Interfaces
-import { GameId } from '../../types/GameRewards';
+import { GameId } from '../../types/minigames.tsx';
 
 // Assets
 import Restart from '../../assets/img/icon-restart.svg';
@@ -97,7 +97,7 @@ const DOMDoodleGame = forwardRef<DOMDoodleGameRefHandle, DOMDoodleGameProps>(({
   const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const [currentHighScore, setCurrentHighScore] = useState(highScore);
-  const { myScoreSkyJump } = useHighScores(account);
+  const { myScoreSkyJump } = useHighScores();
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
 

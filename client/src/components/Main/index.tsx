@@ -19,10 +19,7 @@ import { MusicProvider } from "../../context/contextMusic.tsx";
 import { requestNotificationPermission } from "../../utils/notification.tsx";
 
 // Types
-interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-}
+import { RouteConfig } from '../../types/components';
 
 // Constants
 const ROUTES: RouteConfig[] = [

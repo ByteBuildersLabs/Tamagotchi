@@ -6,14 +6,20 @@ import { useLocation } from 'react-router-dom';
 import calmMusic from '../assets/sounds/calm-music.mp3';
 import gameMusic from '../assets/sounds/game-music.mp3';
 
-interface MusicContextType {
-  isMuted: boolean;
-  toggleMute: () => void;
-}
+// Types
+import { MusicContextType } from '../types/components';
 
 const MusicContext = createContext<MusicContextType>({
   isMuted: false,
-  toggleMute: () => {},
+  toggleMute: () => { },
+  isPlaying: false,
+  togglePlay: function (): void {
+    throw new Error('Function not implemented.');
+  },
+  volume: 0,
+  setVolume: function (): void {
+    throw new Error('Function not implemented.');
+  }
 });
 
 export function MusicProvider({ children }: { children: React.ReactNode }) {
@@ -50,9 +56,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const toggleMute = () => {
     setIsMuted((prev) => !prev);
   };
-
   return (
-    <MusicContext.Provider value={{ isMuted, toggleMute }}>
+    <MusicContext.Provider value={{ isMuted, toggleMute, isPlaying: false, togglePlay: () => {}, volume: 0, setVolume: () => {} }}>
       {children}
     </MusicContext.Provider>
   );

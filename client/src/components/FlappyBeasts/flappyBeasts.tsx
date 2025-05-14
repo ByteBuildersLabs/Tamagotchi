@@ -1,5 +1,5 @@
 // React and external libraries
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 // Internal components
 import { ShareProgress } from '../Twitter/ShareProgress';
@@ -10,13 +10,11 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 // Services and Utils
 import FoodRewardService from '../../services/foodRewardService.ts';
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
-
-// Types and Interfaces
-import { GameId } from '../../types/GameRewards';
+import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
 
 // Assets
 import Restart from '../../assets/img/icon-restart.svg';
+import { GameId } from '../../types/minigames.tsx';
 const skyBackground = new URL('../../assets/flappyBeasts/bg-sky.png', import.meta.url).href;
 const landBackground = new URL('../../assets/flappyBeasts/bg-land.png', import.meta.url).href;
 const ceilingBackground = new URL('../../assets/flappyBeasts/bg-ceiling.png', import.meta.url).href;
@@ -59,24 +57,8 @@ const PIPE_COLLIDER_WIDTH = PIPE_WIDTH - (COLLIDER_MARGIN * 2);  // Reduce pipe 
 const BIRD_COLLIDER_OFFSET_X = (BIRD_WIDTH - BIRD_COLLIDER_WIDTH) / 2;
 const BIRD_COLLIDER_OFFSET_Y = (BIRD_HEIGHT - BIRD_COLLIDER_HEIGHT) / 2;
 
-// Interfaces
-export interface FlappyBirdRefHandle { resetGame: () => void; }
-
-interface FlappyBirdProps {
-    className?: string;
-    style?: React.CSSProperties;
-    onScoreUpdate?: (score: number) => void;
-    beastImageRight?: string;
-    beastImageLeft?: string;
-    onExitGame?: () => void;
-    highScore: number;
-    gameId: string;
-    beastId: number;
-    gameName: string;
-    handleAction: (actionName: string, actionFn: () => Promise<any>) => Promise<any>;
-    client: any;
-    account: any;
-}
+// Types and Interfaces
+import { FlappyBirdRefHandle, FlappyBirdProps } from '../../types/components';
 
 const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     className = '',

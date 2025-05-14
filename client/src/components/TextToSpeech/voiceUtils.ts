@@ -1,5 +1,5 @@
-import { Voice } from '../types/textToSpeech';
-import { AVAILABLE_VOICES } from '../config/voices';
+import { Voice } from '../../types/textToSpeech';
+import { AVAILABLE_VOICES } from '../../config/voices';
 
 export const findMatchingVoice = (beastName: string): Voice => {
   // Find a voice that matches the beast name (case-insensitive)
