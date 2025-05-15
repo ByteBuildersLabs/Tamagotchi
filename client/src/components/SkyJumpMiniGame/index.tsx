@@ -11,7 +11,7 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 // Services and Utils
 import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
-import FoodRewardService from '../../utils/FoodRewardService.ts';
+import FoodRewardService from '../../utils/foodRewardService.ts';
 
 // Types and Interfaces
 import { GameId } from '../../types/minigames.tsx';
