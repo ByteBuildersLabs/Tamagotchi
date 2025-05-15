@@ -10,8 +10,8 @@ import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
 
 // Services and Utils
-import FoodRewardService from '../../services/foodRewardService.ts';
 import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
+import FoodRewardService from '../../services/foodRewardService.ts';
 
 // Types and Interfaces
 import { GameId } from '../../types/minigames.tsx';
