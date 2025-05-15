@@ -42,7 +42,7 @@ const beastsDex: iBeastDex[]= [
   { 
     name: "WolfPup",
     description: "The wolf is a social animal that lives in packs",
-    specie: 0,
+    specie: 1,
     idlePicture: babyWolfIdle,
     eatPicture: babyWolfEat,
     playPicture: babyWolfPlay,
@@ -71,7 +71,7 @@ const beastsDex: iBeastDex[]= [
   { 
     name: "Foxling",
     description: "The fox is a small carnivorous mammal that is found in many parts of the world",
-    specie: 1,
+    specie: 2,
     idlePicture: babyFoxIdle,
     eatPicture: babyFoxEat,
     playPicture: babyFoxPlay,
@@ -100,7 +100,7 @@ const beastsDex: iBeastDex[]= [
   { 
     name: "Solarius",
     description: "Solarius is a celestial dragon that radiates light and warmth, guiding lost souls through the skies.",
-    specie: 2,
+    specie: 3,
     idlePicture: babyDragonIdle,
     eatPicture: babyDragonEat,
     playPicture: babyDragonPlay,

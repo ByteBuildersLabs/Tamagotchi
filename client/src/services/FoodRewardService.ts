@@ -1,6 +1,6 @@
 import initialFoodItems from '../data/food';
 import GAME_SCORE_RANGES from '../config/gameScoreRanges';
-import { FoodReward, GameId } from '../types/GameRewards';
+import { FoodReward, GameId } from '../types/minigames';
 
 export const FoodRewardService = {
   getRandomFood() {
