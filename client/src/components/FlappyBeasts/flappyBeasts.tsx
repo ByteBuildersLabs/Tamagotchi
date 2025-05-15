@@ -12,6 +12,9 @@ import { useHighScores } from '../../hooks/useHighScore.tsx';
 import FoodRewardService from '../../services/foodRewardService.ts';
 import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
 
+// Styles
+import "./main.css";
+
 // Assets
 import Restart from '../../assets/img/icon-restart.svg';
 import { GameId } from '../../types/minigames.tsx';
