@@ -18,12 +18,12 @@ import "./main.css";
 // Assets
 import Restart from '../../assets/img/icon-restart.svg';
 import { GameId } from '../../types/minigames.tsx';
-const skyBackground = new URL('../../assets/flappyBeasts/bg-sky.png', import.meta.url).href;
-const landBackground = new URL('../../assets/flappyBeasts/bg-land.png', import.meta.url).href;
-const ceilingBackground = new URL('../../assets/flappyBeasts/bg-ceiling.png', import.meta.url).href;
-const pipeImage = new URL('../../assets/flappyBeasts/img-pipe-up.png', import.meta.url).href;
-const pipeUpImage = new URL('../../assets/flappyBeasts/img-pipe-up.png', import.meta.url).href;
-const pipeDownImage = new URL('../../assets/flappyBeasts/img-pipe-down.png', import.meta.url).href;
+import skyBackground from '../../assets/flappyBeasts/bg-sky.png';
+import landBackground from '../../assets/flappyBeasts/bg-land.png';
+import ceilingBackground from '../../assets/flappyBeasts/bg-ceiling.png';
+import pipeImage from '../../assets/flappyBeasts/img-pipe-up.png';
+import pipeUpImage from '../../assets/flappyBeasts/img-pipe-up.png';
+import pipeDownImage from '../../assets/flappyBeasts/img-pipe-down.png';
 
 // Asset configuration
 const gameAssets = {
