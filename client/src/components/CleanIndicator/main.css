@@ -1,6 +1,6 @@
 .poop-indicator {
     position: absolute;
-    bottom: -65px;
+    bottom: -30px;
     left: 80px;
     display: flex;
     z-index: 999;

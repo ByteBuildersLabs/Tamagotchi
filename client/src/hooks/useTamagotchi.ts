@@ -69,6 +69,7 @@ export const useTamagotchi = () => {
     try {
       const tx = await actionFn();
       if (tx) {
+        await tx.wait();
         // Update status after transaction is confirmed
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
@@ -90,9 +91,11 @@ export const useTamagotchi = () => {
       setIsLoading(true);
       const tx = await client.game.pet(account as Account);
       if (tx) {
+        await tx.wait();
         showAnimation(beastsDex[zcurrentBeast.specie - 1].cuddlePicture);
         const achieveBeastPet = await client.achieve.achieveBeastPet(account as Account);
-        console.info('achieveBeastPet', achieveBeastPet)
+        console.info(achieveBeastPet);
+
         // Update status after transaction is confirmed
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
@@ -108,9 +111,18 @@ export const useTamagotchi = () => {
 
   const handleNewEgg = async () => {
     buttonSound();
-    await client.game.updateBeast(account as Account);
-    if (!reborn) setReborn(true);
-    navigate('/spawn');
+    // Clear status before updating beast
+    setStatus([]);
+    setIsLoading(true);
+    try {
+      await client.game.updateBeast(account as Account);
+      if (!reborn) setReborn(true);
+      navigate('/spawn');
+    } catch (error) {
+      console.error("Error updating beast:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const showBirthday = () => {
@@ -144,24 +156,33 @@ export const useTamagotchi = () => {
   }, [status]);
 
   useEffect(() => {
+    if (!zcurrentBeast) {
+      setCurrentImage('');
+      return;
+    }
+
     if (status[1] === 0) {
       setCurrentImage(dead);
       setCurrentView('actions');
       return;
     }
     if (status[2] === 0) {
-      setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.sleepPicture : '');
+      setCurrentImage(beastsDex[zcurrentBeast.specie - 1]?.sleepPicture);
       setCurrentView('actions');
       return;
     }
-    setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '');
+    setCurrentImage(beastsDex[zcurrentBeast.specie - 1]?.idlePicture);
   }, [status, zcurrentBeast]);
 
+  // Initial state setup and status updates
   useEffect(() => {
     if (!zplayer || !account || !zcurrentBeast) {
       setIsLoading(true);
       return;
     }
+
+    let isMounted = true;
+    let updateInterval: NodeJS.Timeout;
 
     const updateStatus = async () => {
       try {
@@ -170,8 +191,14 @@ export const useTamagotchi = () => {
           fetchAge(account)
         ]);
         
+        if (!isMounted) return;
+
         if (statusResponse && Object.keys(statusResponse).length !== 0) {
-          setStatus(statusResponse as number[]);
+          // Solo actualizamos el status si es diferente al actual
+          const newStatus = statusResponse as number[];
+          if (JSON.stringify(newStatus) !== JSON.stringify(status)) {
+            setStatus(newStatus);
+          }
         }
         if (ageResponse) {
           setAge(Number(ageResponse));
@@ -179,7 +206,9 @@ export const useTamagotchi = () => {
         setIsLoading(false);
       } catch (error) {
         console.error("Error updating status:", error);
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -187,10 +216,37 @@ export const useTamagotchi = () => {
     updateStatus();
 
     // Set up interval for updates
-    const interval = setInterval(updateStatus, 3000);
+    updateInterval = setInterval(updateStatus, 5000); // Aumentado a 5 segundos para reducir parpadeos
 
-    return () => clearInterval(interval);
-  }, [zcurrentBeast, account, zplayer]);
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      clearInterval(updateInterval);
+    };
+  }, [zcurrentBeast, account, zplayer, status]);
+
+  // Clean up localStorage when component unmounts or when beast changes
+  useEffect(() => {
+    if (!zcurrentBeast) {
+      localStorage.removeItem('status');
+      localStorage.removeItem('reborn');
+    }
+  }, [zcurrentBeast]);
+
+  // Reset loading state when beast changes
+  useEffect(() => {
+    if (zcurrentBeast) {
+      setIsLoading(true);
+      // Actualizar el status inmediatamente cuando cambia la bestia
+      if (account) {
+        fetchStatus(account).then(newStatus => {
+          if (newStatus && Object.keys(newStatus).length !== 0) {
+            setStatus(newStatus as number[]);
+          }
+        });
+      }
+    }
+  }, [zcurrentBeast, account]);
 
   return {
     currentImage,

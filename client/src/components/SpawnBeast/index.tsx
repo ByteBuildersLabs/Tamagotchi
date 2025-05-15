@@ -25,6 +25,7 @@ import type {
 
 // Utils
 import { getRandomNumber } from './utils/helpers';
+import { MIN_BEAST_ID, MAX_BEAST_ID } from './utils/constants';
 
 // Styles
 import './main.css';
@@ -110,7 +111,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
          console.info(spawnPlayerTx);
       }
 
-      const randomBeastId = getRandomNumber(1, 3);
+      const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
       const { spawnTx, setCurrentTx } = await spawn(randomBeastId);
 
       localStorage.removeItem('reborn');
