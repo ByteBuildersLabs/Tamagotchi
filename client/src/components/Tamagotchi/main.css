@@ -7,6 +7,7 @@
   height: 85dvh;
   transform: translateY(50px);
   animation: fade-in-up 1s ease-out forwards;
+  overflow: hidden;
 }
 
 .game {

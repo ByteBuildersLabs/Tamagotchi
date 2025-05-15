@@ -101,6 +101,17 @@ function Tamagotchi() {
           }}>
             <Status beastStatus={status} />
             <div className="game">
+
+              {status[1] === 0 ? null : (
+                <Whispers
+                  botMessage={botMessage}
+                  setBotMessage={setBotMessage}
+                  beast={zcurrentBeast}
+                  expanded={currentView === 'chat'}
+                  beastStatus={status}
+                />
+              )}
+
               <BeastDisplay
                 status={status}
                 currentBeast={zcurrentBeast}
@@ -115,16 +126,6 @@ function Tamagotchi() {
                 onBackToActions={() => setCurrentView('actions')}
                 expanded={currentView === 'chat' || currentView === 'food' || currentView === 'play'}
               />
-
-              {!status || status.length === 0 || !zcurrentBeast || status[1] === 0 || status[2] === 0 ? null : (
-                <Whispers
-                  botMessage={botMessage}
-                  setBotMessage={setBotMessage}
-                  beast={zcurrentBeast}
-                  expanded={currentView === 'chat'}
-                  beastStatus={status}
-                />
-              )}
 
               {currentView === 'actions' ? (
                 <Actions

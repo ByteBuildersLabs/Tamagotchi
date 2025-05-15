@@ -87,7 +87,6 @@ const Chat = ({ beast, expanded, botMessage, setBotMessage }: { beast: any, expa
               {isLoading ? <div className="loader"></div> : <img src={isLoading ? '' : messageIcon} alt="Send message" />}
             </button>
           </div>
-          {error && <div className="error-tooltip">{error.message}</div>}
         </div>
       </div>
     );

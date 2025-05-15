@@ -68,7 +68,7 @@
 .whispers-chat .pet-message {
   position: absolute;
   height: 105px;
-  top: calc(-17dvh - 130px);
+  top: calc(-17dvh - 180px);
 
 }
 
@@ -83,8 +83,6 @@
   color: #ECECDA;
   margin: 0 15px;
   text-align: center;
-  position: relative;
-  top: -60px;
 }
 
 .whispers-chat .chat-input {
