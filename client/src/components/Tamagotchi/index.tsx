@@ -102,7 +102,7 @@ function Tamagotchi() {
           }}>
             <Status beastStatus={isStatusLoaded ? status : []} />
             <div className="game">
-              {!isStatusLoaded || status[1] === 0 || status[2] === 0 || isLoading ? null : (
+              {!isStatusLoaded || status[1] === 0 || status[2] === 0 ? null : (
                 <Whispers
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}

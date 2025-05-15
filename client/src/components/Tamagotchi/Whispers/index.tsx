@@ -59,22 +59,26 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
       clearTimeout(messageTimeoutRef.current);
     }
 
-    setWhispers([{
+    const newMessage = {
       user: 'System',
       text: message
-    }]);
+    };
+
+    setWhispers([newMessage]);
+    setBotMessage(newMessage);
 
     // Configure new timeout to clear the message every 20 seconds
     messageTimeoutRef.current = setTimeout(() => {
-      setBotMessage([{ user: '', text: '' }]);
+      setBotMessage({ user: '', text: '' });
       setWhispers([{ user: '', text: '' }]);
     }, 20000);
   };
 
-
   useEffect(() => {
     let intervalId: string | number | NodeJS.Timeout | undefined;
-    if (beastStatus && beast) {
+    
+    // Only set up the interval if we have a beast and it's not sleeping
+    if (beastStatus && beast && beastStatus[2] !== 0) {
       const firstMessage = generateMessage();
       createWhisper(firstMessage);
 
@@ -89,7 +93,7 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
       if (intervalId) clearInterval(intervalId);
       if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
     };
-  }, []);
+  }, [beast, beastStatus]); // Only re-run if beast or beastStatus changes
 
   return expanded ? <></> : uniMessage();
 }
