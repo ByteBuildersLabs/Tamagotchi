@@ -1,14 +1,25 @@
-import { fetchStatus } from '../../../utils/tamagotchi';
+// React and external libraries
 import { Account } from '@dojoengine/torii-wasm';
-import { Button } from '../../../components/ui/button';
 import useSound from 'use-sound';
-import buttonClick from '../../../assets/sounds/click.mp3';
-import Food from '../../../assets/img/Feed.svg';
-import Sleep from '../../../assets/img/Sleep.svg';
-import Awake from '../../../assets/img/sun.svg';
-import Clean from '../../../assets/img/Clean.svg';
-import Play from '../../../assets/img/Play.svg';
+
+// Internal components
+import { Button } from '../../../components/ui/button';
+
+// Services and Utils
+import { fetchStatus } from '../utils';
+
+// Data
 import beastsDex from '../../../data/beastDex';
+
+// Assets
+import buttonClick from '../../../assets/sounds/click.mp3';
+import Food from '../../../assets/img/icon-feed.svg';
+import Sleep from '../../../assets/img/icon-sleep.svg';
+import Awake from '../../../assets/img/icon-sun.svg';
+import Clean from '../../../assets/img/icon-clean.svg';
+import Play from '../../../assets/img/icon-play.svg';
+
+// Styles
 import './main.css';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
@@ -21,7 +32,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
   account: any, 
   client: any,
   setCurrentView: (view: string) => void,
-  setStatus: (view: string) => void,
+  setStatus: any,
 }) => {
 
   const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [

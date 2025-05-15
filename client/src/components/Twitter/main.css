@@ -119,3 +119,47 @@
       text-align: center;
     }
   }
+
+.twitter-container {
+  background-color: var(--overlay-dark);
+}
+
+.twitter-header {
+  background-color: var(--bg-dark-secondary);
+  box-shadow: 0 2px 10px var(--overlay-dark-light);
+}
+
+.twitter-header h2 {
+  border-bottom: 1px solid var(--bg-dark-tertiary);
+}
+
+.tweet {
+  color: var(--text-light);
+}
+
+.tweet-content {
+  color: var(--text-light);
+}
+
+.tweet-input {
+  background-color: var(--bg-dark-tertiary);
+  border: 1px solid var(--bg-dark-tertiary);
+  color: var(--text-light);
+}
+
+.tweet-input:focus {
+  border-color: var(--primary-red);
+}
+
+.tweet-actions {
+  border-top: 1px solid var(--bg-dark-tertiary);
+}
+
+.tweet-button {
+  background-color: var(--primary-red);
+  color: var(--text-light);
+}
+
+.tweet-button:hover {
+  background-color: var(--primary-red);
+}

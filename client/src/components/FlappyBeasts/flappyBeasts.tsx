@@ -1,18 +1,29 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+// React and external libraries
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+// Internal components
 import { ShareProgress } from '../Twitter/ShareProgress';
-import FoodRewardService from '../../services/FoodRewardService';
-import { GameId } from '../../types/GameRewards';
-import { fetchStatus } from "../../utils/tamagotchi.tsx";
-import { useHighScores } from '../../hooks/useHighScore.tsx';
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver.tsx';
-import Restart from '../../assets/img/restart.svg';
-import './syles.css';
-import skyBackground from '../../assets/FlappyBeasts/NewSky.png';
-import landBackground from '../../assets/FlappyBeasts/NewLand.png';
-import ceilingBackground from '../../assets/FlappyBeasts/NewCelling.png';
-import pipeImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
-import pipeUpImage from '../../assets/FlappyBeasts/NewPipeUp2.png';
-import pipeDownImage from '../../assets/FlappyBeasts/NewPipeDown2.png';
+
+// Hooks and Contexts
+import { useHighScores } from '../../hooks/useHighScore.tsx';
+
+// Services and Utils
+import FoodRewardService from '../../utils/foodRewardService.ts';
+import fetchStatus from "../Tamagotchi/utils/fetchStatus.ts";
+
+// Styles
+import "./main.css";
+
+// Assets
+import Restart from '../../assets/img/icon-restart.svg';
+import { GameId } from '../../types/minigames.tsx';
+const skyBackground = new URL('../../assets/flappyBeasts/bg-sky.png', import.meta.url).href;
+const landBackground = new URL('../../assets/flappyBeasts/bg-land.png', import.meta.url).href;
+const ceilingBackground = new URL('../../assets/flappyBeasts/bg-ceiling.png', import.meta.url).href;
+const pipeImage = new URL('../../assets/flappyBeasts/img-pipe.png', import.meta.url).href;
+const pipeUpImage = new URL('../../assets/flappyBeasts/img-pipe-up.png', import.meta.url).href;
+const pipeDownImage = new URL('../../assets/flappyBeasts/img-pipe-down.png', import.meta.url).href;
 
 // Asset configuration
 const gameAssets = {
@@ -49,24 +60,8 @@ const PIPE_COLLIDER_WIDTH = PIPE_WIDTH - (COLLIDER_MARGIN * 2);  // Reduce pipe 
 const BIRD_COLLIDER_OFFSET_X = (BIRD_WIDTH - BIRD_COLLIDER_WIDTH) / 2;
 const BIRD_COLLIDER_OFFSET_Y = (BIRD_HEIGHT - BIRD_COLLIDER_HEIGHT) / 2;
 
-// Interfaces
-export interface FlappyBirdRefHandle { resetGame: () => void; }
-
-interface FlappyBirdProps {
-    className?: string;
-    style?: React.CSSProperties;
-    onScoreUpdate?: (score: number) => void;
-    beastImageRight?: string;
-    beastImageLeft?: string;
-    onExitGame?: () => void;
-    highScore: number;
-    gameId: string;
-    beastId: number;
-    gameName: string;
-    handleAction: (actionName: string, actionFn: () => Promise<any>) => Promise<any>;
-    client: any;
-    account: any;
-}
+// Types and Interfaces
+import { FlappyBirdRefHandle, FlappyBirdProps } from '../../types/components';
 
 const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     className = '',
@@ -139,7 +134,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       
         // DEBUG: print the current speed and score
         // console.log(
-        //   `[FlappyBeasts] Pipe speed: ${clamped.toFixed(2)} px/s at score ${_score}`
+        //   `[flappyBeasts] Pipe speed: ${clamped.toFixed(2)} px/s at score ${_score}`
         // );
     }, [_score]);
 

@@ -1,53 +1,75 @@
+// React and external libraries
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAccount } from "@starknet-react/core";
+import useSound from 'use-sound';
+
+// Internal components
+import { ShareProgress } from '../Twitter/ShareProgress.tsx';
 import Music from "../Music";
-import monster from "../../assets/img/logo.jpg";
-import profile from "../../assets/img/profile.svg";
-import about from "../../assets/img/about.svg";
-import menuIcon from "../../assets/img/Menu.svg";
-import closeIcon from "../../assets/img/Close.svg";
-import share from "../../assets/img/share.svg";
+import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
+import Countdown from "../CountDown/index.tsx";
+
+// Hooks and Contexts
 import { useBeasts } from "../../hooks/useBeasts";
 import { usePlayer } from "../../hooks/usePlayers";
-import ControllerConnectButton from "../CartridgeController/ControllerConnectButton";
-import { ShareProgress } from '../Twitter/ShareProgress.tsx';
-import useSound from 'use-sound';
+
+// Types
+import { HeaderProps, MenuItem } from '../../types/components';
+
+// Assets
 import buttonClick from '../../assets/sounds/click.mp3';
-import "./main.css";
-import Countdown from "../CountDown/index.tsx";
-import { useAccount } from "@starknet-react/core";
+import monster from "../../assets/img/img-logo.jpg";
+import profile from "../../assets/img/icon-profile.svg";
+import about from "../../assets/img/icon-about.svg";
+import menuIcon from "../../assets/img/icon-menu.svg";
+import closeIcon from "../../assets/img/icon-close.svg";
+import share from "../../assets/img/icon-share.svg";
 
-interface HeaderProps {
-  tamagotchiStats?: {
-    age?: number;
-    energy?: number;
-    hunger?: number;
-    happiness?: number;
-    clean?: number;
-  };
-}
+// Styles
+import './main.css';
 
-interface MenuItem {
-  to?: string;
-  icon?: string;
-  alt?: string;
-  label?: string;
-  onClick?: () => void;
-  component?: React.ReactNode;
-}
+// Constants
+const WEBSITE_URL = 'https://website.bytebeasts.games';
+const SOUND_VOLUME = 0.6;
 
-function Header({ tamagotchiStats }: HeaderProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [route, setRoute] = useState('/');
+// Components
+const MenuItemRenderer: React.FC<{ item: MenuItem }> = ({ item }) => (
+  <>
+    <div className="icon-container">
+      {item.icon ? (
+        <img src={item.icon} alt={item.alt} />
+      ) : item.component}
+    </div>
+    {item.label && <span>{item.label}</span>}
+  </>
+);
+
+// Main Component
+const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
+  // State
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [route, setRoute] = useState<string>('/');
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+
+  // Hooks
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const location = useLocation();
   const { connector } = useAccount();
-  const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
+  const [buttonSound] = useSound(buttonClick, { volume: SOUND_VOLUME, preload: true });
 
+  // Derived state
   const isTamagotchiRoute = location.pathname === '/play';
 
+  // Effects
+  useEffect(() => {
+    if (!player) return;
+    const foundBeast = beasts.find((beast: any) => beast?.player === player.address);
+    if (foundBeast) setRoute('/play');
+  }, [beasts, player]);
+
+  // Event Handlers
   const handleAchievements = useCallback(() => {
     buttonSound();
     if (!connector || !('controller' in connector)) {
@@ -59,25 +81,19 @@ function Header({ tamagotchiStats }: HeaderProps) {
     } else {
       console.error("Connector controller is not properly initialized");
     }
-  }, [connector]);
+  }, [connector, buttonSound]);
 
-  useEffect(() => {
-    if (!player) return;
-    const foundBeast = beasts.find((beast: any) => beast?.player === player.address);
-    if (foundBeast) setRoute('/play');
-  }, [beasts, player]);
-
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     buttonSound();
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(prev => !prev);
+  }, [buttonSound]);
 
-  const handleShareClick = () => {
+  const handleShareClick = useCallback(() => {
     buttonSound();
     setIsShareModalOpen(true);
-  };
+  }, [buttonSound]);
 
-  // Define menu items in a standardized way
+  // Menu Configuration
   const menuItems: MenuItem[] = [
     {
       icon: about,
@@ -85,12 +101,11 @@ function Header({ tamagotchiStats }: HeaderProps) {
       label: "About",
       onClick: () => {
         buttonSound();
-        window.open('https://website.bytebeasts.games', '_blank');
+        window.open(WEBSITE_URL, '_blank');
       }
     }
   ];
 
-  // Conditionally add Share option if on tamagotchi route
   if (isTamagotchiRoute && tamagotchiStats) {
     menuItems.push({
       icon: share,
@@ -100,12 +115,12 @@ function Header({ tamagotchiStats }: HeaderProps) {
     });
   }
 
-  // Add Music and Controller as regular menu items
   menuItems.push(
     { component: <Music />, label: "Music", onClick: () => buttonSound() },
     { component: <ControllerConnectButton />, onClick: () => buttonSound() }
   );
 
+  // Render
   return (
     <>
       <nav className="navbar">
@@ -131,7 +146,7 @@ function Header({ tamagotchiStats }: HeaderProps) {
           </button>
 
           <div className={`side-menu ${isOpen ? 'expanded' : ''}`}>
-            <div className="item" onClick={() => handleAchievements()}>
+            <div className="item" onClick={handleAchievements}>
               <div className="icon-container">
                 <img src={profile} alt="Profile" />
               </div>
@@ -141,10 +156,10 @@ function Header({ tamagotchiStats }: HeaderProps) {
               <div key={index} className="item" onClick={item.onClick}>
                 {item.to ? (
                   <Link className="menu-link" to={item.to}>
-                    {renderMenuItem(item)}
+                    <MenuItemRenderer item={item} />
                   </Link>
                 ) : (
-                  renderMenuItem(item)
+                  <MenuItemRenderer item={item} />
                 )}
               </div>
             ))}
@@ -162,19 +177,6 @@ function Header({ tamagotchiStats }: HeaderProps) {
       )}
     </>
   );
-}
-
-function renderMenuItem(item: MenuItem) {
-  return (
-    <>
-      <div className="icon-container">
-        {item.icon ? (
-          <img src={item.icon} alt={item.alt} />
-        ) : item.component}
-      </div>
-      {item.label && <span>{item.label}</span>}
-    </>
-  );
-}
+};
 
 export default Header;

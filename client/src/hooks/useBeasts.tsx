@@ -1,114 +1,115 @@
 import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { lookupAddresses } from '@cartridge/controller';
+import { Beast, BeastEdge, BeastStatus, BeastStatusEdge, BeastStatuses } from '../types/game';
+
+// Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";
-
-interface Beast {
-  player: string;
-  age: number;
-  beast_type: string;
-  birth_date: string;
-  specie: string;
-  beast_id: string;
-  is_alive?: boolean;
-}
-
-interface BeastEdge {
-  node: Beast;
-}
-
-interface BeastStatus {
-  beast_id: string;
-  is_alive: boolean;
-}
-
-interface BeastStatusEdge {
-  node: BeastStatus;
-}
-
-interface BeastStatuses {
-  [key: string]: boolean;
-}
-
-export const useBeasts = () => {
-  const [beastsData, setBeastsData] = useState([]);
-  useEffect(() => {
-    const fetchBeasts = async () => {
-      try {
-        const response = await fetch(TORII_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: `
-              query GetBeast {
-                tamagotchiBeastModels(first: 1000) {
-                  edges {
-                    node {
-                      player
-                      beast_id
-                      age
-                      birth_date
-                      specie
-                      beast_type
-                    }
-                  }
-                  totalCount
-                }
-                tamagotchiBeastStatusModels(first: 1000) {
-                  edges {
-                    node {
-                      beast_id
-                      is_alive
-                    }
-                  }
-                }
-              }
-            `,
-          }),
-        });
-
-        const result = await response.json();
-        if (result.data && result.data.tamagotchiBeastModels) {
-          const playerAddresses = result.data.tamagotchiBeastModels.edges
-            .map((edge: BeastEdge) => edge.node.player)
-            .filter((address: string, index: number, self: string[]) =>
-              self.indexOf(address) === index
-            );
-          const addressMap = await lookupAddresses(playerAddresses);
-
-          // Extract beast statuses in a similar way to tamagotchiBeastModels
-          const beastStatuses: BeastStatuses = {};
-
-          if (result.data.tamagotchiBeastStatusModels) {
-            result.data.tamagotchiBeastStatusModels.edges.forEach((edge: BeastStatusEdge) => {
-              const status = edge.node;
-              beastStatuses[status.beast_id] = status.is_alive;
-            });
-          }
-
-          let playerData = result.data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => {
-            const beast = edge.node;
-            const beastStatus = beastStatuses[beast.beast_id];
-            
-            return {
-              ...beast,
-              userName: addressMap.get(beast.player),
-              is_alive: typeof beastStatus === 'boolean' ? beastStatus : true
-            };
-          });
-          setBeastsData(playerData);
+const BEASTS_QUERY = `
+  query GetBeast {
+    tamagotchiBeastModels(first: 1000) {
+      edges {
+        node {
+          player
+          beast_id
+          age
+          birth_date
+          specie
+          beast_type
         }
-      } catch (error) {
-        console.error("Error fetching beasts:", error);
+      }
+      totalCount
+    }
+    tamagotchiBeastStatusModels(first: 1000) {
+      edges {
+        node {
+          beast_id
+          is_alive
+        }
+      }
+    }
+  }
+`;
+
+// API Functions
+const fetchBeastsData = async (): Promise<Beast[]> => {
+  try {
+    const response = await fetch(TORII_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: BEASTS_QUERY }),
+    });
+
+    const result = await response.json();
+    if (!result.data?.tamagotchiBeastModels) {
+      throw new Error('No beast data found');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching beasts:", error);
+    throw error;
+  }
+};
+
+const processBeastData = async (data: any): Promise<Beast[]> => {
+  const playerAddresses = data.tamagotchiBeastModels.edges
+    .map((edge: BeastEdge) => edge.node.player)
+    .filter((address: string, index: number, self: string[]) =>
+      self.indexOf(address) === index
+    );
+
+  const addressMap = await lookupAddresses(playerAddresses);
+  const beastStatuses = extractBeastStatuses(data.tamagotchiBeastStatusModels);
+
+  return data.tamagotchiBeastModels.edges.map((edge: BeastEdge) => ({
+    ...edge.node,
+    userName: addressMap.get(edge.node.player),
+    is_alive: typeof beastStatuses[edge.node.beast_id] === 'boolean' 
+      ? beastStatuses[edge.node.beast_id] 
+      : true
+  }));
+};
+
+const extractBeastStatuses = (statusModels: any): BeastStatuses => {
+  const beastStatuses: BeastStatuses = {};
+  
+  if (statusModels?.edges) {
+    statusModels.edges.forEach((edge: BeastStatusEdge) => {
+      const status = edge.node;
+      beastStatuses[status.beast_id] = status.is_alive;
+    });
+  }
+
+  return beastStatuses;
+};
+
+// Hook
+export const useBeasts = () => {
+  const [beastsData, setBeastsData] = useState<Beast[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const loadBeasts = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchBeastsData();
+        const processedData = await processBeastData(data);
+        setBeastsData(processedData);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error occurred'));
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchBeasts();
+    loadBeasts();
   }, []);
 
-  console.info('beastsData', beastsData);
-
   return {
-    beastsData
+    beastsData,
+    isLoading,
+    error
   };
 };

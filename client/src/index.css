@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-@import './styles/colors.css';
 
 @font-face {
   font-family: 'Kallisto';
@@ -13,6 +12,43 @@
   src: url('./assets/fonts/Kallisto-Bold.otf');
   font-weight: bold;
   font-style: bold;
+}
+
+:root {
+  /* Primary Colors */
+  --primary-red: #85002A;
+  --primary-red-dark: #6E0022;
+  --primary-red-light: #891a29;
+  --primary-red-gradient-start: #95033A;
+  --primary-red-gradient-end: #E11A4D;
+  
+  /* Background Colors */
+  --bg-dark: #000000;
+  --bg-dark-secondary: #1c1c1c;
+  --bg-dark-tertiary: #2a2a2a;
+  
+  /* Text Colors */
+  --text-light: #ECECDA;
+  --text-dark: #370001;
+  
+  /* Overlay Colors */
+  --overlay-dark: rgba(0, 0, 0, 0.7);
+  --overlay-dark-light: rgba(0, 0, 0, 0.3);
+  --overlay-dark-medium: rgba(0, 0, 0, 0.5);
+  
+  /* Status Colors */
+  --status-good: rgba(28, 150, 1, 0.437);
+  --status-bad: rgba(150, 1, 1, 0.5);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(to right, #85002A, #D1093D);
+  --gradient-primary-hover: linear-gradient(to right, #95033A, #E11A4D);
+  --gradient-primary-active: linear-gradient(to right, #B00833, #6E0022);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
 body {
@@ -35,10 +71,6 @@ body {
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 .body.day {
@@ -66,6 +98,10 @@ h2 {
   color: var(--text-light);
 }
 
+p, span {
+  font-family: "Montserrat", serif;
+}
+
 a,
 a:active,
 a:visited {
@@ -75,13 +111,9 @@ a:visited {
   font-weight: bold;
 }
 
-p, span {
-  font-family: "Montserrat", serif;
-}
-
 .input {
   font-family: 'Kallisto';
-  border-radius: 30px;
+  border-radius: 10px;
   padding-right: 10px;
   margin: 0;
   width: 100%;
@@ -90,7 +122,6 @@ p, span {
   background: var(--gradient-primary);
   color: var(--text-light);
   border: 0;
-  border-radius: 10px;
   transition: all 0.25s ease;
   backdrop-filter: blur(5px);
 }
@@ -107,16 +138,17 @@ p, span {
   border-radius: 13px;
   font-size: 18px;
   font-family: 'Kallisto', sans-serif;
-  font-weight: bolder;
+  font-weight: bold;
   text-transform: uppercase;
   cursor: pointer; 
   transition: background 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 12px 0;
   width: 100%;
+  height: 51px;
 }
 
 .button:hover {
@@ -163,16 +195,17 @@ p, span {
   height: 20px;
 }
 
-.disconnect-button.a, .disconnect-button.a:active, .disconnect-button.a:visited {
+.disconnect-button.a, 
+.disconnect-button.a:active, 
+.disconnect-button.a:visited {
   color: var(--text-dark);
 }
 
 .hint {
   height: 36px;
-  margin: 12px 0 0;
-  transition: all 0.5s;
-  opacity: 0;
+  margin: 28px 0 0;
   transition: opacity 0.3s ease-in-out;
+  opacity: 0;
 }
 
 .hint.fade-in {
@@ -201,13 +234,12 @@ p, span {
 }
 
 .title {
-  text-align: left;
+  text-align: center;
   font-weight: 800;
   font-size: 18px;
   margin: 0 auto;
   padding-right: 5px;
   color: var(--text-light);
-  text-align: center;
 }
 
 .title span {
@@ -280,41 +312,45 @@ p, span {
   }
 }
 
+.loading {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 8px solid var(--text-light);
+  border-top-color: var(--primary-red-dark);
+  animation: loading 1s linear infinite;
+  margin: auto;
+}
+
 .loading-state {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--bg-dark);
+  z-index: 1000;
 }
-.loading {
-  width: 25px;
-  height: 25px;
+
+.loader {
+  border: 8px solid var(--text-light);
+  border-top: 8px solid var(--primary-red);
   border-radius: 50%;
-  border: 3px solid var(--text-light);
-  border-top-color: var(--primary-red-dark);
-  animation: loading 1s linear infinite;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
 }
+
 @keyframes loading {
   to {
     transform: rotate(360deg);
   }
 }
 
-.loading-aura {
-  animation: loading-aura 3s ease-in-out infinite;
-}
-
-@keyframes loading-aura {
-  0% {
-    box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);
-  }
-  50% {
-    box-shadow: 0 0 20px 4px rgba(133, 0, 40, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 10px 2px rgba(133, 0, 40, 0.8);
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

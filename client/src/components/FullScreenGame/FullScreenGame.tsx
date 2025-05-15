@@ -5,31 +5,12 @@ import './main.css';
 
 import { GAMES_REGISTRY, GameData } from '../../data/gamesMiniGamesRegistry.tsx';
 import beastsDex from '../../data/beastDex.tsx';
-import { useAccount } from '@starknet-react/core';
 import { useHighScores } from '../../hooks/useHighScore.tsx';
-
-interface GameState {
-  beastId: number;
-  specie: number;
-  gameId: string;
-}
-
-interface GameTemp {
-  handleAction: any;
-  client: any;
-  account: any;
-}
-
-declare global {
-  interface Window {
-    __gameTemp: GameTemp | null;
-  }
-}
+import { GameState, GameTemp } from '../../types/components';
 
 const FullscreenGame = () => {
   const navigate = useNavigate();
-  const { account } = useAccount();
-  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores();
 
   const location = useLocation();
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -80,7 +61,7 @@ const FullscreenGame = () => {
           default: return '0';
         }
       })()
-      setHighScore(savedHighScore);
+      setHighScore(Number(savedHighScore));
     } else {
       navigate('/play');
     }

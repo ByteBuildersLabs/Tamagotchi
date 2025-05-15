@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
+import { Account } from 'starknet';
+import useSound from 'use-sound';
+
 import useAppStore from '../../../context/store.ts';
 import { useFood } from '../../../hooks/useFood.tsx';
+
 import beastsDex from '../../../data/beastDex.tsx';
 import initialFoodItems from '../../../data/food.tsx';
+
 import buttonClick from '../../../assets/sounds/click.mp3';
-import useSound from 'use-sound';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './main.css';
-import { Account } from 'starknet';
 
 const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation }: {
   handleAction: any,
@@ -18,7 +22,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   beastStatus: any,
   showAnimation: (gifPath: string) => void,
 }) => {
-  const { foods, loadingFood } = useFood();
+  const { foods, isLoading } = useFood();
   const { zfoods, setFoods } = useAppStore();
   const [loading, setLoadingFood] = useState(true);
   const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
@@ -32,7 +36,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
   }, []);
 
   useEffect(() => {
-    if (!loadingFood && foods.length > 0) {
+    if (!isLoading && foods.length > 0) {
       const updatedFoods = foods.map((food) => {
         const initialFood = initialFoodItems.find(item => item.id === food.id);
         return {
@@ -44,7 +48,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
       });
       setFoods(updatedFoods);
     }
-  }, [loadingFood, foods]);
+  }, [isLoading, foods]);
 
   const feedTamagotchi = async (foodName: string) => {
     buttonSound();

@@ -1,8 +1,15 @@
+// React and external libraries
 import React from 'react';
-import beastsDex from '../../../data/beastDex.tsx';
 import { useNavigate } from 'react-router-dom';
-import { getAvailableGames } from '../../../data/gamesMiniGamesRegistry.tsx';
+
+// Hooks and Contexts
 import { useHighScores } from '../../../hooks/useHighScore.tsx';
+
+// Data
+import beastsDex from '../../../data/beastDex.tsx';
+import { getAvailableGames } from '../../../data/gamesMiniGamesRegistry.tsx';
+
+// Styles
 import './main.css';
 
 const availableGames = getAvailableGames();
@@ -23,7 +30,7 @@ const Play: React.FC<PlayProps> = ({
   showAnimation
 }) => {
   const navigate = useNavigate();
-  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores();
 
   const GAME_ID_MAPPING: Record<string, number> = {
     'doodleGame': 1,     // SkyJump

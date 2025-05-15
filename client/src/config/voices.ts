@@ -1,4 +1,4 @@
-import { Voice } from '../types/text-to-speech';
+import { Voice } from '../types/textToSpeech';
 
 export const AVAILABLE_VOICES: Voice[] = [
   { id: "AMA7aVFXjoVjAov0t4LT", name: "YoungEagle" },

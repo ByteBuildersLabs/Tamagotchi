@@ -1,5 +1,10 @@
+// React and external libraries
 import React from 'react';
-import trophy from "../../assets/img/trophy2.svg";
+
+// Assets
+import trophy from "../../assets/img/icon-trophy.svg";
+
+// Styles
 import "./main.css";
 
 interface CountdownProps {

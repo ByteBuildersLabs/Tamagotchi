@@ -1,4 +1,4 @@
-import { Voice } from '../../types/text-to-speech';
+import { Voice } from '../../types/textToSpeech';
 
 interface VoiceSelectorProps {
   selectedVoice: string;

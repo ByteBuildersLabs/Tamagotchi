@@ -1,19 +1,34 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { Beast } from '../dojo/bindings';
 import beastsDex from '../data/beastDex';
+import { Message, UseBeastChatProps, ChatResponse } from '../types/game';
 
-export interface Message {
-  user: string;
-  text: string;
-  isSystem?: boolean;
-}
+const DEFAULT_ERROR_MESSAGE: Message = {
+  user: "System",
+  text: "Failed to get response. Please try again.",
+  isSystem: true
+};
 
-interface UseBeastChatProps {
-  beast: Beast | null;
-  baseUrl?: string;
-  setBotMessage?: any;
-}
+const getBeastEndpoint = (baseUrl: string, specie: number): string => {
+  const beastData = beastsDex[specie - 1];
+  if (!beastData) {
+    throw new Error(`Invalid beast species: ${specie}`);
+  }
+  return `${baseUrl}/${beastData.name}/message`;
+};
+
+const sendChatRequest = async (
+  endpoint: string, 
+  text: string
+): Promise<ChatResponse> => {
+  const response = await axios.post(endpoint, { text });
+  
+  if (!response.data?.length) {
+    throw new Error("Received empty response from server");
+  }
+
+  return response.data[0];
+};
 
 export const useBeastChat = ({ 
   beast,
@@ -24,11 +39,16 @@ export const useBeastChat = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const getBeastEndpoint = useCallback((specie: number) => {
-    const beastData = beastsDex[specie - 1];
-    if (!beastData) throw new Error(`Invalid beast species: ${specie}`);
-    return `${baseUrl}/${beastData.name}/message`;
-  }, [baseUrl]);
+  const handleError = useCallback((err: unknown, isSystemPrompt: boolean) => {
+    console.error("Error sending message:", err);
+    const errorMessage = err instanceof Error ? err : new Error('Failed to send message');
+    setError(errorMessage);
+
+    if (!isSystemPrompt && setBotMessage) {
+      setBotMessage(DEFAULT_ERROR_MESSAGE);
+      setMessage(DEFAULT_ERROR_MESSAGE);
+    }
+  }, [setBotMessage]);
 
   const sendMessage = useCallback(async (text: string, isSystemPrompt = false) => {
     if (text.trim() === "" || isLoading || !beast) return;
@@ -37,38 +57,27 @@ export const useBeastChat = ({
     setError(null);
 
     try {
-      const endpoint = getBeastEndpoint(beast.specie);
-      const response = await axios.post(endpoint, { text });
+      const endpoint = getBeastEndpoint(baseUrl, parseInt(beast.specie));
+      const { user, text: responseText } = await sendChatRequest(endpoint, text);
+      
+      const botMessage: Message = { 
+        user, 
+        text: responseText,
+        isSystem: isSystemPrompt 
+      };
 
-      if (response.data && response.data.length > 0) {
-        const { user, text: responseText } = response.data[0];
-        const botMessage: Message = { 
-          user, 
-          text: responseText,
-          isSystem: isSystemPrompt 
-        };
+      if (setBotMessage) {
         setBotMessage(botMessage);
-        setMessage(botMessage);
-        return botMessage; 
-      } else {
-        throw new Error("Received empty response from server");
       }
+      setMessage(botMessage);
+      return botMessage;
     } catch (err) {
-      console.error("Error sending message:", err);
-      if (!isSystemPrompt) {
-        const errorMessage: Message = {
-          user: "System",
-          text: "Failed to get response. Please try again.",
-          isSystem: true
-        };
-        setBotMessage(errorMessage)
-        setMessage(errorMessage);
-      }
-      setError(err instanceof Error ? err : new Error('Failed to send message'));
+      handleError(err, isSystemPrompt);
+      return null;
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, beast, getBeastEndpoint]);
+  }, [isLoading, beast, baseUrl, handleError]);
 
   const sendSystemPrompt = useCallback(async (text: string) => {
     return sendMessage(text, true);

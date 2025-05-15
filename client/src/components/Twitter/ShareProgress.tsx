@@ -1,5 +1,7 @@
-// ShareModal.tsx
+// React and external libraries
 import React, { ChangeEvent, useEffect, useState } from 'react';
+
+// Styles
 import './main.css';
 import '../../index.css';
 
