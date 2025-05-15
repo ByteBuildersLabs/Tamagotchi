@@ -21,7 +21,7 @@ import { GameId } from '../../types/minigames.tsx';
 const skyBackground = new URL('../../assets/flappyBeasts/bg-sky.png', import.meta.url).href;
 const landBackground = new URL('../../assets/flappyBeasts/bg-land.png', import.meta.url).href;
 const ceilingBackground = new URL('../../assets/flappyBeasts/bg-ceiling.png', import.meta.url).href;
-const pipeImage = new URL('../../assets/flappyBeasts/img-pipe.png', import.meta.url).href;
+const pipeImage = new URL('../../assets/flappyBeasts/img-pipe-up.png', import.meta.url).href;
 const pipeUpImage = new URL('../../assets/flappyBeasts/img-pipe-up.png', import.meta.url).href;
 const pipeDownImage = new URL('../../assets/flappyBeasts/img-pipe-down.png', import.meta.url).href;
 
