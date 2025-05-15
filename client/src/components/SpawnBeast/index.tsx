@@ -24,7 +24,6 @@ import type {
 } from '../../types/components';
 
 // Utils
-import { SPAWN_DELAY, NAVIGATION_DELAY } from './utils/constants';
 import { getRandomNumber } from './utils/helpers';
 
 // Styles
@@ -83,14 +82,20 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
     if (!foundBeast || !account) return;
     
     try {
-      await client.player.setCurrentBeast(account as Account, foundBeast.beast_id);
+      setState(prev => ({ ...prev, loading: true }));
+      
+      const tx = await client.player.setCurrentBeast(account as Account, foundBeast.beast_id);
+      await tx.wait();
+      
       setCurrentBeast(foundBeast);
       localStorage.removeItem('reborn');
       localStorage.removeItem('status');
-      navigate('/play');
+      if (tx) navigate('/play');
     } catch (error) {
       console.error('Error setting current beast:', error);
       setState(prev => ({ ...prev, error: 'Failed to set current beast' }));
+    } finally {
+      setState(prev => ({ ...prev, loading: false }));
     }
   }, [account, client, navigate, setCurrentBeast]);
 
@@ -101,18 +106,18 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
       if (!zplayer) {
-        await client.player.spawnPlayer(account as Account);
-        await new Promise(resolve => setTimeout(resolve, SPAWN_DELAY));
+        const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
+        await spawnPlayerTx.wait();
       }
 
       const randomBeastId = getRandomNumber(1, 3);
-      await spawn(randomBeastId);
-      await new Promise(resolve => setTimeout(resolve, NAVIGATION_DELAY));
-      
+      const { spawnTx, setCurrentTx } = await spawn(randomBeastId);
+      await spawnTx.wait();
+      await setCurrentTx.wait();
       localStorage.removeItem('reborn');
       localStorage.removeItem('status');
       setState(prev => ({ ...prev, spawned: true }));
-      navigate('/play');
+      if (spawnTx && setCurrentTx) navigate('/play');
     } catch (error) {
       console.error('Error spawning player:', error);
       setState(prev => ({ 

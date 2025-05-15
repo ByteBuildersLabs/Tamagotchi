@@ -23,14 +23,23 @@ export const useSystemCalls = () => {
      * @throws {Error} If the spawn action fails
      */
     const spawn = async (randomNumber:number) => {
-
         const transactionId = uuidv4();
 
         try {
             // Execute the spawn action from the client
-            await client.game.spawnBeast(account!, randomNumber, randomNumber);
-            await client.player.setCurrentBeast(account!, randomNumber, randomNumber);
+            const spawnTx = await client.game.spawnBeast(account!, randomNumber, randomNumber);
+            const setCurrentTx = await client.player.setCurrentBeast(account!, randomNumber, randomNumber);
 
+            // Wait for both transactions to complete
+            await Promise.all([
+                spawnTx.wait(),
+                setCurrentTx.wait()
+            ]);
+
+            return {
+                spawnTx,
+                setCurrentTx
+            };
         } catch (error) {
             // Revert the optimistic update if an error occurs
             state.revertOptimisticUpdate(transactionId);
