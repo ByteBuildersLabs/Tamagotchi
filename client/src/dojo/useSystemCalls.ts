@@ -30,12 +30,6 @@ export const useSystemCalls = () => {
             const spawnTx = await client.game.spawnBeast(account!, randomNumber, randomNumber);
             const setCurrentTx = await client.player.setCurrentBeast(account!, randomNumber, randomNumber);
 
-            // Wait for both transactions to complete
-            await Promise.all([
-                spawnTx.wait(),
-                setCurrentTx.wait()
-            ]);
-
             return {
                 spawnTx,
                 setCurrentTx

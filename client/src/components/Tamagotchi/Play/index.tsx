@@ -30,7 +30,7 @@ const Play: React.FC<PlayProps> = ({
   showAnimation
 }) => {
   const navigate = useNavigate();
-  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores(account);
+  const { myScoreFlappyBird, myScoreSkyJump } = useHighScores();
 
   const GAME_ID_MAPPING: Record<string, number> = {
     'doodleGame': 1,     // SkyJump

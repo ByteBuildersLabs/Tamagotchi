@@ -24,8 +24,8 @@ export const useTamagotchi = () => {
   const { account } = useAccount();
   const { client } = useDojoSDK();
   const navigate = useNavigate();
-  const [status, setStatus] = useLocalStorage('status', []);
-  const [reborn, setReborn] = useLocalStorage('reborn', false);
+  const [status, setStatus] = useLocalStorage<number[]>('status', []);
+  const [reborn, setReborn] = useLocalStorage<boolean>('reborn', false);
   const { zplayer, zcurrentBeast } = useAppStore();
 
   // State
@@ -53,7 +53,7 @@ export const useTamagotchi = () => {
     }, loadingTime);
   };
 
-  const handleAction = async (actionName: string, actionFn: () => Promise<{ transaction_hash: string } | undefined>, animation: string) => {
+  const handleAction = async (actionName: string, actionFn: () => Promise<any>, animation: string) => {
     setIsLoading(true);
     showAnimation(animation);
     buttonSound();
@@ -66,10 +66,20 @@ export const useTamagotchi = () => {
       case 'Revive': playRevive(); break;
     }
     
-    await actionFn();
-    setTimeout(() => {
+    try {
+      const tx = await actionFn();
+      if (tx) {
+        // Update status after transaction is confirmed
+        const newStatus = await fetchStatus(account);
+        if (newStatus && Object.keys(newStatus).length !== 0) {
+          setStatus(newStatus as number[]);
+        }
+      }
+    } catch (error) {
+      console.error("Action error:", error);
+    } finally {
       setIsLoading(false);
-    }, loadingTime);
+    }
   };
 
   const handleCuddle = async () => {
@@ -77,19 +87,22 @@ export const useTamagotchi = () => {
     if (status[1] === 0 || status[2] === 0) return;
 
     try {
-      await handleAction(
-        "Cuddle",
-        async () => await client.game.pet(account as Account),
-        beastsDex[zcurrentBeast.specie - 1].cuddlePicture
-      );
-
-      const achieveBeastPet = await client.achieve.achieveBeastPet(account as Account);
       setIsLoading(true);
-      setTimeout(() => {
-        if (achieveBeastPet) setIsLoading(false);
-      }, loadingTime);
+      const tx = await client.game.pet(account as Account);
+      if (tx) {
+        showAnimation(beastsDex[zcurrentBeast.specie - 1].cuddlePicture);
+        const achieveBeastPet = await client.achieve.achieveBeastPet(account as Account);
+        console.info('achieveBeastPet', achieveBeastPet)
+        // Update status after transaction is confirmed
+        const newStatus = await fetchStatus(account);
+        if (newStatus && Object.keys(newStatus).length !== 0) {
+          setStatus(newStatus as number[]);
+        }
+      }
     } catch (error) {
       console.error("Cuddle error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -145,26 +158,36 @@ export const useTamagotchi = () => {
   }, [status, zcurrentBeast]);
 
   useEffect(() => {
-    if (!zplayer || !account) return;
-    let statusResponse: any = fetchStatus(account);
-    let ageResponse: any = fetchAge(account);
-    
-    if (!status || status.length === 0) setIsLoading(true);
-    if (status[0] !== zplayer.current_beast_id) setIsLoading(true);
+    if (!zplayer || !account || !zcurrentBeast) {
+      setIsLoading(true);
+      return;
+    }
 
-    const interval = setInterval(async () => {
-      if (status[1] === 0) return;
-      statusResponse = await fetchStatus(account);
-      ageResponse = await fetchAge(account);
-      
-      if (statusResponse && Object.keys(statusResponse).length !== 0) {
-        setStatus(statusResponse);
+    const updateStatus = async () => {
+      try {
+        const [statusResponse, ageResponse] = await Promise.all([
+          fetchStatus(account),
+          fetchAge(account)
+        ]);
+        
+        if (statusResponse && Object.keys(statusResponse).length !== 0) {
+          setStatus(statusResponse as number[]);
+        }
+        if (ageResponse) {
+          setAge(Number(ageResponse));
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error updating status:", error);
+        setIsLoading(false);
       }
-      if (ageResponse) {
-        setAge(ageResponse);
-      }
-      setIsLoading(false);
-    }, 3000);
+    };
+
+    // Initial update
+    updateStatus();
+
+    // Set up interval for updates
+    const interval = setInterval(updateStatus, 3000);
 
     return () => clearInterval(interval);
   }, [zcurrentBeast, account, zplayer]);

@@ -85,12 +85,12 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setState(prev => ({ ...prev, loading: true }));
       
       const tx = await client.player.setCurrentBeast(account as Account, foundBeast.beast_id);
-      await tx.wait();
       
       setCurrentBeast(foundBeast);
       localStorage.removeItem('reborn');
       localStorage.removeItem('status');
-      if (tx) navigate('/play');
+      console.info('Rolooo', tx);
+      if (tx && tx.code === "SUCCESS") navigate('/play');
     } catch (error) {
       console.error('Error setting current beast:', error);
       setState(prev => ({ ...prev, error: 'Failed to set current beast' }));
@@ -106,18 +106,20 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
       if (!zplayer) {
-        const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-        await spawnPlayerTx.wait();
+         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
+         console.info(spawnPlayerTx);
       }
 
       const randomBeastId = getRandomNumber(1, 3);
       const { spawnTx, setCurrentTx } = await spawn(randomBeastId);
-      await spawnTx.wait();
-      await setCurrentTx.wait();
+
       localStorage.removeItem('reborn');
       localStorage.removeItem('status');
       setState(prev => ({ ...prev, spawned: true }));
-      if (spawnTx && setCurrentTx) navigate('/play');
+      if (
+        spawnTx && spawnTx.code === "SUCCESS" && 
+        setCurrentTx && setCurrentTx.code === "SUCCESS"
+      ) navigate('/play');
     } catch (error) {
       console.error('Error spawning player:', error);
       setState(prev => ({ 
