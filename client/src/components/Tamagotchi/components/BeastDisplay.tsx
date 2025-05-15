@@ -41,7 +41,7 @@ const BeastDisplay = ({
   return (
     <>
       {status[1] === 0 && (
-        <button className="button" onClick={onNewEgg}>
+        <button className="button mb-4" onClick={onNewEgg}>
           Hatch a new Egg
           <img src={Egg} className="new-egg" alt="beast" />
         </button>
@@ -51,7 +51,7 @@ const BeastDisplay = ({
         {!status || status.length === 0 ? (
           <Spinner message="Loading your beast..." />
         ) : (
-          <div className="relative w-40 h-40">
+          <div className="beast-cage">
             <img
               src={currentImage}
               alt="Tamagotchi"

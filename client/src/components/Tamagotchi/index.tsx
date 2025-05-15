@@ -23,6 +23,10 @@ import useAppStore from "../../context/store";
 // Types
 import { Message } from '../../types/game';
 
+
+// Styles
+import './main.css';
+
 function Tamagotchi() {
   const { account } = useAccount();
   const { client } = useDojoSDK();
