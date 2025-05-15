@@ -1,7 +1,7 @@
 .whispers {
   height: 70px;
   margin: 0 0 10px;
-  position: relative;
+  position: absolute;
   top: -15px;
 }
 

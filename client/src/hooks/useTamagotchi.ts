@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from "./useLocalStorage";
 import beastsDex from "../data/beastDex";
 import useAppStore from "../context/store";
-import { fetchAge, fetchStatus, getDayPeriod } from '../components/Tamagotchi/utils';
+import { fetchAge, fetchStatus, getBirthDate, getDayPeriod } from '../components/Tamagotchi/utils';
 
 // Sound imports
 import feedSound from '../assets/sounds/bbeating.mp3';
@@ -32,7 +32,7 @@ export const useTamagotchi = () => {
   const [currentImage, setCurrentImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('actions');
-  const [birthday] = useState<{ hours: string; minutes: string }>({ hours: '', minutes: '' });
+  const [birthday, setBirthday] = useState<{ hours: string; minutes: string }>({ hours: '', minutes: '' });
   const [age, setAge] = useState<number>(0);
   const [displayBirthday, setDisplayBirthday] = useState(false);
 
@@ -101,7 +101,7 @@ export const useTamagotchi = () => {
   };
 
   const showBirthday = () => {
-    if (status[1] === 0) return
+    setBirthday(getBirthDate(zcurrentBeast.birth_date))
     buttonSound();
     setDisplayBirthday(true);
     setTimeout(() => {
