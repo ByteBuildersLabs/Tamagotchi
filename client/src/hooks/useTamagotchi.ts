@@ -101,6 +101,7 @@ export const useTamagotchi = () => {
   };
 
   const showBirthday = () => {
+    if (status[1] === 0) return
     buttonSound();
     setDisplayBirthday(true);
     setTimeout(() => {

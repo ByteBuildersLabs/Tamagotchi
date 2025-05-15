@@ -105,7 +105,6 @@ function Tamagotchi() {
                 status={status}
                 currentBeast={zcurrentBeast}
                 currentImage={currentImage}
-                isLoading={isLoading}
                 age={age}
                 birthday={birthday}
                 displayBirthday={displayBirthday}
@@ -114,6 +113,7 @@ function Tamagotchi() {
                 onShowBirthday={showBirthday}
                 onChatToggle={() => setCurrentView('chat')}
                 onBackToActions={() => setCurrentView('actions')}
+                expanded={currentView === 'chat' || currentView === 'food' || currentView === 'play'}
               />
 
               {!status || status.length === 0 || !zcurrentBeast || status[1] === 0 || status[2] === 0 ? null : (

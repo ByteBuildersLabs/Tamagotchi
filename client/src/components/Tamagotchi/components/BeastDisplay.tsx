@@ -13,7 +13,6 @@ interface BeastDisplayProps {
   status: number[];
   currentBeast: Beast | null;
   currentImage: string;
-  isLoading: boolean;
   age: number;
   birthday: { hours: string; minutes: string };
   displayBirthday: boolean;
@@ -22,13 +21,13 @@ interface BeastDisplayProps {
   onShowBirthday: () => void;
   onChatToggle: () => void;
   onBackToActions: () => void;
+  expanded: boolean;
 }
 
 const BeastDisplay = ({
   status,
   currentBeast,
   currentImage,
-  isLoading,
   age,
   birthday,
   displayBirthday,
@@ -36,7 +35,8 @@ const BeastDisplay = ({
   onNewEgg,
   onShowBirthday,
   onChatToggle,
-  onBackToActions
+  onBackToActions,
+  expanded
 }: BeastDisplayProps) => {
   return (
     <>
@@ -85,13 +85,15 @@ const BeastDisplay = ({
               )}
               
               <div className="d-flex">
-                <div className="back-button">
-                  <img
-                    src={Close}
-                    onClick={onBackToActions}
-                    alt="Back to actions"
-                  />
-                </div>
+                { expanded &&
+                  <div className="back-button">
+                    <img
+                      src={Close}
+                      onClick={onBackToActions}
+                      alt="Back to actions"
+                    />
+                  </div>
+                }
                 <Link to={'/leaderboard'} className="chat-toggle">
                   <img src={ranking} alt="Leaderboard" />
                 </Link>
