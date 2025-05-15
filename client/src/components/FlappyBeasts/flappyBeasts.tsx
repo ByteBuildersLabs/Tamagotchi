@@ -18,12 +18,12 @@ import "./main.css";
 // Assets
 import Restart from '../../assets/img/icon-restart.svg';
 import { GameId } from '../../types/minigames.tsx';
-import skyBackground from '../../assets/flappyBeasts/bg-sky.png';
+import skyBackground from '../../assets/FlappyBeasts/bg-sky.png';
 import landBackground from '../../assets/FlappyBeasts/bg-land.png';
 import ceilingBackground from '../../assets/FlappyBeasts/bg-ceiling.png';
-import pipeImage from '../../assets/flappyBeasts/img-pipe-up.png';
-import pipeUpImage from '../../assets/flappyBeasts/img-pipe-up.png';
-import pipeDownImage from '../../assets/flappyBeasts/img-pipe-down.png';
+import pipeImage from '../../assets/FlappyBeasts/img-pipe-up.png';
+import pipeUpImage from '../../assets/FlappyBeasts/img-pipe-up.png';
+import pipeDownImage from '../../assets/FlappyBeasts/img-pipe-down.png';
 
 // Asset configuration
 const gameAssets = {
