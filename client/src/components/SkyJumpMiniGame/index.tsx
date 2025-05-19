@@ -29,8 +29,6 @@ import { InputHandler } from './inputHandler'; // Ajusta la ruta
 
 // Assets para UI (los mismos que antes)
 import RestartIcon from '../../assets/img/icon-restart.svg'; // Ajusta la ruta
-import LockIcon from '../../assets/img/icon-lock.svg'; // Ajusta la ruta
-import UnlockIcon from '../../assets/img/icon-unlock.svg'; // Ajusta la ruta
 
 // Estilos (puedes necesitar un nuevo archivo o modificar el existente)
 import './main.css'; 
@@ -56,7 +54,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   // Estados para la UI de React (modales, toasts, etc.)
   const [currentScore, setCurrentScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
-  const [isGameOverState, setIsGameOverState] = useState(false); // Estado de React para game over
+  const [_isGameOverState, setIsGameOverState] = useState(false); // Estado de React para game over
   const [currentHighScore, setCurrentHighScore] = useState(initialHighScore);
 
   const [showEnergyToast, setShowEnergyToast] = useState(false);
@@ -272,13 +270,6 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       console.error("Error on Play Again:", error);
     }
   };
-  
-  const internalToggleGyroscope = () => {
-    if (inputHandlerRef.current) {
-      inputHandlerRef.current.toggleGyroscopeManually();
-      // setUsingGyroscope es llamado por el callback del InputHandler
-    }
-  };
 
   // Exponer el método resetGame al componente padre
   useImperativeHandle(ref, () => ({
@@ -296,10 +287,6 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     },
     isGameOver: () => gameEngineRef.current?.isGameOver() ?? true,
   }));
-
-  function toggleGyroscope(_event: React.MouseEvent<HTMLDivElement>): void {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <div
@@ -350,28 +337,6 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           >
             X
           </button>
-        )}
-  
-        {/* Botón de Giroscopio */}
-        {isMobile && (
-          <div
-            className={`skyjump-gyro-button ${usingGyroscope ? 'active' : ''}`}
-            onClick={toggleGyroscope}
-            aria-pressed={usingGyroscope}
-            aria-label={
-              usingGyroscope ? 'Desactivar giroscopio' : 'Activar giroscopio'
-            }
-          >
-            <img
-              src={usingGyroscope ? UnlockIcon : LockIcon}
-              alt={
-                usingGyroscope
-                  ? 'Giroscopio activado'
-                  : 'Giroscopio desactivado'
-              }
-              className="skyjump-lock-icon"
-            />
-          </div>
         )}
   
         {/* Modal de Compartir */}
