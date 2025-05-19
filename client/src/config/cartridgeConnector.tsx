@@ -133,7 +133,6 @@ const getRpcUrl = () => {
 };
 
 const options: ControllerOptions = {
-  rpc: getRpcUrl(),
   // @ts-ignore
   chains: [
     {
@@ -145,7 +144,8 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "toriibytebeasts", 
+  slot: "toriibytebeasts",
+  preset: 'bytebeasts-tamagotchi'
 };
 
 const cartridgeConnector = new ControllerConnector(
