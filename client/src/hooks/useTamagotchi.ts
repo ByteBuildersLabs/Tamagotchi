@@ -127,7 +127,7 @@ export const useTamagotchi = (currentBeast: any) => {
     setIsLoading(true);
     try {
       await client.game.updateBeast(account as Account);
-      navigate('/spawn');
+      navigate('/spawn?reborn=true');
     } catch (error) {
       console.error("Error updating beast:", error);
     } finally {
@@ -244,6 +244,8 @@ export const useTamagotchi = (currentBeast: any) => {
             setStatus(newStatus);
             setIsLoading(false);
           } else {
+            const setCurrentTx = await client.player.setCurrentBeast(account!, currentBeast.beast_id);
+            console.info('setCurrentTx', setCurrentTx);
             console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
             setIsLoading(true);
           }

@@ -1,6 +1,6 @@
 // React and external libraries
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAccount } from "@starknet-react/core";
 import { Account } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -13,7 +13,6 @@ import SpawnBeastContent from './components/SpawnBeastContent';
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
 import { fetchBeastsData, processBeastData } from "../../hooks/useBeasts";
-import { fetchPlayerData, findPlayerByAddress } from "../../hooks/usePlayers";
 
 // Types
 import type { 
@@ -37,6 +36,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   const { player } = usePlayer();
   const { spawn } = useSystemCalls();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   // State
   const [state, setState] = useState<SpawnBeastState>({
@@ -55,8 +55,9 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   // Handle current beast and navigation
   useEffect(() => {
     if (!player || Object.keys(player).length === 0) return;
-    if (parseInt(player.current_beast_id) > 0) navigate('/play');
-  }, [player]);
+    const reborn = searchParams.get('reborn') === 'true';
+    if (!reborn && parseInt(player.current_beast_id) > 0) navigate('/play');
+  }, [player, searchParams]);
 
   const spawnPlayer = async () => {
     try {
@@ -73,11 +74,8 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
       const { spawnTx } = await spawn(randomBeastId);
       // Esperar un momento para que se actualice la lista de beasts
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      console.info('spawnBeastTx', spawnTx)
 
       if (spawnTx && spawnTx.code === "SUCCESS") {
-        
         let newBeast;
         do {
           // Recargar la lista de beasts usando GraphQL
@@ -88,15 +86,15 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
           // Encontrar la bestia recién creada
           newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
           console.info('newBeast', newBeast);
+          await new Promise(resolve => setTimeout(resolve, 2000));
         } while (!newBeast);
         
         if (newBeast) {
           const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
-          await new Promise(resolve => setTimeout(resolve, 3000));
           console.info('setCurrentTx', setCurrentTx);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          navigate('/play');
         }
-
-        if (newBeast) navigate('/play');
       }
     } catch (error) {
       console.error('Error spawning player:', error);
