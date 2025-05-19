@@ -1,16 +1,13 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
 import { useAccount } from '@starknet-react/core'; 
 
-// Componentes UI (los mismos que antes)
 import { ShareProgress } from '../Twitter/ShareProgress'; 
 import GameOverModal from '../ui/ModalGameOver/ModalGameOver'; 
 
-// Hooks y Servicios (los mismos que antes)
 import { useHighScores } from '../../hooks/useHighScore'; 
 import fetchStatus from "../Tamagotchi/utils/fetchStatus"; 
 import FoodRewardService from '../../utils/foodRewardService'; 
 
-// Tipos y Configuración del juego
 import {
   CanvasSkyJumpGameProps,
   SkyJumpGameRefHandle,
@@ -21,26 +18,23 @@ import {
   PLATFORM_IMG_PATH,
   RESET_GAME_DELAY,
   ENERGY_TOAST_DURATION,
-} from './gameConfig'; // Ajusta la ruta
+} from './gameConfig';
 
-// Motor y Manejador de Entradas
-import { GameEngine } from './gameEngine'; // Ajusta la ruta
-import { InputHandler } from './inputHandler'; // Ajusta la ruta
+import { GameEngine } from './gameEngine'; 
+import { InputHandler } from './inputHandler'; 
 
-// Assets para UI (los mismos que antes)
-import RestartIcon from '../../assets/img/icon-restart.svg'; // Ajusta la ruta
+import RestartIcon from '../../assets/img/icon-restart.svg'; 
 
-// Estilos (puedes necesitar un nuevo archivo o modificar el existente)
 import './main.css'; 
 
 const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProps>(({
   className = '',
   style = {},
-  onScoreUpdate, // Este callback será llamado por el motor a través del componente
+  onScoreUpdate, 
   beastImageRight,
   beastImageLeft,
   onExitGame,
-  highScore: initialHighScore, // Renombrado para claridad
+  highScore: initialHighScore,
   gameName,
   handleAction,
   client,
@@ -51,15 +45,13 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const gameOverRef    = useRef<(score: number) => void>();
   const scoreUpdateRef = useRef<(score: number) => void>();
 
-  // Estados para la UI de React (modales, toasts, etc.)
   const [currentScore, setCurrentScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
-  const [_isGameOverState, setIsGameOverState] = useState(false); // Estado de React para game over
+  const [_isGameOverState, setIsGameOverState] = useState(false);
   const [currentHighScore, setCurrentHighScore] = useState(initialHighScore);
 
   const [showEnergyToast, setShowEnergyToast] = useState(false);
   const [selectedFoodReward, setSelectedFoodReward] = useState<FoodReward | null>(null);
-
 
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
@@ -67,15 +59,13 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const [isMobile, setIsMobile] = useState(false);
   const [usingGyroscope, setUsingGyroscope] = useState(false);
   
-  // Refs para botones táctiles (si decides crearlos dinámicamente o pasarlos)
   const touchLeftButtonRef = useRef<HTMLDivElement>(null);
   const touchRightButtonRef = useRef<HTMLDivElement>(null);
 
-
-  const { myScoreSkyJump } = useHighScores(); // Hook para obtener puntuaciones de Dojo
+  const { myScoreSkyJump } = useHighScores(); 
   const { account } = useAccount();
 
-  // Callback para que el motor actualice la puntuación en React
+  // Callback when the game engine updates the score
   const handleEngineScoreUpdate = useCallback((engineScore: number) => {
     setCurrentScore(engineScore);
     if (onScoreUpdate) {
@@ -83,7 +73,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     }
   }, [onScoreUpdate]);
 
-  // Callback para cuando el motor del juego indica Game Over
+  // Callback when the game engine signals game over
   const handleEngineGameOver = useCallback((engineFinalScore: number) => {
     setFinalScore(engineFinalScore);
     setIsGameOverState(true);
@@ -110,7 +100,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     setCurrentScreen('sharing');
   }, [ myScoreSkyJump, currentHighScore, gameName, client, account, handleAction ]);
 
-  // 2) Sincroniza el ref con la última versión de tu callback
+  // Sync the game over and score update callbacks with the refs
   useEffect(() => {
     gameOverRef.current = handleEngineGameOver;
   }, [handleEngineGameOver]);
@@ -120,20 +110,17 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   }, [handleEngineScoreUpdate]);
 
 
-  // Efecto para inicializar y limpiar el motor del juego y los inputs
+  // UseEffect to initialize the game engine and input handler
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Determinar si es móvil para la lógica de inputs
     const checkMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     setIsMobile(checkMobile);
 
-    // Rutas de imágenes del jugador, usando props o defaults
     const playerImgRight = beastImageRight || 'default-right-image-path';
     const playerImgLeft = beastImageLeft || 'default-left-image-path';
 
-    // Crear instancia del motor del juego
     const engine = new GameEngine(
       canvas,
       playerImgRight,
@@ -144,23 +131,18 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     );
     gameEngineRef.current = engine;
     
-    // Crear y configurar manejador de entradas
     const inputs = new InputHandler(engine, setUsingGyroscope);
     inputHandlerRef.current = inputs;
-    // Pasar los refs de los botones táctiles al input handler para que añada listeners
     inputs.setupEventListeners(
         checkMobile, 
-        false, // initialUsingGyro, podrías obtenerlo de un estado si es persistente
-        null, // gyroButton si es un elemento HTML fuera de React
+        false,
+        null, 
         touchLeftButtonRef.current,
         touchRightButtonRef.current
     );
 
-
-    // Ajustar tamaño inicial y en resize
     const handleResize = () => {
       if (gameEngineRef.current && canvasRef.current) {
-        // Dar al canvas el tamaño de su contenedor (o viewport)
         const container = canvasRef.current.parentElement;
         if(container){
             canvasRef.current.width = container.clientWidth;
@@ -175,13 +157,9 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
 
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
-    handleResize(); // Llamada inicial
-
-    // Iniciar el juego
-    // engine.resetGame(); // El motor se resetea internamente después de cargar assets
+    handleResize(); 
 
     return () => {
-      // Limpieza al desmontar
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
       if (inputHandlerRef.current) {
@@ -191,7 +169,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         gameEngineRef.current.stopGame();
       }
       if (checkMobile) {
-        document.body.classList.remove('mobile-gameplay'); // Si usabas esta clase
+        document.body.classList.remove('mobile-gameplay'); 
       }
     };
   }, [beastImageRight, beastImageLeft]);
@@ -208,9 +186,8 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         await handleAction(
           "SaveGameResults",
           async () => {
-            // Asumiendo que estos métodos existen en tu 'client'
             await client.player.updatePlayerTotalPoints(account, score);
-            await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP as any); // Usa el ID numérico/string correcto
+            await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP as any);
             await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
           }
         );
@@ -228,9 +205,9 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const fetchBeastEnergy = async () => {
     if (!account) return null;
     try {
-      const statusResponse = await fetchStatus(account); // Asumiendo que fetchStatus toma Account
+      const statusResponse = await fetchStatus(account); 
       if (statusResponse && statusResponse.length > 0) {
-        const energy = statusResponse[4] || 0; // Confirma el índice de energía
+        const energy = statusResponse[4] || 0; 
         return energy;
       }
       return 0;
@@ -259,7 +236,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       setCurrentScore(0);
       gameEngineRef.current?.resetGame();
       
-      // Pequeño delay para asegurar que los estados de React se actualicen antes de que el motor reinicie
+      // Little delay to ensure the game engine is reset properly
       setTimeout(() => {
         if (gameEngineRef.current) {
           gameEngineRef.current.resetGame();
@@ -271,16 +248,15 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     }
   };
 
-  // Exponer el método resetGame al componente padre
+  // Expose the resetGame and isGameOver methods to the parent component
   useImperativeHandle(ref, () => ({
     resetGame: () => {
-      // Similar a handlePlayAgain pero sin la lógica de energía/Dojo, solo resetea el motor
       setIsGameOverState(false);
       setCurrentScreen('playing');
       setSelectedFoodReward(null);
-      setCurrentScore(0); // Resetea score en UI de React
+      setCurrentScore(0); 
       if (gameEngineRef.current) {
-        setTimeout(() => { // Delay para que React actualice UI
+        setTimeout(() => { // Delay to ensure the game engine is reset properly
              gameEngineRef.current?.resetGame();
         }, RESET_GAME_DELAY);
       }
@@ -295,7 +271,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       }`}
       style={style}
     >
-      {/* Canvas principal */}
+      {/* Principal Canvas */}
       <canvas
         ref={canvasRef}
         className="skyjump-canvas"
@@ -303,12 +279,12 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         height={canvasRef.current?.parentElement?.clientHeight || 600} // Default height
       />
   
-      {/* --- UI superpuesta de React --- */}
+      {/* --- UI --- */}
       <div className="skyjump-ui-overlay">
         {/* Marcador */}
         <div className="skyjump-score">Score: {currentScore}</div>
   
-        {/* Botones táctiles */}
+        {/* Buttons*/}
         {isMobile && !usingGyroscope && (
           <>
             <div
@@ -328,7 +304,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           </>
         )}
   
-        {/* Botón de Salir */}
+        {/* Button to Exit*/}
         {onExitGame && (
           <button
             className="skyjump-return-button"
@@ -339,7 +315,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           </button>
         )}
   
-        {/* Modal de Compartir */}
+        {/* Share On X Modal */}
         {currentScreen === 'sharing' && selectedFoodReward && (
           <div className="skyjump-modal-overlay">
             <ShareProgress
@@ -351,7 +327,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           </div>
         )}
   
-        {/* Modal de Game Over */}
+        {/* Game Over Modal */}
         {currentScreen === 'gameover' && (
           <GameOverModal
             currentScreen={currentScreen}
@@ -364,12 +340,12 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           />
         )}
   
-        {/* Toast de Energía */}
+        {/* Energy toast */}
         {showEnergyToast && (
           <div className="skyjump-energy-toast">
             <span className="skyjump-toast-icon">⚠️</span>
             <span className="skyjump-toast-message">
-              La energía de tu bestia es inferior al 30%, es hora de descansar.
+              Your beast's energy is below 30%, it's time to rest.
             </span>
           </div>
         )}
@@ -380,4 +356,3 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
 });
 
 export default CanvasSkyJumpGame;
-

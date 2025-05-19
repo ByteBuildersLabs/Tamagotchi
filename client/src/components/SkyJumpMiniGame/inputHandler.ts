@@ -6,7 +6,7 @@ export class InputHandler {
   private isMobileDevice: boolean = false;
   private usingGyroscope: boolean = false;
   private gyroscopePermission: PermissionState | null = null;
-  private onToggleGyroscope?: (isUsing: boolean) => void; // Callback para actualizar UI en React
+  private onToggleGyroscope?: (isUsing: boolean) => void; 
 
   constructor(gameEngine: GameEngine, onToggleGyroscope?: (isUsing: boolean) => void) {
     this.gameEngine = gameEngine;
@@ -17,38 +17,32 @@ export class InputHandler {
   public setupEventListeners(
       isMobile: boolean,
       initialUsingGyro: boolean,
-      gyroButton?: HTMLElement | null, // Opcional, si el botón es manejado externamente
+      _gyroButton?: HTMLElement | null, 
       touchLeftButton?: HTMLElement | null,
       touchRightButton?: HTMLElement | null
     ): void {
     this.isMobileDevice = isMobile;
     this.usingGyroscope = initialUsingGyro && this.isMobileDevice;
 
-    // Teclado
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('keyup', this.handleKeyUp);
 
     if (this.isMobileDevice) {
-      // Si se proporcionan botones táctiles, se añaden listeners
       if (touchLeftButton && touchRightButton) {
         touchLeftButton.addEventListener('touchstart', (e) => this.handleTouchStart(-1, e as TouchEvent), { passive: false });
         touchLeftButton.addEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent), { passive: false });
         touchRightButton.addEventListener('touchstart', (e) => this.handleTouchStart(1, e as TouchEvent), { passive: false });
         touchRightButton.addEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent), { passive: false });
-         // Prevenir menú contextual en botones táctiles
         touchLeftButton.addEventListener('contextmenu', e => e.preventDefault());
         touchRightButton.addEventListener('contextmenu', e => e.preventDefault());
       }
 
-      if (this.usingGyroscope) {
-        this.requestOrientationPermissionInternal();
-      }
-       // El botón de giroscopio en el componente React llamará a toggleGyroscopeManually
+      if (this.usingGyroscope) this.requestOrientationPermissionInternal();
     }
   }
 
   private handleKeyDown = (e: KeyboardEvent): void => {
-    if (this.gameEngine.isGameOver()) return; // No procesar si el juego terminó
+    if (this.gameEngine.isGameOver()) return;
 
     if (e.code === 'ArrowRight' || e.code === 'KeyD') {
       this.gameEngine.setPlayerVelocityX(PLAYER_HORIZONTAL_SPEED);
@@ -110,7 +104,6 @@ export class InputHandler {
           this.usingGyroscope = false;
         }
       } else {
-        // Para navegadores/dispositivos que no requieren permiso explícito (ej. Android)
         this.gyroscopePermission = 'granted';
         this.gameEngine.setGyroControlsEnabled(true);
         this.usingGyroscope = true;
@@ -172,8 +165,6 @@ export class InputHandler {
     document.removeEventListener('keyup', this.handleKeyUp);
 
     if (this.isMobileDevice) {
-        // Asumimos que los botones táctiles se eliminan con el componente React,
-        // pero si se añadieron directamente aquí, habría que removerlos.
       if (this.gameEngine.isGyroControlsEnabled()) {
         window.removeEventListener('deviceorientation', this.handleDeviceOrientation);
         window.removeEventListener('deviceorientation', this.calibrateGyroscope);
