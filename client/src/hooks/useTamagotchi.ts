@@ -4,9 +4,7 @@ import { Account } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 import useSound from 'use-sound';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from "./useLocalStorage";
 import beastsDex from "../data/beastDex";
-import useAppStore from "../context/store";
 import { fetchAge, fetchStatus, getBirthDate, getDayPeriod } from '../components/Tamagotchi/utils';
 
 // Sound imports
@@ -20,13 +18,12 @@ import buttonClick from '../assets/sounds/click.mp3';
 // Image imports
 import dead from '../assets/img/img-dead.gif';
 
-export const useTamagotchi = () => {
+export const useTamagotchi = (currentBeast: any) => {
+  console.info('currentBeast:', currentBeast);
   const { account } = useAccount();
   const { client } = useDojoSDK();
   const navigate = useNavigate();
-  const [status, setStatus] = useLocalStorage<number[]>('status', []);
-  const [reborn, setReborn] = useLocalStorage<boolean>('reborn', false);
-  const { zplayer, zcurrentBeast } = useAppStore();
+  const [status, setStatus] = useState<number[]>([]);
 
   // State
   const [currentImage, setCurrentImage] = useState<string>('');
@@ -51,13 +48,12 @@ export const useTamagotchi = () => {
     if (!isStatusLoaded) return;
     setCurrentImage(gifPath);
     setTimeout(() => {
-      setCurrentImage(zcurrentBeast ? beastsDex[zcurrentBeast.specie - 1]?.idlePicture : '');
+      setCurrentImage(currentBeast ? beastsDex[currentBeast.specie - 1]?.idlePicture : '');
     }, loadingTime);
   };
 
   const handleAction = async (actionName: string, actionFn: () => Promise<any>, animation: string) => {
-    if (!isStatusLoaded || !zcurrentBeast || !zcurrentBeast.beast_id) {
-      console.error("No valid beast selected or status not loaded");
+    if (!isStatusLoaded || !currentBeast || !currentBeast.beast_id) {
       return;
     }
 
@@ -81,10 +77,10 @@ export const useTamagotchi = () => {
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
           // Verificar que el status corresponde a la bestia actual
-          if (newStatus[0] === zcurrentBeast.beast_id) {
+          if (newStatus[0] === currentBeast.beast_id) {
             setStatus(newStatus as number[]);
           } else {
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', zcurrentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
           }
         }
       }
@@ -96,7 +92,7 @@ export const useTamagotchi = () => {
   };
 
   const handleCuddle = async () => {
-    if (!isStatusLoaded || !zcurrentBeast || !zcurrentBeast.beast_id || !account) return;
+    if (!isStatusLoaded || !currentBeast || !currentBeast.beast_id || !account) return;
     if (status[1] === 0 || status[2] === 0) return;
 
     try {
@@ -104,18 +100,17 @@ export const useTamagotchi = () => {
       const tx = await client.game.pet(account as Account);
       if (tx) {
         await tx.wait();
-        showAnimation(beastsDex[zcurrentBeast.specie - 1].cuddlePicture);
-        const achieveBeastPet = await client.achieve.achieveBeastPet(account as Account);
-        console.info(achieveBeastPet);
+        showAnimation(beastsDex[currentBeast.specie - 1].cuddlePicture);
+        await client.achieve.achieveBeastPet(account as Account);
 
         // Update status after transaction is confirmed
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
           // Verificar que el status corresponde a la bestia actual
-          if (newStatus[0] === zcurrentBeast.beast_id) {
+          if (newStatus[0] === currentBeast.beast_id) {
             setStatus(newStatus as number[]);
           } else {
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', zcurrentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
           }
         }
       }
@@ -134,7 +129,6 @@ export const useTamagotchi = () => {
     setIsLoading(true);
     try {
       await client.game.updateBeast(account as Account);
-      if (!reborn) setReborn(true);
       navigate('/spawn');
     } catch (error) {
       console.error("Error updating beast:", error);
@@ -145,7 +139,7 @@ export const useTamagotchi = () => {
 
   const showBirthday = () => {
     if (!isStatusLoaded) return;
-    setBirthday(getBirthDate(zcurrentBeast.birth_date))
+    setBirthday(getBirthDate(currentBeast.birth_date))
     buttonSound();
     setDisplayBirthday(true);
     setTimeout(() => {
@@ -175,7 +169,7 @@ export const useTamagotchi = () => {
   }, [status]);
 
   useEffect(() => {
-    if (!zcurrentBeast) {
+    if (!currentBeast) {
       setCurrentImage('');
       setIsStatusLoaded(false);
       return;
@@ -193,29 +187,23 @@ export const useTamagotchi = () => {
       return;
     }
     if (status[2] === 0) {
-      setCurrentImage(beastsDex[zcurrentBeast.specie - 1]?.sleepPicture);
+      setCurrentImage(beastsDex[currentBeast.specie - 1]?.sleepPicture);
       setCurrentView('actions');
       setIsStatusLoaded(true);
       return;
     }
-    setCurrentImage(beastsDex[zcurrentBeast.specie - 1]?.idlePicture);
+    setCurrentImage(beastsDex[currentBeast.specie - 1]?.idlePicture);
     setIsStatusLoaded(true);
-  }, [status, zcurrentBeast]);
+  }, [status, currentBeast]);
 
   // Initial state setup and status updates
   useEffect(() => {
-    if (!zplayer || !account || !zcurrentBeast || !zcurrentBeast.beast_id) {
-      setIsLoading(true);
-      setIsStatusLoaded(false);
-      return;
-    }
-
     let isMounted = true;
     let updateInterval: NodeJS.Timeout;
 
     const updateStatus = async () => {
       try {
-        if (!zcurrentBeast || !zcurrentBeast.beast_id) {
+        if (!currentBeast || !currentBeast.beast_id) {
           setIsStatusLoaded(false);
           return;
         }
@@ -229,13 +217,13 @@ export const useTamagotchi = () => {
 
         if (statusResponse && Object.keys(statusResponse).length !== 0) {
           const newStatus = statusResponse as number[];
-          if (newStatus[0] === zcurrentBeast.beast_id) {
+          if (newStatus[0] === currentBeast.beast_id) {
             if (JSON.stringify(newStatus) !== JSON.stringify(status)) {
               setStatus(newStatus);
               setIsStatusLoaded(true);
             }
           } else {
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', zcurrentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
             setIsStatusLoaded(false);
           }
         } else {
@@ -261,29 +249,21 @@ export const useTamagotchi = () => {
       isMounted = false;
       clearInterval(updateInterval);
     };
-  }, [zcurrentBeast, account, zplayer, status]);
-
-  // Clean up localStorage when component unmounts or when beast changes
-  useEffect(() => {
-    if (!zcurrentBeast) {
-      localStorage.removeItem('status');
-      localStorage.removeItem('reborn');
-    }
-  }, [zcurrentBeast]);
+  }, [currentBeast, account, status]);
 
   // Reset loading state when beast changes
   useEffect(() => {
-    if (zcurrentBeast && zcurrentBeast.beast_id) {
+    if (currentBeast && currentBeast.beast_id) {
       setIsLoading(true);
       setIsStatusLoaded(false);
       if (account) {
         fetchStatus(account).then(newStatus => {
           if (newStatus && Object.keys(newStatus).length !== 0) {
-            if (newStatus[0] === zcurrentBeast.beast_id) {
+            if (newStatus[0] === currentBeast.beast_id) {
               setStatus(newStatus as number[]);
               setIsStatusLoaded(true);
             } else {
-              console.log('Status received for different beast:', newStatus[0], 'current beast:', zcurrentBeast.beast_id);
+              console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
               setIsStatusLoaded(false);
             }
           } else {
@@ -292,7 +272,7 @@ export const useTamagotchi = () => {
         });
       }
     }
-  }, [zcurrentBeast, account]);
+  }, [currentBeast, account]);
 
   return {
     currentImage,
@@ -303,7 +283,7 @@ export const useTamagotchi = () => {
     displayBirthday,
     status,
     setStatus,
-    zcurrentBeast,
+    currentBeast,
     handleAction,
     handleCuddle,
     handleNewEgg,
