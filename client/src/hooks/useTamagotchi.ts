@@ -94,7 +94,6 @@ export const useTamagotchi = (currentBeast: any) => {
       showAnimation(beastsDex[currentBeast.specie - 1].cuddlePicture);
       const tx = await client.game.pet(account as Account);
       if (tx) {
-        await tx.wait();
         await client.achieve.achieveBeastPet(account as Account);
 
         // Update status after transaction is confirmed
