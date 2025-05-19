@@ -179,7 +179,11 @@ scarb run sepolia
 ```bash
 slot auth login
 
-slot d create [name of the torii] torii --config ./torii-config.toml --version 1.5.1
+slot d create [name of the torii] torii --config ./torii-config.toml --version v1.5.1
+
+or try
+
+slot deployments create <PROJECT_NAME> torii --version <DOJO_VERSION> --world <WORLD_ADDRESS> --rpc <RPC_URL>
 ```
 
 5. Use that new torii name to replace It in these files `client/src/dojo/dojoConfig.ts` (line 17) + `client/src/config/cartridgeConnector.tsx` (line 102)
