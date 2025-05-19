@@ -57,7 +57,7 @@ body {
 
 .body {
   margin: 0;
-  padding: 22px 15px;
+  padding: 22px 15px !important;
   width: 100%;
   min-height: 100dvh;
   position: relative;

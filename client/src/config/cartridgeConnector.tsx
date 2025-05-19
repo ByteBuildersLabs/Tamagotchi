@@ -6,9 +6,9 @@ import { constants } from "starknet";
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
-const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x35265e81f455d04a6ff0894ec717b6d8917981db690e54587c09bfe70444356'
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x7d5c17fbc753afe949b591c2cf2868dfa0b5bfa9d52a1c6f7e9712460049f15'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x244cf9d605e7c5a0108d89f9fb97ba187034bd16db9b8b631eb6d23d00c1b45'
+const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x76cbacea69adcb896523844858e52db782c079344d504578f0cbf2e3f4bb1e6'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x2482225c547d9aad680bfac6ba926df6d4b6cc5109b00aa171daff5f4075bc4'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6fabfbfe4c81b28f0e249b92944e19bb9dc76289566dde919a5dd00c4451137'
 
 const policies: SessionPolicies = {
   contracts: {
@@ -133,7 +133,6 @@ const getRpcUrl = () => {
 };
 
 const options: ControllerOptions = {
-  rpc: getRpcUrl(),
   // @ts-ignore
   chains: [
     {
@@ -145,7 +144,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "achiveveveve", 
+  slot: "toriibytebeasts"
 };
 
 const cartridgeConnector = new ControllerConnector(

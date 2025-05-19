@@ -15,12 +15,13 @@ telegram = "https://t.me/+-84e2pqLtqNkZDAx"
 default = "tamagotchi"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/bytebeaststamagotchi/katana"
-account_address = "0x5b6b8189bb580f0df1e6d6bec509ff0d6c9be7365d10627e0cf222ec1b47a71"
-private_key = "0x33003003001800009900180300d206308b0070db00121318d17b5e6262150b"
+rpc_url = "http://localhost:5050/"
+# Default account for katana with seed = 0
+account_address = "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"
+private_key = "0xc5b2fcab997346f3ea1c00b002ecf6f382c5f9c9659a3894eb783c5320f912"
 # world_address = "0x06171ed98331e849d6084bf2b3e3186a7ddf35574dd68cab4691053ee8ab69d7"
 
 [writers]
-"tamagotchi" = ["tamagotchi-game", "tamagotchi-player", "tamagotchi-achieve]
+"tamagotchi" = ["tamagotchi-game", "tamagotchi-player", "tamagotchi-achieve"]
 "tamagotchi-TrophyCreation" = ["tamagotchi-player"]
 "tamagotchi-TrophyProgression" = ["tamagotchi-player"]

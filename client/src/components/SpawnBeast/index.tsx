@@ -1,6 +1,6 @@
 // React and external libraries
-import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAccount } from "@starknet-react/core";
 import { Account } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
@@ -10,18 +10,16 @@ import Header from "../Header/index.tsx";
 import SpawnBeastContent from './components/SpawnBeastContent';
 
 // Hooks and Contexts
-import { useLocalStorage } from "../../hooks/useLocalStorage.tsx";
-import useAppStore from "../../context/store.ts";
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
-import { useBeasts } from "../../hooks/useBeasts.tsx";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
+import { fetchBeastsData, processBeastData } from "../../hooks/useBeasts";
 
 // Types
 import type { 
   SpawnBeastProps, 
-  BeastInfo as BeastInfoType, 
   SpawnBeastState 
 } from '../../types/components';
+import type { Beast } from '../../types/game';
 
 // Utils
 import { getRandomNumber } from './utils/helpers';
@@ -36,10 +34,9 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   const { account } = useAccount();
   const { client } = useDojoSDK();
   const { player } = usePlayer();
-  const { beastsData: beasts } = useBeasts();
   const { spawn } = useSystemCalls();
   const navigate = useNavigate();
-  const { zplayer, setPlayer, zbeasts, setBeasts, setCurrentBeast } = useAppStore();
+  const [searchParams] = useSearchParams();
   
   // State
   const [state, setState] = useState<SpawnBeastState>({
@@ -47,18 +44,6 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
     error: null,
     spawned: false
   });
-  
-  const [status] = useLocalStorage('status', []);
-  const [reborn] = useLocalStorage('reborn', false);
-
-  // Effects
-  useEffect(() => {
-    if (player) setPlayer(player);
-  }, [player, setPlayer]);
-  
-  useEffect(() => {
-    if (beasts) setBeasts(beasts);
-  }, [beasts, setBeasts]);
 
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
@@ -69,58 +54,48 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
 
   // Handle current beast and navigation
   useEffect(() => {
-    if (!zplayer || Object.keys(zplayer).length === 0) return;
-    if (!zbeasts || zbeasts.length === 0) return;
+    if (!player || Object.keys(player).length === 0) return;
+    const reborn = searchParams.get('reborn') === 'true';
+    if (!reborn && parseInt(player.current_beast_id) > 0) navigate('/play');
+  }, [player, searchParams]);
 
-    const foundBeast = zbeasts.find((beast: BeastInfoType) => beast.player === zplayer.address);
-    if (foundBeast && !reborn) {
-      handleCurrentBeast(foundBeast);
-    }
-  }, [zplayer, zbeasts, status, player, beasts]);
-
-  // Handlers
-  const handleCurrentBeast = useCallback(async (foundBeast: BeastInfoType) => {
-    if (!foundBeast || !account) return;
-    
-    try {
-      setState(prev => ({ ...prev, loading: true }));
-      
-      const tx = await client.player.setCurrentBeast(account as Account, foundBeast.beast_id);
-      
-      setCurrentBeast(foundBeast);
-      localStorage.removeItem('reborn');
-      localStorage.removeItem('status');
-      console.info('Rolooo', tx);
-      if (tx && tx.code === "SUCCESS") navigate('/play');
-    } catch (error) {
-      console.error('Error setting current beast:', error);
-      setState(prev => ({ ...prev, error: 'Failed to set current beast' }));
-    } finally {
-      setState(prev => ({ ...prev, loading: false }));
-    }
-  }, [account, client, navigate, setCurrentBeast]);
-
-  const spawnPlayer = useCallback(async () => {
-    if (!account) return;
-
+  const spawnPlayer = async () => {
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
-      if (!zplayer) {
-         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-         console.info(spawnPlayerTx);
+      if (!player) {
+        const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
+        console.info('spawnPlayerTx', spawnPlayerTx);
+        
+        // Esperar un momento para que se actualice el player
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
-      const { spawnTx, setCurrentTx } = await spawn(randomBeastId);
+      const { spawnTx } = await spawn(randomBeastId);
+      // Esperar un momento para que se actualice la lista de beasts
 
-      localStorage.removeItem('reborn');
-      localStorage.removeItem('status');
-      setState(prev => ({ ...prev, spawned: true }));
-      if (
-        spawnTx && spawnTx.code === "SUCCESS" && 
-        setCurrentTx && setCurrentTx.code === "SUCCESS"
-      ) navigate('/play');
+      if (spawnTx && spawnTx.code === "SUCCESS") {
+        let newBeast;
+        do {
+          // Recargar la lista de beasts usando GraphQL
+          const beastsData = await fetchBeastsData();
+          const processedBeasts = await processBeastData(beastsData);
+          console.info('processedBeasts', processedBeasts);
+          
+          // Encontrar la bestia recién creada
+          newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
+          console.info('newBeast', newBeast);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        } while (!newBeast);
+        
+        if (newBeast) {
+          const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
+          console.info('setCurrentTx', setCurrentTx);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          navigate('/play');
+        }
+      }
     } catch (error) {
       console.error('Error spawning player:', error);
       setState(prev => ({ 
@@ -130,7 +105,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
-  }, [account, client, spawn, navigate, zplayer]);
+  };
 
   return (
     <div className={`spawn-beast ${className}`}>

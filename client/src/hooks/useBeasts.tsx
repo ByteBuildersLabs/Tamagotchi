@@ -32,7 +32,7 @@ const BEASTS_QUERY = `
 `;
 
 // API Functions
-const fetchBeastsData = async (): Promise<Beast[]> => {
+export const fetchBeastsData = async (): Promise<any> => {
   try {
     const response = await fetch(TORII_URL, {
       method: "POST",
@@ -52,7 +52,7 @@ const fetchBeastsData = async (): Promise<Beast[]> => {
   }
 };
 
-const processBeastData = async (data: any): Promise<Beast[]> => {
+export const processBeastData = async (data: any): Promise<Beast[]> => {
   const playerAddresses = data.tamagotchiBeastModels.edges
     .map((edge: BeastEdge) => edge.node.player)
     .filter((address: string, index: number, self: string[]) =>
