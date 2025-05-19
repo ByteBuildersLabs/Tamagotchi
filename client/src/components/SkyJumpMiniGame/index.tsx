@@ -15,7 +15,6 @@ import {
   CanvasSkyJumpGameProps,
   SkyJumpGameRefHandle,
   GameId,
-  FoodItem,
   FoodReward
 } from '../../types/SkyJumpTypes'; 
 import {
@@ -51,17 +50,18 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameEngineRef = useRef<GameEngine | null>(null);
   const inputHandlerRef = useRef<InputHandler | null>(null);
+  const gameOverRef    = useRef<(score: number) => void>();
+  const scoreUpdateRef = useRef<(score: number) => void>();
 
   // Estados para la UI de React (modales, toasts, etc.)
   const [currentScore, setCurrentScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
   const [isGameOverState, setIsGameOverState] = useState(false); // Estado de React para game over
   const [currentHighScore, setCurrentHighScore] = useState(initialHighScore);
-  
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [showGameOverModal, setShowGameOverModal] = useState(false); // Controla la visibilidad del modal de Game Over
+
   const [showEnergyToast, setShowEnergyToast] = useState(false);
   const [selectedFoodReward, setSelectedFoodReward] = useState<FoodReward | null>(null);
+
 
   type GameScreenState = 'playing' | 'sharing' | 'gameover';
   const [currentScreen, setCurrentScreen] = useState<GameScreenState>('playing');
@@ -88,7 +88,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   // Callback para cuando el motor del juego indica Game Over
   const handleEngineGameOver = useCallback((engineFinalScore: number) => {
     setFinalScore(engineFinalScore);
-    setIsGameOverState(true); // Actualiza el estado de React
+    setIsGameOverState(true);
 
     const dojoHighScore = myScoreSkyJump.length > 0 ? myScoreSkyJump[0]?.score : 0;
     const actualHighScore = Math.max(dojoHighScore, currentHighScore, engineFinalScore);
@@ -96,24 +96,30 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     if (engineFinalScore > actualHighScore) {
       setCurrentHighScore(engineFinalScore);
     } else {
-       setCurrentHighScore(actualHighScore);
+      setCurrentHighScore(actualHighScore);
     }
-    
-    // Determinar recompensa de comida
-    // Usar el ID correcto del juego como está definido en tu enum o string
-    const reward = FoodRewardService.determineReward(engineFinalScore, GameId.SKY_JUMP as any); // Ajusta GameId.SKY_JUMP según tu definición
+
+    const reward = FoodRewardService
+      .determineReward(engineFinalScore, GameId.SKY_JUMP as any);
     setSelectedFoodReward(reward);
 
-    // Guardar resultados en Dojo
     saveGameResultsToDojo({
       score: engineFinalScore,
-      foodId: reward.food.id || "", // Asegúrate que food.id existe y es string
+      foodId: reward.food.id || "",
       foodCollected: reward.amount,
     });
 
     setCurrentScreen('sharing');
-    setIsShareModalOpen(true); // Abrir modal de compartir
-  }, [myScoreSkyJump, currentHighScore, gameName, client, account, handleAction]);
+  }, [ myScoreSkyJump, currentHighScore, gameName, client, account, handleAction ]);
+
+  // 2) Sincroniza el ref con la última versión de tu callback
+  useEffect(() => {
+    gameOverRef.current = handleEngineGameOver;
+  }, [handleEngineGameOver]);
+
+  useEffect(() => {
+    scoreUpdateRef.current = handleEngineScoreUpdate;
+  }, [handleEngineScoreUpdate]);
 
 
   // Efecto para inicializar y limpiar el motor del juego y los inputs
@@ -135,8 +141,8 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       playerImgRight,
       playerImgLeft,
       PLATFORM_IMG_PATH,
-      handleEngineScoreUpdate,
-      handleEngineGameOver
+      score => scoreUpdateRef.current?.(score),
+      score => gameOverRef.current?.(score)
     );
     gameEngineRef.current = engine;
     
@@ -190,7 +196,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         document.body.classList.remove('mobile-gameplay'); // Si usabas esta clase
       }
     };
-  }, [beastImageRight, beastImageLeft, handleEngineScoreUpdate, handleEngineGameOver]);
+  }, [beastImageRight, beastImageLeft]);
 
 
   const saveGameResultsToDojo = async (gameData: {
@@ -248,11 +254,12 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       if (handleAction && client && account) {
         await handleAction("Play", async () => await client.game.play(account));
       }
-      setShowGameOverModal(false); // Cerrar modal de game over
-      setIsShareModalOpen(false); // Cerrar modal de compartir si estuviera abierto
-      setCurrentScreen('playing');
-      setIsGameOverState(false); // Resetea el estado de game over en React
+
+      setCurrentScreen('playing');       
+      setIsGameOverState(false);
       setSelectedFoodReward(null);
+      setCurrentScore(0);
+      gameEngineRef.current?.resetGame();
       
       // Pequeño delay para asegurar que los estados de React se actualicen antes de que el motor reinicie
       setTimeout(() => {
@@ -279,8 +286,6 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       // Similar a handlePlayAgain pero sin la lógica de energía/Dojo, solo resetea el motor
       setIsGameOverState(false);
       setCurrentScreen('playing');
-      setShowGameOverModal(false);
-      setIsShareModalOpen(false);
       setSelectedFoodReward(null);
       setCurrentScore(0); // Resetea score en UI de React
       if (gameEngineRef.current) {
@@ -363,37 +368,23 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         {currentScreen === 'sharing' && selectedFoodReward && (
           <div className="skyjump-modal-overlay">
             <ShareProgress
-              isOpen={isShareModalOpen}
-              onClose={() => {
-                setIsShareModalOpen(false);
-                setCurrentScreen('gameover');
-                setShowGameOverModal(true); // Mostrar modal de Game Over después de cerrar Share
-              }}
+              isOpen={true}
+              onClose={() => setCurrentScreen('gameover')}
               type="minigame"
-              minigameData={{
-                name: gameName,
-                score: finalScore,
-              }}
+              minigameData={{ name: gameName, score: finalScore }}
             />
           </div>
         )}
         
-        {/* Modal de Game Over */}
-        {/* Se muestra si currentScreen es 'gameover' o si isGameOverState es true y no se está compartiendo */}
-        {(currentScreen === 'gameover' || (isGameOverState && currentScreen !== 'sharing')) && selectedFoodReward && (
-             <GameOverModal
-                // isOpen={showGameOverModal} // GameOverModal podría manejar su propia visibilidad o ser controlado
-                // onClose={() => setShowGameOverModal(false)} // Si es controlado
-                currentScreen={'gameover'} // Para que GameOverModal sepa que mostrar
-                finalScore={finalScore}
-                currentHighScore={currentHighScore}
-                collectedFood={selectedFoodReward.amount}
-                selectedFood={selectedFoodReward.food} // Asegúrate que FoodRewardService.determineReward devuelve food con estructura esperada
-                handlePlayAgain={handlePlayAgain}
-                restartIcon={RestartIcon}
-            />
-        )}
-
+        <GameOverModal
+          currentScreen={currentScreen}
+          finalScore={finalScore}
+          currentHighScore={currentHighScore}
+          collectedFood={selectedFoodReward?.amount}
+          selectedFood={selectedFoodReward?.food}
+          handlePlayAgain={handlePlayAgain}
+          restartIcon={RestartIcon}
+        />
 
         {/* Toast de Energía */}
         {showEnergyToast && (
