@@ -1,5 +1,5 @@
 // React and external libraries
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from "@starknet-react/core";
 import { Account } from "starknet";
@@ -12,12 +12,15 @@ import SpawnBeastContent from './components/SpawnBeastContent';
 // Hooks and Contexts
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
+import { fetchBeastsData, processBeastData } from "../../hooks/useBeasts";
+import { fetchPlayerData, findPlayerByAddress } from "../../hooks/usePlayers";
 
 // Types
 import type { 
   SpawnBeastProps, 
   SpawnBeastState 
 } from '../../types/components';
+import type { Beast } from '../../types/game';
 
 // Utils
 import { getRandomNumber } from './utils/helpers';
@@ -48,13 +51,11 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       bodyElement.classList.remove('day');
     }
   }, []);
-  
 
   // Handle current beast and navigation
   useEffect(() => {
-    console.info('player', player);
     if (!player || Object.keys(player).length === 0) return;
-    if (parseInt(player.current_beast_id) > 1) navigate('/play');
+    if (parseInt(player.current_beast_id) > 0) navigate('/play');
   }, [player]);
 
   const spawnPlayer = async () => {
@@ -63,17 +64,39 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
 
       if (!player) {
         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-        console.info('Spawn player transaction:', spawnPlayerTx);
+        console.info('spawnPlayerTx', spawnPlayerTx);
+        
+        // Esperar un momento para que se actualice el player
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
-      const { spawnTx, setCurrentTx } = await spawn(randomBeastId);
-      
-      if (
-        spawnTx && spawnTx.code === "SUCCESS" && 
-        setCurrentTx && setCurrentTx.code === "SUCCESS") {
-          setState(prev => ({ ...prev, spawned: true }));
-          navigate('/play');
+      const { spawnTx } = await spawn(randomBeastId);
+      // Esperar un momento para que se actualice la lista de beasts
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      console.info('spawnBeastTx', spawnTx)
+
+      if (spawnTx && spawnTx.code === "SUCCESS") {
+        
+        let newBeast;
+        do {
+          // Recargar la lista de beasts usando GraphQL
+          const beastsData = await fetchBeastsData();
+          const processedBeasts = await processBeastData(beastsData);
+          console.info('processedBeasts', processedBeasts);
+          
+          // Encontrar la bestia recién creada
+          newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
+          console.info('newBeast', newBeast);
+        } while (!newBeast);
+        
+        if (newBeast) {
+          const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          console.info('setCurrentTx', setCurrentTx);
+        }
+
+        if (newBeast) navigate('/play');
       }
     } catch (error) {
       console.error('Error spawning player:', error);

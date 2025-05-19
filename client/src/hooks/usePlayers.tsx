@@ -26,7 +26,7 @@ const PLAYER_QUERY = `
 `;
 
 // API Functions
-const fetchPlayerData = async (): Promise<PlayerEdge[]> => {
+export const fetchPlayerData = async (): Promise<PlayerEdge[]> => {
   try {
     const response = await fetch(TORII_URL, {
       method: "POST",
@@ -46,7 +46,7 @@ const fetchPlayerData = async (): Promise<PlayerEdge[]> => {
   }
 };
 
-const findPlayerByAddress = (
+export const findPlayerByAddress = (
   playerEdges: PlayerEdge[], 
   userAddress: string
 ): PlayerEdge | undefined => {

@@ -57,6 +57,8 @@ function Tamagotchi() {
     if (foundBeast) setCurrentBeast(foundBeast);
   }, [player, beasts]);
 
+  console.info('player', player);
+
   const getShareableStats = () => {
     if (!currentBeast || !status) return undefined;
 
@@ -80,7 +82,7 @@ function Tamagotchi() {
             justifyContent: 'space-between',
             height: '99%'
           }}>
-            <Status beastStatus={isLoading ? status : []} />
+            <Status beastStatus={status} />
             <div className="game">
               {isLoading || status[1] === 0 || status[2] === 0 ? null : (
                 <Whispers

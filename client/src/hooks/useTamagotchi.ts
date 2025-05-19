@@ -19,7 +19,6 @@ import buttonClick from '../assets/sounds/click.mp3';
 import dead from '../assets/img/img-dead.gif';
 
 export const useTamagotchi = (currentBeast: any) => {
-  console.info('currentBeast:', currentBeast);
   const { account } = useAccount();
   const { client } = useDojoSDK();
   const navigate = useNavigate();
@@ -167,9 +166,21 @@ export const useTamagotchi = (currentBeast: any) => {
     }
   }, [status]);
 
+  // Efecto para manejar el estado de carga y la imagen actual
   useEffect(() => {
     if (!currentBeast) {
       setCurrentImage('');
+      setIsLoading(true);
+      return;
+    }
+
+    if (!account) {
+      setIsLoading(true);
+      return;
+    }
+
+    // Verificar que el account coincide con el player
+    if (currentBeast.player !== account.address) {
       setIsLoading(true);
       return;
     }
@@ -179,30 +190,41 @@ export const useTamagotchi = (currentBeast: any) => {
       return;
     }
 
-    if (status[1] === 0) {
-      setCurrentImage(dead);
-      setCurrentView('actions');
-      setIsLoading(false);
-      return;
+    // Si tenemos status y corresponde a la bestia actual
+    if (status[0] === currentBeast.beast_id) {
+      if (status[1] === 0) {
+        setCurrentImage(dead);
+        setCurrentView('actions');
+        setIsLoading(false);
+      } else if (status[2] === 0) {
+        setCurrentImage(beastsDex[currentBeast.specie - 1]?.sleepPicture);
+        setCurrentView('actions');
+        setIsLoading(false);
+      } else {
+        setCurrentImage(beastsDex[currentBeast.specie - 1]?.idlePicture);
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(true);
     }
-    if (status[2] === 0) {
-      setCurrentImage(beastsDex[currentBeast.specie - 1]?.sleepPicture);
-      setCurrentView('actions');
-      setIsLoading(false);
-      return;
-    }
-    setCurrentImage(beastsDex[currentBeast.specie - 1]?.idlePicture);
-    setIsLoading(false);
-  }, [status, currentBeast]);
+  }, [status, currentBeast, account]);
 
-  // Initial state setup and status updates
+  // Efecto para cargar el estado inicial y actualizaciones periódicas
   useEffect(() => {
     let isMounted = true;
     let updateInterval: NodeJS.Timeout;
 
     const updateStatus = async () => {
       try {
-        if (!currentBeast || !currentBeast.beast_id) {
+        console.info('currentBeast', currentBeast)
+        console.info('account', account)
+        if (!currentBeast || !currentBeast.beast_id || !account) {
+          setIsLoading(true);
+          return;
+        }
+
+        // Verificar que el account coincide con el player
+        if (currentBeast.player !== account.address) {
           setIsLoading(true);
           return;
         }
@@ -212,15 +234,15 @@ export const useTamagotchi = (currentBeast: any) => {
           fetchAge(account)
         ]);
         
+        console.info('Status response:', statusResponse);
+        
         if (!isMounted) return;
 
         if (statusResponse && Object.keys(statusResponse).length !== 0) {
           const newStatus = statusResponse as number[];
           if (newStatus[0] === currentBeast.beast_id) {
-            if (JSON.stringify(newStatus) !== JSON.stringify(status)) {
-              setStatus(newStatus);
-              setIsLoading(false);
-            }
+            setStatus(newStatus);
+            setIsLoading(false);
           } else {
             console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
             setIsLoading(true);
@@ -228,6 +250,7 @@ export const useTamagotchi = (currentBeast: any) => {
         } else {
           setIsLoading(true);
         }
+
         if (ageResponse) {
           setAge(Number(ageResponse));
         }
@@ -239,35 +262,16 @@ export const useTamagotchi = (currentBeast: any) => {
       }
     };
 
+    // Cargar estado inicial inmediatamente
     updateStatus();
+    
+    // Configurar actualizaciones periódicas
     updateInterval = setInterval(updateStatus, 5000);
 
     return () => {
       isMounted = false;
       clearInterval(updateInterval);
     };
-  }, [currentBeast, account, status]);
-
-  // Reset loading state when beast changes
-  useEffect(() => {
-    if (currentBeast && currentBeast.beast_id) {
-      setIsLoading(true);
-      if (account) {
-        fetchStatus(account).then(newStatus => {
-          if (newStatus && Object.keys(newStatus).length !== 0) {
-            if (newStatus[0] === currentBeast.beast_id) {
-              setStatus(newStatus as number[]);
-              setIsLoading(false);
-            } else {
-              console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
-              setIsLoading(true);
-            }
-          } else {
-            setIsLoading(true);
-          }
-        });
-      }
-    }
   }, [currentBeast, account]);
 
   return {
