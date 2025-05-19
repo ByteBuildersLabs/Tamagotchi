@@ -48,7 +48,6 @@ function Tamagotchi() {
     showBirthday,
     setCurrentView,
     showAnimation,
-    isStatusLoaded
   } = useTamagotchi(currentBeast);
 
   useEffect(() => {
@@ -81,9 +80,9 @@ function Tamagotchi() {
             justifyContent: 'space-between',
             height: '99%'
           }}>
-            <Status beastStatus={isStatusLoaded ? status : []} />
+            <Status beastStatus={isLoading ? status : []} />
             <div className="game">
-              {!isStatusLoaded || status[1] === 0 || status[2] === 0 ? null : (
+              {isLoading || status[1] === 0 || status[2] === 0 ? null : (
                 <Whispers
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
@@ -94,7 +93,8 @@ function Tamagotchi() {
               )}
 
               <BeastDisplay
-                status={isStatusLoaded ? status : []}
+                isLoading={isLoading}
+                status={status}
                 currentBeast={currentBeast}
                 currentImage={currentImage}
                 age={age}
@@ -111,9 +111,9 @@ function Tamagotchi() {
               {currentView === 'actions' ? (
                 <Actions
                   handleAction={handleAction}
-                  isLoading={isLoading || !isStatusLoaded}
+                  isLoading={isLoading}
                   beast={currentBeast}
-                  beastStatus={isStatusLoaded ? status : []}
+                  beastStatus={ status}
                   setStatus={setStatus}
                   account={account}
                   client={client}
@@ -125,7 +125,7 @@ function Tamagotchi() {
                   beast={currentBeast}
                   account={account}
                   client={client}
-                  beastStatus={isStatusLoaded ? status : []}
+                  beastStatus={status}
                   showAnimation={showAnimation}
                 />
               ) : currentView === 'play' ? (

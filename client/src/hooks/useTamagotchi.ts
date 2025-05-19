@@ -32,7 +32,6 @@ export const useTamagotchi = (currentBeast: any) => {
   const [birthday, setBirthday] = useState<{ hours: string; minutes: string }>({ hours: '', minutes: '' });
   const [age, setAge] = useState<number>(0);
   const [displayBirthday, setDisplayBirthday] = useState(false);
-  const [isStatusLoaded, setIsStatusLoaded] = useState(false);
 
   // Sound hooks
   const [playFeed] = useSound(feedSound, { volume: 0.6, preload: true });
@@ -45,7 +44,7 @@ export const useTamagotchi = (currentBeast: any) => {
   const loadingTime = 6000;
 
   const showAnimation = (gifPath: string) => {
-    if (!isStatusLoaded) return;
+    if (isLoading) return;
     setCurrentImage(gifPath);
     setTimeout(() => {
       setCurrentImage(currentBeast ? beastsDex[currentBeast.specie - 1]?.idlePicture : '');
@@ -53,7 +52,7 @@ export const useTamagotchi = (currentBeast: any) => {
   };
 
   const handleAction = async (actionName: string, actionFn: () => Promise<any>, animation: string) => {
-    if (!isStatusLoaded || !currentBeast || !currentBeast.beast_id) {
+    if (isLoading || !currentBeast || !currentBeast.beast_id) {
       return;
     }
 
@@ -92,7 +91,7 @@ export const useTamagotchi = (currentBeast: any) => {
   };
 
   const handleCuddle = async () => {
-    if (!isStatusLoaded || !currentBeast || !currentBeast.beast_id || !account) return;
+    if (isLoading || !currentBeast || !currentBeast.beast_id || !account) return;
     if (status[1] === 0 || status[2] === 0) return;
 
     try {
@@ -122,7 +121,7 @@ export const useTamagotchi = (currentBeast: any) => {
   };
 
   const handleNewEgg = async () => {
-    if (!isStatusLoaded) return;
+    if (isLoading) return;
     buttonSound();
     // Clear status before updating beast
     setStatus([]);
@@ -138,7 +137,7 @@ export const useTamagotchi = (currentBeast: any) => {
   };
 
   const showBirthday = () => {
-    if (!isStatusLoaded) return;
+    if (isLoading) return;
     setBirthday(getBirthDate(currentBeast.birth_date))
     buttonSound();
     setDisplayBirthday(true);
@@ -171,29 +170,29 @@ export const useTamagotchi = (currentBeast: any) => {
   useEffect(() => {
     if (!currentBeast) {
       setCurrentImage('');
-      setIsStatusLoaded(false);
+      setIsLoading(true);
       return;
     }
 
     if (!status || status.length === 0) {
-      setIsStatusLoaded(false);
+      setIsLoading(true);
       return;
     }
 
     if (status[1] === 0) {
       setCurrentImage(dead);
       setCurrentView('actions');
-      setIsStatusLoaded(true);
+      setIsLoading(false);
       return;
     }
     if (status[2] === 0) {
       setCurrentImage(beastsDex[currentBeast.specie - 1]?.sleepPicture);
       setCurrentView('actions');
-      setIsStatusLoaded(true);
+      setIsLoading(false);
       return;
     }
     setCurrentImage(beastsDex[currentBeast.specie - 1]?.idlePicture);
-    setIsStatusLoaded(true);
+    setIsLoading(false);
   }, [status, currentBeast]);
 
   // Initial state setup and status updates
@@ -204,7 +203,7 @@ export const useTamagotchi = (currentBeast: any) => {
     const updateStatus = async () => {
       try {
         if (!currentBeast || !currentBeast.beast_id) {
-          setIsStatusLoaded(false);
+          setIsLoading(true);
           return;
         }
 
@@ -220,24 +219,22 @@ export const useTamagotchi = (currentBeast: any) => {
           if (newStatus[0] === currentBeast.beast_id) {
             if (JSON.stringify(newStatus) !== JSON.stringify(status)) {
               setStatus(newStatus);
-              setIsStatusLoaded(true);
+              setIsLoading(false);
             }
           } else {
             console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
-            setIsStatusLoaded(false);
+            setIsLoading(true);
           }
         } else {
-          setIsStatusLoaded(false);
+          setIsLoading(true);
         }
         if (ageResponse) {
           setAge(Number(ageResponse));
         }
-        setIsLoading(false);
       } catch (error) {
         console.error("Error updating status:", error);
         if (isMounted) {
-          setIsLoading(false);
-          setIsStatusLoaded(false);
+          setIsLoading(true);
         }
       }
     };
@@ -255,19 +252,18 @@ export const useTamagotchi = (currentBeast: any) => {
   useEffect(() => {
     if (currentBeast && currentBeast.beast_id) {
       setIsLoading(true);
-      setIsStatusLoaded(false);
       if (account) {
         fetchStatus(account).then(newStatus => {
           if (newStatus && Object.keys(newStatus).length !== 0) {
             if (newStatus[0] === currentBeast.beast_id) {
               setStatus(newStatus as number[]);
-              setIsStatusLoaded(true);
+              setIsLoading(false);
             } else {
               console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
-              setIsStatusLoaded(false);
+              setIsLoading(true);
             }
           } else {
-            setIsStatusLoaded(false);
+            setIsLoading(true);
           }
         });
       }
@@ -289,7 +285,6 @@ export const useTamagotchi = (currentBeast: any) => {
     handleNewEgg,
     showBirthday,
     setCurrentView,
-    showAnimation,
-    isStatusLoaded
+    showAnimation
   };
 }; 
