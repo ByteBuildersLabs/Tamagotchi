@@ -55,7 +55,6 @@ export const useTamagotchi = (currentBeast: any) => {
       return;
     }
 
-    setIsLoading(true);
     showAnimation(animation);
     buttonSound();
     
@@ -84,8 +83,6 @@ export const useTamagotchi = (currentBeast: any) => {
       }
     } catch (error) {
       console.error("Action error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -94,11 +91,10 @@ export const useTamagotchi = (currentBeast: any) => {
     if (status[1] === 0 || status[2] === 0) return;
 
     try {
-      setIsLoading(true);
+      showAnimation(beastsDex[currentBeast.specie - 1].cuddlePicture);
       const tx = await client.game.pet(account as Account);
       if (tx) {
         await tx.wait();
-        showAnimation(beastsDex[currentBeast.specie - 1].cuddlePicture);
         await client.achieve.achieveBeastPet(account as Account);
 
         // Update status after transaction is confirmed
@@ -114,8 +110,6 @@ export const useTamagotchi = (currentBeast: any) => {
       }
     } catch (error) {
       console.error("Cuddle error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
