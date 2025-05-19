@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Beast } from '../../../types/components';
 import Spinner from '../../ui/spinner';
@@ -10,6 +9,7 @@ import Egg from '../../../assets/img/img-egg.gif';
 import Cake from '../../../assets/img/icon-cake.svg';
 
 interface BeastDisplayProps {
+  isLoading: boolean;
   status: number[];
   currentBeast: Beast | null;
   currentImage: string;
@@ -25,6 +25,7 @@ interface BeastDisplayProps {
 }
 
 const BeastDisplay = ({
+  isLoading,
   status,
   currentBeast,
   currentImage,
@@ -48,7 +49,7 @@ const BeastDisplay = ({
       )}
       
       <div className="scenario flex justify-center items-column">
-        {!status || status.length === 0 ? (
+        {isLoading ? (
           <Spinner message="Loading your beast..." />
         ) : (
           <div className="beast-cage">

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useAccount } from '@starknet-react/core';
-import { Account } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 
 // Internal components
@@ -18,7 +17,6 @@ import BeastDisplay from './components/BeastDisplay';
 import { useTamagotchi } from '../../hooks/useTamagotchi';
 import { useBeasts } from '../../hooks/useBeasts';
 import { usePlayer } from '../../hooks/usePlayers';
-import useAppStore from "../../context/store";
 
 // Types
 import { Message } from '../../types/game';
@@ -30,10 +28,10 @@ import './main.css';
 function Tamagotchi() {
   const { account } = useAccount();
   const { client } = useDojoSDK();
-  const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
-  const { zplayer, setPlayer, zbeasts, setBeasts, zcurrentBeast, setCurrentBeast } = useAppStore();
+  const { beastsData: beasts } = useBeasts();
   const [botMessage, setBotMessage] = useState<Message>({ user: '', text: '' });
+  const [currentBeast, setCurrentBeast] = useState<any>({});
 
   const {
     currentImage,
@@ -50,38 +48,22 @@ function Tamagotchi() {
     showBirthday,
     setCurrentView,
     showAnimation,
-    isStatusLoaded
-  } = useTamagotchi();
+  } = useTamagotchi(currentBeast);
 
   useEffect(() => {
-    if (player) setPlayer(player);
-  }, [player, setPlayer]);
+    if (!player ) return;
+    if (!beasts || beasts.length === 0) return; 
+    const foundBeast = beasts.find((beast: any) => beast.player === player.address);
+    if (foundBeast) setCurrentBeast(foundBeast);
+  }, [player, beasts]);
 
-  useEffect(() => {
-    if (beasts) setBeasts(beasts);
-  }, [beasts, setBeasts]);
-
-  async function setCurrentBeastInPlayer(foundBeast: any) {
-    if (!foundBeast) return;
-    await client.player.setCurrentBeast(account as Account, foundBeast?.beast_id);
-  }
-
-  useEffect(() => {
-    if (!zplayer || Object.keys(zplayer).length === 0) return;
-    if (!zbeasts || zbeasts.length === 0) return;
-    const foundBeast = zbeasts.find((beast: any) => beast.player === zplayer.address);
-    if (foundBeast) {
-      setCurrentBeast(foundBeast);
-      if (foundBeast.beast_id === zplayer.current_beast_id) return;
-      setCurrentBeastInPlayer(foundBeast);
-    }
-  }, [zplayer, zbeasts]);
+  console.info('player', player);
 
   const getShareableStats = () => {
-    if (!status || !zcurrentBeast) return undefined;
+    if (!currentBeast || !status) return undefined;
 
     return {
-      age: zcurrentBeast?.age || 0,
+      age: currentBeast?.age || 0,
       energy: status[4] || 0,
       hunger: status[3] || 0,
       happiness: status[5] || 0,
@@ -93,28 +75,29 @@ function Tamagotchi() {
     <>
       <Header tamagotchiStats={getShareableStats()} />
       <div className="tamaguchi">
-        {zcurrentBeast && (
+        {currentBeast && (
           <Card style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: '99%'
           }}>
-            <Status beastStatus={isStatusLoaded ? status : []} />
+            <Status beastStatus={status} />
             <div className="game">
-              {!isStatusLoaded || status[1] === 0 || status[2] === 0 ? null : (
+              {isLoading || status[1] === 0 || status[2] === 0 ? null : (
                 <Whispers
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
-                  beast={zcurrentBeast}
+                  beast={currentBeast}
                   expanded={currentView === 'chat'}
                   beastStatus={status}
                 />
               )}
 
               <BeastDisplay
-                status={isStatusLoaded ? status : []}
-                currentBeast={zcurrentBeast}
+                isLoading={isLoading}
+                status={status}
+                currentBeast={currentBeast}
                 currentImage={currentImage}
                 age={age}
                 birthday={birthday}
@@ -130,9 +113,9 @@ function Tamagotchi() {
               {currentView === 'actions' ? (
                 <Actions
                   handleAction={handleAction}
-                  isLoading={isLoading || !isStatusLoaded}
-                  beast={zcurrentBeast}
-                  beastStatus={isStatusLoaded ? status : []}
+                  isLoading={isLoading}
+                  beast={currentBeast}
+                  beastStatus={ status}
                   setStatus={setStatus}
                   account={account}
                   client={client}
@@ -141,16 +124,16 @@ function Tamagotchi() {
               ) : currentView === 'food' ? (
                 <Food
                   handleAction={handleAction}
-                  beast={zcurrentBeast}
+                  beast={currentBeast}
                   account={account}
                   client={client}
-                  beastStatus={isStatusLoaded ? status : []}
+                  beastStatus={status}
                   showAnimation={showAnimation}
                 />
               ) : currentView === 'play' ? (
                 <Play
                   handleAction={handleAction}
-                  beast={zcurrentBeast}
+                  beast={currentBeast}
                   account={account}
                   client={client}
                 />
@@ -158,7 +141,7 @@ function Tamagotchi() {
                 <Chat
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
-                  beast={zcurrentBeast}
+                  beast={currentBeast}
                   expanded={currentView === 'chat'}
                 />
               ) : null}
