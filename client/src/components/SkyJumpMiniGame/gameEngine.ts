@@ -4,7 +4,6 @@ import {
   Platform,
   GameEngineState,
   BackgroundLayer,
-  GameObject,
 } from '../../types/SkyJumpTypes'; // Asegúrate que la ruta es correcta
 import {
   PLAYER_VISUAL_WIDTH, PLAYER_VISUAL_HEIGHT,
@@ -251,7 +250,6 @@ export class GameEngine {
     if (player.velocityY < 0) return false; 
   
     // Dimensiones de la hitbox del jugador (ya escaladas en el estado)
-    const playerHitboxTop = player.worldY;
     const playerHitboxLeft = player.x;
     const playerHitboxBottom = player.worldY + player.height;
     const playerHitboxRight = player.x + player.width;
@@ -441,11 +439,6 @@ export class GameEngine {
     }
     
     this.ctx.restore(); 
-
-    this.ctx.fillStyle = 'white';
-    this.ctx.font = `${20 * this.scaleFactor}px Arial`; 
-    this.ctx.textAlign = 'left';
-    this.ctx.fillText(`Score: ${this.state.score}`, 10 * this.scaleFactor, 30 * this.scaleFactor);
   }
 
   public resetGame(): void {

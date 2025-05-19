@@ -312,7 +312,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
       {/* --- UI Superpuesta de React --- */}
       <div className="skyjump-ui-overlay">
         {/* Score (opcional si ya está en canvas, pero puede ser más estilizable aquí) */}
-        {/* <div className="score-display-react">Score: {currentScore}</div> */}
+        <div className="skyjump-score">Score: {currentScore}</div>
 
         {/* Botones táctiles (si se renderizan con React) */}
         {isMobile && !usingGyroscope && (
