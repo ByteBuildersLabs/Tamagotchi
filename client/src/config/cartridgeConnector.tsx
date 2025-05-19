@@ -6,9 +6,9 @@ import { constants } from "starknet";
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
-const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x76cbacea69adcb896523844858e52db782c079344d504578f0cbf2e3f4bb1e6'
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x2482225c547d9aad680bfac6ba926df6d4b6cc5109b00aa171daff5f4075bc4'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6fabfbfe4c81b28f0e249b92944e19bb9dc76289566dde919a5dd00c4451137'
+const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x1005116a48c9a8f7a6c946091e64dc8ced37962dc2bbb74355868229307c20d'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x58971d723d0100ae8393550f9166c9dad9b79799a48fc31f0d9684ef556dda9'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6b7b30fcd29c41bca831b87db67e3c8af2abb374dc2fabbbf09f4744aa22988'
 
 const policies: SessionPolicies = {
   contracts: {
@@ -144,7 +144,7 @@ const options: ControllerOptions = {
   theme,
   colorMode,
   namespace: "tamagotchi", 
-  slot: "toriibytebeasts"
+  slot: "toriibbtest"
 };
 
 const cartridgeConnector = new ControllerConnector(
