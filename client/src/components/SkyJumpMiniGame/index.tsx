@@ -297,24 +297,31 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     isGameOver: () => gameEngineRef.current?.isGameOver() ?? true,
   }));
 
+  function toggleGyroscope(_event: React.MouseEvent<HTMLDivElement>): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div
-      className={`skyjump-game-container ${className} ${isMobile ? 'mobile-game' : ''}`}
-      style={style} // El fondo se maneja dentro del canvas
+      className={`skyjump-game-container ${className} ${
+        isMobile ? 'mobile-game' : ''
+      }`}
+      style={style}
     >
+      {/* Canvas principal */}
       <canvas
         ref={canvasRef}
         className="skyjump-canvas"
-        // El tamaño se establece en JS para controlar la resolución del canvas
-        // CSS se usa para el tamaño de display: width: 100%, height: 100%
+        width={canvasRef.current?.parentElement?.clientWidth || 800} // Default width
+        height={canvasRef.current?.parentElement?.clientHeight || 600} // Default height
       />
-
-      {/* --- UI Superpuesta de React --- */}
+  
+      {/* --- UI superpuesta de React --- */}
       <div className="skyjump-ui-overlay">
-        {/* Score (opcional si ya está en canvas, pero puede ser más estilizable aquí) */}
+        {/* Marcador */}
         <div className="skyjump-score">Score: {currentScore}</div>
-
-        {/* Botones táctiles (si se renderizan con React) */}
+  
+        {/* Botones táctiles */}
         {isMobile && !usingGyroscope && (
           <>
             <div
@@ -333,7 +340,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
             </div>
           </>
         )}
-
+  
         {/* Botón de Salir */}
         {onExitGame && (
           <button
@@ -344,26 +351,29 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
             X
           </button>
         )}
-
+  
         {/* Botón de Giroscopio */}
         {isMobile && (
           <div
             className={`skyjump-gyro-button ${usingGyroscope ? 'active' : ''}`}
-            onClick={internalToggleGyroscope}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') internalToggleGyroscope();}}
+            onClick={toggleGyroscope}
             aria-pressed={usingGyroscope}
-            aria-label={usingGyroscope ? "Desactivar giroscopio" : "Activar giroscopio"}
+            aria-label={
+              usingGyroscope ? 'Desactivar giroscopio' : 'Activar giroscopio'
+            }
           >
             <img
               src={usingGyroscope ? UnlockIcon : LockIcon}
-              alt={usingGyroscope ? "Giroscopio activado" : "Giroscopio desactivado"}
+              alt={
+                usingGyroscope
+                  ? 'Giroscopio activado'
+                  : 'Giroscopio desactivado'
+              }
               className="skyjump-lock-icon"
             />
           </div>
         )}
-
+  
         {/* Modal de Compartir */}
         {currentScreen === 'sharing' && selectedFoodReward && (
           <div className="skyjump-modal-overlay">
@@ -375,27 +385,33 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
             />
           </div>
         )}
-        
-        <GameOverModal
-          currentScreen={currentScreen}
-          finalScore={finalScore}
-          currentHighScore={currentHighScore}
-          collectedFood={selectedFoodReward?.amount}
-          selectedFood={selectedFoodReward?.food}
-          handlePlayAgain={handlePlayAgain}
-          restartIcon={RestartIcon}
-        />
-
+  
+        {/* Modal de Game Over */}
+        {currentScreen === 'gameover' && (
+          <GameOverModal
+            currentScreen={currentScreen}
+            finalScore={finalScore}
+            currentHighScore={currentHighScore}
+            collectedFood={selectedFoodReward?.amount}
+            selectedFood={selectedFoodReward?.food}
+            handlePlayAgain={handlePlayAgain}
+            restartIcon={RestartIcon}
+          />
+        )}
+  
         {/* Toast de Energía */}
         {showEnergyToast && (
           <div className="skyjump-energy-toast">
             <span className="skyjump-toast-icon">⚠️</span>
-            <span className="skyjump-toast-message">La energía de tu bestia es inferior al 30%, es hora de descansar.</span>
+            <span className="skyjump-toast-message">
+              La energía de tu bestia es inferior al 30%, es hora de descansar.
+            </span>
           </div>
         )}
       </div>
     </div>
   );
+  
 });
 
 export default CanvasSkyJumpGame;
