@@ -8,7 +8,7 @@ Make sure this is running before proceeding:
 
 ```bash
 # Start Katana with disabled fees and open origins
-katana --disable-fee --allowed-origins "*"
+katana --dev --dev.no-fee
 ```
 
 ### 2️⃣ Build, Migrate, and Start Torii (Terminal 2)  
@@ -22,7 +22,7 @@ sozo migrate
 
 # Start Torii
 # Replace <WORLD_ADDRESS> with the deployed world address from the previous step
-torii --world <WORLD_ADDRESS> --allowed-origins "*"
+torii --world <WA> --http.cors_origins "*"
 ```
 
 ---
