@@ -106,11 +106,11 @@ pub mod achieve {
             player.assert_exists();
 
             // Emit all minigames progress
-            let mut achievement_id = constants::SCOREHUNTER_INITIAL_ID;
-            let counter = constants::SCOREHUNTER_ACHIEVEMENTS_COUNT;
+            let mut achievement_id = constants::PLAY_MINIGAMES_INITIAL_COUNT;
+            let counter = constants::PLAY_MINIGAMES_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -242,7 +242,7 @@ pub mod achieve {
             let counter = constants::BYTEBITES_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -263,7 +263,7 @@ pub mod achieve {
             let counter = constants::PET_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -284,7 +284,7 @@ pub mod achieve {
             let counter = constants::SLEEP_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -305,7 +305,7 @@ pub mod achieve {
             let counter = constants::CLEAN_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -328,7 +328,7 @@ pub mod achieve {
             let counter = constants::ECHONETWORK_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
@@ -372,7 +372,7 @@ pub mod achieve {
             let counter = constants::NEURALLINK_ACHIEVEMENTS_COUNT;
             let stop = counter + achievement_id;
             
-            while achievement_id <= stop {
+            while achievement_id < stop {
                 let task: Achievement = achievement_id.into(); // u8 to Achievement
                 let task_identifier = task.identifier(); // Achievement identifier is the task to complete
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
