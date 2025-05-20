@@ -139,6 +139,8 @@ function Tamagotchi() {
                 />
               ) : currentView === 'chat' ? (
                 <Chat
+                  account={account}
+                  client={client}
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
                   beast={currentBeast}
