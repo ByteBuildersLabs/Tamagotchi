@@ -1,5 +1,6 @@
 // React and external libraries
 import { useState, useRef } from "react";
+import { Account } from "starknet";
 
 // Internal components
 import MessageComponent from "../../ui/message";
@@ -29,7 +30,7 @@ const context = `Remembre this is your context,
           `;
 
 
-const Chat = ({ beast, expanded, botMessage, setBotMessage }: { beast: any, expanded: boolean, botMessage: any, setBotMessage: any }) => {
+const Chat = ({ beast, expanded, botMessage, setBotMessage, client, account }: { beast: any, expanded: boolean, botMessage: any, setBotMessage: any, client: any, account: any }) => {
   const { isLoading, error, sendMessage } = useBeastChat({ beast, setBotMessage });
 
   const [input, setInput] = useState("");
@@ -43,6 +44,9 @@ const Chat = ({ beast, expanded, botMessage, setBotMessage }: { beast: any, expa
 
   const handleSendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
+    
+    const tccc = await client.achieve.achieveBeastChat(account as Account);
+    console.info('tccc', tccc);
 
     const messageWithContext = `${context}\n\nUser: ${input}`;
     await sendMessage(messageWithContext);
