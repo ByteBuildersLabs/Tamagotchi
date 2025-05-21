@@ -20,6 +20,8 @@ interface ShareModalProps {
     name: string;
     score: number;
   };
+  account: any;
+  client: any;
 }
 
 export const ShareProgress: React.FC<ShareModalProps> = ({
@@ -28,6 +30,8 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
   type,
   stats,
   minigameData,
+  account,
+  client,
 }) => {
   const [tweetMsg, setTweetMsg] = useState("");
 
@@ -35,7 +39,7 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
     if (type === 'beast' && stats) {
       setTweetMsg(
         `🎮 Playing ByteBeasts Tamagotchi, and here is my Beast's progress:\n\n` +
-        `🕰️ Age: ${stats.age}` + ` ${stats.age == 1 ? 'day' : 'days' }\n` +
+        `🕰️ Age: ${stats.age}` + ` ${stats.age == 1 ? 'day' : 'days'}\n` +
         `⚡ Energy: ${stats.energy} \n` +
         `🍖 Hunger: ${stats.hunger} \n` +
         `😊 Happiness: ${stats.happiness} \n` +
@@ -72,15 +76,15 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
       <div className="modal-content">
         <div className="modal-header">
           <h2>Share on X</h2>
-          <button 
-            className="close-button" 
+          <button
+            className="close-button"
             onClick={(e) => {
               e.stopPropagation();
               onClose();
             }}
           >×</button>
         </div>
-        
+
         <div className="modal-body">
           <textarea
             value={tweetMsg}
@@ -89,14 +93,19 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             className="tweet-textarea p"
           />
         </div>
-        
+
         <div className="modal-footer">
           <a
             href={tweetText}
             target="_blank"
             rel="noreferrer"
             className="share-button"
-            onClick={(e) => e.stopPropagation()}
+            onClick={async (e) => {
+              e.stopPropagation();
+              minigameData ?
+                await client.achieve.achieveScoreShare(account, minigameData.score) :
+                await client.achieve.achieve_achieveBeastShare(account);
+            }}
           >
             Share
           </a>

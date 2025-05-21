@@ -26,6 +26,7 @@ import { InputHandler } from './inputHandler';
 import RestartIcon from '../../assets/img/icon-restart.svg'; 
 
 import './main.css'; 
+import { Account } from 'starknet';
 
 const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProps>(({
   className = '',
@@ -74,7 +75,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   }, [onScoreUpdate]);
 
   // Callback when the game engine signals game over
-  const handleEngineGameOver = useCallback((engineFinalScore: number) => {
+  const handleEngineGameOver = useCallback(async (engineFinalScore: number) => {
     setFinalScore(engineFinalScore);
     setIsGameOverState(true);
 
@@ -83,6 +84,8 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
 
     if (engineFinalScore > actualHighScore) {
       setCurrentHighScore(engineFinalScore);
+      const tx = await client.achieve.achievePlatformHighscore(account as Account, engineFinalScore);
+      console.info('tx', tx);
     } else {
       setCurrentHighScore(actualHighScore);
     }
@@ -187,6 +190,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
           "SaveGameResults",
           async () => {
             await client.player.updatePlayerTotalPoints(account, score);
+            await client.achieve.achievePlayerNewTotalPoints(account);
             await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP as any);
             await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
           }
@@ -319,6 +323,8 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         {currentScreen === 'sharing' && selectedFoodReward && (
           <div className="skyjump-modal-overlay">
             <ShareProgress
+              account={account}
+              client={client}
               isOpen={true}
               onClose={() => setCurrentScreen('gameover')}
               type="minigame"
