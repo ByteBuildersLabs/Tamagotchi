@@ -12,7 +12,8 @@ pub trait IAchieve<T> {
     fn achieve_beast_sleep(ref self: T);
     fn achieve_beast_clean(ref self: T);
     // ------------------------- Social achievement methods -------------------------
-    fn achieve_social_share(ref self: T, score: u32);
+    fn achieve_beast_share(ref self: T);
+    fn achieve_score_share(ref self: T, score: u32);
     fn achieve_beast_chat(ref self: T);
 }
 
@@ -314,8 +315,8 @@ pub mod achieve {
         }
 
         // ------------------------- Social achievement methods -------------------------
-        // Share on social media
-        fn achieve_social_share(ref self: ContractState, score: u32) {
+         // Share beast on social media
+        fn achieve_beast_share(ref self: ContractState) {
             let world = self.world(@"tamagotchi");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
@@ -334,7 +335,17 @@ pub mod achieve {
                 achievement_store.progress(player.address.into(), task_identifier, 1, get_block_timestamp());
                 achievement_id += 1;
             };
+        }
+
+        // Share score on social media 
+        fn achieve_score_share(ref self: ContractState, score: u32) {
+            let world = self.world(@"tamagotchi");
+            let store = StoreTrait::new(world);
+            let achievement_store = AchievementStoreTrait::new(world);
         
+            let player = store.read_player();
+            player.assert_exists();
+            
             // Progress ArenaRockstar (score thresholds)
             if score >= constants::ARENAROCKSTARI_POINTS && score <= constants::ARENAROCKSTARII_POINTS {
                 let task_id: felt252 = 'ArenaRockstarI';
