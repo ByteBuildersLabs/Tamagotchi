@@ -248,8 +248,6 @@ export const useTamagotchi = (currentBeast: any) => {
 
     const updateStatus = async () => {
       try {
-        console.info('currentBeast', currentBeast)
-        console.info('account', account)
         if (!currentBeast || !currentBeast.beast_id || !account) {
           setIsLoading(true);
           return;
@@ -265,8 +263,6 @@ export const useTamagotchi = (currentBeast: any) => {
           fetchStatus(account),
           fetchAge(account)
         ]);
-        
-        console.info('Status response:', statusResponse);
         
         if (!isMounted) return;
 
