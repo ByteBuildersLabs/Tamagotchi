@@ -62,6 +62,7 @@ const BIRD_COLLIDER_OFFSET_Y = (BIRD_HEIGHT - BIRD_COLLIDER_HEIGHT) / 2;
 
 // Types and Interfaces
 import { FlappyBirdRefHandle, FlappyBirdProps } from '../../types/components';
+import { Account } from 'starknet';
 
 const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     className = '',
@@ -168,20 +169,10 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             await handleAction(
               "SaveGameResults", 
               async () => {
-                await client.player.updatePlayerTotalPoints(
-                  account,
-                  score
-                )
-                await client.player.updatePlayerMinigameHighestScore(
-                  account,
-                  score,
-                  2
-                )
-                await client.player.addOrUpdateFoodAmount(
-                  account,
-                  foodId,
-                  foodCollected
-                )
+                await client.player.updatePlayerTotalPoints(account, score);
+                await client.achieve.achievePlayerNewTotalPoints(account);
+                await client.player.updatePlayerMinigameHighestScore(account, score, 2);
+                await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
             });
             return true;
           } else {
@@ -217,7 +208,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       };
 
     // Handle game over
-    const handleGameEnd = () => {
+    const handleGameEnd = async () => {
 
       const score = currentScoreRef.current;
       setFinalScore(score);
@@ -226,6 +217,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       
       if (score > actualHighScore) {
           setCurrentHighScore(score);
+          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score);
+          console.info('tx', tx);
       } else {
           setCurrentHighScore(actualHighScore);
       }
@@ -893,6 +886,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             {currentScreen === 'sharing' && (
                 <div className="modal-overlay">
                     <ShareProgress
+                        account={account}
+                        client={client}
                         isOpen={isShareModalOpen}
                         onClose={() => {
                             setIsShareModalOpen(false);
