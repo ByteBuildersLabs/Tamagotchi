@@ -57,8 +57,6 @@ function Tamagotchi() {
     if (foundBeast) setCurrentBeast(foundBeast);
   }, [player, beasts]);
 
-  console.info('player', player);
-
   const getShareableStats = () => {
     if (!currentBeast || !status) return undefined;
 
