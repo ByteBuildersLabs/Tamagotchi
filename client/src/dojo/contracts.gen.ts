@@ -192,19 +192,40 @@ export function setupWorld(provider: DojoProvider) {
 		}
 	};
 
-	const build_achieve_achieveSocialShare_calldata = (score: number): DojoCall => {
+	const build_achieve_achieveScoreShare_calldata = (score: number): DojoCall => {
 		return {
 			contractName: "achieve",
-			entrypoint: "achieve_social_share",
+			entrypoint: "achieve_score_share",
 			calldata: [score],
 		};
 	};
 
-	const achieve_achieveSocialShare = async (snAccount: Account | AccountInterface, score: number) => {
+	const achieve_achieveScoreShare = async (snAccount: Account | AccountInterface, score: number) => {
 		try {
 			return await provider.execute(
 				snAccount as any,
-				build_achieve_achieveSocialShare_calldata(score),
+				build_achieve_achieveScoreShare_calldata(score),
+				"tamagotchi",
+			);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	};
+
+	const build_achieve_achieveBeastShare_calldata = (): DojoCall => {
+		return {
+			contractName: "achieve",
+			entrypoint: "achieve_beast_share",
+			calldata: [],
+		};
+	};
+
+	const achieve_achieveBeastShare = async (snAccount: Account | AccountInterface) => {
+		try {
+			return await provider.execute(
+				snAccount as any,
+				build_achieve_achieveBeastShare_calldata(),
 				"tamagotchi",
 			);
 		} catch (error) {
@@ -655,8 +676,10 @@ export function setupWorld(provider: DojoProvider) {
 			buildAchievePlayMinigameCalldata: build_achieve_achievePlayMinigame_calldata,
 			achievePlayerNewTotalPoints: achieve_achievePlayerNewTotalPoints,
 			buildAchievePlayerNewTotalPointsCalldata: build_achieve_achievePlayerNewTotalPoints_calldata,
-			achieveSocialShare: achieve_achieveSocialShare,
-			buildAchieveSocialShareCalldata: build_achieve_achieveSocialShare_calldata,
+			achieveBeastShare: achieve_achieveBeastShare,
+			buildAchieveBeastShareCalldata: build_achieve_achieveBeastShare_calldata,
+			achieveScoreShare: achieve_achieveScoreShare,
+			buildAchieveScoreShareCalldata: build_achieve_achieveScoreShare_calldata,
 		},
 		player: {
 			addOrUpdateFoodAmount: player_addOrUpdateFoodAmount,

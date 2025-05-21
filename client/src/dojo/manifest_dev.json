@@ -1313,7 +1313,7 @@
   "contracts": [
     {
       "address": "0x1005116a48c9a8f7a6c946091e64dc8ced37962dc2bbb74355868229307c20d",
-      "class_hash": "0x5a4c23fa69d235e89b7607a1b8ba8aadae993cd7cd9adaa8e94310f3c7b100f",
+      "class_hash": "0x5a0717d24dae3e31ca2e15fd1f06cf26d9de52b84e56500d1179e38647c056e",
       "abi": [
         {
           "type": "impl",
@@ -1449,7 +1449,14 @@
             },
             {
               "type": "function",
-              "name": "achieve_social_share",
+              "name": "achieve_beast_share",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "achieve_score_share",
               "inputs": [
                 {
                   "name": "score",
@@ -1600,7 +1607,8 @@
         "achieve_beast_pet",
         "achieve_beast_sleep",
         "achieve_beast_clean",
-        "achieve_social_share",
+        "achieve_beast_share",
+        "achieve_score_share",
         "achieve_beast_chat",
         "upgrade"
       ]
