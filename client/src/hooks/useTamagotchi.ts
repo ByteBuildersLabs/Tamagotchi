@@ -74,7 +74,6 @@ export const useTamagotchi = (currentBeast: any) => {
       
       const tx = await actionFn();
       if (tx) {
-        await tx.wait();
         // Update status after transaction is confirmed
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {

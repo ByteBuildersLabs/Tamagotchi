@@ -90,7 +90,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
         do {
           // Recargar la lista de beasts usando GraphQL
           const beastsData = await fetchBeastsData();
-          await processBeastData(beastsData);
+          const processedBeasts = await processBeastData(beastsData);
 
           // Encontrar la bestia recién creada
           newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);

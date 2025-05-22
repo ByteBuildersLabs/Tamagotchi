@@ -48,12 +48,14 @@ const Play: React.FC<PlayProps> = ({
     }
 
     try {
+    
+      const tx = await client.achieve.achievePlayMinigame(account);
+      console.info('tx achievePlayMinigame', tx);
+
       handleAction(
         "Play",
         async () => {
-          await client.game.play(account);
-          const tx = await client.achieve.achieve_achievePlayMinigame(account);
-          console.info('tx achieve_achievePlayMinigame', tx); // no sirve
+          return await client.game.play(account);
         },
         beastsDex[beast.specie - 1].playPicture
       );
