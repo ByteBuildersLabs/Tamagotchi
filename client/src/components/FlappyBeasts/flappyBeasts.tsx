@@ -215,10 +215,9 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       setFinalScore(score);
       const dojoHighScore = myScoreFlappyBird.length > 0 ? myScoreFlappyBird[0]?.score : 0;
       const actualHighScore = Math.max(dojoHighScore, currentHighScore);
-      
       if (score > actualHighScore) {
           setCurrentHighScore(score);
-          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score); // no sirve
+          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score);
           console.info('tx flappy highscore', tx);
       } else {
           setCurrentHighScore(actualHighScore);

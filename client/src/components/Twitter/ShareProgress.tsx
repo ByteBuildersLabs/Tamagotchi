@@ -106,8 +106,8 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
                 const tx = await client.achieve.achieveScoreShare(account, minigameData.score);
                 console.info('achieveScoreShare ', tx)
               } else {
-                const tx = await client.achieve.achieve_achieveBeastShare(account);
-                console.info('achieve_achieveBeastShare ', tx) // no sirve
+                const tx = await client.achieve.achieveBeastShare(account);
+                console.info('achieveBeastShare ', tx)
               }
             }}
           >
