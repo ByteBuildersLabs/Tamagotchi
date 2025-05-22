@@ -57,8 +57,6 @@ function Tamagotchi() {
     if (foundBeast) setCurrentBeast(foundBeast);
   }, [player, beasts]);
 
-  console.info('player', player);
-
   const getShareableStats = () => {
     if (!currentBeast || !status) return undefined;
 
@@ -139,6 +137,8 @@ function Tamagotchi() {
                 />
               ) : currentView === 'chat' ? (
                 <Chat
+                  account={account}
+                  client={client}
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
                   beast={currentBeast}

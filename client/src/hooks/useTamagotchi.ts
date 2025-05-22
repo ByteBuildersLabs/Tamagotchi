@@ -69,7 +69,6 @@ export const useTamagotchi = (currentBeast: any) => {
     try {
       const tx = await actionFn();
       if (tx) {
-        await tx.wait();
         // Update status after transaction is confirmed
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
@@ -209,8 +208,6 @@ export const useTamagotchi = (currentBeast: any) => {
 
     const updateStatus = async () => {
       try {
-        console.info('currentBeast', currentBeast)
-        console.info('account', account)
         if (!currentBeast || !currentBeast.beast_id || !account) {
           setIsLoading(true);
           return;
@@ -227,8 +224,6 @@ export const useTamagotchi = (currentBeast: any) => {
           fetchAge(account)
         ]);
         
-        console.info('Status response:', statusResponse);
-        
         if (!isMounted) return;
 
         if (statusResponse && Object.keys(statusResponse).length !== 0) {
@@ -237,8 +232,7 @@ export const useTamagotchi = (currentBeast: any) => {
             setStatus(newStatus);
             setIsLoading(false);
           } else {
-            const setCurrentTx = await client.player.setCurrentBeast(account!, currentBeast.beast_id);
-            console.info('setCurrentTx', setCurrentTx);
+            await client.player.setCurrentBeast(account!, currentBeast.beast_id);
             console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
             setIsLoading(true);
           }

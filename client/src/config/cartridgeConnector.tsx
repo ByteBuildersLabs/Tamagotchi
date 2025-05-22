@@ -107,8 +107,12 @@ const policies: SessionPolicies = {
           entrypoint: "achieve_player_new_total_points"
         },
         {
-          name: "achieve_social_share",
-          entrypoint: "achieve_social_share"
+          name: "achieve_score_share",
+          entrypoint: "achieve_score_share"
+        },
+        {
+          name: "achieve_beast_share",
+          entrypoint: "achieve_beast_share"
         },
       ],
     },

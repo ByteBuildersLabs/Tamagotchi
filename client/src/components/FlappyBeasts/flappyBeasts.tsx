@@ -62,6 +62,7 @@ const BIRD_COLLIDER_OFFSET_Y = (BIRD_HEIGHT - BIRD_COLLIDER_HEIGHT) / 2;
 
 // Types and Interfaces
 import { FlappyBirdRefHandle, FlappyBirdProps } from '../../types/components';
+import { Account } from 'starknet';
 
 const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
     className = '',
@@ -168,20 +169,11 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             await handleAction(
               "SaveGameResults", 
               async () => {
-                await client.player.updatePlayerTotalPoints(
-                  account,
-                  score
-                )
-                await client.player.updatePlayerMinigameHighestScore(
-                  account,
-                  score,
-                  2
-                )
-                await client.player.addOrUpdateFoodAmount(
-                  account,
-                  foodId,
-                  foodCollected
-                )
+                await client.player.updatePlayerTotalPoints(account, score);
+                const txtest = await client.achieve.achievePlayerNewTotalPoints(account);
+                console.info('achievePlayerNewTotalPoints fkaooy', txtest);
+                await client.player.updatePlayerMinigameHighestScore(account, score, 2);
+                await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
             });
             return true;
           } else {
@@ -217,15 +209,16 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       };
 
     // Handle game over
-    const handleGameEnd = () => {
+    const handleGameEnd = async () => {
 
       const score = currentScoreRef.current;
       setFinalScore(score);
       const dojoHighScore = myScoreFlappyBird.length > 0 ? myScoreFlappyBird[0]?.score : 0;
       const actualHighScore = Math.max(dojoHighScore, currentHighScore);
-      
       if (score > actualHighScore) {
           setCurrentHighScore(score);
+          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score);
+          console.info('tx flappy highscore', tx);
       } else {
           setCurrentHighScore(actualHighScore);
       }
@@ -893,6 +886,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
             {currentScreen === 'sharing' && (
                 <div className="modal-overlay">
                     <ShareProgress
+                        account={account}
+                        client={client}
                         isOpen={isShareModalOpen}
                         onClose={() => {
                             setIsShareModalOpen(false);

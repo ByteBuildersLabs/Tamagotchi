@@ -46,6 +46,10 @@ const Play: React.FC<PlayProps> = ({
     }
 
     try {
+    
+      const tx = await client.achieve.achievePlayMinigame(account);
+      console.info('tx achievePlayMinigame', tx);
+
       handleAction(
         "Play",
         async () => {
