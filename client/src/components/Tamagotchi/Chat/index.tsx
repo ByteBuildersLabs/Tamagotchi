@@ -45,8 +45,7 @@ const Chat = ({ beast, expanded, botMessage, setBotMessage, client, account }: {
   const handleSendMessage = async () => {
     if (input.trim() === "" || isLoading) return;
     
-    const tccc = await client.achieve.achieveBeastChat(account as Account);
-    console.info('tccc', tccc);
+    await client.achieve.achieveBeastChat(account as Account);
 
     const messageWithContext = `${context}\n\nUser: ${input}`;
     await sendMessage(messageWithContext);

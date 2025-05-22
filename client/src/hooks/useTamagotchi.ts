@@ -272,8 +272,7 @@ export const useTamagotchi = (currentBeast: any) => {
             setStatus(newStatus);
             setIsLoading(false);
           } else {
-            const setCurrentTx = await client.player.setCurrentBeast(account!, currentBeast.beast_id);
-            console.info('setCurrentTx', setCurrentTx);
+            await client.player.setCurrentBeast(account!, currentBeast.beast_id);
             console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
             setIsLoading(true);
           }

@@ -94,7 +94,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     if (engineFinalScore > dojoHighScore) {
       setCurrentHighScore(engineFinalScore);
       const tx = await client.achieve.achievePlatformHighscore(account as Account, engineFinalScore);
-      console.info('tx', tx);
+      console.info('tx sky jump achievePlatformHighscore', tx);
     } else {
       setCurrentHighScore(dojoHighScore);
     }
