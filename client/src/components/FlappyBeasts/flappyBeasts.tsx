@@ -170,7 +170,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
               "SaveGameResults", 
               async () => {
                 await client.player.updatePlayerTotalPoints(account, score);
-                await client.achieve.achievePlayerNewTotalPoints(account);
+                const txtest = await client.achieve.achievePlayerNewTotalPoints(account);
+                console.info('achievePlayerNewTotalPoints fkaooy', txtest);
                 await client.player.updatePlayerMinigameHighestScore(account, score, 2);
                 await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
             });
@@ -217,8 +218,8 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
       
       if (score > actualHighScore) {
           setCurrentHighScore(score);
-          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score);
-          console.info('tx', tx);
+          const tx = await client.achieve.achieveFlappyBeastHighscore(account as Account, score); // no sirve
+          console.info('tx flappy highscore', tx);
       } else {
           setCurrentHighScore(actualHighScore);
       }

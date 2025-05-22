@@ -64,8 +64,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
       if (!player) {
-        const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-        console.info('spawnPlayerTx', spawnPlayerTx);
+        await client.player.spawnPlayer(account as Account);
         
         // Esperar un momento para que se actualice el player
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -80,18 +79,15 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
         do {
           // Recargar la lista de beasts usando GraphQL
           const beastsData = await fetchBeastsData();
-          const processedBeasts = await processBeastData(beastsData);
-          console.info('processedBeasts', processedBeasts);
-          
+          await processBeastData(beastsData);
+
           // Encontrar la bestia recién creada
           newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
-          console.info('newBeast', newBeast);
           await new Promise(resolve => setTimeout(resolve, 2000));
         } while (!newBeast);
         
         if (newBeast) {
-          const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
-          console.info('setCurrentTx', setCurrentTx);
+          await client.player.setCurrentBeast(account!, newBeast.beast_id);
           await new Promise(resolve => setTimeout(resolve, 2000));
           navigate('/play');
         }

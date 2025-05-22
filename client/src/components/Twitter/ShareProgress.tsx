@@ -102,15 +102,19 @@ export const ShareProgress: React.FC<ShareModalProps> = ({
             className="share-button"
             onClick={async (e) => {
               e.stopPropagation();
-              minigameData ?
-                await client.achieve.achieveScoreShare(account, minigameData.score) :
-                await client.achieve.achieve_achieveBeastShare(account);
+              if (minigameData) {
+                const tx = await client.achieve.achieveScoreShare(account, minigameData.score);
+                console.info('achieveScoreShare ', tx)
+              } else {
+                const tx = await client.achieve.achieve_achieveBeastShare(account);
+                console.info('achieve_achieveBeastShare ', tx) // no sirve
+              }
             }}
           >
-            Share
-          </a>
-        </div>
+          Share
+        </a>
       </div>
     </div>
+    </div >
   );
 };
