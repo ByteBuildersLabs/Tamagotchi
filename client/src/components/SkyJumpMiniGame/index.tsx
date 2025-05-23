@@ -48,7 +48,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const [currentScore, setCurrentScore] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
   const [_isGameOverState, setIsGameOverState] = useState(false);
-  const [currentHighScore, setCurrentHighScore] = useState(initialHighScore);
+  const [currentHighScore, setCurrentHighScore] = useState(0);
 
   const [showEnergyToast, setShowEnergyToast] = useState(false);
   const [selectedFoodReward, setSelectedFoodReward] = useState<FoodReward | null>(null);
@@ -65,6 +65,16 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
   const { myScoreSkyJump } = useHighScores(); 
   const { account } = useAccount();
 
+  // Initialize high score from Dojo
+  useEffect(() => {
+    if (myScoreSkyJump && myScoreSkyJump.length > 0) {
+      const dojoHighScore = myScoreSkyJump[0]?.score || 0;
+      setCurrentHighScore(dojoHighScore);
+    } else {
+      setCurrentHighScore(0);
+    }
+  }, [myScoreSkyJump]);
+
   // Callback when the game engine updates the score
   const handleEngineScoreUpdate = useCallback((engineScore: number) => {
     setCurrentScore(engineScore);
@@ -79,12 +89,11 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     setIsGameOverState(true);
 
     const dojoHighScore = myScoreSkyJump.length > 0 ? myScoreSkyJump[0]?.score : 0;
-    const actualHighScore = Math.max(dojoHighScore, currentHighScore, engineFinalScore);
-
-    if (engineFinalScore > actualHighScore) {
+    
+    if (engineFinalScore > dojoHighScore) {
       setCurrentHighScore(engineFinalScore);
     } else {
-      setCurrentHighScore(actualHighScore);
+      setCurrentHighScore(dojoHighScore);
     }
 
     const reward = FoodRewardService
@@ -98,7 +107,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     });
 
     setCurrentScreen('sharing');
-  }, [ myScoreSkyJump, currentHighScore, gameName, client, account, handleAction ]);
+  }, [myScoreSkyJump, gameName, client, account, handleAction]);
 
   // Sync the game over and score update callbacks with the refs
   useEffect(() => {
@@ -186,9 +195,14 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         await handleAction(
           "SaveGameResults",
           async () => {
-            await client.player.updatePlayerTotalPoints(account, score);
-            await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP as any);
-            await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
+            const updatePlayerTotalPoints = await client.player.updatePlayerTotalPoints(account, score);
+            console.info('updatePlayerTotalPoints', updatePlayerTotalPoints);
+              
+            const updatePlayerMinigameHighestScore = await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP);
+            console.info('updatePlayerMinigameHighestScore', updatePlayerMinigameHighestScore);
+            
+            const addOrUpdateFoodAmount = await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
+            console.info('addOrUpdateFoodAmount', addOrUpdateFoodAmount);
           }
         );
         return true;

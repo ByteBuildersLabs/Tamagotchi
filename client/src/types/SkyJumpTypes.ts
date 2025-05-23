@@ -91,8 +91,8 @@ export interface SkyJumpGameRefHandle {
 
 // Game ID types, if used in multiple places
 export enum GameId {
-    SKY_JUMP = "skyJump", 
-    FLAPPY_BEASTS = "flappyBeasts"
+    SKY_JUMP = 1, 
+    FLAPPY_BEASTS = 2
 }
 
 // Food reward
