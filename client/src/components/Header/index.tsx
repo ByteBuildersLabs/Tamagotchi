@@ -157,7 +157,7 @@ const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
               <div className="icon-container">
                 <img src={download} alt="Profile" />
               </div>
-              <span>Download App</span>
+              <span>Install App</span>
             </Link>
             {menuItems.map((item, index) => (
               <div key={index} className="item" onClick={item.onClick}>
