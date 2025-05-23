@@ -374,3 +374,13 @@ a:visited {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.aura {
+  animation: aura 2s linear infinite;
+  border-radius: 20px;
+}
+
+@keyframes aura {
+  0% { box-shadow: 0 0 20px var(--primary-red), 0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red); }
+  100% { box-shadow: 0 0 30px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red); }
+}

@@ -25,6 +25,7 @@ import about from "../../assets/img/icon-about.svg";
 import menuIcon from "../../assets/img/icon-menu.svg";
 import closeIcon from "../../assets/img/icon-close.svg";
 import share from "../../assets/img/icon-share.svg";
+import download from "../../assets/img/icon-download.svg";
 
 // Styles
 import './main.css';
@@ -148,10 +149,16 @@ const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
           <div className={`side-menu ${isOpen ? 'expanded' : ''}`}>
             <div className="item" onClick={handleAchievements}>
               <div className="icon-container">
-                <img src={profile} alt="Profile" />
+                <img src={profile} alt="download" />
               </div>
               <span>Profile</span>
             </div>
+            <Link className="item" to={'/download'}>
+              <div className="icon-container">
+                <img src={download} alt="Profile" />
+              </div>
+              <span>Install App</span>
+            </Link>
             {menuItems.map((item, index) => (
               <div key={index} className="item" onClick={item.onClick}>
                 {item.to ? (
