@@ -21,7 +21,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["/assets/logo-Cwg6g-uB.jpg"],
+      includeAssets: ["/src/assets/img/img-logo.jpg"],
       manifest: {
         name: "Byte Beasts Tamagotchi",
         short_name: "Byte Beasts Tamagotchi",
@@ -32,7 +32,7 @@ export default defineConfig({
         orientation: "portrait",
         icons: [
           {
-            src: "/assets/logo-Cwg6g-uB.jpg",
+            src: "/src/assets/img/img-logo.jpg",
             sizes: "180x180",
             type: "image/svg",
           },
