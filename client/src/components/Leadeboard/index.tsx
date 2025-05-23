@@ -93,7 +93,7 @@ const Leaderboard = () => {
     }
 
     if (!isLoadedPlayers) {
-      return <Spinner message='Loading minigames leaderboard...' />;
+      return <Spinner message='Loading minigames leaderboard' />;
     }
 
     return (

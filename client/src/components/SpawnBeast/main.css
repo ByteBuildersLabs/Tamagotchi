@@ -24,6 +24,8 @@
   background-position: center;
   background-size: cover;
   border-radius: 20px;
+  padding: 20px 0;
+  margin-bottom: 50px;
 }
 
 .initial-beast .actions-icon {
@@ -68,4 +70,25 @@
 
 .initial-info .button {
   height: 50px;
+}
+
+.spawn-button-container {
+  width: 100%;
+  padding: 0 15px;
+  margin-top: 20px;
+}
+
+.spawn-progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.error-message {
+  color: var(--primary-red);
+  text-align: center;
+  margin: 10px 0;
+  font-family: 'Kallisto';
 }
