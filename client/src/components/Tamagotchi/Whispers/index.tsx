@@ -10,15 +10,19 @@ import { useBeastChat } from "../../../hooks/useBeastChat";
 // Styles
 import './main.css';
 
+const MESSAGE_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+const MESSAGE_DISPLAY_TIME = 20 * 1000; // 20 seconds in milliseconds
+
 const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: { beast: any, beastStatus: any, expanded: boolean, botMessage:any, setBotMessage:any }) => {
   const { isLoading, error } = useBeastChat({ beast, setBotMessage });
 
   const [whispers, setWhispers] = useState<Message[]>([]);
   const messageTimeoutRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     setWhispers([botMessage]);
-  },  [botMessage])
+  }, [botMessage]);
 
   const uniMessage = () => {
     return (
@@ -67,31 +71,43 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
     setWhispers([newMessage]);
     setBotMessage(newMessage);
 
-    // Configure new timeout to clear the message every 20 seconds
+    // Clear the message after 20 seconds
     messageTimeoutRef.current = setTimeout(() => {
       setBotMessage({ user: '', text: '' });
       setWhispers([{ user: '', text: '' }]);
-    }, 20000);
+    }, MESSAGE_DISPLAY_TIME);
   };
 
   useEffect(() => {
-    let intervalId: string | number | NodeJS.Timeout | undefined;
-    
+    // Clear any existing interval and timeout
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    if (messageTimeoutRef.current) {
+      clearTimeout(messageTimeoutRef.current);
+    }
+
     // Only set up the interval if we have a beast and it's not sleeping
     if (beastStatus && beast && beastStatus[2] !== 0) {
+      // Send initial message
       const firstMessage = generateMessage();
       createWhisper(firstMessage);
 
-      intervalId = setInterval(() => {
+      // Set up interval for periodic messages
+      intervalRef.current = setInterval(() => {
         const message = generateMessage();
         createWhisper(message);
-      }, 180000);
+      }, MESSAGE_INTERVAL);
     }
 
-    // Clear both the interval and the timeout when unmounting
+    // Cleanup on unmount
     return () => {
-      if (intervalId) clearInterval(intervalId);
-      if (messageTimeoutRef.current) clearTimeout(messageTimeoutRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
     };
   }, [beast, beastStatus]); // Only re-run if beast or beastStatus changes
 

@@ -31,6 +31,9 @@ export const useTamagotchi = (currentBeast: any) => {
   const [birthday, setBirthday] = useState<{ hours: string; minutes: string }>({ hours: '', minutes: '' });
   const [age, setAge] = useState<number>(0);
   const [displayBirthday, setDisplayBirthday] = useState(false);
+  const [isActionDisabled, setIsActionDisabled] = useState(false);
+  const [currentAction, setCurrentAction] = useState<string | null>(null);
+  const ACTION_COOLDOWN = 3000; // 3 seconds cooldown
 
   // Sound hooks
   const [playFeed] = useSound(feedSound, { volume: 0.6, preload: true });
@@ -51,22 +54,24 @@ export const useTamagotchi = (currentBeast: any) => {
   };
 
   const handleAction = async (actionName: string, actionFn: () => Promise<any>, animation: string) => {
-    if (isLoading || !currentBeast || !currentBeast.beast_id) {
+    if (isLoading || !currentBeast || !currentBeast.beast_id || isActionDisabled) {
       return;
     }
 
-    showAnimation(animation);
-    buttonSound();
-    
-    switch (actionName) {
-      case 'Feed': playFeed(); break;
-      case 'Clean': playClean(); break;
-      case 'Sleep': playSleep(); break;
-      case 'Play': playPlay(); break;
-      case 'Revive': playRevive(); break;
-    }
-    
     try {
+      setIsActionDisabled(true);
+      setCurrentAction(actionName);
+      showAnimation(animation);
+      buttonSound();
+      
+      switch (actionName) {
+        case 'Feed': playFeed(); break;
+        case 'Clean': playClean(); break;
+        case 'Sleep': playSleep(); break;
+        case 'Play': playPlay(); break;
+        case 'Revive': playRevive(); break;
+      }
+      
       const tx = await actionFn();
       if (tx) {
         await tx.wait();
@@ -81,16 +86,24 @@ export const useTamagotchi = (currentBeast: any) => {
           }
         }
       }
+
+      // Wait for the full cooldown period after the action is complete
+      await new Promise(resolve => setTimeout(resolve, ACTION_COOLDOWN));
     } catch (error) {
       console.error("Action error:", error);
+    } finally {
+      setIsActionDisabled(false);
+      setCurrentAction(null);
     }
   };
 
   const handleCuddle = async () => {
-    if (isLoading || !currentBeast || !currentBeast.beast_id || !account) return;
+    if (isLoading || !currentBeast || !currentBeast.beast_id || !account || isActionDisabled) return;
     if (status[1] === 0 || status[2] === 0) return;
 
     try {
+      setIsActionDisabled(true);
+      setCurrentAction('Cuddle');
       showAnimation(beastsDex[currentBeast.specie - 1].cuddlePicture);
       const tx = await client.game.pet(account as Account);
       if (tx) {
@@ -107,35 +120,61 @@ export const useTamagotchi = (currentBeast: any) => {
           }
         }
       }
+
+      // Wait for the full cooldown period after the action is complete
+      await new Promise(resolve => setTimeout(resolve, ACTION_COOLDOWN));
     } catch (error) {
       console.error("Cuddle error:", error);
+    } finally {
+      setIsActionDisabled(false);
+      setCurrentAction(null);
     }
   };
 
   const handleNewEgg = async () => {
-    if (isLoading) return;
-    buttonSound();
-    // Clear status before updating beast
-    setStatus([]);
-    setIsLoading(true);
+    if (isLoading || isActionDisabled) return;
+    
     try {
+      setIsActionDisabled(true);
+      setCurrentAction('NewEgg');
+      buttonSound();
+      // Clear status before updating beast
+      setStatus([]);
+      setIsLoading(true);
+      
       await client.game.updateBeast(account as Account);
       navigate('/spawn?reborn=true');
+
+      // Wait for the full cooldown period after the action is complete
+      await new Promise(resolve => setTimeout(resolve, ACTION_COOLDOWN));
     } catch (error) {
       console.error("Error updating beast:", error);
     } finally {
       setIsLoading(false);
+      setIsActionDisabled(false);
+      setCurrentAction(null);
     }
   };
 
-  const showBirthday = () => {
-    if (isLoading) return;
-    setBirthday(getBirthDate(currentBeast.birth_date))
-    buttonSound();
-    setDisplayBirthday(true);
-    setTimeout(() => {
+  const showBirthday = async () => {
+    if (isLoading || isActionDisabled) return;
+    
+    try {
+      setIsActionDisabled(true);
+      setCurrentAction('Birthday');
+      setBirthday(getBirthDate(currentBeast.birth_date))
+      buttonSound();
+      setDisplayBirthday(true);
+
+      // Wait for the full display period
+      await new Promise(resolve => setTimeout(resolve, 5000));
       setDisplayBirthday(false);
-    }, 5000);
+    } catch (error) {
+      console.error("Error showing birthday:", error);
+    } finally {
+      setIsActionDisabled(false);
+      setCurrentAction(null);
+    }
   };
 
   useEffect(() => {
@@ -284,6 +323,8 @@ export const useTamagotchi = (currentBeast: any) => {
     handleNewEgg,
     showBirthday,
     setCurrentView,
-    showAnimation
+    showAnimation,
+    isActionDisabled,
+    currentAction
   };
 }; 

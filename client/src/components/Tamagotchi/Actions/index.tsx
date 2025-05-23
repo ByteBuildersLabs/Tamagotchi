@@ -24,7 +24,17 @@ import './main.css';
 
 type PictureKey = 'eatPicture' | 'sleepPicture' | 'cleanPicture' | 'playPicture' | 'idlePicture' | 'cuddlePicture';
 
-const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client, setCurrentView, setStatus }: { 
+const Actions = ({ 
+  handleAction, 
+  isLoading, 
+  beast, 
+  beastStatus, 
+  account, 
+  client, 
+  setCurrentView, 
+  setStatus,
+  isActionDisabled 
+}: { 
   handleAction: any, 
   isLoading: any, 
   beast: any,
@@ -33,6 +43,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
   client: any,
   setCurrentView: (view: string) => void,
   setStatus: any,
+  isActionDisabled: boolean
 }) => {
 
   const actionButtons: { label: string, img: string | null, action: string, pictureKey: PictureKey, isRevive?: boolean }[] = [
@@ -97,6 +108,7 @@ const Actions = ({ handleAction, isLoading, beast, beastStatus, account, client,
             }}
             disabled={ 
               isLoading || 
+              isActionDisabled ||
               !beastStatus ||
               beastStatus[1] == 0 || 
               (action != 'sleep' && action != 'awake') && beastStatus[2] == 0 || 
