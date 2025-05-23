@@ -20,17 +20,24 @@
   justify-content: space-between;
   align-items: center;
   color: #616140;
-  margin: 0 auto 15px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   border-radius: 20px;
 }
 
-.initial-beast .actions-icon,
-.initial-beast .egg {
+.initial-beast .actions-icon {
   width: 45%;
   margin-bottom: 8px;
+}
+
+.initial-beast .initial-info {
+  height: unset;
+}
+
+.initial-beast .egg {
+  width: 55%;
+  margin-bottom: 28px;
 }
 
 .initial-info {
@@ -47,7 +54,7 @@
 }
 
 .initial-info h4 {
-  margin: 15px auto 25px;
+  margin: 12px auto;
   font-size: 18px;
   color: #ECECDA;
   font-weight: bold;

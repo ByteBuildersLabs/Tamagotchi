@@ -110,12 +110,6 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   return (
     <div className={`spawn-beast ${className}`}>
       <Header />
-      <div className='d-flex justify-content-between align-items-center'>
-        <p className='title'>
-          Hatch the egg
-          <span className='d-block'>Collect them all!</span>
-        </p>
-      </div>
       <SpawnBeastContent 
         loading={state.loading}
         onSpawn={spawnPlayer}
