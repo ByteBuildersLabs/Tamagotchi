@@ -20,17 +20,26 @@
   justify-content: space-between;
   align-items: center;
   color: #616140;
-  margin: 0 auto 15px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   border-radius: 20px;
+  padding: 20px 0;
+  margin-bottom: 50px;
 }
 
-.initial-beast .actions-icon,
-.initial-beast .egg {
+.initial-beast .actions-icon {
   width: 45%;
   margin-bottom: 8px;
+}
+
+.initial-beast .initial-info {
+  height: unset;
+}
+
+.initial-beast .egg {
+  width: 55%;
+  margin-bottom: 28px;
 }
 
 .initial-info {
@@ -47,7 +56,7 @@
 }
 
 .initial-info h4 {
-  margin: 15px auto 25px;
+  margin: 12px auto;
   font-size: 18px;
   color: #ECECDA;
   font-weight: bold;
@@ -61,4 +70,25 @@
 
 .initial-info .button {
   height: 50px;
+}
+
+.spawn-button-container {
+  width: 100%;
+  padding: 0 15px;
+  margin-top: 20px;
+}
+
+.spawn-progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.error-message {
+  color: var(--primary-red);
+  text-align: center;
+  margin: 10px 0;
+  font-family: 'Kallisto';
 }

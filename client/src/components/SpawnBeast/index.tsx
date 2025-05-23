@@ -8,6 +8,7 @@ import { useDojoSDK } from "@dojoengine/sdk/react";
 // Internal components
 import Header from "../Header/index.tsx";
 import SpawnBeastContent from './components/SpawnBeastContent';
+import ProgressBar from '../ProgressBar/index.tsx';
 
 // Hooks and Contexts
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
@@ -45,6 +46,11 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
     spawned: false
   });
 
+  const [spawnProgress, setSpawnProgress] = useState({
+    progress: 0,
+    message: 'Welcome to ByteBeasts'
+  });
+
   useEffect(() => {
     const bodyElement = document.querySelector('.body') as HTMLElement;
     if (bodyElement) {
@@ -62,20 +68,24 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   const spawnPlayer = async () => {
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
+      setSpawnProgress({ progress: 0, message: 'Initializing' });
 
       if (!player) {
+        setSpawnProgress({ progress: 20, message: 'Creating player account' });
         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
         console.info('spawnPlayerTx', spawnPlayerTx);
         
         // Esperar un momento para que se actualice el player
         await new Promise(resolve => setTimeout(resolve, 2000));
+        setSpawnProgress({ progress: 40, message: 'Player account created!' });
       }
 
+      setSpawnProgress({ progress: 50, message: 'Generating your beast' });
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
       const { spawnTx } = await spawn(randomBeastId);
-      // Esperar un momento para que se actualice la lista de beasts
-
+      
       if (spawnTx && spawnTx.code === "SUCCESS") {
+        setSpawnProgress({ progress: 70, message: 'Beast generated! Setting as current' });
         let newBeast;
         do {
           // Recargar la lista de beasts usando GraphQL
@@ -90,10 +100,14 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
         } while (!newBeast);
         
         if (newBeast) {
+          setSpawnProgress({ progress: 90, message: 'Finalizing setup' });
           const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
           console.info('setCurrentTx', setCurrentTx);
           await new Promise(resolve => setTimeout(resolve, 2000));
-          navigate('/play');
+          setSpawnProgress({ progress: 100, message: 'Your beast is ready!' });
+          setTimeout(() => {
+            navigate('/play');
+          }, 1000);
         }
       }
     } catch (error) {
@@ -102,6 +116,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
         ...prev, 
         error: 'Failed to spawn player. Please try again.' 
       }));
+      setSpawnProgress({ progress: 0, message: 'Error occurred. Please try again.' });
     } finally {
       setState(prev => ({ ...prev, loading: false }));
     }
@@ -110,16 +125,15 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   return (
     <div className={`spawn-beast ${className}`}>
       <Header />
-      <div className='d-flex justify-content-between align-items-center'>
-        <p className='title'>
-          Hatch the egg
-          <span className='d-block'>Collect them all!</span>
-        </p>
-      </div>
       <SpawnBeastContent 
         loading={state.loading}
         onSpawn={spawnPlayer}
         hasAccount={!!account}
+      />
+      <ProgressBar 
+        progress={spawnProgress.progress}
+        statusMessage={spawnProgress.message}
+        className="spawn-progress-bar"
       />
       {state.error && (
         <div className="error-message" role="alert">
