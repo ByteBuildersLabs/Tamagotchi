@@ -48,6 +48,7 @@ function Tamagotchi() {
     showBirthday,
     setCurrentView,
     showAnimation,
+    isActionDisabled
   } = useTamagotchi(currentBeast);
 
   useEffect(() => {
@@ -115,11 +116,12 @@ function Tamagotchi() {
                   handleAction={handleAction}
                   isLoading={isLoading}
                   beast={currentBeast}
-                  beastStatus={ status}
+                  beastStatus={status}
                   setStatus={setStatus}
                   account={account}
                   client={client}
                   setCurrentView={setCurrentView}
+                  isActionDisabled={isActionDisabled}
                 />
               ) : currentView === 'food' ? (
                 <Food
