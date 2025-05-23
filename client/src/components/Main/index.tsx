@@ -7,6 +7,7 @@ import { useAccount } from "@starknet-react/core";
 // Internal components
 import FullscreenGame from "../FullScreenGame/FullScreenGame";
 import Leaderboard from "../Leadeboard";
+import Download from "../Download";
 import NewCover from "../NewCover";
 import Tamagotchi from "../Tamagotchi";
 import SpawnBeast from "../SpawnBeast";
@@ -27,7 +28,8 @@ const ROUTES: RouteConfig[] = [
   { path: "/spawn", element: <SpawnBeast /> },
   { path: "/play", element: <Tamagotchi /> },
   { path: "/fullscreen-game", element: <FullscreenGame /> },
-  { path: "/leaderboard", element: <Leaderboard /> }
+  { path: "/leaderboard", element: <Leaderboard /> },
+  { path: "/download", element: <Download /> }
 ];
 
 // Components
