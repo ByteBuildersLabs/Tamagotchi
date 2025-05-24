@@ -1,0 +1,54 @@
+.install-container {
+  width: 100%;
+  max-width: 800px; 
+  margin: 0 auto;
+  height: calc(90dvh - 66px);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  transform: translateY(30px);
+  animation: fade-in-up 1s ease-out forwards;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.install-container h3 {
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+.install-container p {
+  text-align: left;
+}
+
+.app {
+  width: 40%;
+  margin: 0 auto 24px;
+}
+
+.download-icon {
+  height: 30px;
+  width: 30px;
+  margin: 0 10px;
+}
+
+.btn-download {
+  border: 2px solid var(--text-light);
+  color: var(--text-light);
+  padding: 10px 15px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.app-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin: 0 15px;
+}
+
+.app-cage {
+  background-color: var( --overlay-dark-medium);
+  padding: 20px 10px;
+  border-radius: 15px;
+}

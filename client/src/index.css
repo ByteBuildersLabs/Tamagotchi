@@ -235,16 +235,18 @@ a:visited {
 
 .title {
   text-align: center;
-  font-weight: 800;
+  font-weight: bold;
   font-size: 18px;
   margin: 0 auto;
   padding-right: 5px;
   color: var(--text-light);
+  font-family: 'Kallisto';
 }
 
 .title span {
   font-size: 18px;
   color: var(--text-light);
+  font-family: 'Kallisto';
 }
 
 .connect-btn,
@@ -344,6 +346,24 @@ a:visited {
   animation: spin 2s linear infinite;
 }
 
+.spawn-progress-bar {
+  width: 100%;
+  margin-top: 28px;
+  padding: 0 15px;
+}
+
+.spawn-progress-bar p {
+  text-align: center;
+  color: var(--text-light);
+  font-family: 'Kallisto';
+  font-size: 14px;
+}
+
+.spawn-progress-bar .progress {
+  height: 8px !important;
+  background-color: var(--text-light);
+}
+
 @keyframes loading {
   to {
     transform: rotate(360deg);
@@ -353,4 +373,14 @@ a:visited {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.aura {
+  animation: aura 2s linear infinite;
+  border-radius: 20px;
+}
+
+@keyframes aura {
+  0% { box-shadow: 0 0 20px var(--primary-red), 0 0 20px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red); }
+  100% { box-shadow: 0 0 30px var(--primary-red), 0 0 30px var(--primary-red), 0 0 40px var(--primary-red), 0 0 50px var(--primary-red); }
 }

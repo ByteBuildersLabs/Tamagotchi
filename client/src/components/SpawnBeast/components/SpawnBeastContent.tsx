@@ -1,8 +1,6 @@
 import React from 'react';
 import Egg from "../../../assets/img/img-egg.gif";
-import Hints from "../../Hints/index.tsx";
 import SpawnButton from './SpawnButton';
-import BeastInfo from './BeastInfo';
 
 interface SpawnBeastContentProps {
   loading: boolean;
@@ -17,14 +15,14 @@ export const SpawnBeastContent: React.FC<SpawnBeastContentProps> = ({
 }) => (
   <div className="initial-beast">
     <img src={Egg} className="egg" alt="beast egg" />
-    <BeastInfo />
     {hasAccount && (
-      <SpawnButton 
-        loading={loading} 
-        onSpawn={onSpawn} 
-      />
+      <div className="spawn-button-container">
+        <SpawnButton 
+          loading={loading} 
+          onSpawn={onSpawn} 
+        />
+      </div>
     )}
-    <Hints />
   </div>
 );
 

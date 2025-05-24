@@ -9,6 +9,10 @@ export const FoodRewardService = {
   },
   calculateRewardAmount(score: number, gameId: GameId): number {
     const scoreRanges = GAME_SCORE_RANGES[gameId];
+    if (!scoreRanges) {
+      console.warn(`[FoodRewardService] No ranges defined for gameId "${gameId}". Defaulting multiplier to 1.`);
+      return 1;
+    }
     const applicableRange = scoreRanges.find(range =>
       score >= range.min && score <= range.max
     );
