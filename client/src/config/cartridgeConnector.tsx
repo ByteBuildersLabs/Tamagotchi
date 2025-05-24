@@ -143,6 +143,7 @@ const options: ControllerOptions = {
   policies,
   theme,
   colorMode,
+  preset: "bytebeasts-tamagotchi",
   namespace: "tamagotchi", 
   slot: "toriibbtest"
 };
