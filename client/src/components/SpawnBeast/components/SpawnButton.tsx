@@ -7,16 +7,14 @@ export const SpawnButton: React.FC<SpawnButtonProps> = ({
   disabled = false
 }) => (
   <>
-    {loading ?
-      <div className="loading"></div> :
-      <button
-        className="button"
-        onClick={onSpawn}
-        disabled={disabled || loading}
-        aria-busy={loading}
-      >
-        Hatch your egg
-      </button>}
+    <button
+      className="button"
+      onClick={onSpawn}
+      disabled={disabled || loading}
+      aria-busy={loading}
+    >
+      Hatch your egg
+    </button>
   </>
 );
 
