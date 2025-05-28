@@ -99,7 +99,7 @@ const FullscreenGame = () => {
         className="fullscreen-mode"
         style={{
           width: '100vw',
-          height: '100vh',
+          height: '100dvh',
           margin: 0,
           padding: 0,
           boxSizing: 'border-box'
