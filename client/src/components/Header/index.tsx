@@ -29,6 +29,7 @@ import download from "../../assets/img/icon-download.svg";
 
 // Styles
 import './main.css';
+import { useDojoSDK } from "@dojoengine/sdk/react";
 
 // Constants
 const WEBSITE_URL = 'https://website.bytebeasts.games';
@@ -56,8 +57,9 @@ const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
   // Hooks
   const { beastsData: beasts } = useBeasts();
   const { player } = usePlayer();
+  const { client } = useDojoSDK();
   const location = useLocation();
-  const { connector } = useAccount();
+  const { account, connector } = useAccount();
   const [buttonSound] = useSound(buttonClick, { volume: SOUND_VOLUME, preload: true });
 
   // Derived state
@@ -176,6 +178,8 @@ const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
 
       {tamagotchiStats && (
         <ShareProgress
+          account={account}
+          client={client}
           isOpen={isShareModalOpen}
           onClose={() => setIsShareModalOpen(false)}
           type="beast"

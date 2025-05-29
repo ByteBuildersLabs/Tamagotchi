@@ -89,8 +89,7 @@ const Actions = ({
                     if (action === 'sleep') {
                       await client.achieve.achieveBeastSleep(account as Account);
                     } else if (action === 'clean') {
-                      const txss = await client.achieve.achieveBeastClean(account as Account);
-                      console.info('txss', txss);
+                      await client.achieve.achieveBeastClean(account as Account);
                     }
                   },
                   beastsDex[beast.specie - 1][pictureKey]
