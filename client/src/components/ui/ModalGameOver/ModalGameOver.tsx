@@ -9,6 +9,7 @@ interface GameOverModalProps {
   selectedFood?: any;
   handlePlayAgain: () => void;
   restartIcon: string;
+  onExitGame: any;
 }
 
 const GameOverModal: React.FC<GameOverModalProps> = ({
@@ -18,12 +19,21 @@ const GameOverModal: React.FC<GameOverModalProps> = ({
   collectedFood,
   selectedFood,
   handlePlayAgain,
-  restartIcon
+  restartIcon,
+  onExitGame
 }) => {
   if (currentScreen !== 'gameover') return null;
 
   return (
     <div className="game-result-container">
+      {onExitGame && (
+          <button
+              className="return-button"
+              onClick={onExitGame}
+          >
+              X
+          </button>
+      )}
       <h2 className="game-result-title">Game over!</h2>
       
       <p className="game-result-score">

@@ -56,7 +56,7 @@ const Actions = ({
   const [buttonSound] = useSound(buttonClick, { volume: 0.6, preload: true });
 
   return (
-    <div className={`actions mb-0 ${isLoading ? 'loading-aura' : ''}`}>
+    <div className={`actions mb-0 ${isActionDisabled ? 'aura' : ''}`}>
       {
         actionButtons.map(({ label, img, action, pictureKey }) => (
           <Button
