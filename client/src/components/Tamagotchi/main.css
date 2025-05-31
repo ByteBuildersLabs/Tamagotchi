@@ -54,6 +54,8 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  position: relative;
+  bottom: 6px;
 }
 
 .beast-interaction .actions-icon {
