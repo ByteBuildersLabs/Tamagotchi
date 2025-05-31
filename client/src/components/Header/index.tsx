@@ -131,9 +131,9 @@ const Header: React.FC<HeaderProps> = ({ tamagotchiStats }) => {
           <img src={monster} alt="Logo" />
         </Link>
 
-        <div onClick={() => buttonSound()}>
+        {/* <div onClick={() => buttonSound()}>
           <Countdown />
-        </div>
+        </div> */}
 
         <div className="side-menu-container">
           <button

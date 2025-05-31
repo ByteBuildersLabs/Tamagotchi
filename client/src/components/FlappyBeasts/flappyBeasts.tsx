@@ -833,17 +833,6 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
                 className="land animated"
                 style={{ backgroundImage: `url(${gameAssets.land})` }}
             />
-
-            {/* Exit button */}
-            {onExitGame && (
-                <button
-                    className="return-button"
-                    onClick={onExitGame}
-                >
-                    X
-                </button>
-            )}
-
             {/* Debug button to show colliders in UI for testing purposes */}
             {/* <button 
                     className="debug-button"
@@ -912,6 +901,7 @@ const FlappyBirdMiniGame = forwardRef<FlappyBirdRefHandle, FlappyBirdProps>(({
                 selectedFood={selectedFood}
                 handlePlayAgain={handlePlayAgain}
                 restartIcon={Restart}
+                onExitGame={onExitGame}
             />
 
             {/* Energy Toast */}
