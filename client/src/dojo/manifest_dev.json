@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x55ab491f46e96bfdbefab82c7ff1101bf8fd10bdb4e47c01533bc2a2a1e9e9e",
-    "seed": "tamagotchi17",
+    "address": "0x2a61209988c0a784a6fe51d69875577435cc209bef7d8b121fb64c10f018d04",
+    "seed": "tamagotchi18",
     "name": "ByteBeasts Tamagotchi",
     "entrypoints": [
       "uuid",
@@ -1312,7 +1312,7 @@
   },
   "contracts": [
     {
-      "address": "0x1005116a48c9a8f7a6c946091e64dc8ced37962dc2bbb74355868229307c20d",
+      "address": "0x6529b6a85bd7e4beaf4b8ead64b82fb115bec5a944c3b87fd35445231547fc6",
       "class_hash": "0x2ae3f43544bc745744f339fffc5390aac05e3a99f16aadba70859ecd5b46116",
       "abi": [
         {
@@ -1614,8 +1614,8 @@
       ]
     },
     {
-      "address": "0x58971d723d0100ae8393550f9166c9dad9b79799a48fc31f0d9684ef556dda9",
-      "class_hash": "0x42f4064e1316913658aa9097a3275f68b9d11d7c5282dfb026f78a6d61a25db",
+      "address": "0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509",
+      "class_hash": "0x52a9790e907235c127df5560cc2f89064188a5639fd1a0cd40fc9b9e9a646d9",
       "abi": [
         {
           "type": "impl",
@@ -1739,6 +1739,10 @@
           "type": "struct",
           "name": "tamagotchi::models::beast_status::BeastStatus",
           "members": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
             {
               "name": "beast_id",
               "type": "core::integer::u16"
@@ -2065,7 +2069,7 @@
       ]
     },
     {
-      "address": "0x6b7b30fcd29c41bca831b87db67e3c8af2abb374dc2fabbbf09f4744aa22988",
+      "address": "0x518610e4d4eda4f4086b7a7bd385a0f2fba50214cea195efcca834a6ab85f90",
       "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
       "abi": [
         {
@@ -2352,7 +2356,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x2d33cad545c3e9b01b8a328418c0bc5dc529ec0abb1f3f4efa18f10c3bfb837",
+      "class_hash": "0x52dfc0a351c1b7770289b2f14d2dfcf0d8b4b5586872efaef763105be4808be",
       "tag": "tamagotchi-BeastStatus",
       "selector": "0x7dd28052791e63bdc06d6ba2a8eca548b4580c2e83bb96c03ef0a2d84f8ffde"
     },
