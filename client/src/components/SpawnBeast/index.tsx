@@ -13,7 +13,7 @@ import ProgressBar from '../ProgressBar/index.tsx';
 // Hooks and Contexts
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { useBeasts } from "../../hooks/useBeasts";
+import { useBeasts, fetchBeastsData } from "../../hooks/useBeasts";
 
 // Types
 import type { 
@@ -95,6 +95,8 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       
       if (spawnTx && spawnTx.code === "SUCCESS") {
         refetch();
+        const beastsData = await fetchBeastsData();
+        console.log('beastsData', beastsData);
         setSpawnProgress({ progress: 70, message: 'Beast generated! Setting as current' });
         const newBeast = myBeastsData[0];
         if (newBeast) {
