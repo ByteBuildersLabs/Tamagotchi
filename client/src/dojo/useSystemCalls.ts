@@ -49,8 +49,6 @@ export const useSystemCalls = () => {
                 }
             ]);
 
-            client.game.spawnBeast(account!, randomNumber, randomNumber);
-
             return {
                 spawnTx,
             };
