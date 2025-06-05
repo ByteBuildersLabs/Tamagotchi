@@ -4,11 +4,11 @@ import { ColorMode, SessionPolicies, ControllerOptions, } from "@cartridge/contr
 import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
-const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
 const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x6529b6a85bd7e4beaf4b8ead64b82fb115bec5a944c3b87fd35445231547fc6'
 const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509'
 const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x518610e4d4eda4f4086b7a7bd385a0f2fba50214cea195efcca834a6ab85f90'
+const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
 
 const policies: SessionPolicies = {
   contracts: {
@@ -116,25 +116,22 @@ const policies: SessionPolicies = {
         },
       ],
     },
+
+    [VRF_PROVIDER_ADDRESS]: {
+      methods: [
+        {
+          name: "request_random",
+          entrypoint: "request_random",
+          description: "Allows requesting random numbers from the VRF provider"
+        },
+      ],
+    },
   },
 }
 
 // Controller basic configuration
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
-const namespace = "tamagotchi"; //ensure this is correct
-const slot = `bytebeasts-tamagotchi-${VITE_PUBLIC_DEPLOY_TYPE || 'dev'}`; //ensure bytebeasts-tamagotchi this is correct
-
-const getRpcUrl = () => {
-  switch (VITE_PUBLIC_DEPLOY_TYPE) {
-    case "mainnet":
-      return "https://api.cartridge.gg/x/starknet/mainnet";
-    case "sepolia":
-      return "https://api.cartridge.gg/x/starknet/sepolia";
-    default:
-      return VITE_PUBLIC_SLOT_ADDRESS;
-  }
-};
 
 const options: ControllerOptions = {
   // @ts-ignore
