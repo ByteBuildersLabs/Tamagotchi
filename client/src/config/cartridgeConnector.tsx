@@ -149,7 +149,7 @@ const options: ControllerOptions = {
   colorMode,
   preset: "bytebeasts-tamagotchi",
   namespace: "tamagotchi", 
-  slot: "toriibbtest"
+  slot: "tamagotchitorii"
 };
 
 const cartridgeConnector = new ControllerConnector(
