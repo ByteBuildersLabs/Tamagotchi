@@ -9,7 +9,7 @@ const GAME_CONTRACT = '0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9
 
 
 export const useSystemCalls = () => {
-    const { useDojoStore, client } = useDojoSDK();
+    const { useDojoStore } = useDojoSDK();
     const state = useDojoStore((state) => state);
 
     const { account } = useAccount();
@@ -48,6 +48,8 @@ export const useSystemCalls = () => {
                     entrypoint: 'spawn_beast'
                 }
             ]);
+
+            console.info(spawnTx);
 
             return {
                 spawnTx,

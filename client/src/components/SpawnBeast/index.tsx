@@ -44,8 +44,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   );
 
   const { myBeastsData, refetch } = useBeasts(userAddress);
-  console.info('myBeastsData', myBeastsData);
-  
+
   // State
   const [state, setState] = useState<SpawnBeastState>({
     loading: false,
@@ -80,8 +79,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       if (!player) {
         setSpawnProgress({ progress: 20, message: 'Creating player account' });
         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-        console.info('spawnPlayerTx', spawnPlayerTx);
-        
+
         // Esperar un momento para que se actualice el player
         await new Promise(resolve => setTimeout(resolve, 2000));
         setSpawnProgress({ progress: 40, message: 'Player account created!' });
@@ -90,7 +88,6 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setSpawnProgress({ progress: 50, message: 'Generating your beast' });
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
       const { spawnTx } = await spawn(randomBeastId);
-      console.info('spawnTx', spawnTx);
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       if (spawnTx && spawnTx.code === "SUCCESS") {
@@ -102,7 +99,6 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
         if (newBeast) {
           setSpawnProgress({ progress: 90, message: 'Finalizing setup' });
           const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
-          console.info('setCurrentTx', setCurrentTx);
           await new Promise(resolve => setTimeout(resolve, 2000));
           setSpawnProgress({ progress: 100, message: 'Your beast is ready!' });
           setTimeout(() => {
