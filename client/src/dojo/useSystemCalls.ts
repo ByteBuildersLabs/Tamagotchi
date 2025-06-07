@@ -2,71 +2,76 @@
 import { v4 as uuidv4 } from "uuid";
 import { useAccount } from "@starknet-react/core";
 import { useDojoSDK } from "@dojoengine/sdk/react";
-import { CallData } from "starknet";
 
 const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
 const GAME_CONTRACT = '0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de';
 
-
 export const useSystemCalls = () => {
-    const { useDojoStore } = useDojoSDK();
+    const { useDojoStore, provider } = useDojoSDK();
     const state = useDojoStore((state) => state);
-
     const { account } = useAccount();
 
-    /**
-     * Generates a unique entity ID based on the current account address.
-     * @returns {string} The generated entity ID
-     */
-    // const generateEntityId = () => {
-    //     return getEntityIdFromKeys([BigInt(account!.address)]);
-    // };
-
-    /**
-     * Spawns a new entity with initial moves and handles optimistic updates.
-     * @returns {Promise<void>}
-     * @throws {Error} If the spawn action fails
-     */
-    const spawn = async (randomNumber: number) => {
+    const handleTransaction = async (
+        action: () => Promise<{ transaction_hash: string }>,
+        successMessage: string
+    ) => {
         const transactionId = uuidv4();
 
         try {
-            if (!account) return
-            // Execute the spawn action from the client
-            const spawnTx = await account.execute([
-                // Prefix the multicall with the request_random call
-                {
-                    contractAddress: VRF_PROVIDER_ADDRESS,
-                    entrypoint: 'request_random',
-                    calldata: CallData.compile({
-                        caller: GAME_CONTRACT,
-                        source: { type: 0, address: account.address },
-                    })
-                },
-                {
-                    contractAddress: GAME_CONTRACT,
-                    entrypoint: 'spawn_beast',
-                    calldata: [randomNumber, randomNumber]
-                }
-            ]);
+            // Execute the transaction
+            const { transaction_hash } = await action();
+            console.log("transaction_hash", transaction_hash);
 
-            console.info(spawnTx);
+            // Wait for completion
+            const transaction = await account?.waitForTransaction(transaction_hash, {
+                retryInterval: 200,
+            });
 
-            return {
-                spawnTx,
-            };
+            // Confirm the transaction if successful
+            state.confirmTransaction(transactionId);
+
+            return transaction;
         } catch (error) {
             // Revert the optimistic update if an error occurs
             state.revertOptimisticUpdate(transactionId);
-            console.error("Error executing spawn:", error);
+            console.error("Error executing transaction:", error);
             throw error;
-        } finally {
-            // Confirm the transaction if successful
-            state.confirmTransaction(transactionId);
         }
     };
 
-    return {
-        spawn,
+    const spawn = async (randomNumber: number) => {
+        if (!account || !provider) return;
+
+        return await handleTransaction(
+            async () => {
+                const spawnTx = await provider.execute(
+                    account as any,
+                    [
+                        {
+                            contractAddress: VRF_PROVIDER_ADDRESS,
+                            entrypoint: 'request_random',
+                            calldata: [
+                                GAME_CONTRACT, // caller
+                                0, // type: 0 para Source::Nonce
+                                account.address // address para Source::Nonce
+                            ]
+                        },
+                        {
+                            contractName: "game",
+                            entrypoint: "spawn_beast",
+                            calldata: [randomNumber, randomNumber] // El contrato usará consume_random internamente
+                        }
+                    ],
+                    "tamagotchi", // namespace que ya tienes configurado
+                    { maxFee: 1e15 }
+                );
+                console.info('spawnTx roloooo', spawnTx);
+
+                return spawnTx;
+            },
+            "Beast spawned successfully!"
+        );
     };
+
+    return { spawn };
 };
