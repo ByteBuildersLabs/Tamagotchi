@@ -3,7 +3,7 @@ import hexToDecimalArray from './hexToDecimalArray';
 const fetchStatus = async (account: any): Promise<number[] | undefined> => {
   try {
     const response = await account?.callContract({
-      contractAddress: "0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509",
+      contractAddress: "0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de",
       entrypoint: "get_timestamp_based_status_with_address",
       calldata: [String(account?.address)],
     });

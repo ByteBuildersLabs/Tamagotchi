@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x2a61209988c0a784a6fe51d69875577435cc209bef7d8b121fb64c10f018d04",
-    "seed": "tamagotchi18",
+    "address": "0x7220cd7725010ad17892773ffcca9347fcd2c899171a4df67b740196ec0a1d6",
+    "seed": "tamagotchi19",
     "name": "ByteBeasts Tamagotchi",
     "entrypoints": [
       "uuid",
@@ -1312,7 +1312,7 @@
   },
   "contracts": [
     {
-      "address": "0x6529b6a85bd7e4beaf4b8ead64b82fb115bec5a944c3b87fd35445231547fc6",
+      "address": "0x7b0cb70509a095f27b9d1187c433421b8cb2e731366f0ee8b27fd48dbf149fc",
       "class_hash": "0x2ae3f43544bc745744f339fffc5390aac05e3a99f16aadba70859ecd5b46116",
       "abi": [
         {
@@ -1614,7 +1614,7 @@
       ]
     },
     {
-      "address": "0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509",
+      "address": "0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de",
       "class_hash": "0x52a9790e907235c127df5560cc2f89064188a5639fd1a0cd40fc9b9e9a646d9",
       "abi": [
         {
@@ -2069,7 +2069,7 @@
       ]
     },
     {
-      "address": "0x518610e4d4eda4f4086b7a7bd385a0f2fba50214cea195efcca834a6ab85f90",
+      "address": "0x6ac1c61c0fbdeca534ab1791b138da22b20d6b3a3c82de01b2bb804d35a4756",
       "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
       "abi": [
         {

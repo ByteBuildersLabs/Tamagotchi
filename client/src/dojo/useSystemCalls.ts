@@ -5,7 +5,7 @@ import { useDojoSDK } from "@dojoengine/sdk/react";
 import { CallData } from "starknet";
 
 const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
-const GAME_CONTRACT = '0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509';
+const GAME_CONTRACT = '0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de';
 
 
 export const useSystemCalls = () => {
@@ -45,7 +45,8 @@ export const useSystemCalls = () => {
                 },
                 {
                     contractAddress: GAME_CONTRACT,
-                    entrypoint: 'spawn_beast'
+                    entrypoint: 'spawn_beast',
+                    calldata: [randomNumber, randomNumber]
                 }
             ]);
 

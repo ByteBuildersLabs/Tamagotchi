@@ -5,9 +5,9 @@ import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 
-const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x6529b6a85bd7e4beaf4b8ead64b82fb115bec5a944c3b87fd35445231547fc6'
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x51af5c277d07337a8ef50599173d4b0a10597f3c0b85acebfec4ce9b53a6509'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x518610e4d4eda4f4086b7a7bd385a0f2fba50214cea195efcca834a6ab85f90'
+const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x7b0cb70509a095f27b9d1187c433421b8cb2e731366f0ee8b27fd48dbf149fc'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6ac1c61c0fbdeca534ab1791b138da22b20d6b3a3c82de01b2bb804d35a4756'
 const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
 
 const policies: SessionPolicies = {
@@ -146,7 +146,7 @@ const options: ControllerOptions = {
   colorMode,
   preset: "bytebeasts-tamagotchi",
   namespace: "tamagotchi", 
-  slot: "tamagotchitorii"
+  slot: "tamatorii"
 };
 
 const cartridgeConnector = new ControllerConnector(
