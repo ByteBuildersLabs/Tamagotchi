@@ -31,8 +31,6 @@ const Play: React.FC<PlayProps> = ({
 }) => {
   const navigate = useNavigate();
   const { myScoreFlappyBird, myScoreSkyJump } = useHighScores();
-  console.info('myScoreFlappyBird', myScoreFlappyBird);
-  console.info('myScoreSkyJump', myScoreSkyJump);
 
   const GAME_ID_MAPPING: Record<string, number> = {
     'doodleGame': 1,     // SkyJump
@@ -50,7 +48,6 @@ const Play: React.FC<PlayProps> = ({
     try {
     
       const tx = await client.achieve.achievePlayMinigame(account);
-      console.info('tx achievePlayMinigame', tx);
 
       handleAction(
         "Play",

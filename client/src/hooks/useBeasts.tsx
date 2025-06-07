@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { dojoConfig } from "../dojo/dojoConfig";
 import { lookupAddresses } from '@cartridge/controller';
-import { Beast, BeastEdge, BeastStatus, BeastStatusEdge, BeastStatuses } from '../types/game';
-
+import { Beast, BeastEdge, BeastStatusEdge, BeastStatuses } from '../types/game';
+  
 // Constants
 const TORII_URL = dojoConfig.toriiUrl + "/graphql";
 const BEASTS_QUERY = `
@@ -31,6 +31,24 @@ const BEASTS_QUERY = `
   }
 `;
 
+const MY_BEASTS = (address: string) => `
+  query GetBeastsByContract() {
+    tamagotchiBeastModels(where: { player: "${address}"}) {
+      edges {
+        node {
+          beast_id
+          birth_date
+          player
+          age
+          specie
+          beast_type
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 // API Functions
 export const fetchBeastsData = async (): Promise<any> => {
   try {
@@ -48,6 +66,26 @@ export const fetchBeastsData = async (): Promise<any> => {
     return result.data;
   } catch (error) {
     console.error("Error fetching beasts:", error);
+    throw error;
+  }
+};
+
+export const fetchMyBeastsData = async (contractAddress: string): Promise<any> => {
+  try {
+    const response = await fetch(TORII_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: MY_BEASTS(contractAddress) }),
+    });
+
+    const result = await response.json();
+    if (!result.data?.tamagotchiBeastModels) {
+      throw new Error('No beast data found');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching my beasts:", error);
     throw error;
   }
 };
@@ -85,18 +123,29 @@ const extractBeastStatuses = (statusModels: any): BeastStatuses => {
 };
 
 // Hook
-export const useBeasts = () => {
+export const useBeasts = (userAddress?: string) => {
   const [beastsData, setBeastsData] = useState<Beast[]>([]);
+  const [myBeastsData, setMyBeastsData] = useState<Beast[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
     const loadBeasts = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchBeastsData();
-        const processedData = await processBeastData(data);
-        setBeastsData(processedData);
+        const [allBeastsData, myBeasts] = await Promise.all([
+          fetchBeastsData(),
+          userAddress ? fetchMyBeastsData(userAddress) : Promise.resolve(null)
+        ]);
+        
+        const processedAllBeasts = await processBeastData(allBeastsData);
+        setBeastsData(processedAllBeasts);
+
+        if (myBeasts) {
+          const processedMyBeasts = await processBeastData(myBeasts);
+          setMyBeastsData(processedMyBeasts);
+        }
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error occurred'));
       } finally {
@@ -105,11 +154,17 @@ export const useBeasts = () => {
     };
 
     loadBeasts();
-  }, []);
+  }, [userAddress, trigger]);
+
+  const refetch = () => {
+    setTrigger(prev => prev + 1);
+  };
 
   return {
     beastsData,
+    myBeastsData,
     isLoading,
-    error
+    error,
+    refetch
   };
 };

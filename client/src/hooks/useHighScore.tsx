@@ -77,8 +77,6 @@ export const useHighScores = () => {
         const allScores = processHighScores(scoreEdges);
         setScores(allScores);
 
-        console.info('allScores', allScores);
-
         if (userAddress) {
           const skyJumpScores = filterScoresByGameAndUser(
             allScores, 

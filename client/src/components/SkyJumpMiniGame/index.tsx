@@ -94,7 +94,6 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     if (engineFinalScore > dojoHighScore) {
       setCurrentHighScore(engineFinalScore);
       const tx = await client.achieve.achievePlatformHighscore(account as Account, engineFinalScore);
-      console.info('tx sky jump achievePlatformHighscore', tx);
     } else {
       setCurrentHighScore(dojoHighScore);
     }
@@ -198,17 +197,10 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
         await handleAction(
           "SaveGameResults",
           async () => {
-            const updatePlayerTotalPoints = await client.player.updatePlayerTotalPoints(account, score);
-            console.info('updatePlayerTotalPoints', updatePlayerTotalPoints);
-              
-            const updatePlayerMinigameHighestScore = await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP);
-            console.info('updatePlayerMinigameHighestScore', updatePlayerMinigameHighestScore);
-            
-            const addOrUpdateFoodAmount = await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
-            console.info('addOrUpdateFoodAmount', addOrUpdateFoodAmount);
-
-            const achievePlayerNewTotalPoints = await client.achieve.achievePlayerNewTotalPoints(account);
-            console.info('achievePlayerNewTotalPoints', achievePlayerNewTotalPoints);
+            await client.player.updatePlayerTotalPoints(account, score);
+            await client.player.updatePlayerMinigameHighestScore(account, score, GameId.SKY_JUMP);
+            await client.player.addOrUpdateFoodAmount(account, foodId, foodCollected);
+            await client.achieve.achievePlayerNewTotalPoints(account);
           }
         );
         return true;
