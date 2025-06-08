@@ -4,11 +4,11 @@ import { ColorMode, SessionPolicies, ControllerOptions, } from "@cartridge/contr
 import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
-const { VITE_PUBLIC_SLOT_ADDRESS } = import.meta.env;
 
 const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x1005116a48c9a8f7a6c946091e64dc8ced37962dc2bbb74355868229307c20d'
 const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x58971d723d0100ae8393550f9166c9dad9b79799a48fc31f0d9684ef556dda9'
 const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6b7b30fcd29c41bca831b87db67e3c8af2abb374dc2fabbbf09f4744aa22988'
+const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
 
 const policies: SessionPolicies = {
   contracts: {
@@ -25,7 +25,7 @@ const policies: SessionPolicies = {
         { name: "play", entrypoint: "play" },
         { name: "revive", entrypoint: "revive" },
         { name: "sleep", entrypoint: "sleep" },
-        { name: "spawn_beast", entrypoint: "spawn_beast" },
+        // { name: "spawn_beast", entrypoint: "spawn_beast" },
         { name: "update_beast", entrypoint: "update_beast" },
         { name: "update_food_amount", entrypoint: "update_food_amount" },
       ],
@@ -116,25 +116,22 @@ const policies: SessionPolicies = {
         },
       ],
     },
+
+    // [VRF_PROVIDER_ADDRESS]: {
+    //   methods: [
+    //     {
+    //       name: "request_random",
+    //       entrypoint: "request_random",
+    //       description: "Allows requesting random numbers from the VRF provider"
+    //     },
+    //   ],
+    // },
   },
 }
 
 // Controller basic configuration
 const colorMode: ColorMode = "dark";
 const theme = "bytebeasts-tamagotchi";
-const namespace = "tamagotchi"; //ensure this is correct
-const slot = `bytebeasts-tamagotchi-${VITE_PUBLIC_DEPLOY_TYPE || 'dev'}`; //ensure bytebeasts-tamagotchi this is correct
-
-const getRpcUrl = () => {
-  switch (VITE_PUBLIC_DEPLOY_TYPE) {
-    case "mainnet":
-      return "https://api.cartridge.gg/x/starknet/mainnet";
-    case "sepolia":
-      return "https://api.cartridge.gg/x/starknet/sepolia";
-    default:
-      return VITE_PUBLIC_SLOT_ADDRESS;
-  }
-};
 
 const options: ControllerOptions = {
   // @ts-ignore
@@ -149,7 +146,7 @@ const options: ControllerOptions = {
   colorMode,
   preset: "bytebeasts-tamagotchi",
   namespace: "tamagotchi", 
-  slot: "toriibbtest"
+  slot: "tamatorii"
 };
 
 const cartridgeConnector = new ControllerConnector(

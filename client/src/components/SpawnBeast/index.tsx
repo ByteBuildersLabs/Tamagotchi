@@ -1,8 +1,8 @@
 // React and external libraries
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAccount } from "@starknet-react/core";
-import { Account } from "starknet";
+import { Account, addAddressPadding } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 
 // Internal components
@@ -13,14 +13,13 @@ import ProgressBar from '../ProgressBar/index.tsx';
 // Hooks and Contexts
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { fetchBeastsData, processBeastData } from "../../hooks/useBeasts";
+import { useBeasts, fetchBeastsData } from "../../hooks/useBeasts";
 
 // Types
 import type { 
   SpawnBeastProps, 
   SpawnBeastState 
 } from '../../types/components';
-import type { Beast } from '../../types/game';
 
 // Utils
 import { getRandomNumber } from './utils/helpers';
@@ -38,7 +37,14 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   const { spawn } = useSystemCalls();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  
+
+  const userAddress = useMemo(() => 
+    account ? addAddressPadding(account.address).toLowerCase() : '', 
+    [account]
+  );
+
+  const { myBeastsData, refetch } = useBeasts(userAddress);
+
   // State
   const [state, setState] = useState<SpawnBeastState>({
     loading: false,
@@ -73,8 +79,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       if (!player) {
         setSpawnProgress({ progress: 20, message: 'Creating player account' });
         const spawnPlayerTx = await client.player.spawnPlayer(account as Account);
-        console.info('spawnPlayerTx', spawnPlayerTx);
-        
+
         // Esperar un momento para que se actualice el player
         await new Promise(resolve => setTimeout(resolve, 2000));
         setSpawnProgress({ progress: 40, message: 'Player account created!' });
@@ -83,24 +88,17 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       setSpawnProgress({ progress: 50, message: 'Generating your beast' });
       const randomBeastId = getRandomNumber(MIN_BEAST_ID, MAX_BEAST_ID);
       const { spawnTx } = await spawn(randomBeastId);
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       if (spawnTx && spawnTx.code === "SUCCESS") {
+        refetch();
+        const beastsData = await fetchBeastsData();
+        console.log('beastsData', beastsData);
         setSpawnProgress({ progress: 70, message: 'Beast generated! Setting as current' });
-        let newBeast;
-        do {
-          // Recargar la lista de beasts usando GraphQL
-          const beastsData = await fetchBeastsData();
-          const processedBeasts = await processBeastData(beastsData);
-
-          // Encontrar la bestia recién creada
-          newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        } while (!newBeast);
-        
+        const newBeast = myBeastsData[0];
         if (newBeast) {
           setSpawnProgress({ progress: 90, message: 'Finalizing setup' });
           const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
-          console.info('setCurrentTx', setCurrentTx);
           await new Promise(resolve => setTimeout(resolve, 2000));
           setSpawnProgress({ progress: 100, message: 'Your beast is ready!' });
           setTimeout(() => {
