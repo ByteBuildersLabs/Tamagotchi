@@ -4,7 +4,7 @@ import { useAccount } from "@starknet-react/core";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 
 const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
-const GAME_CONTRACT = '0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de';
+const GAME_CONTRACT = '0x58971d723d0100ae8393550f9166c9dad9b79799a48fc31f0d9684ef556dda9';
 
 export const useSystemCalls = () => {
     const { useDojoStore, provider } = useDojoSDK();

@@ -5,9 +5,9 @@ import { constants } from "starknet";
 
 const { VITE_PUBLIC_DEPLOY_TYPE } = import.meta.env;
 
-const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x7b0cb70509a095f27b9d1187c433421b8cb2e731366f0ee8b27fd48dbf149fc'
-const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x5f40f5c23253d2f4d22849880c89483df6a7f22a3f3b2fa4c88d0476a27d5de'
-const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6ac1c61c0fbdeca534ab1791b138da22b20d6b3a3c82de01b2bb804d35a4756'
+const CONTRACT_ADDRESS_ACHIEVEMENTS = '0x1005116a48c9a8f7a6c946091e64dc8ced37962dc2bbb74355868229307c20d'
+const CONTRACT_ADDRESS_TAMAGOTCHI_SYSTEM = '0x58971d723d0100ae8393550f9166c9dad9b79799a48fc31f0d9684ef556dda9'
+const CONTRACT_ADDRESS_PLAYER_SYSTEM = '0x6b7b30fcd29c41bca831b87db67e3c8af2abb374dc2fabbbf09f4744aa22988'
 const VRF_PROVIDER_ADDRESS = '0x051fea4450da9d6aee758bdeba88b2f665bcbf549d2c61421aa724e9ac0ced8f';
 
 const policies: SessionPolicies = {
@@ -25,7 +25,7 @@ const policies: SessionPolicies = {
         { name: "play", entrypoint: "play" },
         { name: "revive", entrypoint: "revive" },
         { name: "sleep", entrypoint: "sleep" },
-        { name: "spawn_beast", entrypoint: "spawn_beast" },
+        // { name: "spawn_beast", entrypoint: "spawn_beast" },
         { name: "update_beast", entrypoint: "update_beast" },
         { name: "update_food_amount", entrypoint: "update_food_amount" },
       ],
@@ -117,15 +117,15 @@ const policies: SessionPolicies = {
       ],
     },
 
-    [VRF_PROVIDER_ADDRESS]: {
-      methods: [
-        {
-          name: "request_random",
-          entrypoint: "request_random",
-          description: "Allows requesting random numbers from the VRF provider"
-        },
-      ],
-    },
+    // [VRF_PROVIDER_ADDRESS]: {
+    //   methods: [
+    //     {
+    //       name: "request_random",
+    //       entrypoint: "request_random",
+    //       description: "Allows requesting random numbers from the VRF provider"
+    //     },
+    //   ],
+    // },
   },
 }
 
