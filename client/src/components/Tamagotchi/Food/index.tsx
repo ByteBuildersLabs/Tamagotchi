@@ -84,7 +84,7 @@ const Food = ({ handleAction, beast, account, client, beastStatus, showAnimation
     <>
       <div className={`food-carousel-container ${loading ? 'loading-aura' : ''}`}>
         <div className='food-carousel'>
-          {!beastStatus || beastStatus[1] == 0 ? <></> :
+          {!beastStatus || beastStatus[2] == 0 ? <></> :
             zfoods.map(({ name, img, count }: { name: any, img: any, count: any }) => (
               <button
                 key={name}

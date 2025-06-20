@@ -78,10 +78,10 @@ export const useTamagotchi = (currentBeast: any) => {
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
           // Verificar que el status corresponde a la bestia actual
-          if (newStatus[0] === currentBeast.beast_id) {
+          if (newStatus[1] === currentBeast.beast_id) {
             setStatus(newStatus as number[]);
           } else {
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[1], 'current beast:', currentBeast.beast_id);
           }
         }
       }
@@ -98,7 +98,7 @@ export const useTamagotchi = (currentBeast: any) => {
 
   const handleCuddle = async () => {
     if (isLoading || !currentBeast || !currentBeast.beast_id || !account || isActionDisabled) return;
-    if (status[1] === 0 || status[2] === 0) return;
+    if (status[2] === 0 || status[3] === 0) return;
 
     try {
       setIsActionDisabled(true);
@@ -112,10 +112,10 @@ export const useTamagotchi = (currentBeast: any) => {
         const newStatus = await fetchStatus(account);
         if (newStatus && Object.keys(newStatus).length !== 0) {
           // Verificar que el status corresponde a la bestia actual
-          if (newStatus[0] === currentBeast.beast_id) {
+          if (newStatus[1] === currentBeast.beast_id) {
             setStatus(newStatus as number[]);
           } else {
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[1], 'current beast:', currentBeast.beast_id);
           }
         }
       }
@@ -192,7 +192,7 @@ export const useTamagotchi = (currentBeast: any) => {
       }
     }
 
-    if (!status || (bodyElement && status[1] === 0)) {
+    if (!status || (bodyElement && status[2] === 0)) {
       bodyElement?.classList.remove('day');
     }
   }, [status]);
@@ -222,12 +222,12 @@ export const useTamagotchi = (currentBeast: any) => {
     }
 
     // Si tenemos status y corresponde a la bestia actual
-    if (status[0] === currentBeast.beast_id) {
-      if (status[1] === 0) {
+    if (status[1] === currentBeast.beast_id) {
+      if (status[2] === 0) {
         setCurrentImage(dead);
         setCurrentView('actions');
         setIsLoading(false);
-      } else if (status[2] === 0) {
+      } else if (status[3] === 0) {
         setCurrentImage(beastsDex[currentBeast.specie - 1]?.sleepPicture);
         setCurrentView('actions');
         setIsLoading(false);
@@ -267,12 +267,11 @@ export const useTamagotchi = (currentBeast: any) => {
 
         if (statusResponse && Object.keys(statusResponse).length !== 0) {
           const newStatus = statusResponse as number[];
-          if (newStatus[0] === currentBeast.beast_id) {
+          if (newStatus[1] === currentBeast.beast_id) {
             setStatus(newStatus);
             setIsLoading(false);
           } else {
-            await client.player.setCurrentBeast(account!, currentBeast.beast_id);
-            console.log('Status received for different beast:', newStatus[0], 'current beast:', currentBeast.beast_id);
+            console.log('Status received for different beast:', newStatus[1], 'current beast:', currentBeast.beast_id);
             setIsLoading(true);
           }
         } else {

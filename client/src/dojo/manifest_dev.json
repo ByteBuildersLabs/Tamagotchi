@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x1515beab64d67464edb8238d8efb07a3545e4a1999f36dea777c193e76c23b2",
-    "seed": "tamagotchi20",
+    "address": "0x3860cfcc70837fb5623b649ca38cd597c7fca80e920e94f8c433931b788ba32",
+    "seed": "tamagotchi21",
     "name": "ByteBeasts Tamagotchi",
     "entrypoints": [
       "uuid",
@@ -1312,7 +1312,7 @@
   },
   "contracts": [
     {
-      "address": "0x678958bdd51b3caa74f0d229aaa35caafed0f03c280782d2dd71c389719bbd8",
+      "address": "0x70061966613c3788149d4bed8c391403ee19bc23f02d9ff6a056cfb646820e2",
       "class_hash": "0x2ae3f43544bc745744f339fffc5390aac05e3a99f16aadba70859ecd5b46116",
       "abi": [
         {
@@ -1614,8 +1614,8 @@
       ]
     },
     {
-      "address": "0x9ab404df9549cff7771d2404d1a4c18e04b75027c78a2c7eb43547ad76c021",
-      "class_hash": "0x3d04d0d39afaad64c781129dacd1309e79a22b5491713802f15bee6eeeb3ffe",
+      "address": "0x782425ff2132a84992b9e9e497c1305a7e48f6cf3928fd93b7e44ed8efea2ad",
+      "class_hash": "0x6f176e44dfe9658b2ceb331dcb6cf5b5c64124e33d4933ee16179d6f30314a2",
       "abi": [
         {
           "type": "impl",
@@ -2069,8 +2069,8 @@
       ]
     },
     {
-      "address": "0x3de2979483da64ed3e3067883a9dae195cbc8df991c4536116d27382c76990d",
-      "class_hash": "0x24eeedaa48d3c3de399ec22d854f14c3533170902e21c18c8fc6e3bb8187a0d",
+      "address": "0x4c315f29212f78341dc80bc80cd0a04b4e5deafef9bd7528cb2fc7de7098fc8",
+      "class_hash": "0x70ba7a173ffca7e69870438ef6e68a5c08f8746c84c1a733a2f065940910c3b",
       "abi": [
         {
           "type": "impl",
@@ -2142,18 +2142,6 @@
               "type": "function",
               "name": "spawn_player",
               "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
-            },
-            {
-              "type": "function",
-              "name": "set_current_beast",
-              "inputs": [
-                {
-                  "name": "beast_id",
-                  "type": "core::integer::u16"
-                }
-              ],
               "outputs": [],
               "state_mutability": "external"
             },
@@ -2336,7 +2324,6 @@
       "systems": [
         "dojo_init",
         "spawn_player",
-        "set_current_beast",
         "update_player_daily_streak",
         "update_player_total_points",
         "update_player_minigame_highest_score",

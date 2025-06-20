@@ -88,7 +88,7 @@ const Whispers = ({ beast, expanded, beastStatus, botMessage, setBotMessage }: {
     }
 
     // Only set up the interval if we have a beast and it's not sleeping
-    if (beastStatus && beast && beastStatus[2] !== 0) {
+    if (beastStatus && beast && beastStatus[3] !== 0) {
       // Send initial message
       const firstMessage = generateMessage();
       createWhisper(firstMessage);

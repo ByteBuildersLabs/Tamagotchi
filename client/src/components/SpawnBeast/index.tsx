@@ -94,14 +94,12 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
 
           // Encontrar la bestia recién creada
           newBeast = processedBeasts.find((beast: Beast) => beast.player === account!.address);
+          console.log(newBeast, 'newBeast');
           await new Promise(resolve => setTimeout(resolve, 2000));
         } while (!newBeast);
         
         if (newBeast) {
-          setSpawnProgress({ progress: 90, message: 'Finalizing setup' });
-          const setCurrentTx = await client.player.setCurrentBeast(account!, newBeast.beast_id);
-          console.info('setCurrentTx', setCurrentTx);
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          console.log(newBeast, 'newBeast inside');
           setSpawnProgress({ progress: 100, message: 'Your beast is ready!' });
           setTimeout(() => {
             navigate('/play');
