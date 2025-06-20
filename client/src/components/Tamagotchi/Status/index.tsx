@@ -11,10 +11,10 @@ import Hunger from '../../../assets/img/icon-hunger.svg';
 import './main.css';
 
 const statusItems = [
-  { value: (beastStatus: any) => beastStatus[4], pic: Energy, color: '#ECECDA', name: 'Energy' },
+  { value: (beastStatus: any) => beastStatus[5], pic: Energy, color: '#ECECDA', name: 'Energy' },
   { value: (beastStatus: any) => beastStatus[6], pic: Hygienne, color: '#ECECDA', name: 'Hygienne' },
-  { value: (beastStatus: any) => beastStatus[3], pic: Hunger, color: '#ECECDA', name: 'Hunger' },
-  { value: (beastStatus: any) => beastStatus[5], pic: Happyness, color: '#ECECDA', name: 'Happyness' },
+  { value: (beastStatus: any) => beastStatus[4], pic: Hunger, color: '#ECECDA', name: 'Hunger' },
+  { value: (beastStatus: any) => beastStatus[6], pic: Happyness, color: '#ECECDA', name: 'Happyness' },
 ];
 
 function Status({ beastStatus }: { beastStatus: any }) {

@@ -1,5 +1,5 @@
 # The World address to index.
-world_address = "0x055ab491f46e96bfdbefab82c7ff1101bf8fd10bdb4e47c01533bc2a2a1e9e9e"
+world_address = "0x1515beab64d67464edb8238d8efb07a3545e4a1999f36dea777c193e76c23b2"
  
 # Default RPC URL configuration
 rpc = "https://api.cartridge.gg/x/starknet/sepolia"

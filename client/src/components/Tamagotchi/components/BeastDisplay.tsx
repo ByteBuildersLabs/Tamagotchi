@@ -41,7 +41,7 @@ const BeastDisplay = ({
 }: BeastDisplayProps) => {
   return (
     <>
-      {status[1] === 0 && (
+      {status[2] === 0 && (
         <button className="button mb-4" onClick={onNewEgg}>
           Hatch a new Egg
           <img src={Egg} className="new-egg" alt="beast" />
@@ -59,7 +59,7 @@ const BeastDisplay = ({
               onClick={onCuddle}
               style={{ cursor: 'pointer' }}
             />
-            {status[1] === 1 && <CleanlinessIndicator cleanlinessLevel={status[6]} />}
+            {status[2] === 1 && <CleanlinessIndicator cleanlinessLevel={status[7]} />}
           </div>
         )}
       </div>
@@ -79,7 +79,7 @@ const BeastDisplay = ({
                 </div>
               )}
               
-              {status[1] === 1 && status[2] === 1 && (
+              {status[2] === 1 && status[3] === 1 && (
                 <div className="chat-toggle" onClick={onChatToggle}>
                   <img src={chatIcon} alt="chat with tamagotchi" />
                 </div>

@@ -1,5 +1,5 @@
 import slot from "../../../dojo/manifest_dev.json";
-import sepolia from "../../../dojo/manifest_sepolia.json";
+import sepolia from "../dojo/manifest_dev.json";
 import mainnet from "../../../dojo/manifest_mainnet.json"; // Ensure this points to the right file
 
 // Define valid deploy types

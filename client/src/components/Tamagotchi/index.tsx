@@ -33,6 +33,9 @@ function Tamagotchi() {
   const [botMessage, setBotMessage] = useState<Message>({ user: '', text: '' });
   const [currentBeast, setCurrentBeast] = useState<any>({});
 
+  console.info('player', player)
+  console.info('currentBeast', currentBeast)
+
   const {
     currentImage,
     isLoading,
@@ -63,10 +66,10 @@ function Tamagotchi() {
 
     return {
       age: currentBeast?.age || 0,
-      energy: status[4] || 0,
-      hunger: status[3] || 0,
-      happiness: status[5] || 0,
-      clean: status[6] || 0
+      energy: status[5] || 0,
+      hunger: status[4] || 0,
+      happiness: status[6] || 0,
+      clean: status[7] || 0
     };
   };
 
@@ -83,7 +86,7 @@ function Tamagotchi() {
           }}>
             <Status beastStatus={status} />
             <div className="game">
-              {isLoading || status[1] === 0 || status[2] === 0 ? null : (
+              {isLoading || status[2] === 0 || status[3] === 0 ? null : (
                 <Whispers
                   botMessage={botMessage}
                   setBotMessage={setBotMessage}
