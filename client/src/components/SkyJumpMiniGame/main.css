@@ -76,8 +76,10 @@
   font-size: 24px;
   user-select: none;
   touch-action: manipulation;
-  z-index: 100;
+  z-index: 10010;
   pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .skyjump-left-button {
@@ -92,6 +94,15 @@
   width: 80px;
   height: 80px;
   font-size: 32px;
+}
+
+.skyjump-control-button:active {
+  background-color: #D5D5C1;
+  transform: scale(0.95);
+}
+
+.skyjump-control-button:hover {
+  background-color: #F0F0E0;
 }
 
 /* Return (exit) button */

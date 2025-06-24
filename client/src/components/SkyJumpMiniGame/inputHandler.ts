@@ -6,7 +6,9 @@ export class InputHandler {
   private isMobileDevice: boolean = false;
   private usingGyroscope: boolean = false;
   private gyroscopePermission: PermissionState | null = null;
-  private onToggleGyroscope?: (isUsing: boolean) => void; 
+  private onToggleGyroscope?: (isUsing: boolean) => void;
+  private touchLeftButton?: HTMLElement | null;
+  private touchRightButton?: HTMLElement | null;
 
   constructor(gameEngine: GameEngine, onToggleGyroscope?: (isUsing: boolean) => void) {
     this.gameEngine = gameEngine;
@@ -23,18 +25,31 @@ export class InputHandler {
     ): void {
     this.isMobileDevice = isMobile;
     this.usingGyroscope = initialUsingGyro && this.isMobileDevice;
+    this.touchLeftButton = touchLeftButton;
+    this.touchRightButton = touchRightButton;
 
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('keyup', this.handleKeyUp);
 
     if (this.isMobileDevice) {
       if (touchLeftButton && touchRightButton) {
+        // Touch events
         touchLeftButton.addEventListener('touchstart', (e) => this.handleTouchStart(-1, e as TouchEvent), { passive: false });
         touchLeftButton.addEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent), { passive: false });
         touchRightButton.addEventListener('touchstart', (e) => this.handleTouchStart(1, e as TouchEvent), { passive: false });
         touchRightButton.addEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent), { passive: false });
+        
+        // Mouse events as fallback (for devices that translate touch to mouse)
+        touchLeftButton.addEventListener('mousedown', (e) => this.handleMouseDown(-1, e), { passive: false });
+        touchLeftButton.addEventListener('mouseup', (e) => this.handleMouseUp(e), { passive: false });
+        touchRightButton.addEventListener('mousedown', (e) => this.handleMouseDown(1, e), { passive: false });
+        touchRightButton.addEventListener('mouseup', (e) => this.handleMouseUp(e), { passive: false });
+        
+        // Prevent context menu and text selection
         touchLeftButton.addEventListener('contextmenu', e => e.preventDefault());
         touchRightButton.addEventListener('contextmenu', e => e.preventDefault());
+        touchLeftButton.addEventListener('selectstart', e => e.preventDefault());
+        touchRightButton.addEventListener('selectstart', e => e.preventDefault());
       }
 
       if (this.usingGyroscope) this.requestOrientationPermissionInternal();
@@ -83,6 +98,26 @@ export class InputHandler {
   };
 
   private handleTouchEnd = (e: TouchEvent): void => {
+    e.preventDefault();
+    if (this.gameEngine.isGameOver() || this.usingGyroscope) return;
+    this.gameEngine.setTouchControlsPressed(false, 0);
+    this.gameEngine.setPlayerVelocityX(0);
+  };
+
+  private handleMouseDown = (direction: number, e: MouseEvent): void => {
+    e.preventDefault();
+    if (this.gameEngine.isGameOver() || this.usingGyroscope) return;
+    this.gameEngine.setTouchControlsPressed(true, direction);
+    if (direction === 1) {
+      this.gameEngine.setPlayerVelocityX(PLAYER_HORIZONTAL_SPEED);
+      this.gameEngine.setPlayerFacingDirection(true);
+    } else if (direction === -1) {
+      this.gameEngine.setPlayerVelocityX(-PLAYER_HORIZONTAL_SPEED);
+      this.gameEngine.setPlayerFacingDirection(false);
+    }
+  };
+
+  private handleMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
     if (this.gameEngine.isGameOver() || this.usingGyroscope) return;
     this.gameEngine.setTouchControlsPressed(false, 0);
@@ -165,6 +200,25 @@ export class InputHandler {
     document.removeEventListener('keyup', this.handleKeyUp);
 
     if (this.isMobileDevice) {
+      // Remove touch and mouse event listeners
+      if (this.touchLeftButton) {
+        this.touchLeftButton.removeEventListener('touchstart', (e) => this.handleTouchStart(-1, e as TouchEvent));
+        this.touchLeftButton.removeEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent));
+        this.touchLeftButton.removeEventListener('mousedown', (e) => this.handleMouseDown(-1, e));
+        this.touchLeftButton.removeEventListener('mouseup', (e) => this.handleMouseUp(e));
+        this.touchLeftButton.removeEventListener('contextmenu', e => e.preventDefault());
+        this.touchLeftButton.removeEventListener('selectstart', e => e.preventDefault());
+      }
+      
+      if (this.touchRightButton) {
+        this.touchRightButton.removeEventListener('touchstart', (e) => this.handleTouchStart(1, e as TouchEvent));
+        this.touchRightButton.removeEventListener('touchend', (e) => this.handleTouchEnd(e as TouchEvent));
+        this.touchRightButton.removeEventListener('mousedown', (e) => this.handleMouseDown(1, e));
+        this.touchRightButton.removeEventListener('mouseup', (e) => this.handleMouseUp(e));
+        this.touchRightButton.removeEventListener('contextmenu', e => e.preventDefault());
+        this.touchRightButton.removeEventListener('selectstart', e => e.preventDefault());
+      }
+
       if (this.gameEngine.isGyroControlsEnabled()) {
         window.removeEventListener('deviceorientation', this.handleDeviceOrientation);
         window.removeEventListener('deviceorientation', this.calibrateGyroscope);
