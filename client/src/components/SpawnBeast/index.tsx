@@ -1,8 +1,8 @@
 // React and external libraries
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAccount } from "@starknet-react/core";
-import { Account, addAddressPadding } from "starknet";
+import { Account } from "starknet";
 import { useDojoSDK } from "@dojoengine/sdk/react";
 
 // Internal components
@@ -13,7 +13,6 @@ import ProgressBar from '../ProgressBar/index.tsx';
 // Hooks and Contexts
 import { useSystemCalls } from "../../dojo/useSystemCalls.ts";
 import { usePlayer } from "../../hooks/usePlayers.tsx";
-import { useBeasts, fetchBeastsData } from "../../hooks/useBeasts";
 
 // Types
 import type { 
@@ -37,13 +36,6 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
   const { spawn } = useSystemCalls();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const userAddress = useMemo(() => 
-    account ? addAddressPadding(account.address).toLowerCase() : '', 
-    [account]
-  );
-
-  const { myBeastsData, refetch } = useBeasts(userAddress);
 
   // State
   const [state, setState] = useState<SpawnBeastState>({
@@ -82,7 +74,7 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
 
         // Esperar un momento para que se actualice el player
         await new Promise(resolve => setTimeout(resolve, 2000));
-        setSpawnProgress({ progress: 40, message: 'Player account created!' });
+        if(spawnPlayerTx) setSpawnProgress({ progress: 40, message: 'Player account created!' });
       }
 
       setSpawnProgress({ progress: 50, message: 'Generating your beast' });
@@ -91,18 +83,11 @@ const SpawnBeast: React.FC<SpawnBeastProps> = ({ className = '' }) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       if (spawnTx && spawnTx.code === "SUCCESS") {
-        refetch();
-        const beastsData = await fetchBeastsData();
-        console.log('beastsData', beastsData);
-        setSpawnProgress({ progress: 70, message: 'Beast generated! Setting as current' });
-        const newBeast = myBeastsData[0];
-        if (newBeast) {
-          setSpawnProgress({ progress: 90, message: 'Finalizing setup' });
-          setSpawnProgress({ progress: 100, message: 'Your beast is ready!' });
-          setTimeout(() => {
-            navigate('/play');
-          }, 1000);
-        }
+        setSpawnProgress({ progress: 70, message: 'Beast generated!' });
+        setTimeout(() => {
+          setSpawnProgress({ progress: 100, message: 'Finalizing setup' });
+          navigate('/play');
+        }, 2000);
       }
     } catch (error) {
       console.error('Error spawning player:', error);
