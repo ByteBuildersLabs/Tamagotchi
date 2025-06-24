@@ -18,6 +18,7 @@ import {
   PLATFORM_IMG_PATH,
   RESET_GAME_DELAY,
   ENERGY_TOAST_DURATION,
+  PLAYER_HORIZONTAL_SPEED,
 } from './gameConfig';
 
 import { GameEngine } from './gameEngine'; 
@@ -284,6 +285,33 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
     isGameOver: () => gameEngineRef.current?.isGameOver() ?? true,
   }));
 
+  // Direct button handlers as backup
+  const handleLeftButtonPress = useCallback(() => {
+    console.log('Left button pressed directly!');
+    if (gameEngineRef.current && !gameEngineRef.current.isGameOver()) {
+      gameEngineRef.current.setPlayerVelocityX(-PLAYER_HORIZONTAL_SPEED);
+      gameEngineRef.current.setPlayerFacingDirection(false);
+      gameEngineRef.current.setTouchControlsPressed(true, -1);
+    }
+  }, []);
+
+  const handleRightButtonPress = useCallback(() => {
+    console.log('Right button pressed directly!');
+    if (gameEngineRef.current && !gameEngineRef.current.isGameOver()) {
+      gameEngineRef.current.setPlayerVelocityX(PLAYER_HORIZONTAL_SPEED);
+      gameEngineRef.current.setPlayerFacingDirection(true);
+      gameEngineRef.current.setTouchControlsPressed(true, 1);
+    }
+  }, []);
+
+  const handleButtonRelease = useCallback(() => {
+    console.log('Button released directly!');
+    if (gameEngineRef.current && !gameEngineRef.current.isGameOver()) {
+      gameEngineRef.current.setPlayerVelocityX(0);
+      gameEngineRef.current.setTouchControlsPressed(false, 0);
+    }
+  }, []);
+
   return (
     <div
       className={`skyjump-game-container ${className} ${
@@ -310,14 +338,52 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
             <div
               ref={touchLeftButtonRef}
               className="skyjump-control-button skyjump-left-button"
+              role="button"
+              tabIndex={0}
               aria-label="Mover izquierda"
+              onTouchStart={(e) => {
+                e.preventDefault();
+                handleLeftButtonPress();
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                handleButtonRelease();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleLeftButtonPress();
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                handleButtonRelease();
+              }}
+              onContextMenu={(e) => e.preventDefault()}
             >
               ←
             </div>
             <div
               ref={touchRightButtonRef}
               className="skyjump-control-button skyjump-right-button"
+              role="button"
+              tabIndex={0}
               aria-label="Mover derecha"
+              onTouchStart={(e) => {
+                e.preventDefault();
+                handleRightButtonPress();
+              }}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                handleButtonRelease();
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleRightButtonPress();
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                handleButtonRelease();
+              }}
+              onContextMenu={(e) => e.preventDefault()}
             >
               →
             </div>
@@ -359,6 +425,7 @@ const CanvasSkyJumpGame = forwardRef<SkyJumpGameRefHandle, CanvasSkyJumpGameProp
             selectedFood={selectedFoodReward?.food}
             handlePlayAgain={handlePlayAgain}
             restartIcon={RestartIcon}
+            onExitGame={onExitGame}
           />
         )}
   
